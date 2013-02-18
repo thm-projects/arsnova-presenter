@@ -47,13 +47,13 @@ define(
 				;
 				
 				return {
-					guest: {
-						title: "Guest login",
-						url: string.substitute(
-								"${prefix}/doLogin?type=guest&user=Guest&successurl=${success}&failureurl=${failure}",
-								{prefix: apiRoot, success: successUrl, failure: failureUrl}
-							)
-					},
+//					guest: {
+//						title: "Guest login",
+//						url: string.substitute(
+//								"${prefix}/doLogin?type=guest&user=Guest&successurl=${success}&failureurl=${failure}",
+//								{prefix: apiRoot, success: successUrl, failure: failureUrl}
+//							)
+//					},
 					thm: {
 						title: "THM (CAS)",
 						url: string.substitute(
