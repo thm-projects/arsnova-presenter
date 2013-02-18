@@ -51,7 +51,7 @@ define(
 		
 		question.watch("id", function(name, oldValue, value) {
 			answerJsonRest = new JsonRestStore({
-				target: string.substitude(answerPath, {questionId: value}),
+				target: string.substitute(answerPath, {questionId: value}),
 				idProperty: "_id"
 			});
 			answerMemory = new MemoryStore({
