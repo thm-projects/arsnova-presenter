@@ -33,7 +33,9 @@ define(
 					dropDown: registry.byId("newSessionDialog")
 				}, "newSessionButton");
 				
-				registry.byId("sessionSelect").onChange = function(value) {
+				var sessionSelect = registry.byId("sessionSelect");
+				sessionSelect.maxHeight = 200;
+				sessionSelect.onChange = function(value) {
 					arsSession.setKey(value);
 				};
 				

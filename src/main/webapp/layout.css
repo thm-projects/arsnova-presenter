@@ -20,6 +20,10 @@ html, body {
 	text-align: center;
 }
 
+#widgets {
+	display: none;
+}
+
 #appContainer {
 	height: 100%;
 	visibility: hidden;

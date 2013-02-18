@@ -32,10 +32,9 @@ body {
 }
 
 .panelHeading {
-	background-color: rgb(226, 235, 242);
+	background-color: rgb(226, 235, 242) ! important;
 	text-align: center;
 	font-size: 1.2em;
 	font-weight: bold;
 	padding: 0.2em;
-	margin-bottom: 0.5em;
 }

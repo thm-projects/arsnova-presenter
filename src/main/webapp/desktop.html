@@ -14,12 +14,28 @@
 <div id="appContainer" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'">
 	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="region: 'center'">
 		<div id="qblPanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'">
-			<div class="panelHeading">Lecturer</div>
-			<div id="questionByLecturerList"></div>
+			<div id="qblContainer" data-dojo-type="dijit/layout/BorderContainer">
+				<div class="panelHeading" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">Lecturer</div>
+				<div id="qblTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
+					<div id="qblQuestionsPanel" data-dojo-type="dijit/layout/ContentPane" title="Questions">
+						<div id="questionByLecturerList"></div>
+					</div>
+					<div id="qblAnswersPanel" data-dojo-type="dijit/layout/ContentPane" title="Answers">
+					</div>
+				</div>
+			</div>
 		</div>
 		<div id="qbaPanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'right', splitter: 'true'">
-			<div class="panelHeading">Audience</div>
-			<p></p>
+			<div id="qbaContainer" data-dojo-type="dijit/layout/BorderContainer">
+				<div class="panelHeading" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">Audience</div>
+				<div id="qbaTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
+					<div id="qbaQuestionsPanel" data-dojo-type="dijit/layout/ContentPane" title="Questions">
+						<div id="qbaList"></div>
+					</div>
+					<div id="qbaFeedbackPanel" data-dojo-type="dijit/layout/ContentPane" title="Feedback">
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div id="headerPanel" class="sidePanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">
@@ -44,15 +60,17 @@
 	</div>
 </div>
 
-<div id="loginDialog" title="Login" data-dojo-type="dijit/Dialog">
-	<div>Please choose a service to login with.</div>
-	<div id="loginServiceButtons"></div>
-</div>
-
-<div id="newSessionDialog" data-dojo-type="dijit/TooltipDialog">
-	<input id="sessionNameField" type="text" placeholder="Short name" maxlength="12" data-dojo-type="dijit/form/TextBox" /><br />
-	<input id="sessionDescField" type="text" placeholder="Description" data-dojo-type="dijit/form/TextBox" /><br />
-	<button id="createSessionButton" type="button" data-dojo-type="dijit/form/Button">Create</button> 
+<div id="widgets">
+	<div id="loginDialog" title="Login" data-dojo-type="dijit/Dialog">
+		<div>Please choose a service to login with.</div>
+		<div id="loginServiceButtons"></div>
+	</div>
+	
+	<div id="newSessionDialog" data-dojo-type="dijit/TooltipDialog">
+		<input id="sessionNameField" type="text" placeholder="Short name" maxlength="12" data-dojo-type="dijit/form/TextBox" /><br />
+		<input id="sessionDescField" type="text" placeholder="Description" data-dojo-type="dijit/form/TextBox" /><br />
+		<button id="createSessionButton" type="button" data-dojo-type="dijit/form/Button">Create</button> 
+	</div>
 </div>
 
 <script>
@@ -88,6 +106,7 @@ require(
 		"arsnova-lecturer-panel/app",
 		"dojo/parser",
 		"dijit/layout/BorderContainer",
+		"dijit/layout/TabContainer",
 		"dijit/layout/ContentPane",
 		"dijit/Dialog",
 		"dijit/TooltipDialog",
