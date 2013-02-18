@@ -47,4 +47,5 @@ html, body {
 
 #qblPanel, #qbaPanel {
 	width: 49%;
+	padding: 0;
 }
