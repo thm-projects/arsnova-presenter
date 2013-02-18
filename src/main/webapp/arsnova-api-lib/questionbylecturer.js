@@ -2,15 +2,17 @@ define(
 	[
 		"dojo/_base/config",
 		"dojo/_base/declare",
+		"dojo/string",
 		"dojo/Stateful",
 		"dojo/request",
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
 		"dojo/store/Cache"
 	],
-	function(config, declare, Stateful, request, JsonRestStore, MemoryStore, CacheStore) {
+	function(config, declare, string, Stateful, request, JsonRestStore, MemoryStore, CacheStore) {
 		var
 			apiPrefix = config.arsnovaApi.root + "/question/bylecturer/",
+			answerPath = apiPrefix + "${questionId}/answer/",
 			
 			Question = declare([Stateful], {
 				sessionKey: null,
@@ -22,15 +24,41 @@ define(
 				id: null
 			}),
 
+			questionJsonRest = null,
+			questionMemory = null,
+			questionStore = null,
+
+			answerJsonRest = new JsonRestStore({
+				target: answerPath,
+				idProperty: "_id"
+			}),
+			answerMemory = new MemoryStore({
+				idProperty: "_id"
+			}),
+			answerStore = CacheStore(answerJsonRest, answerMemory)
+		;
+		
+		question.watch("sessionKey", function(name, oldValue, value) {
 			questionJsonRest = new JsonRestStore({
 				target: apiPrefix,
 				idProperty: "_id"
-			}),
+			});
 			questionMemory = new MemoryStore({
 				idProperty: "_id"
-			}),
-			questionStore = CacheStore(questionJsonRest, questionMemory)
-		;
+			});
+			questionStore = CacheStore(questionJsonRest, questionMemory);
+		});
+		
+		question.watch("id", function(name, oldValue, value) {
+			answerJsonRest = new JsonRestStore({
+				target: string.substitude(answerPath, {questionId: value}),
+				idProperty: "_id"
+			});
+			answerMemory = new MemoryStore({
+				idProperty: "_id"
+			});
+			answerStore = CacheStore(answerJsonRest, answerMemory);
+		});
 			
 		return {
 			watchId: function(callback) {
@@ -54,6 +82,11 @@ define(
 				return questionStore.query({
 					sessionkey: question.get("sessionKey"),
 					filter: "unanswered"
+				});
+			},
+			getAnswers: function() {
+				return questionStore.query({
+					sessionkey: question.get("sessionKey")
 				});
 			}
 		};
