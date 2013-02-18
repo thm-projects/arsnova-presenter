@@ -50,6 +50,7 @@ define(
 		});
 		
 		question.watch("id", function(name, oldValue, value) {
+			console.log("Question id changed: " + value);
 			answerJsonRest = new JsonRestStore({
 				target: string.substitute(answerPath, {questionId: value}),
 				idProperty: "_id"

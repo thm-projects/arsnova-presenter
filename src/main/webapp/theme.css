@@ -29,6 +29,7 @@ body {
 	font-size: 1.2em;
 	padding: 0.5em;
 	margin: 0.2em;
+	cursor: pointer;
 }
 
 .panelHeading {

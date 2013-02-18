@@ -93,8 +93,12 @@ define(
 				var questionList = dom.byId("questionByLecturerList");
 				questionList.innerHTML = "";
 				questions.forEach(function(question) {
-					console.debug(question);
-					domConstruct.place(domConstruct.toDom("<p>" + question.subject + "</p>"), questionList);
+					var questionNode = domConstruct.toDom("<p>" + question.subject + "</p>");
+					on(questionNode, "click", function(event) {
+						arsQbl.setId(question._id);
+						registry.byId("qblTabs").selectChild(registry.byId("qblAnswersPanel"));
+					});
+					domConstruct.place(questionNode, questionList);
 				});
 			},
 			
