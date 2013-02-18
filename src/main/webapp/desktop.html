@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><!DOCTYPE html>
+
+<html>
+<head>
+<title>ARSnova</title>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dijit/themes/claro/claro.css" media="screen" />
+<link rel="stylesheet" href="layout.css" media="screen" />
+<link rel="stylesheet" href="theme.css" media="screen" />
+</head>
+
+<body class="claro">
+<noscript><div id="noJs"><div><h1>ARSnova</h1><p>This application needs JavaScript to be enabled in your browser.</p></div></div></noscript>
+
+<div id="appContainer" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'">
+	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="region: 'center'">
+		<div id="qblPanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'">
+			<div>Questions by lecturer</div>
+			<p></p>
+		</div>
+		<div id="qbaPanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'right', splitter: 'true'">
+			<div>Questions by audience</div>
+			<p></p>
+		</div>
+	</div>
+	<div id="headerPanel" class="sidePanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">
+		<div id="sessionPanel" class="groupPanel">
+			<label for="sessionSelect">Session</label>
+			<select id="sessionSelect" data-dojo-type="dijit/form/Select"></select>
+			<span id="activeUserCount">1000</span>
+			<button id="newSessionButton" type="button">New</button>
+		</div>
+		<div id="timerPanel" class="groupPanel">
+			<label for="timerField">Timer</label>
+			<input id="timerField" size="8" data-dojo-type="dijit/form/TextBox" />
+			<button id="timerStartButton" type="button" data-dojo-type="dijit/form/Button">Start</button>
+		</div>
+		<div id="exitPanel">
+			<button id="mobileButton" type="button" data-dojo-type="dijit/form/Button">Mobile</button>
+			<button id="logoutButton" type="button" data-dojo-type="dijit/form/Button">Logout</button>
+		</div>
+	</div>
+	<div id="infoPanel" class="sidePanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'bottom'">
+		<span id="productName" class="groupPanel">ARSnova lecturer panel</span><span id="productVersionDetails" class="groupPanel"><span id="productVersionNumber">Version: $$VERSION$$</span> &bull; <span id="productVersionBuild">Build: $$BUILD$$</span></span>
+	</div>
+</div>
+
+<div id="loginDialog" title="Login" data-dojo-type="dijit/Dialog">
+	<div>Please choose a service to login with.</div>
+	<div id="loginServiceButtons"></div>
+</div>
+
+<div id="newSessionDialog" data-dojo-type="dijit/TooltipDialog">
+	<input id="sessionNameField" type="text" placeholder="Short name" maxlength="12" data-dojo-type="dijit/form/TextBox" /><br />
+	<input id="sessionDescField" type="text" placeholder="Description" data-dojo-type="dijit/form/TextBox" /><br />
+	<button id="createSessionButton" type="button" data-dojo-type="dijit/form/Button">Create</button> 
+</div>
+
+<script>
+dojoConfig = (function() {
+	var base = location.href.split("/");
+	base.pop();
+	base = base.join("/");
+	
+	return {
+	    async: true,
+	    isDebug: true,
+	    parseOnLoad: true,
+	    packages: [
+	        {
+		        name: "arsnova-lecturer-panel",
+		        location: base + "/arsnova-lecturer-panel"
+	    	},
+	        {
+		        name: "arsnova-api",
+		        location: base + "/arsnova-api-lib"
+	    	}
+	    ],
+	    arsnovaApi: {
+	    	root: base
+	    }
+	}
+})();
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+<script>
+require(
+	[
+		"arsnova-lecturer-panel/app",
+		"dojo/parser",
+		"dijit/layout/BorderContainer",
+		"dijit/layout/ContentPane",
+		"dijit/Dialog",
+		"dijit/TooltipDialog",
+		"dijit/form/Button",
+		"dijit/form/TextBox",
+		"dijit/form/Select"
+	],
+	function(app) {
+		app.init();
+	}
+);
+</script>
+</body>
+</html>

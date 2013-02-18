@@ -1,0 +1,24 @@
+body {
+	font-family: sans-serif;
+}
+
+.sidePanel {
+	background-color: rgb(226, 235, 242) ! important;
+}
+
+.sidePanel label {
+	font-weight: bold;
+}
+
+#activeUserCount {
+	display: inline-block;
+	min-width: 1em;
+	height: 1em;
+	background-color: white;
+	border: 1px solid #999;
+	padding: .3em;
+	border-radius: .8em;
+	font-weight: bold;
+	line-height: 1em;
+	text-align: center;
+}

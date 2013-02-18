@@ -1,0 +1,50 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	height: 100%;
+	overflow: hidden;
+}
+
+#noJs {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+
+#noJs > * {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+#appContainer {
+	height: 100%;
+	visibility: hidden;
+}
+
+#sessionPanel {
+	float: left;
+}
+
+#timerPanel {
+	float: left;
+}
+
+#exitPanel {
+	float: right;
+}
+
+#productName {
+	float: left;
+}
+
+#productVersionDetails {
+	float: right;
+}
+
+#qblPanel, #qbaPanel {
+	width: 49%;
+}
