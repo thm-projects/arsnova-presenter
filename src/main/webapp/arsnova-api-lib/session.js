@@ -48,21 +48,27 @@ define(
 					}
 				);
 			},
+			
 			watchKey: function(callback) {
 				session.watch("key", callback);
 			},
+			
 			setKey: function(value) {
 				session.set("key", value);
 			},
+			
 			getStore: function() {
 				return sessionStore;
 			},
+			
 			getVisited: function() {
 				return sessionStore.query({filter: "visited"});
 			},
+			
 			getOwned: function() {
 				return sessionStore.query({filter: "owned"});
 			},
+			
 			createSession: function(shortName, description) {
 				sessionStore.put({
 					name: description,
@@ -78,17 +84,31 @@ define(
 					}
 				);
 			},
+			
 			getActiveUserCount: function() {
-				request.get(apiPrefix + "activeusercount").then(
-						function(response) {
-							console.debug(response);
-							callback(response, true);
-						},
-						function(error) {
-							console.error("API: session.getActiveUserCount request failed.");
-							callback(error, false);
-						}
-					);
+				var count = "-";
+				request.get(apiPrefix + session.get("key") + "/activeusercount", {sync: true}).then(
+					function(response) {
+						count = response;
+						console.debug("Count: " + count);
+					},
+					function(error) {
+						console.error("API: session.getActiveUserCount request failed.");
+					}
+				);
+				
+				return count;
+			},
+			
+			signalOnline: function() {
+				request.post(apiPrefix + session.get("key") + "/online").then(
+					function(response) {
+						/* nothing to do */
+					},
+					function(error) {
+						console.error("API: session.signalOnline request failed.");
+					}
+				);
 			}
 		};
 	}
