@@ -1,9 +1,10 @@
 define(
 	[
 		"dojo/_base/config",
+		"dojo/string",
 		"dojo/request"
 	],
-	function(config, request) {
+	function(config, string, request) {
 		var
 			apiRoot = config.arsnovaApi.root,
 			loginError = false,
@@ -40,22 +41,39 @@ define(
 				}
 			},
 			getServices: function() {
+				var
+					successUrl = encodeURIComponent(location.pathname + location.search),
+					failureUrl = encodeURIComponent(location.pathname + location.search + "#loginerror")
+				;
+				
 				return {
 					guest: {
 						title: "Guest login",
-						url: apiRoot + "/doLogin?type=guest&user=Guest"
+						url: string.substitute(
+								"${prefix}/doLogin?type=guest&user=Guest&successurl=${success}&failureurl=${failure}",
+								{prefix: apiRoot, success: successUrl, failure: failureUrl}
+							)
 					},
 					thm: {
 						title: "THM (CAS)",
-						url: apiRoot + "/doLogin?type=cas"
+						url: string.substitute(
+								"${prefix}/doLogin?type=cas&successurl=${success}&failureurl=${failure}",
+								{prefix: apiRoot, success: successUrl, failure: failureUrl}
+							)
 					},
 					google: {
 						title: "Google",
-						url: apiRoot + "/doLogin?type=google"
+						url: string.substitute(
+								"${prefix}/doLogin?type=google&successurl=${success}&failureurl=${failure}",
+								{prefix: apiRoot, success: successUrl, failure: failureUrl}
+							)
 					},
 					facebook: {
 						title: "Facebook",
-						url: apiRoot + "/doLogin?type=facebook"
+						url: string.substitute(
+							"${prefix}/doLogin?type=facebook&successurl=${success}&failureurl=${failure}",
+							{prefix: apiRoot, success: successUrl, failure: failureUrl}
+						)
 					}
 				};
 			},
