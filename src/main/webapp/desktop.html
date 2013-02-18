@@ -15,7 +15,7 @@
 	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="region: 'center'">
 		<div id="qblPanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'">
 			<div>Questions by lecturer</div>
-			<p></p>
+			<div id="questionByLecturerList"></div>
 		</div>
 		<div id="qbaPanel" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'right', splitter: 'true'">
 			<div>Questions by audience</div>
@@ -26,7 +26,7 @@
 		<div id="sessionPanel" class="groupPanel">
 			<label for="sessionSelect">Session</label>
 			<select id="sessionSelect" data-dojo-type="dijit/form/Select"></select>
-			<span id="activeUserCount">1000</span>
+			<span id="activeUserCount">-</span>
 			<button id="newSessionButton" type="button">New</button>
 		</div>
 		<div id="timerPanel" class="groupPanel">

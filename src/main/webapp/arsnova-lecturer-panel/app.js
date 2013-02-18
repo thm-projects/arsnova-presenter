@@ -10,9 +10,10 @@ define(
 	 	"dijit/form/Button",
 	 	"dijit/form/DropDownButton",
 		"arsnova-api/auth",
-		"arsnova-api/session"
+		"arsnova-api/session",
+		"arsnova-api/questionbylecturer"
 	],
-	function(ready, on, dom, domConstruct, domStyle, registry, Dialog, Button, DropDownButton, arsAuth, arsSession) {
+	function(ready, on, dom, domConstruct, domStyle, registry, Dialog, Button, DropDownButton, arsAuth, arsSession, arsQbl) {
 		var
 			startup = function() {
 				console.log("-- startup --");
@@ -31,6 +32,10 @@ define(
 					label: "New",
 					dropDown: registry.byId("newSessionDialog")
 				}, "newSessionButton");
+				
+				registry.byId("sessionSelect").onChange = function(value) {
+					arsSession.setKey(value);
+				};
 				
 				if (arsAuth.isLoggedIn()) {
 					registry.byId("createSessionButton").onClick = submitCreateSessionForm;
@@ -67,19 +72,27 @@ define(
 			},
 			
 			onSessionKeyChange = function(name, oldValue, value) {
-				
+				dom.byId("activeUserCount").innerHTML = arsSession.getActiveUserCount();
+				arsQbl.setSessionKey(value);
+				updateQuestionListView(arsQbl.getAll());
 			},
 			
 			updateSessionListView = function(sessions) {
+				var sessionSelect = registry.byId("sessionSelect");
 				sessions.forEach(function(session) {
-					var sessionSelect = registry.byId("sessionSelect");
 					sessionSelect.addOption({
 						label: session.shortName,
 						value: session.keyword
 					});
-					sessionSelect.onChange = function(value) {
-						arsSession.setKey(value);
-					};
+				});
+			},
+			
+			updateQuestionListView = function(questions) {
+				var questionList = dom.byId("questionByLecturerList");
+				questionList.innerHTML = "";
+				questions.forEach(function(question) {
+					console.debug(question);
+					domConstruct.place(domConstruct.toDom("<p>" + question.subject + "</p>"), questionList);
 				});
 			},
 			
