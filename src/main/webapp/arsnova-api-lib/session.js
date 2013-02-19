@@ -35,20 +35,6 @@ define(
 		});
 		
 		return {
-			list: function(callback) {
-				console.debug("API: session.list");
-				request.get(apiPrefix + "?filter=visited").then(
-					function(response) {
-						console.debug(response);
-						callback(response, true);
-					},
-					function(error) {
-						console.error("API: session.list request failed.");
-						callback(error, false);
-					}
-				);
-			},
-			
 			watchKey: function(callback) {
 				session.watch("key", callback);
 			},
@@ -62,11 +48,11 @@ define(
 			},
 			
 			getVisited: function() {
-				return sessionStore.query({filter: "visited"});
+				return sessionStore.query({visitedonly: true});
 			},
 			
 			getOwned: function() {
-				return sessionStore.query({filter: "owned"});
+				return sessionStore.query({ownedonly: true});
 			},
 			
 			createSession: function(shortName, description) {
