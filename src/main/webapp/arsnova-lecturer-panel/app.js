@@ -43,6 +43,7 @@ define(
 					registry.byId("createSessionButton").onClick = submitCreateSessionForm;
 					registry.byId("logoutButton").onClick = arsAuth.logout;
 					arsSession.watchKey(onSessionKeyChange);
+					arsQbl.watchId(onQblIdChange);
 					updateSessionListView(arsSession.getOwned());
 				}
 				
@@ -76,7 +77,11 @@ define(
 			onSessionKeyChange = function(name, oldValue, value) {
 				dom.byId("activeUserCount").innerHTML = arsSession.getActiveUserCount();
 				arsQbl.setSessionKey(value);
-				updateQuestionListView(arsQbl.getAll());
+				updateQblListView(arsQbl.getAll());
+			},
+			
+			onQblIdChange = function(name, oldValue, value) {
+				updateQblAnswersView(arsQbl.getAnswers());
 			},
 			
 			updateSessionListView = function(sessions) {
@@ -89,7 +94,7 @@ define(
 				});
 			},
 			
-			updateQuestionListView = function(questions) {
+			updateQblListView = function(questions) {
 				var questionList = dom.byId("questionByLecturerList");
 				questionList.innerHTML = "";
 				questions.forEach(function(question) {
@@ -99,6 +104,12 @@ define(
 						registry.byId("qblTabs").selectChild(registry.byId("qblAnswersPanel"));
 					});
 					domConstruct.place(questionNode, questionList);
+				});
+			},
+			
+			updateQblAnswersView = function(answers) {
+				answers.forEach(function(answer) {
+					console.log(answer);
 				});
 			},
 			

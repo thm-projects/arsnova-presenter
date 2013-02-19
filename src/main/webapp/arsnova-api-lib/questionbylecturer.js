@@ -63,7 +63,7 @@ define(
 			
 		return {
 			watchId: function(callback) {
-				question("id", callback);
+				question.watch("id", callback);
 			},
 			setSessionKey: function(key) {
 				question.set("sessionKey", key);
@@ -86,7 +86,7 @@ define(
 				});
 			},
 			getAnswers: function() {
-				return questionStore.query({
+				return answerStore.query({
 					sessionkey: question.get("sessionKey")
 				});
 			}
