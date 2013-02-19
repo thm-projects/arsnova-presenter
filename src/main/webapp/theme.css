@@ -23,7 +23,7 @@ body {
 	text-align: center;
 }
 
-#questionByLecturerList p {
+#lecturerQuestionList p {
 	background-color: rgb(226, 235, 242);
 	border-radius: 0.8em;
 	font-size: 1.2em;

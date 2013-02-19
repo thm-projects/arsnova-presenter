@@ -11,9 +11,9 @@ define(
 	 	"dijit/form/DropDownButton",
 		"arsnova-api/auth",
 		"arsnova-api/session",
-		"arsnova-api/questionbylecturer"
+		"arsnova-api/lecturerquestion"
 	],
-	function(ready, on, dom, domConstruct, domStyle, registry, Dialog, Button, DropDownButton, arsAuth, arsSession, arsQbl) {
+	function(ready, on, dom, domConstruct, domStyle, registry, Dialog, Button, DropDownButton, arsAuth, arsSession, arsLQuestion) {
 		var
 			startup = function() {
 				console.log("-- startup --");
@@ -43,7 +43,7 @@ define(
 					registry.byId("createSessionButton").onClick = submitCreateSessionForm;
 					registry.byId("logoutButton").onClick = arsAuth.logout;
 					arsSession.watchKey(onSessionKeyChange);
-					arsQbl.watchId(onQblIdChange);
+					arsLQuestion.watchId(onLQuestionIdChange);
 					updateSessionListView(arsSession.getOwned());
 				}
 				
@@ -76,12 +76,12 @@ define(
 			
 			onSessionKeyChange = function(name, oldValue, value) {
 				dom.byId("activeUserCount").innerHTML = arsSession.getActiveUserCount();
-				arsQbl.setSessionKey(value);
-				updateQblListView(arsQbl.getAll());
+				arsLQuestion.setSessionKey(value);
+				updateLQuestionListView(arsLQuestion.getAll());
 			},
 			
-			onQblIdChange = function(name, oldValue, value) {
-				updateQblAnswersView(arsQbl.getAnswers());
+			onLQuestionIdChange = function(name, oldValue, value) {
+				updateLQuestionAnswersView(arsLQuestion.getAnswers());
 			},
 			
 			updateSessionListView = function(sessions) {
@@ -94,20 +94,20 @@ define(
 				});
 			},
 			
-			updateQblListView = function(questions) {
-				var questionList = dom.byId("questionByLecturerList");
+			updateLQuestionListView = function(questions) {
+				var questionList = dom.byId("lecturerQuestionList");
 				questionList.innerHTML = "";
 				questions.forEach(function(question) {
 					var questionNode = domConstruct.toDom("<p>" + question.subject + "</p>");
 					on(questionNode, "click", function(event) {
-						arsQbl.setId(question._id);
-						registry.byId("qblTabs").selectChild(registry.byId("qblAnswersPanel"));
+						arsLQuestion.setId(question._id);
+						registry.byId("lecturerTabs").selectChild(registry.byId("lecturerAnswersPanel"));
 					});
 					domConstruct.place(questionNode, questionList);
 				});
 			},
 			
-			updateQblAnswersView = function(answers) {
+			updateLQuestionAnswersView = function(answers) {
 				answers.forEach(function(answer) {
 					console.log(answer);
 				});

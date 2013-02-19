@@ -49,7 +49,7 @@ html, body {
 	float: right;
 }
 
-#qblPanel, #qbaPanel {
+#lecturerPanel, #audiencePanel {
 	width: 49%;
 	padding: 0;
 }
