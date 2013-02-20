@@ -21,6 +21,7 @@
 						<div id="lecturerQuestionList"></div>
 					</div>
 					<div id="lecturerAnswersPanel" data-dojo-type="dijit/layout/ContentPane" title="Answers">
+						<div id="answerChart"></div>
 					</div>
 				</div>
 			</div>
@@ -33,6 +34,7 @@
 						<div id="audienceQuestionList"></div>
 					</div>
 					<div id="audienceFeedbackPanel" data-dojo-type="dijit/layout/ContentPane" title="Feedback">
+						<div id="feedbackChart"></div>
 					</div>
 				</div>
 			</div>
@@ -83,6 +85,7 @@ dojoConfig = (function() {
 	    async: true,
 	    isDebug: true,
 	    parseOnLoad: true,
+	    gfxRenderer: "svg,silverlight,vml",
 	    packages: [
 	        {
 		        name: "arsnova-lecturer-panel",

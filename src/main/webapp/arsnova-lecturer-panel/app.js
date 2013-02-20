@@ -2,6 +2,7 @@ define(
 	[
 		"dojo/ready",
 	 	"dojo/on",
+	 	"dojo/when",
 	 	"dojo/dom",
 	 	"dojo/dom-construct",
 	 	"dojo/dom-style",
@@ -9,12 +10,19 @@ define(
 	 	"dijit/Dialog",
 	 	"dijit/form/Button",
 	 	"dijit/form/DropDownButton",
+	 	"dojox/charting/Chart",
+	 	"dojox/charting/themes/Claro",
+	 	"dojox/charting/plot2d/Columns",
+	 	"dojox/charting/axis2d/Default",
 		"arsnova-api/auth",
 		"arsnova-api/session",
 		"arsnova-api/lecturerquestion"
 	],
-	function(ready, on, dom, domConstruct, domStyle, registry, Dialog, Button, DropDownButton, arsAuth, arsSession, arsLQuestion) {
+	function(ready, on, when, dom, domConstruct, domStyle, registry, Dialog, Button, DropDownButton, Chart, ChartTheme, Columns, AxisDefault, arsAuth, arsSession, arsLQuestion) {
 		var
+			answerChart = null,
+			feedbackChart = null,
+		
 			startup = function() {
 				console.log("-- startup --");
 				
@@ -47,7 +55,29 @@ define(
 					updateSessionListView(arsSession.getOwned());
 				}
 				
+				initCharts();
+				
 				dom.byId("appContainer").style.visibility = "visible";
+			},
+			
+			initCharts = function() {
+				answerChart = new Chart("answerChart");
+				answerChart.setTheme(ChartTheme);
+				answerChart.addPlot("default", {
+					type: Columns,
+					gap: 3
+				});
+				answerChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
+				answerChart.render();
+				
+				feedbackChart = new Chart("feedbackChart");
+				feedbackChart.setTheme(ChartTheme);
+				feedbackChart.addPlot("default", {
+					type: Columns,
+					gap: 3
+				});
+				answerChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
+				feedbackChart.render();
 			},
 			
 			showLoginDialog = function() {
@@ -81,7 +111,7 @@ define(
 			},
 			
 			onLQuestionIdChange = function(name, oldValue, value) {
-				updateLQuestionAnswersView(arsLQuestion.getAnswers());
+				updateLQuestionAnswersView(arsLQuestion.get(), arsLQuestion.getAnswers());
 			},
 			
 			updateSessionListView = function(sessions) {
@@ -107,9 +137,28 @@ define(
 				});
 			},
 			
-			updateLQuestionAnswersView = function(answers) {
-				answers.forEach(function(answer) {
-					console.log(answer);
+			updateLQuestionAnswersView = function(question, answers) {
+				var labelReverseMapping = {};
+				var labels = [];
+				var values = [];
+				
+				/* transform the label and answer count data into arrays usable by dojox/charting */
+				when(question, function(question) {
+					question.possibleAnswers.forEach(function(possibleAnswer, i) {
+						labelReverseMapping[possibleAnswer.text] = i;
+						labels.push({value: i + 1, text: possibleAnswer.text});
+						values[i] = 0;
+					});
+					
+					when(answers, function(answers) {
+						answers.forEach(function(answer) {
+							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
+						}, values);
+						
+						answerChart.addAxis("x", {labels: labels, minorTicks: false});
+						answerChart.addSeries("Answer count", values);
+						answerChart.render();
+					});
 				});
 			},
 			
