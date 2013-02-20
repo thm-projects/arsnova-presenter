@@ -79,6 +79,9 @@ define(
 					sessionkey: question.get("sessionKey")
 				});
 			},
+			get: function() {
+				return questionStore.get(question.get("id"));
+			},
 			getUnanswered: function() {
 				return questionStore.query({
 					sessionkey: question.get("sessionKey"),
