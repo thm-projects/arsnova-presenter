@@ -78,6 +78,40 @@ define(
 				});
 				answerChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
 				feedbackChart.render();
+				
+				var onResize = null, apResizeTimeout = null, fpResizeTimeout = null;
+				
+				onResize = function(event) {
+					if (apResizeTimeout) {
+						clearTimeout(apResizeTimeout);
+					}
+					apResizeTimeout = setTimeout(function() {
+						var panel = dom.byId("lecturerAnswersPanel");
+						var height = panel.clientHeight - 16;
+						answerChart.resize(-1, height);
+						/* calculate a second time because of scrollbars */
+						height = panel.clientHeight - 16;
+						answerChart.resize(-1, height);
+					}, 100);
+				};
+				registry.byId("lecturerAnswersPanel").on("resize", onResize);
+				onResize();
+				
+				onResize = function(event) {
+					if (fpResizeTimeout) {
+						clearTimeout(fpResizeTimeout);
+					}
+					fpResizeTimeout = setTimeout(function() {
+						var panel = dom.byId("audienceFeedbackPanel");
+						var height = panel.clientHeight - 16;
+						feedbackChart.resize(-1, height);
+						/* calculate a second time because of scrollbars */
+						height = panel.clientHeight - 16;
+						feedbackChart.resize(-1, height);
+					}, 100);
+				};
+				registry.byId("audienceFeedbackPanel").on("resize", onResize);
+				onResize();
 			},
 			
 			showLoginDialog = function() {
