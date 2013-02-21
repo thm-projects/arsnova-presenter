@@ -210,13 +210,31 @@ define(
 			updateLQuestionListView = function(questions) {
 				var questionList = dom.byId("lecturerQuestionList");
 				questionList.innerHTML = "";
-				questions.forEach(function(question) {
-					var questionNode = domConstruct.toDom("<p>" + question.subject + "</p>");
-					on(questionNode, "click", function(event) {
-						arsLQuestion.setId(question._id);
-						registry.byId("lecturerTabs").selectChild(registry.byId("lecturerAnswersPanel"));
+				when(questions, function(questions) {
+					/* group questions by category */
+					var categories = [];
+					questions.forEach(function(question) {
+						if (!categories[question.subject]) {
+							categories[question.subject] = [];
+						}
+						categories[question.subject].push(question);
 					});
-					domConstruct.place(questionNode, questionList);
+					console.debug(categories);
+					
+					for (category in categories) {
+						console.debug("in forEach");
+						console.debug(category);
+						var categoryNode = domConstruct.toDom("<div class='questionCategory'><header>" + category + "</header></div>");
+						domConstruct.place(categoryNode, questionList);
+						categories[category].forEach(function(question) {
+							var questionNode = domConstruct.toDom("<p class='question'>" + question.text + "</p>");
+							on(questionNode, "click", function(event) {
+								arsLQuestion.setId(question._id);
+								registry.byId("lecturerTabs").selectChild(registry.byId("lecturerAnswersPanel"));
+							});
+							domConstruct.place(questionNode, categoryNode);
+						});
+					}
 				});
 			},
 			
