@@ -108,8 +108,19 @@ define(
 					type: Columns,
 					gap: 3
 				});
-				answerChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
+				var labels = [
+					{value: 1, text: "I can follow."},
+					{value: 2, text: "Faster, please!"},
+					{value: 3, text: "Too fast!"},
+					{value: 4, text: "You have lost me."}
+				];
+				var data = [0, 0, 0, 0];
+				feedbackChart.addAxis("x", {labels: labels, minorTicks: false});
+				feedbackChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
+				feedbackChart.addSeries("Feedback", data);
 				feedbackChart.render();
+				/* TODO: remove test data */
+				updateFeedbackView([5, 2, 1, 2]);
 				
 				var onResize = null, apResizeTimeout = null, fpResizeTimeout = null;
 				
@@ -232,6 +243,15 @@ define(
 						answerChart.render();
 					});
 				});
+			},
+			
+			updateFeedbackView = function(feedback) {
+				feedbackChart.addSeries("Feedback", [
+ 					{y: feedback[0], fill: "#00CC00"},
+					{y: feedback[1], fill: "#EEEE00"},
+					{y: feedback[2], fill: "red"},
+					{y: feedback[3], fill: "gray"}
+				]);
 			},
 			
 			submitCreateSessionForm = function() {
