@@ -19,6 +19,8 @@ define(
 		"arsnova-api/lecturerquestion"
 	],
 	function(ready, on, when, dom, domConstruct, domStyle, registry, Dialog, Button, DropDownButton, Chart, ChartTheme, Columns, AxisDefault, arsAuth, arsSession, arsLQuestion) {
+		"use strict";
+		
 		var
 			answerChart = null,
 			feedbackChart = null,

@@ -9,6 +9,8 @@ define(
 		"dojo/store/Cache"
 	],
 	function(config, declare, Stateful, request, JsonRestStore, MemoryStore, CacheStore) {
+		"use strict";
+		
 		var
 			apiPrefix = config.arsnovaApi.root + "/session/",
 			
@@ -18,7 +20,7 @@ define(
 			
 			session = new Session({
 				key: null
-			});
+			}),
 
 			sessionJsonRest = new JsonRestStore({
 				target: apiPrefix,

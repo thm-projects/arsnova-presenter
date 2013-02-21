@@ -5,6 +5,8 @@ define(
 		"dojo/request"
 	],
 	function(config, string, request) {
+		"use strict";
+		
 		var
 			apiRoot = config.arsnovaApi.root,
 			loginError = false,

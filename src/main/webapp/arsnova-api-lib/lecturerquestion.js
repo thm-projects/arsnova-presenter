@@ -10,6 +10,8 @@ define(
 		"dojo/store/Cache"
 	],
 	function(config, declare, string, Stateful, request, JsonRestStore, MemoryStore, CacheStore) {
+		"use strict";
+		
 		var
 			apiPrefix = config.arsnovaApi.root + "/lecturerquestion/",
 			answerPath = apiPrefix + "${questionId}/answer/",
@@ -17,7 +19,7 @@ define(
 			Question = declare([Stateful], {
 				sessionKey: null,
 				id: null
-			});
+			}),
 		
 			question = new Question({
 				sessionKey: null,
