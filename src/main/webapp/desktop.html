@@ -9,13 +9,13 @@
 </head>
 
 <body class="claro">
-<noscript><div id="noJs"><div><h1><img src="images/arsnova.png" alt="ARSnova" /></h1><p>This application needs JavaScript to be enabled in your browser.</p></div></div></noscript>
+<noscript><div id="noJs"><div><header><h1><img src="images/arsnova.png" alt="ARSnova" /></h1></header><p>This application needs JavaScript to be enabled in your browser.</p></div></div></noscript>
 
 <div id="appContainer" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'">
 	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="region: 'center'">
 		<div id="lecturerPanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'center'">
 			<div id="lecturerContainer" data-dojo-type="dijit/layout/BorderContainer">
-				<div class="panelHeading" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'top'">Lecturer</div>
+				<header class="panelHeading" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'top'">Lecturer</header>
 				<div id="lecturerTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
 					<div id="lecturerQuestionsPanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" title="Questions">
 						<div id="lecturerQuestionList"></div>
@@ -28,7 +28,7 @@
 		</div>
 		<div id="audiencePanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'right', splitter: 'true'">
 			<div id="audienceContainer" data-dojo-type="dijit/layout/BorderContainer">
-				<div class="panelHeading" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'top'">Audience</div>
+				<header class="panelHeading" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'top'">Audience</header>
 				<div id="audienceTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
 					<div id="audienceFeedbackPanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" title="Feedback">
 						<div id="feedbackChart"></div>
@@ -57,9 +57,9 @@
 			<button id="logoutButton" type="button" data-dojo-type="dijit/form/Button">Logout</button>
 		</div>
 	</div>
-	<div id="infoPanel" class="sidePanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'bottom'">
+	<footer id="infoPanel" class="sidePanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'bottom'">
 		<span id="productName" class="groupPanel">ARSnova lecturer panel</span><span id="productVersionDetails" class="groupPanel"><span id="productVersionNumber">Version: $$VERSION$$</span> &bull; <span id="productVersionBuild">Build: $$BUILD$$</span></span>
-	</div>
+	</footer>
 </div>
 
 <div id="widgets">
@@ -76,7 +76,7 @@
 	
 	<div id="lowResolution">
 		<div>
-			<h1><img src="images/arsnova.png" alt="ARSnova" /></h1>
+			<header><h1><img src="images/arsnova.png" alt="ARSnova" /></h1></header>
 			<p id="lowResolutionMessage"></p>
 			<p><button id="lowResolutionMobileButton" type="button" data-dojo-type="dijit/form/Button">ARSnova mobile</button></p>
 		</div>
