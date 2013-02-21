@@ -59,18 +59,32 @@ define(
 				initCharts();
 				
 				var lowResNode = dom.byId("lowResolution");
+				var resizeLog = "";
+				var resizeLogTimeout = null;
 				lowResNode.style.visibility = "hidden";
 				domConstruct.place(lowResNode, document.body);
 				var windowOnResize = function(event) {
-					if (document.body.clientWidth < 780 || document.body.clientHeight < 460) {
-						console.log("Small resolution detected");
+					if (screen.availWidth < 780 || screen.availHeight < 460) {
+						resizeLog = "Small resolution detected: " + screen.availWidth + "x" + screen.availHeight;
+						dom.byId("lowResolutionMessage").innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Lecturer Panel is optimized for notebook, tablet and desktop devices.";
+						dom.byId("appContainer").style.visibility = "hidden";
+						lowResNode.style.visibility = "visible";
+					} else if (document.body.clientWidth < 780 || document.body.clientHeight < 460) {
+						resizeLog = "Small window detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
+						dom.byId("lowResolutionMessage").innerHTML = "This application cannot be run because the resolution requirements are not met. Please increase the size of your browser's window.";
 						dom.byId("appContainer").style.visibility = "hidden";
 						lowResNode.style.visibility = "visible";
 					} else {
-						console.log("Acceptable resolution detected: " + document.body.clientWidth + "x" + document.body.clientHeight);
+						resizeLog = "Acceptable client size detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
 						lowResNode.style.visibility = "hidden";
 						dom.byId("appContainer").style.visibility = "visible";
 					}
+					if (resizeLogTimeout) {
+						clearTimeout(resizeLogTimeout);
+					}
+					resizeLogTimeout = setTimeout(function() {
+						console.log(resizeLog);
+					}, 500);
 				};
 				on(window, "resize", windowOnResize);
 				windowOnResize();

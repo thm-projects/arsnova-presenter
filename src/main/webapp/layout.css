@@ -25,6 +25,11 @@ html, body {
 	text-align: center;
 }
 
+#noJs p, #lowResolution p {
+	max-width: 30em;
+	margin: auto;
+}
+
 #widgets {
 	display: none;
 }
