@@ -227,11 +227,8 @@ define(
 						}
 						categories[question.subject].push(question);
 					});
-					console.debug(categories);
 					
 					for (category in categories) {
-						console.debug("in forEach");
-						console.debug(category);
 						var categoryNode = domConstruct.toDom("<div class='questionCategory'><header>" + category + "</header></div>");
 						domConstruct.place(categoryNode, questionList);
 						categories[category].forEach(function(question) {

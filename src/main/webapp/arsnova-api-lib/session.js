@@ -78,7 +78,6 @@ define(
 				request.get(apiPrefix + session.get("key") + "/activeusercount", {sync: true}).then(
 					function(response) {
 						count = response;
-						console.debug("Count: " + count);
 					},
 					function(error) {
 						console.error("API: session.getActiveUserCount request failed.");
