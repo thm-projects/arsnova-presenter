@@ -62,6 +62,12 @@ define(
 				
 				initCharts();
 				
+				/* prevent window scrolling (needed for IE) */
+				on(window, "scroll", function(event) {
+					scrollTo(0, 0);
+					console.log("Prevented document scrolling");
+				});
+				
 				var lowResNode = dom.byId("lowResolution");
 				var resizeLog = "";
 				var resizeLogTimeout = null;
