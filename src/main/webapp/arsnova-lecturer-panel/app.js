@@ -37,6 +37,8 @@ define(
 			initUi = function() {
 				console.log("-- initUi --");
 				
+				var appContainer = dom.byId("appContainer");
+				
 				new DropDownButton({
 					label: "New",
 					dropDown: registry.byId("newSessionDialog")
@@ -67,17 +69,17 @@ define(
 					if (screen.availWidth < 780 || screen.availHeight < 460) {
 						resizeLog = "Small resolution detected: " + screen.availWidth + "x" + screen.availHeight;
 						dom.byId("lowResolutionMessage").innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Lecturer Panel is optimized for notebook, tablet and desktop devices.";
-						dom.byId("appContainer").style.visibility = "hidden";
+						appContainer.style.visibility = "hidden";
 						lowResNode.style.visibility = "visible";
 					} else if (document.body.clientWidth < 780 || document.body.clientHeight < 460) {
 						resizeLog = "Small window detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
 						dom.byId("lowResolutionMessage").innerHTML = "This application cannot be run because the resolution requirements are not met. Please increase the size of your browser's window.";
-						dom.byId("appContainer").style.visibility = "hidden";
+						appContainer.style.visibility = "hidden";
 						lowResNode.style.visibility = "visible";
 					} else {
 						resizeLog = "Acceptable client size detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
 						lowResNode.style.visibility = "hidden";
-						dom.byId("appContainer").style.visibility = "visible";
+						appContainer.style.visibility = "visible";
 					}
 					if (resizeLogTimeout) {
 						clearTimeout(resizeLogTimeout);
@@ -116,6 +118,9 @@ define(
 						clearTimeout(apResizeTimeout);
 					}
 					apResizeTimeout = setTimeout(function() {
+						if ("hidden" == appContainer.style.visibility) {
+							return;
+						}
 						var panel = dom.byId("lecturerAnswersPanel");
 						var height = panel.clientHeight - 16;
 						answerChart.resize(-1, height);
@@ -132,6 +137,9 @@ define(
 						clearTimeout(fpResizeTimeout);
 					}
 					fpResizeTimeout = setTimeout(function() {
+						if ("hidden" == appContainer.style.visibility) {
+							return;
+						}
 						var panel = dom.byId("audienceFeedbackPanel");
 						var height = panel.clientHeight - 16;
 						feedbackChart.resize(-1, height);
