@@ -253,12 +253,12 @@ define(
 					question.possibleAnswers.forEach(function(possibleAnswer, i) {
 						labelReverseMapping[possibleAnswer.text] = i;
 						labels.push({value: i + 1, text: possibleAnswer.text});
-						values[i] = 0;
+						values[i] = {y: 0, stroke: "black"};
 					});
 					
 					when(answers, function(answers) {
 						answers.forEach(function(answer) {
-							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
+							values[labelReverseMapping[answer.answerText]] = {y: answer.answerCount, stroke: "black"};
 						}, values);
 						
 						answerChart.addAxis("x", {labels: labels, minorTicks: false});
@@ -270,10 +270,10 @@ define(
 			
 			updateFeedbackView = function(feedback) {
 				feedbackChart.addSeries("Feedback", [
- 					{y: feedback[0], fill: "#00CC00"},
-					{y: feedback[1], fill: "#EEEE00"},
-					{y: feedback[2], fill: "red"},
-					{y: feedback[3], fill: "gray"}
+ 					{y: feedback[0], stroke: "black", fill: "#00CC00"},
+					{y: feedback[1], stroke: "black", fill: "#EEEE00"},
+					{y: feedback[2], stroke: "black", fill: "red"},
+					{y: feedback[3], stroke: "black", fill: "gray"}
 				]);
 			},
 			
