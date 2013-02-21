@@ -220,7 +220,7 @@ define(
 				questionList.innerHTML = "";
 				when(questions, function(questions) {
 					/* group questions by category */
-					var categories = [];
+					var categories = {};
 					questions.forEach(function(question) {
 						if (!categories[question.subject]) {
 							categories[question.subject] = [];
@@ -228,7 +228,7 @@ define(
 						categories[question.subject].push(question);
 					});
 					
-					for (category in categories) {
+					for (var category in categories) {
 						var categoryNode = domConstruct.toDom("<div class='questionCategory'><header>" + category + "</header></div>");
 						domConstruct.place(categoryNode, questionList);
 						categories[category].forEach(function(question) {
