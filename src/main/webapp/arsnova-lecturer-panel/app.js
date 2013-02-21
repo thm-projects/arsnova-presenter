@@ -22,6 +22,7 @@ define(
 		var
 			answerChart = null,
 			feedbackChart = null,
+			lowResNode = null,
 		
 			startup = function() {
 				console.log("-- startup --");
@@ -57,7 +58,22 @@ define(
 				
 				initCharts();
 				
-				dom.byId("appContainer").style.visibility = "visible";
+				var lowResNode = dom.byId("lowResolution");
+				lowResNode.style.visibility = "hidden";
+				domConstruct.place(lowResNode, document.body);
+				var windowOnResize = function(event) {
+					if (document.body.clientWidth < 780 || document.body.clientHeight < 460) {
+						console.log("Small resolution detected");
+						dom.byId("appContainer").style.visibility = "hidden";
+						lowResNode.style.visibility = "visible";
+					} else {
+						console.log("Acceptable resolution detected: " + document.body.clientWidth + "x" + document.body.clientHeight);
+						lowResNode.style.visibility = "hidden";
+						dom.byId("appContainer").style.visibility = "visible";
+					}
+				};
+				on(window, "resize", windowOnResize);
+				windowOnResize();
 			},
 			
 			initCharts = function() {
@@ -92,10 +108,10 @@ define(
 						/* calculate a second time because of scrollbars */
 						height = panel.clientHeight - 16;
 						answerChart.resize(-1, height);
-					}, 100);
+					}, 20);
 				};
 				registry.byId("lecturerAnswersPanel").on("resize", onResize);
-				onResize();
+				//onResize();
 				
 				onResize = function(event) {
 					if (fpResizeTimeout) {
@@ -108,7 +124,7 @@ define(
 						/* calculate a second time because of scrollbars */
 						height = panel.clientHeight - 16;
 						feedbackChart.resize(-1, height);
-					}, 100);
+					}, 20);
 				};
 				registry.byId("audienceFeedbackPanel").on("resize", onResize);
 				onResize();
