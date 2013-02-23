@@ -16,12 +16,12 @@ define(
 			apiPrefix = config.arsnovaApi.root + "/lecturerquestion/",
 			answerPath = apiPrefix + "${questionId}/answer/",
 			
-			Question = declare([Stateful], {
+			QuestionState = declare([Stateful], {
 				sessionKey: null,
 				id: null
 			}),
 		
-			question = new Question({
+			questionState = new QuestionState({
 				sessionKey: null,
 				id: null
 			}),
@@ -40,7 +40,7 @@ define(
 			answerStore = CacheStore(answerJsonRest, answerMemory)
 		;
 		
-		question.watch("sessionKey", function(name, oldValue, value) {
+		questionState.watch("sessionKey", function(name, oldValue, value) {
 			questionJsonRest = new JsonRestStore({
 				target: apiPrefix,
 				idProperty: "_id"
@@ -51,7 +51,7 @@ define(
 			questionStore = CacheStore(questionJsonRest, questionMemory);
 		});
 		
-		question.watch("id", function(name, oldValue, value) {
+		questionState.watch("id", function(name, oldValue, value) {
 			console.log("Question id changed: " + value);
 			answerJsonRest = new JsonRestStore({
 				target: string.substitute(answerPath, {questionId: value}),
@@ -65,34 +65,34 @@ define(
 			
 		return {
 			watchId: function(callback) {
-				question.watch("id", callback);
+				questionState.watch("id", callback);
 			},
 			setSessionKey: function(key) {
-				question.set("sessionKey", key);
+				questionState.set("sessionKey", key);
 			},
 			setId: function(id) {
-				question.set("id", id);
+				questionState.set("id", id);
 			},
 			getStore: function() {
 				return questionStore;
 			},
 			getAll: function() {
 				return questionStore.query({
-					sessionkey: question.get("sessionKey")
+					sessionkey: questionState.get("sessionKey")
 				});
 			},
 			get: function() {
-				return questionStore.get(question.get("id"));
+				return questionStore.get(questionState.get("id"));
 			},
 			getUnanswered: function() {
 				return questionStore.query({
-					sessionkey: question.get("sessionKey"),
+					sessionkey: questionState.get("sessionKey"),
 					filter: "unanswered"
 				});
 			},
 			getAnswers: function() {
 				return answerStore.query({
-					sessionkey: question.get("sessionKey")
+					sessionkey: questionState.get("sessionKey")
 				});
 			}
 		};

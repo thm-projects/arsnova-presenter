@@ -14,11 +14,11 @@ define(
 		var
 			apiPrefix = config.arsnovaApi.root + "/session/",
 			
-			Session = declare([Stateful], {
+			SessionState = declare([Stateful], {
 				key: null
 			}),
 			
-			session = new Session({
+			sessionState = new SessionState({
 				key: null
 			}),
 
@@ -32,17 +32,17 @@ define(
 			sessionStore = CacheStore(sessionJsonRest, sessionMemory)
 		;
 			
-		session.watch("key", function(name, oldValue, value) {
+		sessionState.watch("key", function(name, oldValue, value) {
 			console.log("Session key changed: " + value);
 		});
 		
 		return {
 			watchKey: function(callback) {
-				session.watch("key", callback);
+				sessionState.watch("key", callback);
 			},
 			
 			setKey: function(value) {
-				session.set("key", value);
+				sessionState.set("key", value);
 			},
 			
 			getStore: function() {
@@ -64,7 +64,7 @@ define(
 				}).then(
 					function(response) {
 						console.log("Session created: " + response._id);
-						session.set(key, response._id);
+						sessionState.set(key, response._id);
 						return true;
 					},
 					function(error) {
@@ -75,7 +75,7 @@ define(
 			
 			getActiveUserCount: function() {
 				var count = "-";
-				request.get(apiPrefix + session.get("key") + "/activeusercount", {sync: true}).then(
+				request.get(apiPrefix + sessionState.get("key") + "/activeusercount", {sync: true}).then(
 					function(response) {
 						count = response;
 					},
@@ -88,7 +88,7 @@ define(
 			},
 			
 			signalOnline: function() {
-				request.post(apiPrefix + session.get("key") + "/online").then(
+				request.post(apiPrefix + sessionState.get("key") + "/online").then(
 					function(response) {
 						/* nothing to do */
 					},
