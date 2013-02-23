@@ -107,6 +107,7 @@ define(
 					type: Columns,
 					gap: 3
 				});
+				answersChart.addAxis("x");
 				answersChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
 				answersChart.render();
 				
