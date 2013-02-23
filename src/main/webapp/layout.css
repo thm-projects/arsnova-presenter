@@ -64,6 +64,6 @@ html, body {
 	padding: 0;
 }
 
-#lecturerAnswersPanel, #audienceFeedbackPanel {
-	overflow-x: hidden;
+#answersChartPanel, #audienceFeedbackPanel {
+	overflow: hidden;
 }

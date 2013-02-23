@@ -22,7 +22,7 @@ define(
 		"use strict";
 		
 		var
-			answerChart = null,
+			answersChart = null,
 			feedbackChart = null,
 			lowResNode = null,
 		
@@ -101,14 +101,14 @@ define(
 			},
 			
 			initCharts = function() {
-				answerChart = new Chart("answerChart");
-				answerChart.setTheme(ChartTheme);
-				answerChart.addPlot("default", {
+				answersChart = new Chart("answersChart");
+				answersChart.setTheme(ChartTheme);
+				answersChart.addPlot("default", {
 					type: Columns,
 					gap: 3
 				});
-				answerChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
-				answerChart.render();
+				answersChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
+				answersChart.render();
 				
 				feedbackChart = new Chart("feedbackChart");
 				feedbackChart.setTheme(ChartTheme);
@@ -140,15 +140,15 @@ define(
 						if ("hidden" == appContainer.style.visibility) {
 							return;
 						}
-						var panel = dom.byId("lecturerAnswersPanel");
+						var panel = dom.byId("answersChartPanel");
 						var height = panel.clientHeight - 16;
-						answerChart.resize(-1, height);
+						answersChart.resize(-1, height);
 						/* calculate a second time because of scrollbars */
 						height = panel.clientHeight - 16;
-						answerChart.resize(-1, height);
+						answersChart.resize(-1, height);
 					}, 20);
 				};
-				registry.byId("lecturerAnswersPanel").on("resize", onResize);
+				registry.byId("answersChartPanel").on("resize", onResize);
 				//onResize();
 				
 				onResize = function(event) {
@@ -254,6 +254,9 @@ define(
 				
 				/* transform the label and answer count data into arrays usable by dojox/charting */
 				when(question, function(question) {
+					dom.byId("answersQuestionSubject").innerHTML = question.subject;
+					dom.byId("answersQuestionText").innerHTML = question.text;
+					
 					question.possibleAnswers.forEach(function(possibleAnswer, i) {
 						labelReverseMapping[possibleAnswer.text] = i;
 						labels.push({value: i + 1, text: possibleAnswer.text});
@@ -265,9 +268,9 @@ define(
 							values[labelReverseMapping[answer.answerText]] = {y: answer.answerCount, stroke: "black"};
 						}, values);
 						
-						answerChart.addAxis("x", {labels: labels, minorTicks: false});
-						answerChart.addSeries("Answer count", values);
-						answerChart.render();
+						answersChart.addAxis("x", {labels: labels, minorTicks: false});
+						answersChart.addSeries("Answer count", values);
+						answersChart.render();
 					});
 				});
 			},

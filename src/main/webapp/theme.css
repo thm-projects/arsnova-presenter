@@ -39,3 +39,7 @@ body {
 	font-weight: bold;
 	padding: 0.2em;
 }
+
+#answersQuestionSubject {
+	font-weight: bold;
+}
