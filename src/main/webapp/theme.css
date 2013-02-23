@@ -40,6 +40,10 @@ body {
 	padding: 0.2em;
 }
 
+.questionCategory header {
+	font-weight: bold;
+}
+
 #answersQuestionSubject {
 	font-weight: bold;
 }
