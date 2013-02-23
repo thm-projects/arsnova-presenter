@@ -58,6 +58,12 @@ define(
 					arsSession.watchKey(onSessionKeyChange);
 					arsLQuestion.watchId(onLQuestionIdChange);
 					updateSessionListView(arsSession.getOwned());
+					on(registry.byId("nextLecturerQuestionButton"), "click", function(event) {
+						arsLQuestion.next();
+					});
+					on(registry.byId("prevLecturerQuestionButton"), "click", function(event) {
+						arsLQuestion.prev();
+					});
 				}
 				
 				initCharts();

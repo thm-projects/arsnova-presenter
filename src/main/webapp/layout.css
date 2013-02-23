@@ -64,6 +64,17 @@ html, body {
 	padding: 0;
 }
 
+#answersControlPanel > * {
+	display: block;
+	float: left;
+}
+
 #answersChartPanel, #audienceFeedbackPanel {
 	overflow: hidden;
 }
+
+#answersControlPanel header {
+	margin-left: 0.5em;
+	line-height: 34px;
+}
+

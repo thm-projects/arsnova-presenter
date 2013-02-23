@@ -47,3 +47,7 @@ body {
 #answersQuestionSubject {
 	font-weight: bold;
 }
+
+#answersControlPanel header {
+	font-size: 1.2em;
+}

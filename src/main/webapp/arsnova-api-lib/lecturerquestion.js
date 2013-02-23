@@ -84,6 +84,54 @@ define(
 			get: function() {
 				return questionStore.get(questionState.get("id"));
 			},
+			next: function() {
+				var index = questionMemory.index;
+				var firstQuestionId = null;
+				var nextQuestionId = null;
+				var nextQuestionIndex = index[questionState.get("id")] + 1;
+				
+				for (var questionId in index) {
+					if (index[questionId] == nextQuestionIndex) {
+						nextQuestionId = questionId;
+						break;
+					}
+					if (0 == index[questionId]) {
+						firstQuestionId = questionId;
+					}
+				}
+				
+				if (null == nextQuestionId) {
+					nextQuestionId = firstQuestionId;
+				}
+				if (null != nextQuestionId) {
+					questionState.set("id", nextQuestionId);
+				}
+			},
+			prev: function() {
+				var index = questionMemory.index;
+				var lastQuestionId = null;
+				var lastQuestionIndex = null;
+				var prevQuestionId = null;
+				var prevQuestionIndex = index[questionState.get("id")] - 1;
+				
+				for (var questionId in index) {
+					if (index[questionId] == prevQuestionIndex) {
+						prevQuestionId = questionId;
+						break;
+					}
+					if (lastQuestionIndex < index[questionId]) {
+						lastQuestionIndex = index[questionId];
+						lastQuestionId = questionId;
+					}
+				};
+				
+				if (null == prevQuestionId) {
+					prevQuestionId = lastQuestionId;
+				}
+				if (null != prevQuestionId) {
+					questionState.set("id", prevQuestionId);
+				}
+			},
 			getUnanswered: function() {
 				return questionStore.query({
 					sessionkey: questionState.get("sessionKey"),
