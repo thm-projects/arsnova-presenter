@@ -198,7 +198,11 @@ define(
 			onSessionKeyChange = function(name, oldValue, value) {
 				dom.byId("activeUserCount").innerHTML = arsSession.getActiveUserCount();
 				arsLQuestion.setSessionKey(value);
-				updateLQuestionListView(arsLQuestion.getAll());
+				var questions = arsLQuestion.getAll();
+				updateLQuestionListView(questions);
+				when(questions, function(questions) {
+					arsLQuestion.setId(questions[0]._id);
+				});
 			},
 			
 			onLQuestionIdChange = function(name, oldValue, value) {
