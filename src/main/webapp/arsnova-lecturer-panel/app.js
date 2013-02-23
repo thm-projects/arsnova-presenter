@@ -271,9 +271,12 @@ define(
 					});
 					
 					when(answers, function(answers) {
+						var totalAnswerCount = 0;
 						answers.forEach(function(answer) {
+							totalAnswerCount += answer.answerCount;
 							values[labelReverseMapping[answer.answerText]] = {y: answer.answerCount, stroke: "black"};
 						}, values);
+						dom.byId("answerCount").innerHTML = totalAnswerCount;
 						
 						answersChart.addAxis("x", {labels: labels, minorTicks: false});
 						answersChart.addSeries("Answer count", values);

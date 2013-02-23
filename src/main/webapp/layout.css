@@ -64,9 +64,12 @@ html, body {
 	padding: 0;
 }
 
-#answersControlPanel > * {
-	display: block;
+#answersNavigation, #answersControlPanel header {
 	float: left;
+}
+
+#answerStats {
+	float: right;
 }
 
 #answersChartPanel, #audienceFeedbackPanel {
@@ -78,3 +81,6 @@ html, body {
 	line-height: 34px;
 }
 
+#answerStats {
+	line-height: 34px;
+}
