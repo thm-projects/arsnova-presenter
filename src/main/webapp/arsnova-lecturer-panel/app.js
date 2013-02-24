@@ -5,6 +5,7 @@ define(
 	 	"dojo/when",
 	 	"dojo/dom",
 	 	"dojo/dom-construct",
+	 	"dojo/dom-class",
 	 	"dojo/dom-style",
 	 	"dijit/registry",
 	 	"dijit/Dialog",
@@ -16,9 +17,10 @@ define(
 	 	"dojox/charting/axis2d/Default",
 		"arsnova-api/auth",
 		"arsnova-api/session",
-		"arsnova-api/lecturerquestion"
+		"arsnova-api/lecturerquestion",
+		"arsnova-api/audiencequestion"
 	],
-	function(ready, on, when, dom, domConstruct, domStyle, registry, Dialog, Button, DropDownButton, Chart, ChartTheme, Columns, AxisDefault, arsAuth, arsSession, arsLQuestion) {
+	function(ready, on, when, dom, domConstruct, domClass, domStyle, registry, Dialog, Button, DropDownButton, Chart, ChartTheme, Columns, AxisDefault, arsAuth, arsSession, arsLQuestion, arsAQuestion) {
 		"use strict";
 		
 		var
@@ -205,9 +207,12 @@ define(
 			onSessionKeyChange = function(name, oldValue, value) {
 				dom.byId("activeUserCount").innerHTML = arsSession.getActiveUserCount();
 				arsLQuestion.setSessionKey(value);
-				var questions = arsLQuestion.getAll();
-				updateLQuestionListView(questions);
-				when(questions, function(questions) {
+				arsAQuestion.setSessionKey(value);
+				var lQuestions = arsLQuestion.getAll();
+				var aQuestions = arsAQuestion.getAll();
+				updateLQuestionListView(lQuestions);
+				updateAQuestionListView(aQuestions);
+				when(lQuestions, function(questions) {
 					arsLQuestion.setId(questions[0]._id);
 				});
 			},
@@ -282,6 +287,38 @@ define(
 						answersChart.addSeries("Answer count", values);
 						answersChart.render();
 					});
+				});
+			},
+			
+			updateAQuestionListView = function(questions) {
+				var questionListNode = dom.byId("audienceQuestionList");
+				questionListNode.innerHTML = "";
+				when(questions, function(questions) {
+					questions.forEach(function(question) {
+						var questionNode = domConstruct.toDom("<div class='question'><p class='subject'>" + question.subject + "</p></div>");
+						if (!question.read) {
+							domClass.add(questionNode, "unread");
+						}
+						on(questionNode, "click", function(event) {
+							readAQuestion(question._id, questionNode);
+						});
+						domConstruct.place(questionNode, questionListNode);
+					});
+				});
+			},
+			
+			readAQuestion = function(questionId, questionNode) {
+				var question = arsAQuestion.get(questionId);
+				if (domClass.contains(questionNode, "opened")) {
+					domConstruct.destroy(questionNode.children[1]);
+					domClass.remove(questionNode, "opened");
+					return;
+				}
+				when(question, function(question) {
+					console.debug(question);
+					domClass.remove(questionNode, "unread");
+					domClass.add(questionNode, "opened");
+					domConstruct.place("<p>" + question.text + "</p>", questionNode);
 				});
 			},
 			

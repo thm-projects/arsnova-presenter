@@ -1,0 +1,65 @@
+define(
+	[
+		"dojo/_base/config",
+		"dojo/_base/declare",
+		"dojo/string",
+		"dojo/Stateful",
+		"dojo/request",
+		"dojo/store/JsonRest",
+		"dojo/store/Memory",
+		"dojo/store/Cache"
+	],
+	function(config, declare, string, Stateful, request, JsonRestStore, MemoryStore, CacheStore) {
+		"use strict";
+		
+		var
+			apiPrefix = config.arsnovaApi.root + "/audiencequestion/",
+			
+			QuestionState = declare([Stateful], {
+				sessionKey: null
+			}),
+		
+			questionState = new QuestionState({
+				sessionKey: null
+			}),
+
+			questionJsonRest = null,
+			questionMemory = null,
+			questionStore = null
+		;
+		
+		questionState.watch("sessionKey", function(name, oldValue, value) {
+			questionJsonRest = new JsonRestStore({
+				target: apiPrefix,
+				idProperty: "_id"
+			});
+			questionMemory = new MemoryStore({
+				idProperty: "_id"
+			});
+			questionStore = CacheStore(questionJsonRest, questionMemory);
+		});
+		
+		return {
+			setSessionKey: function(key) {
+				questionState.set("sessionKey", key);
+			},
+			getStore: function() {
+				return questionStore;
+			},
+			getAll: function() {
+				return questionStore.query({
+					sessionkey: questionState.get("sessionKey")
+				});
+			},
+			get: function(id) {
+				var question = questionStore.get(id);
+				if (null == question.text) {
+					questionMemory.remove(id);
+					question = questionStore.get(id);
+				}
+				
+				return question;
+			}
+		};
+	}
+);
