@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>ARSnova</title>
+<title>ARSnova Presenter</title>
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dijit/themes/claro/claro.css" media="screen" />
 <link rel="stylesheet" href="layout.css" media="screen" />
 <link rel="stylesheet" href="theme.css" media="screen" />
@@ -13,19 +13,19 @@
 
 <div id="appContainer" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'">
 	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="region: 'center'">
-		<div id="lecturerPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'center'">
-			<div id="lecturerContainer" data-dojo-type="dijit/layout/BorderContainer">
+		<div id="piPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'center'">
+			<div id="piContainer" data-dojo-type="dijit/layout/BorderContainer">
 				<header class="panelHeading" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">Peer Instruction</header>
-				<div id="lecturerTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
-					<div id="lecturerQuestionsPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" title="Questions">
-						<div id="lecturerQuestionList"></div>
+				<div id="piTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
+					<div id="piQuestionsPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" title="Questions">
+						<div id="piQuestionList"></div>
 					</div>
-					<div id="lecturerAnswersPanel" data-dojo-type="dijit/layout/BorderContainer" title="Answers">
+					<div id="piAnswersPanel" data-dojo-type="dijit/layout/BorderContainer" title="Answers">
 						<div id="answersControlPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">
 							<div id="answersControlPanelContent">
 								<div id="answersNavigation">
-									<button id="prevLecturerQuestionButton" type="button" data-dojo-type="dijit/form/Button">&#x25C0;</button>
-									<button id="nextLecturerQuestionButton" type="button" data-dojo-type="dijit/form/Button">&#x25B6;</button>
+									<button id="prevPiQuestionButton" type="button" data-dojo-type="dijit/form/Button">&#x25C0;</button>
+									<button id="nextPiQuestionButton" type="button" data-dojo-type="dijit/form/Button">&#x25B6;</button>
 								</div>
 								<header><span id="answersQuestionSubject">Question subject</span>: <span id="answersQuestionText">Question text</span></header>
 								<button id="answersPanelFullscreenButton" type="button" data-dojo-type="dijit/form/Button">Present</button>
@@ -73,7 +73,7 @@
 		</div>
 	</div>
 	<footer id="infoPanel" class="sidePanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'bottom'">
-		<span id="productName" class="groupPanel">ARSnova presenter</span><span id="productVersionDetails" class="groupPanel"><span id="productVersionNumber">Version: $$VERSION$$</span> &bull; <span id="productVersionBuild">Build: $$BUILD$$</span></span>
+		<span id="productName" class="groupPanel">ARSnova Presenter</span><span id="productVersionDetails" class="groupPanel"><span id="productVersionNumber">Version: $$VERSION$$</span> &bull; <span id="productVersionBuild">Build: $$BUILD$$</span></span>
 	</footer>
 </div>
 

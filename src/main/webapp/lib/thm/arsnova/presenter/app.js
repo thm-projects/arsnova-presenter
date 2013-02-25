@@ -63,10 +63,10 @@ define(
 					arsSession.watchKey(onSessionKeyChange);
 					arsLQuestion.watchId(onLQuestionIdChange);
 					updateSessionListView(arsSession.getOwned());
-					on(registry.byId("nextLecturerQuestionButton"), "click", function(event) {
+					on(registry.byId("nextPiQuestionButton"), "click", function(event) {
 						arsLQuestion.next();
 					});
-					on(registry.byId("prevLecturerQuestionButton"), "click", function(event) {
+					on(registry.byId("prevPiQuestionButton"), "click", function(event) {
 						arsLQuestion.prev();
 					});
 					on(registry.byId("answersPanelFullscreenButton"), "click", function(event) {
@@ -113,7 +113,7 @@ define(
 				var windowOnResize = function(event) {
 					if (screen.availWidth < 780 || screen.availHeight < 460) {
 						resizeLog = "Small resolution detected: " + screen.availWidth + "x" + screen.availHeight;
-						dom.byId("lowResolutionMessage").innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Lecturer Panel is optimized for notebook, tablet and desktop devices.";
+						dom.byId("lowResolutionMessage").innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Presenter is optimized for notebook, tablet and desktop devices.";
 						appContainer.style.visibility = "hidden";
 						lowResNode.style.visibility = "visible";
 					} else if (document.body.clientWidth < 780 || document.body.clientHeight < 460) {
@@ -264,7 +264,7 @@ define(
 			},
 			
 			updateLQuestionListView = function(questions) {
-				var questionList = dom.byId("lecturerQuestionList");
+				var questionList = dom.byId("piQuestionList");
 				questionList.innerHTML = "";
 				when(questions, function(questions) {
 					/* group questions by category */
@@ -283,7 +283,7 @@ define(
 							var questionNode = domConstruct.toDom("<p class='question'>" + question.text + "</p>");
 							on(questionNode, "click", function(event) {
 								arsLQuestion.setId(question._id);
-								registry.byId("lecturerTabs").selectChild(registry.byId("lecturerAnswersPanel"));
+								registry.byId("piTabs").selectChild(registry.byId("piAnswersPanel"));
 							});
 							domConstruct.place(questionNode, categoryNode);
 						});

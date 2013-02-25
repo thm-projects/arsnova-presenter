@@ -65,7 +65,7 @@ html, body {
 	float: right;
 }
 
-#lecturerPanel, #audiencePanel {
+#piPanel, #audiencePanel {
 	width: 49%;
 	padding: 0;
 }
