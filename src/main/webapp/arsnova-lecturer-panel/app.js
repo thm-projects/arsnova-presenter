@@ -15,18 +15,20 @@ define(
 	 	"dojox/charting/themes/Claro",
 	 	"dojox/charting/plot2d/Columns",
 	 	"dojox/charting/axis2d/Default",
+	 	"common/fullscreen",
 		"arsnova-api/auth",
 		"arsnova-api/session",
 		"arsnova-api/lecturerquestion",
 		"arsnova-api/audiencequestion"
 	],
-	function(ready, on, when, dom, domConstruct, domClass, domStyle, registry, Dialog, Button, DropDownButton, Chart, ChartTheme, Columns, AxisDefault, arsAuth, arsSession, arsLQuestion, arsAQuestion) {
+	function(ready, on, when, dom, domConstruct, domClass, domStyle, registry, Dialog, Button, DropDownButton, Chart, ChartTheme, Columns, AxisDefault, fullscreen, arsAuth, arsSession, arsLQuestion, arsAQuestion) {
 		"use strict";
 		
 		var
 			answersChart = null,
 			feedbackChart = null,
 			lowResNode = null,
+			fullscreenNode = null,
 		
 			startup = function() {
 				console.log("-- startup --");
@@ -42,6 +44,7 @@ define(
 				console.log("-- initUi --");
 				
 				var appContainer = dom.byId("appContainer");
+				fullscreenNode = dom.byId("fullscreenContainer");
 				
 				new DropDownButton({
 					label: "New",
@@ -66,6 +69,22 @@ define(
 					on(registry.byId("prevLecturerQuestionButton"), "click", function(event) {
 						arsLQuestion.prev();
 					});
+					on(registry.byId("answersPanelFullscreenButton"), "click", function(event) {
+						if (fullscreen.isSupported()) {
+							if (fullscreen.isActive()) {
+								/* dom node rearrangement takes place in fullscreenchange event handler */
+								domStyle.set(fullscreenNode, "display", "none");
+								fullscreen.exit();
+							} else {
+								fullscreen.request(fullscreenNode);
+								domStyle.set(fullscreenNode, "display", "block");
+								domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("fullscreenControl"));
+								domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("fullscreenContent"));
+							}
+						} else {
+							console.log("Fullscreen mode not supported");
+						}
+					});
 				}
 				
 				initCharts();
@@ -74,6 +93,16 @@ define(
 				on(window, "scroll", function(event) {
 					scrollTo(0, 0);
 					console.log("Prevented document scrolling");
+				});
+				
+				fullscreen.onChange(function(event, isActive) {
+					if (isActive) {
+						console.log("Fullscreen mode enabled");
+					} else {
+						console.log("Fullscreen mode disabled");
+						domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("answersControlPanel"));
+						domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("answersChartPanel"));
+					}
 				});
 				
 				var lowResNode = dom.byId("lowResolution");
@@ -178,6 +207,9 @@ define(
 				};
 				registry.byId("audienceFeedbackPanel").on("resize", onResize);
 				onResize();
+			},
+			
+			toggleFullscreen = function(element) {
 			},
 			
 			showLoginDialog = function() {

@@ -39,6 +39,12 @@ html, body {
 	visibility: hidden;
 }
 
+#fullscreenContainer {
+	width: 100%;
+	height: 100%;
+	display: none;
+}
+
 #sessionPanel {
 	float: left;
 }
@@ -64,7 +70,7 @@ html, body {
 	padding: 0;
 }
 
-#answersNavigation, #answersControlPanel header {
+#answersNavigation, #answersControlPanelContent header {
 	float: left;
 }
 
@@ -76,8 +82,9 @@ html, body {
 	overflow: hidden;
 }
 
-#answersControlPanel header {
+#answersControlPanelContent header {
 	margin-left: 0.5em;
+	margin-right: 0.5em;
 	line-height: 34px;
 }
 
