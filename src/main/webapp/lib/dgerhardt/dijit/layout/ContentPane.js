@@ -5,7 +5,7 @@ define(
 		"dijit/layout/ContentPane"
 	],
 	function(declare, Evented, ContentPane) {
-		return declare("ArsContentPane", [Evented, ContentPane], {
+		return declare("ContentPane", [Evented, ContentPane], {
 			constructor: function() {
 				this.inherited(arguments);
 			},

@@ -15,7 +15,7 @@ define(
 	 	"dojox/charting/themes/Claro",
 	 	"dojox/charting/plot2d/Columns",
 	 	"dojox/charting/axis2d/Default",
-	 	"common/fullscreen",
+	 	"dgerhardt/common/fullscreen",
 		"arsnova-api/auth",
 		"arsnova-api/session",
 		"arsnova-api/lecturerquestion",

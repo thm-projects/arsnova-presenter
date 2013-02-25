@@ -13,15 +13,15 @@
 
 <div id="appContainer" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'">
 	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="region: 'center'">
-		<div id="lecturerPanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'center'">
+		<div id="lecturerPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'center'">
 			<div id="lecturerContainer" data-dojo-type="dijit/layout/BorderContainer">
-				<header class="panelHeading" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'top'">Lecturer</header>
+				<header class="panelHeading" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">Lecturer</header>
 				<div id="lecturerTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
-					<div id="lecturerQuestionsPanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" title="Questions">
+					<div id="lecturerQuestionsPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" title="Questions">
 						<div id="lecturerQuestionList"></div>
 					</div>
 					<div id="lecturerAnswersPanel" data-dojo-type="dijit/layout/BorderContainer" title="Answers">
-						<div id="answersControlPanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'top'">
+						<div id="answersControlPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">
 							<div id="answersControlPanelContent">
 								<div id="answersNavigation">
 									<button id="prevLecturerQuestionButton" type="button" data-dojo-type="dijit/form/Button">&#x25C0;</button>
@@ -32,7 +32,7 @@
 								<div id="answerStats"><span id="answerCount">-</span>/<span id="answersUserCount">-</span></div>
 							</div>
 						</div>
-						<div id="answersChartPanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'center'">
+						<div id="answersChartPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'center'">
 							<div id="answersChartPanelContent">
 								<div id="answersChart"></div>
 							</div>
@@ -41,21 +41,21 @@
 				</div>
 			</div>
 		</div>
-		<div id="audiencePanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'right', splitter: 'true'">
+		<div id="audiencePanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'right', splitter: 'true'">
 			<div id="audienceContainer" data-dojo-type="dijit/layout/BorderContainer">
-				<header class="panelHeading" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'top'">Audience</header>
+				<header class="panelHeading" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">Audience</header>
 				<div id="audienceTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
-					<div id="audienceFeedbackPanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" title="Feedback">
+					<div id="audienceFeedbackPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" title="Feedback">
 						<div id="feedbackChart"></div>
 					</div>
-					<div id="audienceQuestionsPanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" title="Questions">
+					<div id="audienceQuestionsPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" title="Questions">
 						<div id="audienceQuestionList"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div id="headerPanel" class="sidePanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'top'">
+	<div id="headerPanel" class="sidePanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">
 		<div id="sessionPanel" class="groupPanel">
 			<label for="sessionSelect">Session</label>
 			<select id="sessionSelect" data-dojo-type="dijit/form/Select"><option value="" disabled="disabled">Select a session</select>
@@ -72,7 +72,7 @@
 			<button id="logoutButton" type="button" data-dojo-type="dijit/form/Button">Logout</button>
 		</div>
 	</div>
-	<footer id="infoPanel" class="sidePanel" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'bottom'">
+	<footer id="infoPanel" class="sidePanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'bottom'">
 		<span id="productName" class="groupPanel">ARSnova lecturer panel</span><span id="productVersionDetails" class="groupPanel"><span id="productVersionNumber">Version: $$VERSION$$</span> &bull; <span id="productVersionBuild">Build: $$BUILD$$</span></span>
 	</footer>
 </div>
@@ -99,8 +99,8 @@
 </div>
 
 <div id="fullscreenContainer" data-dojo-type="dijit/layout/BorderContainer">
-	<div id="fullscreenControl" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'top'"></div>
-	<div id="fullscreenContent" data-dojo-type="arsnova-lecturer-panel/dijit/layout/ArsContentPane" data-dojo-props="region: 'center'"></div>
+	<div id="fullscreenControl" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'"></div>
+	<div id="fullscreenContent" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'center'"></div>
 </div>
 
 <script>
@@ -116,16 +116,16 @@ dojoConfig = (function() {
 	    gfxRenderer: "svg,silverlight,vml",
 	    packages: [
 	        {
-		        name: "arsnova-lecturer-panel",
-		        location: base + "/arsnova-lecturer-panel"
+		        name: "arsnova-presenter",
+		        location: base + "/lib/thm/arsnova/presenter"
 	    	},
 	        {
 		        name: "arsnova-api",
-		        location: base + "/arsnova-api-lib"
+		        location: base + "/lib/thm/arsnova/api"
 	    	},
    	        {
-		        name: "common",
-		        location: base + "/dgerhardt/common"
+		        name: "dgerhardt",
+		        location: base + "/lib/dgerhardt"
 	    	}
 	    ],
 	    arsnovaApi: {
@@ -138,11 +138,11 @@ dojoConfig = (function() {
 <script>
 require(
 	[
-		"arsnova-lecturer-panel/app",
+		"arsnova-presenter/app",
 		"dojo/parser",
 		"dijit/layout/BorderContainer",
 		"dijit/layout/TabContainer",
-		"arsnova-lecturer-panel/dijit/layout/ArsContentPane",
+		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/Dialog",
 		"dijit/TooltipDialog",
 		"dijit/form/Button",
