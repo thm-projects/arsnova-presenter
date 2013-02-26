@@ -117,15 +117,15 @@ dojoConfig = (function() {
 	    packages: [
 	        {
 		        name: "arsnova-presenter",
-		        location: base + "/lib/thm/arsnova/presenter"
+		        location: base + "/lib/thm_de/arsnova/presenter"
 	    	},
 	        {
 		        name: "arsnova-api",
-		        location: base + "/lib/thm/arsnova/api"
+		        location: base + "/lib/thm_de/arsnova/api"
 	    	},
    	        {
 		        name: "dgerhardt",
-		        location: base + "/lib/dgerhardt"
+		        location: base + "/lib/dgerhardt_net"
 	    	}
 	    ],
 	    arsnovaApi: {
@@ -138,7 +138,7 @@ dojoConfig = (function() {
 <script>
 require(
 	[
-		"arsnova-presenter/app",
+		"arsnova-presenter/controller",
 		"dojo/parser",
 		"dijit/layout/BorderContainer",
 		"dijit/layout/TabContainer",
@@ -150,7 +150,7 @@ require(
 		"dijit/form/Select"
 	],
 	function(app) {
-		app.init();
+		app.startup();
 	}
 );
 </script>

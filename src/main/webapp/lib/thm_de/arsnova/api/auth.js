@@ -28,6 +28,8 @@ define(
 		
 		return {
 			init: function(loginHandler) {
+				console.log("-- auth.init --");
+				
 				checkLoginStatus();
 				if (true == loginError) {
 					console.log("Auth: user is not logged in");

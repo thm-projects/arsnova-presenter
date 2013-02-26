@@ -4,12 +4,11 @@ define(
 		"dojo/_base/declare",
 		"dojo/string",
 		"dojo/Stateful",
-		"dojo/request",
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
 		"dojo/store/Cache"
 	],
-	function(config, declare, string, Stateful, request, JsonRestStore, MemoryStore, CacheStore) {
+	function(config, declare, string, Stateful, JsonRestStore, MemoryStore, CacheStore) {
 		"use strict";
 		
 		var

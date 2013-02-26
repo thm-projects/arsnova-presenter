@@ -5,6 +5,8 @@ define(
 		"dijit/layout/ContentPane"
 	],
 	function(declare, Evented, ContentPane) {
+		//"use strict";
+		
 		return declare("ContentPane", [Evented, ContentPane], {
 			constructor: function() {
 				this.inherited(arguments);
