@@ -38,11 +38,9 @@ define(
 					if (fullscreen.isSupported()) {
 						if (fullscreen.isActive()) {
 							/* dom node rearrangement takes place in fullscreenchange event handler */
-							domStyle.set(fullscreenNode, "display", "none");
 							fullscreen.exit();
 						} else {
 							fullscreen.request(fullscreenNode);
-							domStyle.set(fullscreenNode, "display", "block");
 							domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("fullscreenControl"));
 							domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("fullscreenContent"));
 						}

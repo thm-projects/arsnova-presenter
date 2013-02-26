@@ -3,10 +3,11 @@ define(
 		"dojo/on",
 		"dojo/dom",
 		"dojo/dom-construct",
+		"dojo/dom-geometry",
 		"dojo/dom-style",
 		"dgerhardt/common/fullscreen"
 	],
-	function(on, dom, domConstruct, domStyle, fullscreen) {
+	function(on, dom, domConstruct, domGeometry, domStyle, fullscreen) {
 		"use strict";
 		
 		return {
@@ -20,10 +21,22 @@ define(
 				});
 				
 				fullscreen.onChange(function(event, isActive) {
+					var fullscreenNode = dom.byId("fullscreenContainer");
+					var logo = dom.byId("fullscreenLogo");
 					if (isActive) {
 						console.log("Fullscreen mode enabled");
+						domStyle.set(fullscreenNode, "display", "block");
+						
+						/* calculate logo size */
+						var docGeometry = domGeometry.getContentBox(document.body);
+						var vRatio = docGeometry.h / 30.0;
+						var ratio = logo.offsetWidth / logo.offsetHeight;
+						domStyle.set(logo, "height", vRatio);
+						domStyle.set(logo, "width", (vRatio * ratio) + "px");
+						domStyle.set(logo, "display", "block");
 					} else {
 						console.log("Fullscreen mode disabled");
+						domStyle.set(fullscreenNode, "display", "none");
 					}
 				});
 				
