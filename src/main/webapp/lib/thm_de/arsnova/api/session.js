@@ -42,7 +42,9 @@ define(
 			},
 			
 			setKey: function(value) {
-				sessionState.set("key", value);
+				if (sessionState.get("key") != value) {
+					sessionState.set("key", value);
+				}
 			},
 			
 			getStore: function() {

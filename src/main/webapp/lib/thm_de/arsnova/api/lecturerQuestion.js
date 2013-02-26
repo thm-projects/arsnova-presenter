@@ -67,10 +67,14 @@ define(
 				questionState.watch("id", callback);
 			},
 			setSessionKey: function(key) {
-				questionState.set("sessionKey", key);
+				if (questionState.get("key") != key) {
+					questionState.set("sessionKey", key);
+				}
 			},
 			setId: function(id) {
-				questionState.set("id", id);
+				if (questionState.get("id") != id) {
+					questionState.set("id", id);
+				}
 			},
 			getStore: function() {
 				return questionStore;
@@ -84,6 +88,10 @@ define(
 				return questionStore.get(questionState.get("id"));
 			},
 			next: function() {
+				if (null == questionState.get("sessionKey")) {
+					console.log("No session selected");
+					return;
+				}
 				var index = questionMemory.index;
 				var firstQuestionId = null;
 				var nextQuestionId = null;
@@ -103,10 +111,14 @@ define(
 					nextQuestionId = firstQuestionId;
 				}
 				if (null != nextQuestionId) {
-					questionState.set("id", nextQuestionId);
+					this.setId(nextQuestionId);
 				}
 			},
 			prev: function() {
+				if (null == questionState.get("sessionKey")) {
+					console.log("No session selected");
+					return;
+				}
 				var index = questionMemory.index;
 				var lastQuestionId = null;
 				var lastQuestionIndex = null;
@@ -128,7 +140,7 @@ define(
 					prevQuestionId = lastQuestionId;
 				}
 				if (null != prevQuestionId) {
-					questionState.set("id", prevQuestionId);
+					this.setId(prevQuestionId);
 				}
 			},
 			getUnanswered: function() {

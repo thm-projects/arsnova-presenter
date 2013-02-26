@@ -40,7 +40,9 @@ define(
 		
 		return {
 			setSessionKey: function(key) {
-				questionState.set("sessionKey", key);
+				if (questionState.get("key") != key) {
+					questionState.set("sessionKey", key);
+				}
 			},
 			getStore: function() {
 				return questionStore;
