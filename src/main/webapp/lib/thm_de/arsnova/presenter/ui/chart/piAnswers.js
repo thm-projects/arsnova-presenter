@@ -5,9 +5,10 @@ define(
 	 	"dojox/charting/Chart",
 	 	"dojox/charting/themes/Claro",
 	 	"dojox/charting/plot2d/Columns",
-	 	"dojox/charting/axis2d/Default"
+	 	"dojox/charting/axis2d/Default",
+	 	"dgerhardt/common/fullscreen"
 	],
-	function(dom, registry, Chart, ChartTheme, Columns, AxisDefault) {
+	function(dom, registry, Chart, ChartTheme, Columns, AxisDefault, fullscreen) {
 		"use strict";
 		
 		var answersChart = null;
@@ -35,11 +36,8 @@ define(
 						if ("hidden" == appContainer.style.visibility) {
 							return;
 						}
-						var panel = dom.byId("answersChartPanel");
+						var panel = fullscreen.isActive() ? dom.byId("fullscreenContent") : dom.byId("answersChartPanel");
 						var height = panel.clientHeight - 16;
-						answersChart.resize(-1, height);
-						/* calculate a second time because of scrollbars */
-						height = panel.clientHeight - 16;
 						answersChart.resize(-1, height);
 					}, 20);
 				};

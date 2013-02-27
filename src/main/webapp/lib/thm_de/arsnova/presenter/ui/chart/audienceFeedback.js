@@ -48,9 +48,6 @@ define(
 						var panel = dom.byId("audienceFeedbackPanel");
 						var height = panel.clientHeight - 16;
 						feedbackChart.resize(-1, height);
-						/* calculate a second time because of scrollbars */
-						height = panel.clientHeight - 16;
-						feedbackChart.resize(-1, height);
 					}, 20);
 				};
 				registry.byId("audienceFeedbackPanel").on("resize", onResize);
