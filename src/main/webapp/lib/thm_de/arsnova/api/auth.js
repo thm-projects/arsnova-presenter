@@ -14,7 +14,7 @@ define(
 			username = null,
 			
 			checkLoginStatus = function() {
-				request.get(apiRoot + "/whoami", {sync: true}).then(
+				request.get(apiRoot + "whoami", {sync: true}).then(
 					function(response) {
 						loginType = response.type;
 						username = response.username;
@@ -54,35 +54,35 @@ define(
 //					guest: {
 //						title: "Guest login",
 //						url: string.substitute(
-//								"${prefix}/doLogin?type=guest&user=Guest&successurl=${success}&failureurl=${failure}",
+//								"${prefix}doLogin?type=guest&user=Guest&successurl=${success}&failureurl=${failure}",
 //								{prefix: apiRoot, success: successUrl, failure: failureUrl}
 //							)
 //					},
 					thm: {
 						title: "THM (CAS)",
 						url: string.substitute(
-								"${prefix}/doLogin?type=cas&successurl=${success}&failureurl=${failure}",
+								"${prefix}doLogin?type=cas&successurl=${success}&failureurl=${failure}",
 								{prefix: apiRoot, success: successUrl, failure: failureUrl}
 							)
 					},
 					google: {
 						title: "Google",
 						url: string.substitute(
-								"${prefix}/doLogin?type=google&successurl=${success}&failureurl=${failure}",
+								"${prefix}doLogin?type=google&successurl=${success}&failureurl=${failure}",
 								{prefix: apiRoot, success: successUrl, failure: failureUrl}
 							)
 					},
 					facebook: {
 						title: "Facebook",
 						url: string.substitute(
-							"${prefix}/doLogin?type=facebook&successurl=${success}&failureurl=${failure}",
+							"${prefix}doLogin?type=facebook&successurl=${success}&failureurl=${failure}",
 							{prefix: apiRoot, success: successUrl, failure: failureUrl}
 						)
 					}
 				};
 			},
 			logout: function() {
-				location.href = apiRoot + "/logout";
+				location.href = apiRoot + "logout";
 			},
 			isLoggedIn: function() {
 				return !loginError;

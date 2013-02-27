@@ -12,7 +12,7 @@ define(
 		"use strict";
 		
 		var
-			apiPrefix = config.arsnovaApi.root + "/session/",
+			apiPrefix = config.arsnovaApi.root + "session/",
 			
 			SessionState = declare([Stateful], {
 				key: null

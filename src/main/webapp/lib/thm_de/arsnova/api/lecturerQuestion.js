@@ -12,7 +12,7 @@ define(
 		"use strict";
 		
 		var
-			apiPrefix = config.arsnovaApi.root + "/lecturerquestion/",
+			apiPrefix = config.arsnovaApi.root + "lecturerquestion/",
 			answerPath = apiPrefix + "${questionId}/answer/",
 			
 			QuestionState = declare([Stateful], {
