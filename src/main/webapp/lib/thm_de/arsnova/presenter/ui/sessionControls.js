@@ -65,6 +65,9 @@ define(
 			
 			onKeyChange: function(name, oldValue, value) {
 				sessionSelect.set("value", value);
+				when(sessionModel.getCurrent(), function(session) {
+					document.title = session.shortName + " - ARSnova Presenter";
+				});
 				dom.byId("activeUserCount").innerHTML = sessionModel.getActiveUserCount();
 			}
 		};
