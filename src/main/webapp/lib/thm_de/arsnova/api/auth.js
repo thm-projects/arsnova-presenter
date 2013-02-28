@@ -46,8 +46,8 @@ define(
 			},
 			getServices: function() {
 				var
-					successUrl = encodeURIComponent(location.pathname + location.search),
-					failureUrl = encodeURIComponent(location.pathname + location.search + "#loginerror")
+					successUrl = encodeURIComponent(location.pathname + location.search + location.hash),
+					failureUrl = encodeURIComponent(location.pathname + location.search + "#!/auth/error")
 				;
 				
 				return {
