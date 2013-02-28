@@ -44,6 +44,7 @@ define(
 					console.log("Auth: user is already logged in");
 				}
 			},
+			
 			getServices: function() {
 				var
 					successUrl = encodeURIComponent(location.pathname + location.search + location.hash),
@@ -58,6 +59,7 @@ define(
 //								{prefix: apiRoot, success: successUrl, failure: failureUrl}
 //							)
 //					},
+					
 					thm: {
 						title: "THM (CAS)",
 						url: string.substitute(
@@ -65,6 +67,7 @@ define(
 								{prefix: apiRoot, success: successUrl, failure: failureUrl}
 							)
 					},
+					
 					google: {
 						title: "Google",
 						url: string.substitute(
@@ -72,6 +75,7 @@ define(
 								{prefix: apiRoot, success: successUrl, failure: failureUrl}
 							)
 					},
+					
 					facebook: {
 						title: "Facebook",
 						url: string.substitute(
@@ -84,6 +88,7 @@ define(
 			logout: function() {
 				location.href = apiRoot + "logout";
 			},
+			
 			isLoggedIn: function() {
 				return !loginError;
 			}

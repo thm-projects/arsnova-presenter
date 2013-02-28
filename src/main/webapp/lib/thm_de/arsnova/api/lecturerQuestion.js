@@ -66,6 +66,7 @@ define(
 			watchId: function(callback) {
 				questionState.watch("id", callback);
 			},
+			
 			getId: function(id) {
 				return questionState.get("id");
 			},
@@ -74,22 +75,27 @@ define(
 					questionState.set("id", id);
 				}
 			},
+			
 			setSessionKey: function(key) {
 				if (questionState.get("key") != key) {
 					questionState.set("sessionKey", key);
 				}
 			},
+			
 			getStore: function() {
 				return questionStore;
 			},
+			
 			getAll: function() {
 				return questionStore.query({
 					sessionkey: questionState.get("sessionKey")
 				});
 			},
+			
 			get: function() {
 				return questionStore.get(questionState.get("id"));
 			},
+			
 			next: function() {
 				if (null == questionState.get("sessionKey")) {
 					console.log("No session selected");
@@ -117,6 +123,7 @@ define(
 					this.setId(nextQuestionId);
 				}
 			},
+			
 			prev: function() {
 				if (null == questionState.get("sessionKey")) {
 					console.log("No session selected");
@@ -146,12 +153,14 @@ define(
 					this.setId(prevQuestionId);
 				}
 			},
+			
 			getUnanswered: function() {
 				return questionStore.query({
 					sessionkey: questionState.get("sessionKey"),
 					filter: "unanswered"
 				});
 			},
+			
 			getAnswers: function() {
 				return answerStore.query({
 					sessionkey: questionState.get("sessionKey")

@@ -44,14 +44,17 @@ define(
 					questionState.set("sessionKey", key);
 				}
 			},
+			
 			getStore: function() {
 				return questionStore;
 			},
+			
 			getAll: function() {
 				return questionStore.query({
 					sessionkey: questionState.get("sessionKey")
 				});
 			},
+			
 			get: function(id) {
 				var question = questionStore.get(id);
 				if (null == question.text) {
