@@ -2,6 +2,7 @@ define(
 	[
 		"dojo/ready",
 		"dojo/when",
+		"dojo/router",
 		"arsnova-presenter/ui/main",
 		"arsnova-presenter/ui/authControls",
 		"arsnova-presenter/ui/sessionControls",
@@ -12,7 +13,7 @@ define(
 		"arsnova-api/lecturerQuestion",
 		"arsnova-api/audienceQuestion"
 	],
-	function(ready, when, mainUi, authControls, sessionControls, piPanel, audiencePanel, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel) {
+	function(ready, when, router, mainUi, authControls, sessionControls, piPanel, audiencePanel, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel) {
 		"use strict";
 		
 		var
@@ -34,6 +35,35 @@ define(
 						audiencePanel.init(audienceQuestionModel);
 						
 						sessionModel.watchKey(onSessionKeyChange);
+						
+						/* register routes in form #!/12345678;paramName=paramValue */
+						router.register(/!\/([0-9]{8})((?:;[a-z0-9_-]+=[a-z0-9_-]*)*)/i, function(event) {
+							/* parse parameters */
+							var paramArray = event.params[1].split(";");
+							var params = {};
+							for (var i = 1; i < paramArray.length; i++) {
+								var param = paramArray[i].split("=");
+								params[param[0]] = param[1];
+							}
+							params.sessionKey = event.params[0];
+							
+							console.log("Router: loading session " + params.sessionKey);
+							sessionModel.setKey(params.sessionKey);
+							
+							/* FIXME: This is not working yet. Fullscreen has to be activated by user interaction */
+							if (params.present) {
+								switch (params.present) {
+								case "pi":
+									console.log("Router: activating present mode for Peer Instruction");
+									piPanel.togglePresentMode();
+									break;
+								}
+							}
+							
+							location.hash = "";
+						});
+						
+						router.startup();
 					}
 				});
 			},
