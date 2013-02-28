@@ -24,10 +24,10 @@ define(
 
 			sessionJsonRest = new JsonRestStore({
 				target: apiPrefix,
-				idProperty: "_id"
+				idProperty: "keyword"
 			}),
 			sessionMemory = new MemoryStore({
-				idProperty: "_id"
+				idProperty: "keyword"
 			}),
 			sessionStore = CacheStore(sessionJsonRest, sessionMemory)
 		;
@@ -49,6 +49,10 @@ define(
 				if (sessionState.get("key") != value) {
 					sessionState.set("key", value);
 				}
+			},
+			
+			getCurrent: function() {
+				return sessionStore.get(sessionState.get("key"));
 			},
 			
 			getStore: function() {
