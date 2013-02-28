@@ -81,35 +81,18 @@ define(
 			},
 			
 			onChange: function(listener) {
-				var isActive = this.isActive;
-				
-				switch (mode) {
-				case "w3c":
-					on(document, "fullscreenchange", function(event) {
-						listener(event, isActive());
-					});
-					break;
-				case "webkit":
-					on(document, "webkitfullscreenchange", function(event) {
-						listener(event, isActive());
-					});
-					break;
-				case "moz":
-					on(document, "mozfullscreenchange", function(event) {
-						listener(event, isActive());
-					});
-					break;
-				case "ms":
-					on(document, "msfullscreenchange", function(event) {
-						listener(event, isActive());
-					});
-					break;
-				default:
-					return false;
-				}
-				
-				return true;
-			}
+				var self = this;
+
+				on(document, "fullscreenchange, webkitfullscreenchange, mozfullscreenchange, msfullscreenchange", function(event) {
+					listener(event, self.isActive());
+				});
+			},
+			
+			onError: function(listener) {
+				on(document, "fullscreenerror, webkitfullscreenerror, mozfullscreenerror, msfullscreenerror", function(event) {
+					listener(event);
+				});
+			},
 		};
 	}
 );
