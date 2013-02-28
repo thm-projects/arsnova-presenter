@@ -106,7 +106,8 @@
 
 <script>
 dojoConfig = (function() {
-	var base = location.href.match(/^.*?\/\/.*?\//)[0];
+	var libBase = location.href.match(/^.*?\/\/[^#]*\//)[0] + "lib/";
+	var apiBase = location.href.match(/^.*?\/\/.*?\//)[0];
 	
 	return {
 	    async: true,
@@ -116,19 +117,19 @@ dojoConfig = (function() {
 	    packages: [
 	        {
 		        name: "arsnova-presenter",
-		        location: base + "lib/thm_de/arsnova/presenter"
+		        location: libBase + "thm_de/arsnova/presenter"
 	    	},
 	        {
 		        name: "arsnova-api",
-		        location: base + "lib/thm_de/arsnova/api"
+		        location: libBase + "thm_de/arsnova/api"
 	    	},
    	        {
 		        name: "dgerhardt",
-		        location: base + "lib/dgerhardt_net"
+		        location: libBase + "dgerhardt_net"
 	    	}
 	    ],
 	    arsnovaApi: {
-	    	root: base
+	    	root: apiBase
 	    }
 	}
 })();
