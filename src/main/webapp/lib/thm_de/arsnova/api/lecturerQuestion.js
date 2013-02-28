@@ -66,14 +66,17 @@ define(
 			watchId: function(callback) {
 				questionState.watch("id", callback);
 			},
-			setSessionKey: function(key) {
-				if (questionState.get("key") != key) {
-					questionState.set("sessionKey", key);
-				}
+			getId: function(id) {
+				return questionState.get("id");
 			},
 			setId: function(id) {
 				if (questionState.get("id") != id) {
 					questionState.set("id", id);
+				}
+			},
+			setSessionKey: function(key) {
+				if (questionState.get("key") != key) {
+					questionState.set("sessionKey", key);
 				}
 			},
 			getStore: function() {

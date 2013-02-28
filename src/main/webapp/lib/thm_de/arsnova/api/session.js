@@ -41,6 +41,10 @@ define(
 				sessionState.watch("key", callback);
 			},
 			
+			getKey: function() {
+				return sessionState.get("key");
+			},
+			
 			setKey: function(value) {
 				if (sessionState.get("key") != value) {
 					sessionState.set("key", value);
