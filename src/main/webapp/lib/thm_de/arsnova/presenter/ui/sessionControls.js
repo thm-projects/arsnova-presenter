@@ -1,9 +1,11 @@
 define(
 	[
+		"dojo/when",
+		"dojo/dom",
 		"dijit/registry",
 		"dijit/form/DropDownButton"
 	],
-	function(registry, DropDownButton) {
+	function(when, dom, registry, DropDownButton) {
 		"use strict";
 		
 		var
@@ -29,17 +31,24 @@ define(
 				};
 				
 				registry.byId("createSessionButton").onClick = this.submitCreateSessionForm;
-				
 				this.updateSessionSelect(sessionModel.getOwned());
+				sessionModel.watchKey(this.onKeyChange);
 			},
 			
 			updateSessionSelect: function(sessions) {
-				var sessionSelect = registry.byId("sessionSelect");
-				sessions.forEach(function(session) {
-					sessionSelect.addOption({
-						label: session.shortName,
-						value: session.keyword
+				when(sessions, function(sessions) {
+					sessions.forEach(function(session) {
+						sessionSelect.addOption({
+							label: session.shortName,
+							value: session.keyword
+						});
 					});
+					console.log("UI: session list updated");
+					
+					var key = sessionModel.getKey();
+					if (key) {
+						sessionSelect.set("value", key);
+					}
 				});
 			},
 			
@@ -55,6 +64,7 @@ define(
 			},
 			
 			onKeyChange: function(name, oldValue, value) {
+				sessionSelect.set("value", value);
 				dom.byId("activeUserCount").innerHTML = sessionModel.getActiveUserCount();
 			}
 		};
