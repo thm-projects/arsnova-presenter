@@ -35,18 +35,7 @@ define(
 				});
 				
 				on(registry.byId("answersPanelFullscreenButton"), "click", function(event) {
-					if (fullscreen.isSupported()) {
-						if (fullscreen.isActive()) {
-							/* dom node rearrangement takes place in fullscreenchange event handler */
-							fullscreen.exit();
-						} else {
-							fullscreen.request(fullscreenNode);
-							domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("fullscreenControl"));
-							domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("fullscreenContent"));
-						}
-					} else {
-						console.log("Fullscreen mode not supported");
-					}
+					self.togglePresentMode();
 				});
 				
 				fullscreen.onChange(function(event, isActive) {
@@ -54,6 +43,11 @@ define(
 						domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("answersControlPanel"));
 						domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("answersChartPanel"));
 					}
+				});
+				
+				fullscreen.onError(function(event) {
+					domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("answersControlPanel"));
+					domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("answersChartPanel"));
 				});
 				
 				lecturerQuestionModel.watchId(this.onLecturerQuestionIdChange);
@@ -116,6 +110,21 @@ define(
 						piAnswersChart.update(labels, values);
 					});
 				});
+			},
+			
+			togglePresentMode: function() {
+				if (fullscreen.isSupported()) {
+					if (fullscreen.isActive()) {
+						/* dom node rearrangement takes place in fullscreenchange event handler */
+						fullscreen.exit();
+					} else {
+						fullscreen.request(fullscreenNode);
+						domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("fullscreenControl"));
+						domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("fullscreenContent"));
+					}
+				} else {
+					console.log("Fullscreen mode not supported");
+				}
 			},
 			
 			onLecturerQuestionIdChange: function(name, oldValue, value) {
