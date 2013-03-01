@@ -73,7 +73,7 @@
 		</div>
 	</div>
 	<footer id="infoPanel" class="sidePanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'bottom'">
-		<span id="productName" class="groupPanel">ARSnova Presenter</span><span id="productVersionDetails" class="groupPanel"><span id="productVersionNumber">Version: $$VERSION$$</span> &bull; <span id="productVersionBuild">Build: $$BUILD$$</span></span>
+		<span id="productName" class="groupPanel"></span><span id="productVersionDetails" class="groupPanel">Version: <span id="productVersionNumber"></span></span>
 	</footer>
 </div>
 
@@ -128,6 +128,11 @@ dojoConfig = (function() {
 		        location: libBase + "dgerhardt.net"
 	    	}
 	    ],
+	    arsnovaPresenter: {
+	    	version: "${project.version}",
+	    	build: "${build}",
+	    	commitId: "${commitId}"
+	    },
 	    arsnovaApi: {
 	    	root: apiBase
 	    }
