@@ -72,7 +72,7 @@
 						<outputDirectory>${outputDir}</outputDirectory>
 						<resources>
 							<resource>
-								<directory>vendor/socket.io-client/dist/</directory>
+								<directory>vendor/socket.io/socket.io-client/dist/</directory>
 								<targetPath>lib/socket.io/</targetPath>
 							</resource>
 						</resources>
