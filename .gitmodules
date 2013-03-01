@@ -1,3 +1,12 @@
+[submodule "vendor/dojotoolkit.org/dijit"]
+	path = vendor/dojotoolkit.org/dijit
+	url = https://github.com/dojo/dijit.git
+[submodule "vendor/dojotoolkit.org/dojo"]
+	path = vendor/dojotoolkit.org/dojo
+	url = https://github.com/dojo/dojo.git
+[submodule "vendor/dojotoolkit.org/dojox"]
+	path = vendor/dojotoolkit.org/dojox
+	url = https://github.com/dojo/dojox.git
 [submodule "vendor/socket.io-client"]
 	path = vendor/socket.io-client
 	url = https://github.com/LearnBoost/socket.io-client.git
