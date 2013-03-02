@@ -1,0 +1,4 @@
+{
+	name: "libarsnova-dojo",
+	dojoBuild: "libarsnova-dojo.profile.js"
+}

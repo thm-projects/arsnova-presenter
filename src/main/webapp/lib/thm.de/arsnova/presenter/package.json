@@ -1,0 +1,4 @@
+{
+	name: "ARSnova Presenter",
+	dojoBuild: "presenter.profile.js"
+}
