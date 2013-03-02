@@ -10,6 +10,14 @@ var profile = (function() {
 		//layerOptimize: "closure",
 		cssOptimize: "comments",
 		
+		defaultConfig: {
+			baseUrl: "/app/",
+		    gfxRenderer: "svg,silverlight,vml",
+		    arsnovaApi: {
+		    	root: "/"
+		    }
+		},
+		
 		packages: [
 			{
 				name: "dojo",
@@ -48,9 +56,10 @@ var profile = (function() {
 		
 		layers: {
 			"app/presenter": {
+				customBase: true, // do not add dojo/main automatically
 				boot: true,
 				include: [
-					"dojo/main", // Dojo loader
+					"dojo/dojo", // Dojo loader
 					"dojo/selector/acme", // this module is always needed
 					"dojo/_base/config",
 					"dojo/_base/declare",

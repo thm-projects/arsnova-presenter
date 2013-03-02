@@ -105,17 +105,11 @@
 </div>
 
 <script>
-dojoConfig = (function() {
-	var apiBase = "/";
-	
-	return {
-		baseUrl: "/app/",
-	    gfxRenderer: "svg,silverlight,vml",
-	    arsnovaApi: {
-	    	root: apiBase
-	    }
+var dojoConfig = {
+	arsnovaApi: {
+		root: "/"
 	}
-})();
+};
 </script>
 <script src="app/presenter.js"></script>
 <script>

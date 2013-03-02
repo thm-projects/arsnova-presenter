@@ -105,33 +105,33 @@
 </div>
 
 <script>
-dojoConfig = (function() {
+var dojoConfig = (function() {
 	var libBase = location.href.match(/^.*?\/\/[^#]*\//)[0] + "lib/";
 	var apiBase = "/";
 	
 	return {
-	    async: true,
-	    isDebug: true,
-	    parseOnLoad: true,
-	    gfxRenderer: "svg,silverlight,vml",
-	    packages: [
-	        {
-		        name: "arsnova-presenter",
-		        location: libBase + "thm.de/arsnova/presenter"
-	    	},
-	        {
-		        name: "arsnova-api",
-		        location: libBase + "thm.de/arsnova/api"
-	    	},
-   	        {
-		        name: "dgerhardt",
-		        location: libBase + "dgerhardt.net"
-	    	}
-	    ],
-	    arsnovaApi: {
-	    	root: apiBase
-	    }
-	}
+		async: true,
+		isDebug: true,
+		parseOnLoad: true,
+		gfxRenderer: "svg,silverlight,vml",
+		packages: [
+			{
+				name: "arsnova-presenter",
+				location: libBase + "thm.de/arsnova/presenter"
+			},
+			{
+				name: "arsnova-api",
+				location: libBase + "thm.de/arsnova/api"
+			},
+			{
+				name: "dgerhardt",
+				location: libBase + "dgerhardt.net"
+			}
+		],
+		arsnovaApi: {
+			root: apiBase
+		}
+	};
 })();
 </script>
 <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
