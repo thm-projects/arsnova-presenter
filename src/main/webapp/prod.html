@@ -106,40 +106,18 @@
 
 <script>
 dojoConfig = (function() {
-	var libBase = location.href.match(/^.*?\/\/[^#]*\//)[0] + "lib/";
-	var apiBase = location.href.match(/^.*?\/\/.*?\//)[0];
+	var apiBase = "/";
 	
 	return {
-	    async: true,
-	    isDebug: true,
-	    parseOnLoad: true,
+		baseUrl: "/app/",
 	    gfxRenderer: "svg,silverlight,vml",
-	    packages: [
-	        {
-		        name: "arsnova-presenter",
-		        location: libBase + "thm.de/arsnova/presenter"
-	    	},
-	        {
-		        name: "arsnova-api",
-		        location: libBase + "thm.de/arsnova/api"
-	    	},
-   	        {
-		        name: "dgerhardt",
-		        location: libBase + "dgerhardt.net"
-	    	}
-	    ],
-	    arsnovaPresenter: {
-	    	version: "${project.version}",
-	    	build: "${build}",
-	    	commitId: "${commitId}"
-	    },
 	    arsnovaApi: {
 	    	root: apiBase
 	    }
 	}
 })();
 </script>
-<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+<script src="app/presenter.js"></script>
 <script>
 require(
 	[
@@ -154,7 +132,8 @@ require(
 		"dijit/form/TextBox",
 		"dijit/form/Select"
 	],
-	function(app) {
+	function(app, parser) {
+		parser.parse();
 		app.startup();
 	}
 );

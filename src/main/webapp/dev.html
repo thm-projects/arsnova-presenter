@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><!DOCTYPE html>
+
+<html>
+<head>
+<title>ARSnova Presenter</title>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dijit/themes/claro/claro.css" media="screen" />
+<link rel="stylesheet" href="layout.css" media="screen" />
+<link rel="stylesheet" href="theme.css" media="screen" />
+</head>
+
+<body class="claro">
+<noscript><div id="noJs"><div><header><h1><img src="images/arsnova.png" alt="ARSnova" /></h1></header><p>This application needs JavaScript to be enabled in your browser.</p></div></div></noscript>
+
+<div id="appContainer" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'">
+	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="region: 'center'">
+		<div id="piPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'center'">
+			<div id="piContainer" data-dojo-type="dijit/layout/BorderContainer">
+				<header class="panelHeading" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">Peer Instruction</header>
+				<div id="piTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
+					<div id="piQuestionsPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" title="Questions">
+						<div id="piQuestionList"></div>
+					</div>
+					<div id="piAnswersPanel" data-dojo-type="dijit/layout/BorderContainer" title="Answers">
+						<div id="answersControlPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">
+							<div id="answersControlPanelContent">
+								<div id="answersNavigation">
+									<button id="prevPiQuestionButton" type="button" data-dojo-type="dijit/form/Button">&#x25C0;</button>
+									<button id="nextPiQuestionButton" type="button" data-dojo-type="dijit/form/Button">&#x25B6;</button>
+								</div>
+								<header><span id="answersQuestionSubject">Question subject</span>: <span id="answersQuestionText">Question text</span></header>
+								<button id="answersPanelFullscreenButton" type="button" data-dojo-type="dijit/form/Button">Present</button>
+								<div id="answerStats"><span id="answerCount">-</span>/<span id="answersUserCount">-</span></div>
+							</div>
+						</div>
+						<div id="answersChartPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'center'">
+							<div id="answersChartPanelContent">
+								<div id="answersChart"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="audiencePanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'right', splitter: 'true'">
+			<div id="audienceContainer" data-dojo-type="dijit/layout/BorderContainer">
+				<header class="panelHeading" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">Audience response</header>
+				<div id="audienceTabs" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region: 'center'">
+					<div id="audienceFeedbackPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" title="Feedback">
+						<div id="feedbackChart"></div>
+					</div>
+					<div id="audienceQuestionsPanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" title="Questions">
+						<div id="audienceQuestionList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="headerPanel" class="sidePanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'">
+		<div id="sessionPanel" class="groupPanel">
+			<label for="sessionSelect">Session</label>
+			<select id="sessionSelect" data-dojo-type="dijit/form/Select"><option value="" disabled="disabled">Select a session</select>
+			<span id="activeUserCount">-</span>
+			<button id="newSessionButton" type="button">New</button>
+		</div>
+		<div id="timerPanel" class="groupPanel">
+			<label for="timerField">Timer</label>
+			<input id="timerField" size="8" data-dojo-type="dijit/form/TextBox" />
+			<button id="timerStartButton" type="button" data-dojo-type="dijit/form/Button">Start</button>
+		</div>
+		<div id="exitPanel">
+			<button id="mobileButton" type="button" data-dojo-type="dijit/form/Button">Mobile</button>
+			<button id="logoutButton" type="button" data-dojo-type="dijit/form/Button">Logout</button>
+		</div>
+	</div>
+	<footer id="infoPanel" class="sidePanel" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'bottom'">
+		<span id="productName" class="groupPanel"></span><span id="productVersionDetails" class="groupPanel">Version: <span id="productVersionNumber"></span></span>
+	</footer>
+</div>
+
+<div id="widgets">
+	<div id="loginDialog" title="Login" data-dojo-type="dijit/Dialog">
+		<div>Please choose a service to login with.</div>
+		<div id="loginServiceButtons"></div>
+	</div>
+	
+	<div id="newSessionDialog" data-dojo-type="dijit/TooltipDialog">
+		<input id="sessionNameField" type="text" placeholder="Short name" maxlength="12" data-dojo-type="dijit/form/TextBox" /><br />
+		<input id="sessionDescField" type="text" placeholder="Description" data-dojo-type="dijit/form/TextBox" /><br />
+		<button id="createSessionButton" type="button" data-dojo-type="dijit/form/Button">Create</button> 
+	</div>
+	
+	<div id="lowResolution">
+		<div>
+			<header><h1><img src="images/arsnova.png" alt="ARSnova" /></h1></header>
+			<p id="lowResolutionMessage"></p>
+			<p><button id="lowResolutionMobileButton" type="button" data-dojo-type="dijit/form/Button">ARSnova mobile</button></p>
+		</div>
+	</div>
+</div>
+
+<div id="fullscreenContainer" data-dojo-type="dijit/layout/BorderContainer">
+	<div id="fullscreenControl" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'top'"></div>
+	<div id="fullscreenContent" data-dojo-type="dgerhardt/dijit/layout/ContentPane" data-dojo-props="region: 'center'"></div>
+	<img id="fullscreenLogo" src="images/arsnova.png" alt="ARSnova" />
+</div>
+
+<script>
+dojoConfig = (function() {
+	var libBase = location.href.match(/^.*?\/\/[^#]*\//)[0] + "lib/";
+	var apiBase = "/";
+	
+	return {
+	    async: true,
+	    isDebug: true,
+	    parseOnLoad: true,
+	    gfxRenderer: "svg,silverlight,vml",
+	    packages: [
+	        {
+		        name: "arsnova-presenter",
+		        location: libBase + "thm.de/arsnova/presenter"
+	    	},
+	        {
+		        name: "arsnova-api",
+		        location: libBase + "thm.de/arsnova/api"
+	    	},
+   	        {
+		        name: "dgerhardt",
+		        location: libBase + "dgerhardt.net"
+	    	}
+	    ],
+	    arsnovaApi: {
+	    	root: apiBase
+	    }
+	}
+})();
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+<script>
+require(
+	[
+		"arsnova-presenter/controller",
+		"dojo/parser",
+		"dijit/layout/BorderContainer",
+		"dijit/layout/TabContainer",
+		"dgerhardt/dijit/layout/ContentPane",
+		"dijit/Dialog",
+		"dijit/TooltipDialog",
+		"dijit/form/Button",
+		"dijit/form/TextBox",
+		"dijit/form/Select"
+	],
+	function(app) {
+		app.startup();
+	}
+);
+</script>
+</body>
+</html>

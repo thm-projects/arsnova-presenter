@@ -10,3 +10,6 @@
 [submodule "vendor/socket.io/socket.io-client"]
 	path = vendor/socket.io/socket.io-client
 	url = https://github.com/LearnBoost/socket.io-client.git
+[submodule "vendor/dojotoolkit.org/util"]
+	path = vendor/dojotoolkit.org/util
+	url = https://github.com/dojo/util.git
