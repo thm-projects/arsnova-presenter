@@ -7,15 +7,20 @@ var profile = (function() {
 	return {
 		basePath: "../../..",
 		action: "release",
-		//layerOptimize: "closure",
+		mini: true,
+		//optimize: "shrinksafe", // causes problems
+		//layerOptimize: "closure", // causes problems
 		cssOptimize: "comments",
 		
 		defaultConfig: {
+			async: true,
 			baseUrl: "/app/",
-		    gfxRenderer: "svg,silverlight,vml",
-		    arsnovaApi: {
-		    	root: "/"
-		    }
+			modulePaths: {
+				"dojo": "../lib/dojotoolkit.org/dojo",
+				"dijit": "../lib/dojotoolkit.org/dijit",
+				"dojox": "../lib/dojotoolkit.org/dojox"
+			},
+		    gfxRenderer: "svg,silverlight,vml"
 		},
 		
 		packages: [
@@ -61,6 +66,7 @@ var profile = (function() {
 				include: [
 					"dojo/dojo", // Dojo loader
 					"dojo/selector/acme", // this module is always needed
+					
 					"dojo/_base/config",
 					"dojo/_base/declare",
 					"dojo/ready",
@@ -78,6 +84,8 @@ var profile = (function() {
 					"dojo/store/Memory",
 					"dojo/store/Cache",
 					"dojo/parser",
+					
+					"dijit/_base",
 					"dijit/registry",
 					"dijit/layout/BorderContainer",
 					"dijit/layout/TabContainer",
@@ -88,12 +96,15 @@ var profile = (function() {
 					"dijit/form/TextBox",
 					"dijit/form/Select",
 					"dijit/form/DropDownButton",
+					
 					"dojox/charting/Chart",
 					"dojox/charting/themes/Claro",
 					"dojox/charting/plot2d/Columns",
 					"dojox/charting/axis2d/Default",
+					
 					"dgerhardt/dijit/layout/ContentPane",
 					"dgerhardt/common/fullscreen",
+					
 					"arsnova-presenter/controller",
 					"arsnova-presenter/ui/main",
 					"arsnova-presenter/ui/authControls",
@@ -106,6 +117,7 @@ var profile = (function() {
 					"arsnova-api/session",
 					"arsnova-api/lecturerQuestion",
 					"arsnova-api/audienceQuestion",
+					
 					"version"
 				]
 			}
