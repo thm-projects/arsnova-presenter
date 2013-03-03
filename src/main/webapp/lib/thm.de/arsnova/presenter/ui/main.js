@@ -5,14 +5,17 @@ define(
 		"dojo/dom-construct",
 		"dojo/dom-geometry",
 		"dojo/dom-style",
-		"dgerhardt/common/fullscreen"
+		"dgerhardt/common/fullscreen",
+		"version"
 	],
-	function(on, dom, domConstruct, domGeometry, domStyle, fullscreen) {
+	function(on, dom, domConstruct, domGeometry, domStyle, fullscreen, version) {
 		"use strict";
 		
 		return {
 			init: function() {
 				console.log("-- UI: main.init --");
+				
+				dom.byId("productVersionNumber").innerHTML = version.version + " [" + version.commitId + "]";
 				
 				/* prevent window scrolling (needed for IE) */
 				on(window, "scroll", function(event) {
