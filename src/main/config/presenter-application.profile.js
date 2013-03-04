@@ -1,6 +1,6 @@
 /* Dojo application profile */
 var profile = (function() {
-	var libPath = "src/main/webapp/lib/";
+	var libPath = "src/main/websources/lib/";
 	var dojoPath = "vendor/dojotoolkit.org/";
 	var versionFilePath = "target/tmp/dojo/version/";
 	
@@ -14,7 +14,7 @@ var profile = (function() {
 		
 		defaultConfig: {
 			async: true,
-			baseUrl: "/app/",
+			baseUrl: "app/",
 			modulePaths: {
 				"dojo": "../lib/dojotoolkit.org/dojo",
 				"dijit": "../lib/dojotoolkit.org/dijit",

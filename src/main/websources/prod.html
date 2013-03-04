@@ -4,8 +4,8 @@
 <head>
 <title>ARSnova Presenter</title>
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dijit/themes/claro/claro.css" media="screen" />
-<link rel="stylesheet" href="layout.css" media="screen" />
-<link rel="stylesheet" href="theme.css" media="screen" />
+<link rel="stylesheet" href="css/layout.css" media="screen" />
+<link rel="stylesheet" href="css/theme.css" media="screen" />
 </head>
 
 <body class="claro">
@@ -105,36 +105,13 @@
 </div>
 
 <script>
-var dojoConfig = (function() {
-	var libBase = location.href.match(/^.*?\/\/[^#]*\//)[0] + "lib/";
-	var apiBase = "/";
-	
-	return {
-		async: true,
-		isDebug: true,
-		parseOnLoad: true,
-		gfxRenderer: "svg,silverlight,vml",
-		packages: [
-			{
-				name: "arsnova-presenter",
-				location: libBase + "thm.de/arsnova/presenter"
-			},
-			{
-				name: "arsnova-api",
-				location: libBase + "thm.de/arsnova/api"
-			},
-			{
-				name: "dgerhardt",
-				location: libBase + "dgerhardt.net"
-			}
-		],
-		arsnovaApi: {
-			root: apiBase
-		}
-	};
-})();
+var dojoConfig = {
+	arsnovaApi: {
+		root: "/"
+	}
+};
 </script>
-<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+<script src="app/presenter.js"></script>
 <script>
 require(
 	[
@@ -149,7 +126,8 @@ require(
 		"dijit/form/TextBox",
 		"dijit/form/Select"
 	],
-	function(app) {
+	function(app, parser) {
+		parser.parse();
 		app.startup();
 	}
 );
