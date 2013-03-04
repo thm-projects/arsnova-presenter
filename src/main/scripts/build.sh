@@ -1,31 +1,48 @@
 #!/bin/bash
-TARGET_PATH="$1" # mandatory
-VERSION="$2"     # optional
-BUILD="$3"       # optional
+BUILD_ENV="$1"   # mandatory (prod or dev)
+TARGET_PATH="$2" # mandatory
+VERSION="$3"     # optional
+BUILD="$4"       # optional
 DOJO_BUILD_PATH="$TARGET_PATH/../tmp/dojo"
 VERSION_FILE_PATH="$DOJO_BUILD_PATH/version"
 
+if [ prod != "$BUILD_ENV" ] && [ dev != "$BUILD_ENV" ]; then
+	echo "First parameter has to be a valid build environment (prod, dev)."
+	exit 1
+fi
+
 if [[ -z "$TARGET_PATH" ]]; then
-	echo No target path set.
+	echo "Second parameter has to be a valid target path."
 	exit 1
 fi
 
 # Update submodules
 git submodule update --init
 
-# Write build version info into JavaScript file later used by Dojo
+# Write build version info into JavaScript file later used by Dojo and set build profile
 mkdir -p "$VERSION_FILE_PATH"
-echo "define([], function() { return {" \
-	version: \"$VERSION\", \
-	commitId: \"$(git log -n 1 --pretty=format:%h)\", \
-	buildTime: \"$(date --rfc-3339=seconds)\", \
-	buildNumber: \"$BUILD\" \
-	"}; });" \
-	> "$VERSION_FILE_PATH/version.js"
+if [ prod = "$BUILD_ENV" ]; then
+	VERSION_FILE_CONTENT="define([], function() { return { \
+		version: \"$VERSION\", \
+		commitId: \"$(git log -n 1 --pretty=format:%h)\", \
+		buildTime: \"$(date --rfc-3339=seconds)\", \
+		buildNumber: \"$BUILD\" \
+		}; });"
+	DOJO_BUILD_PROFILE="presenter-application.prod"
+else
+	VERSION_FILE_CONTENT="define([], function() { return { \
+		version: \"DEVELOPMENT\", \
+		commitId: \"\", \
+		buildTime: \"$(date --rfc-3339=seconds)\", \
+		buildNumber: \"\" \
+		}; });"
+	DOJO_BUILD_PROFILE="presenter-application.dev"
+fi
+echo "$VERSION_FILE_CONTENT" > "$VERSION_FILE_PATH/version.js"
 
 # Run Dojo build script
 vendor/dojotoolkit.org/util/buildscripts/build.sh \
-	profile=src/main/config/presenter-application.profile.js \
+	profile="src/main/config/$DOJO_BUILD_PROFILE.profile.js" \
 	releaseDir="$DOJO_BUILD_PATH/dojo"
 
 # Copy Dojo application build and Dojo resources

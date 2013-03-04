@@ -1,4 +1,4 @@
-/* Dojo application profile */
+/* Dojo application profile for production */
 var profile = (function() {
 	var libPath = "src/main/websources/lib/";
 	var dojoPath = "vendor/dojotoolkit.org/";
@@ -35,10 +35,6 @@ var profile = (function() {
 			{
 				name: "dojox",
 				location: dojoPath + "dojox"
-			},
-			{
-				name: "arsnova-presenter",
-				location: libPath + "thm.de/arsnova/presenter"
 			},
 			{
 				name: "arsnova-presenter",
