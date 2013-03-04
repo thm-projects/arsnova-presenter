@@ -2,10 +2,10 @@
 
 <html>
 <head>
-<title>ARSnova Presenter</title>
+<title>ARSnova Presenter [DEV]</title>
 <link rel="stylesheet" href="lib/dojotoolkit.org/dijit/themes/claro/claro.css" media="screen" />
-<link rel="stylesheet" href="css/layout.css" media="screen" />
-<link rel="stylesheet" href="css/theme.css" media="screen" />
+<link rel="stylesheet" href="lib/thm.de/arsnova/presenter/resources/css/layout.css" media="screen" />
+<link rel="stylesheet" href="lib/thm.de/arsnova/presenter/resources/css/theme.css" media="screen" />
 </head>
 
 <body class="claro">
@@ -105,16 +105,11 @@
 </div>
 
 <script>
-var dojoConfig = (function() {
-	var apiBase = "/";
-	
-	return {
-		gfxRenderer: "svg,silverlight,vml",
-		arsnovaApi: {
-			root: apiBase
-		}
-	};
-})();
+var dojoConfig = {
+	arsnovaApi: {
+		root: "/"
+	}
+};
 </script>
 <script src="app/presenter.js"></script>
 <script>

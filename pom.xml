@@ -104,22 +104,11 @@
 					
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.7</version>
-						<executions>
-							<execution>
-								<id>copy-index-file</id>
-								<phase>prepare-package</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<target>
-										<copy file="src/main/websources/dev.html" tofile="${outputDir}/index.html" />
-									</target>
-								</configuration>
-							</execution>
-						</executions>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.3</version>
+						<configuration>
+							<webXml>src/main/config/WEB-INF/web.dev.xml</webXml>
+						</configuration>
 					</plugin>
 				
 					<plugin>
@@ -205,6 +194,7 @@
 								<configuration>
 									<target>
 										<copy file="src/main/websources/prod.html" tofile="${outputDir}/index.html" />
+										<copy file="${project.build.directory}/tmp/dojo/dojo/arsnova-presenter/resources/css/presenter.css" tofile="${outputDir}/lib/thm.de/arsnova/presenter/resources/css/presenter.css" />
 									</target>
 								</configuration>
 							</execution>
@@ -215,28 +205,9 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<version>2.3</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>war</goal>
-								</goals>
-								<configuration>
-									<webResources>
-										<resource>
-											<directory>src/main/websources</directory>
-											<includes>
-												<include>lib/**</include>
-												<include>css/**.css</include>
-											</includes>
-											<excludes>
-												<exclude>**/package.json</exclude>
-												<exclude>**/*.profile.js</exclude>
-											</excludes>
-										</resource>
-									</webResources>
-								</configuration>
-							</execution>
-						</executions>
+						<configuration>
+							<webXml>src/main/config/WEB-INF/web.prod.xml</webXml>
+						</configuration>
 					</plugin>
 				
 					<plugin>
