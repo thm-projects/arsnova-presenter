@@ -15,7 +15,11 @@ define(
 			init: function() {
 				console.log("-- UI: main.init --");
 				
-				dom.byId("productVersionNumber").innerHTML = version.version + " [" + version.commitId + "]";
+				var versionString = version.version;
+				if (version.commitId) {
+					versionString += " [" + version.commitId + "]";
+				}
+				dom.byId("productVersionNumber").innerHTML = versionString;
 				
 				/* prevent window scrolling (needed for IE) */
 				on(window, "scroll", function(event) {
