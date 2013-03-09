@@ -93,31 +93,6 @@ define(
 			
 			watchActiveUserCount: function(callback) {
 				sessionState.watch("activeUserCount", callback);
-			},
-			
-			getActiveUserCount: function() {
-				var count = "-";
-				request.get(apiPrefix + sessionState.get("key") + "/activeusercount", {sync: true}).then(
-					function(response) {
-						count = response;
-					},
-					function(error) {
-						console.error("API: session.getActiveUserCount request failed.");
-					}
-				);
-				
-				return count;
-			},
-			
-			signalOnline: function() {
-				request.post(apiPrefix + sessionState.get("key") + "/online").then(
-					function(response) {
-						/* nothing to do */
-					},
-					function(error) {
-						console.error("API: session.signalOnline request failed.");
-					}
-				);
 			}
 		};
 	}
