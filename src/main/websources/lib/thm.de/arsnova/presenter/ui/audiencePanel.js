@@ -5,9 +5,10 @@ define(
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dojo/dom-class",
+		"arsnova-api/feedback",
 		"arsnova-presenter/ui/chart/audienceFeedback"
 	],
-	function(on, when, dom, domConstruct, domClass, audienceFeedbackChart) {
+	function(on, when, dom, domConstruct, domClass, feedbackModel, audienceFeedbackChart) {
 		"use strict";
 		
 		var audienceQuestionModel = null;
@@ -16,11 +17,17 @@ define(
 			init: function(audienceQuestion) {
 				console.log("-- UI: audiencePanel.init --");
 				
+				var self = this;
 				audienceQuestionModel = audienceQuestion;
 				
 				audienceFeedbackChart.init();
-				/* TODO: remove test data */
-				this.updateFeedbackPanel([5, 2, 1, 2]);
+				
+				feedbackModel.onReceive(function(feedback) {
+					var feedback0 = feedback[0];
+					feedback[0] = feedback[1];
+					feedback[1] = feedback0;
+					self.updateFeedbackPanel(feedback);
+				});
 			},
 			
 			updateQuestionsPanel: function(questions) {

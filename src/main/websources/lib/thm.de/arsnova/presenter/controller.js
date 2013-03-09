@@ -8,12 +8,13 @@ define(
 		"arsnova-presenter/ui/sessionControls",
 		"arsnova-presenter/ui/piPanel",
 		"arsnova-presenter/ui/audiencePanel",
+		"arsnova-api/socket",
 		"arsnova-api/auth",
 		"arsnova-api/session",
 		"arsnova-api/lecturerQuestion",
 		"arsnova-api/audienceQuestion"
 	],
-	function(ready, when, router, mainUi, authControls, sessionControls, piPanel, audiencePanel, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel) {
+	function(ready, when, router, mainUi, authControls, sessionControls, piPanel, audiencePanel, socket, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel) {
 		"use strict";
 		
 		var
@@ -30,6 +31,8 @@ define(
 					authControls.init(authService);
 					
 					if (authService.isLoggedIn()) {
+						socket.connect();
+						
 						sessionControls.init(sessionModel);
 						piPanel.init(lecturerQuestionModel);
 						audiencePanel.init(audienceQuestionModel);

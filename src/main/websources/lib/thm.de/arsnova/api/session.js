@@ -6,20 +6,23 @@ define(
 		"dojo/request",
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
-		"dojo/store/Cache"
+		"dojo/store/Cache",
+		"arsnova-api/socket"
 	],
-	function(config, declare, Stateful, request, JsonRestStore, MemoryStore, CacheStore) {
+	function(config, declare, Stateful, request, JsonRestStore, MemoryStore, CacheStore, socket) {
 		"use strict";
 		
 		var
 			apiPrefix = config.arsnovaApi.root + "session/",
 			
 			SessionState = declare([Stateful], {
-				key: null
+				key: null,
+				activeUserCount: "-"
 			}),
 			
 			sessionState = new SessionState({
-				key: null
+				key: null,
+				activeUserCount: "-"
 			}),
 
 			sessionJsonRest = new JsonRestStore({
@@ -34,6 +37,11 @@ define(
 			
 		sessionState.watch("key", function(name, oldValue, value) {
 			console.log("Session key changed: " + value);
+			socket.emit("setSession", {keyword: value});
+		});
+		
+		socket.on("activeUserCountData", function(activeUserCount) {
+			sessionState.set("activeUserCount", activeUserCount);
 		});
 		
 		return {
@@ -81,6 +89,10 @@ define(
 						return false;
 					}
 				);
+			},
+			
+			watchActiveUserCount: function(callback) {
+				sessionState.watch("activeUserCount", callback);
 			},
 			
 			getActiveUserCount: function() {

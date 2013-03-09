@@ -61,6 +61,7 @@ define(
 					{y: feedback[2], stroke: "black", fill: "red"},
 					{y: feedback[3], stroke: "black", fill: "gray"}
 				]);
+				feedbackChart.render();
 			}
 		};
 	}

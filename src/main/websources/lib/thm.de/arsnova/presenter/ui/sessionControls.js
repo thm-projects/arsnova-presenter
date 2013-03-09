@@ -33,6 +33,9 @@ define(
 				registry.byId("createSessionButton").onClick = this.submitCreateSessionForm;
 				this.updateSessionSelect(sessionModel.getOwned());
 				sessionModel.watchKey(this.onKeyChange);
+				sessionModel.watchActiveUserCount(function(name, oldValue, value) {
+					dom.byId("activeUserCount").innerHTML = value;
+				});
 			},
 			
 			updateSessionSelect: function(sessions) {
@@ -68,7 +71,6 @@ define(
 				when(sessionModel.getCurrent(), function(session) {
 					document.title = session.shortName + " - ARSnova Presenter";
 				});
-				dom.byId("activeUserCount").innerHTML = sessionModel.getActiveUserCount();
 			}
 		};
 	}
