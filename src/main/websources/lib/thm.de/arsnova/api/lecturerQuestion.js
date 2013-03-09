@@ -6,9 +6,10 @@ define(
 		"dojo/Stateful",
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
-		"dojo/store/Cache"
+		"dojo/store/Cache",
+		"arsnova-api/socket"
 	],
-	function(config, declare, string, Stateful, JsonRestStore, MemoryStore, CacheStore) {
+	function(config, declare, string, Stateful, JsonRestStore, MemoryStore, CacheStore, socket) {
 		"use strict";
 		
 		var
@@ -60,6 +61,14 @@ define(
 				idProperty: "_id"
 			});
 			answerStore = CacheStore(answerJsonRest, answerMemory);
+		});
+		
+		socket.on("lecQuestionAvail", function(lecturerQuestionId) {
+			
+		});
+		
+		socket.on("answersTolecQuestionAvail", function(lecturerQuestionId) {
+			
 		});
 			
 		return {
