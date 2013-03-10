@@ -3,11 +3,12 @@ define(
 		"dojo/dom",
 		"dijit/registry",
 	 	"dojox/charting/Chart",
-	 	"dojox/charting/themes/Claro",
 	 	"dojox/charting/plot2d/Columns",
-	 	"dojox/charting/axis2d/Default"
+	 	"dojox/charting/axis2d/Default",
+	 	"dojo/fx/easing",
+	 	"./theme"
 	],
-	function(dom, registry, Chart, ChartTheme, Columns, AxisDefault) {
+	function(dom, registry, Chart, Columns, AxisDefault, easing, theme) {
 		"use strict";
 		
 		var feedbackChart = null;
@@ -17,10 +18,11 @@ define(
 				console.log("-- Chart: audienceFeedback.init --");
 				
 				feedbackChart = new Chart("feedbackChart");
-				feedbackChart.setTheme(ChartTheme);
+				feedbackChart.setTheme(theme);
 				feedbackChart.addPlot("default", {
 					type: Columns,
-					gap: 3
+					gap: 3,
+					animate: {duration: 500, easing: easing.expoOut}
 				});
 				
 				var labels = [
@@ -31,8 +33,19 @@ define(
 				];
 				var data = [0, 0, 0, 0];
 				
-				feedbackChart.addAxis("x", {labels: labels, minorTicks: false});
-				feedbackChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
+				feedbackChart.addAxis("x", {
+					labels: labels,
+					dropLabels: false,
+					maxLabelSize: 100,
+					rotation: -30,
+					trailingSymbol: "...",
+					minorTicks: false
+				});
+				feedbackChart.addAxis("y", {
+					vertical: true,
+					includeZero: true,
+					minorTicks: false
+				});
 				feedbackChart.addSeries("Feedback", data);
 				feedbackChart.render();
 
@@ -55,12 +68,7 @@ define(
 			},
 			
 			update: function(feedback) {
-				feedbackChart.addSeries("Feedback", [
-					{y: feedback[0], stroke: "black", fill: "#00CC00"},
-					{y: feedback[1], stroke: "black", fill: "#EEEE00"},
-					{y: feedback[2], stroke: "black", fill: "red"},
-					{y: feedback[3], stroke: "black", fill: "gray"}
-				]);
+				feedbackChart.updateSeries("Feedback", theme.applyFeedbackColors(feedback));
 				feedbackChart.render();
 			}
 		};

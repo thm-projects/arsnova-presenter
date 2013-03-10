@@ -3,12 +3,13 @@ define(
 		"dojo/dom",
 		"dijit/registry",
 	 	"dojox/charting/Chart",
-	 	"dojox/charting/themes/Claro",
 	 	"dojox/charting/plot2d/Columns",
 	 	"dojox/charting/axis2d/Default",
-	 	"dgerhardt/common/fullscreen"
+	 	"dgerhardt/common/fullscreen",
+	 	"dojo/fx/easing",
+	 	"./theme"
 	],
-	function(dom, registry, Chart, ChartTheme, Columns, AxisDefault, fullscreen) {
+	function(dom, registry, Chart, Columns, AxisDefault, fullscreen, easing, theme) {
 		"use strict";
 		
 		var answersChart = null;
@@ -18,13 +19,18 @@ define(
 				console.log("-- Chart: piAnswers.init --");
 				
 				answersChart = new Chart("answersChart");
-				answersChart.setTheme(ChartTheme);
+				answersChart.setTheme(theme);
 				answersChart.addPlot("default", {
 					type: Columns,
-					gap: 3
+					gap: 3,
+					animate: {duration: 500, easing: easing.expoOut}
 				});
 				answersChart.addAxis("x");
-				answersChart.addAxis("y", {vertical: true, includeZero: true, minorTicks: false});
+				answersChart.addAxis("y", {
+					vertical: true,
+					includeZero: true,
+					minorTicks: false
+				});
 				answersChart.render();
 				
 				var resizeTimeout = null;
@@ -46,8 +52,15 @@ define(
 			},
 			
 			update: function(labels, values) {
-				answersChart.addAxis("x", {labels: labels, minorTicks: false});
-				answersChart.addSeries("Answer count", values);
+				answersChart.addAxis("x", {
+					labels: labels,
+					dropLabels: false,
+					maxLabelSize: 100,
+					rotation: -30,
+					trailingSymbol: "...",
+					minorTicks: false
+				});
+				answersChart.addSeries("Answer count", theme.applyAnswerColors(values));
 				answersChart.render();
 			}
 		};

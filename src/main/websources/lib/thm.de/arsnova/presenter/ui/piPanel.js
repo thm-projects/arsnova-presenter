@@ -96,14 +96,14 @@ define(
 					question.possibleAnswers.forEach(function(possibleAnswer, i) {
 						labelReverseMapping[possibleAnswer.text] = i;
 						labels.push({value: i + 1, text: possibleAnswer.text});
-						values[i] = {y: 0, stroke: "black"};
+						values[i] = 0;
 					});
 					
 					when(answers, function(answers) {
 						var totalAnswerCount = 0;
 						answers.forEach(function(answer) {
 							totalAnswerCount += answer.answerCount;
-							values[labelReverseMapping[answer.answerText]] = {y: answer.answerCount, stroke: "black"};
+							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
 						}, values);
 						dom.byId("answerCount").innerHTML = totalAnswerCount;
 						
