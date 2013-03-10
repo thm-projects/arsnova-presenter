@@ -100,6 +100,11 @@ html, body {
 	margin-left: 0.5em;
 	margin-right: 0.5em;
 	line-height: 34px;
+	white-space: no-wrap;
+}
+
+#answersQuestionSubject, #answersQuestionTitleSeperator {
+	display: none;
 }
 
 #answerStats {

@@ -40,6 +40,8 @@ define(
 				
 				fullscreen.onChange(function(event, isActive) {
 					if (!isActive) {
+						domStyle.set(dom.byId("answersQuestionSubject"), "display", "none");
+						domStyle.set(dom.byId("answersQuestionTitleSeperator"), "display", "none");
 						domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("answersControlPanel"));
 						domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("answersChartPanel"));
 					}
@@ -119,6 +121,8 @@ define(
 						fullscreen.exit();
 					} else {
 						fullscreen.request(fullscreenNode);
+						domStyle.set(dom.byId("answersQuestionSubject"), "display", "inline");
+						domStyle.set(dom.byId("answersQuestionTitleSeperator"), "display", "inline");
 						domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("fullscreenControl"));
 						domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("fullscreenContent"));
 					}
