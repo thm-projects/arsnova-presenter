@@ -88,8 +88,15 @@ html, body {
 	float: left;
 }
 
-#answerStats {
+#answersSettingsContainer {
 	float: right;
+	white-space: no-wrap;
+}
+
+#answersSettingsContainer > * {
+	float: left;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
 }
 
 #answersChartPanel, #audienceFeedbackPanel {
