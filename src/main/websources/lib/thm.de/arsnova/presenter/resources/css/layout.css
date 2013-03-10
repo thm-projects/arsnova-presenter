@@ -71,6 +71,11 @@ html, body {
 	float: right;
 }
 
+#productLogo {
+	float: left;
+	margin-right: 0.25em;
+}
+
 #productName {
 	float: left;
 }
