@@ -19,18 +19,20 @@ define(
 				
 				sessionModel = session;
 				
-				new DropDownButton({
-					label: "New",
-					dropDown: registry.byId("newSessionDialog")
-				}, "newSessionButton");
-				
 				sessionSelect = registry.byId("sessionSelect");
 				sessionSelect.maxHeight = 200;
 				sessionSelect.onChange = function(value) {
 					sessionModel.setKey(value);
 				};
 				
-				registry.byId("createSessionButton").onClick = this.submitCreateSessionForm;
+				/* button is destroyed on creation since it is not needed
+				 * until editing features are available */
+				new DropDownButton({
+					label: "New",
+					dropDown: registry.byId("newSessionDialog")
+				}, "newSessionButton").destroy();
+//				registry.byId("createSessionButton").onClick = this.submitCreateSessionForm;
+
 				this.updateSessionSelect(sessionModel.getOwned());
 				sessionModel.watchKey(this.onKeyChange);
 				sessionModel.watchActiveUserCount(function(name, oldValue, value) {
@@ -70,6 +72,13 @@ define(
 				sessionSelect.set("value", value);
 				when(sessionModel.getCurrent(), function(session) {
 					document.title = session.shortName + " - ARSnova Presenter";
+					dom.byId("sessionTitle").innerHTML = session.name;
+					var keyword = session.keyword.substr(0, 2)
+						+ " " + session.keyword.substr(2, 2)
+						+ " " + session.keyword.substr(4, 2)
+						+ " " + session.keyword.substr(6, 2)
+					;
+					dom.byId("sessionKeyword").innerHTML = keyword;
 				});
 			}
 		};

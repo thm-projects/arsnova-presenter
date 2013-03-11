@@ -10,17 +10,25 @@ body {
 	font-weight: bold;
 }
 
-#activeUserCount {
-	display: inline-block;
+#sessionTitle {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+#activeUserCount, #sessionKeyword {
 	min-width: 1em;
 	height: 1em;
 	background-color: white;
 	border: 1px solid #999;
 	padding: .3em;
 	border-radius: .8em;
-	font-weight: bold;
-	line-height: 1em;
+	font-size: 1.1em;
+	line-height: 1.1em;
 	text-align: center;
+}
+
+#sessionKeyword {
+	margin-left: 0.25em;
 }
 
 #piQuestionList .question, #audienceQuestionList .question {

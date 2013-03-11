@@ -21,6 +21,9 @@ define(
 				}
 				dom.byId("productVersionNumber").innerHTML = versionString;
 				
+				var sessionInfoNode = domConstruct.toDom("<div id='sessionInfo'><header id='sessionTitle'>ARSnova Presenter</header><span id='activeUserCount'>-</span></div>");
+				domConstruct.place(sessionInfoNode, "headerPanel");
+				
 				/* prevent window scrolling (needed for IE) */
 				on(window, "scroll", function(event) {
 					scrollTo(0, 0);
