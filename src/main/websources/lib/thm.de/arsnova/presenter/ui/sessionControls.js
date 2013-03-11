@@ -27,10 +27,10 @@ define(
 				
 				/* button is destroyed on creation since it is not needed
 				 * until editing features are available */
-				new DropDownButton({
-					label: "New",
-					dropDown: registry.byId("newSessionDialog")
-				}, "newSessionButton").destroy();
+//				new DropDownButton({
+//					label: "New",
+//					dropDown: registry.byId("newSessionDialog")
+//				}, "newSessionButton");
 //				registry.byId("createSessionButton").onClick = this.submitCreateSessionForm;
 
 				this.updateSessionSelect(sessionModel.getOwned());
