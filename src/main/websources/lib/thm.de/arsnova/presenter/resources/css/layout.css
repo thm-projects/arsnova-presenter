@@ -64,6 +64,10 @@ html, body {
 	line-height: 34px;
 }
 
+#sessionSelect {
+	margin: 0 0.5em;
+}
+
 #exitPanel {
 	float: right;
 }
