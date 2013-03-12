@@ -15,7 +15,7 @@ body {
 	font-weight: bold;
 }
 
-#activeUserCount, #sessionKeyword {
+#activeUserCount, #sessionKeyword, #piAnswersCount {
 	min-width: 1em;
 	height: 1em;
 	background-color: white;
