@@ -37,7 +37,7 @@ define(
 					}),
 					piHeaderPane = new ContentPane({
 						region: "top",
-						content: "Peer Instruction",
+						content: "Lecturer",
 						"class": "headerPane sidePanel"
 					}),
 					piTabs = new TabContainer({

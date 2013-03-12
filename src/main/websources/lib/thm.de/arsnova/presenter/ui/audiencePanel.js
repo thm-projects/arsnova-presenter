@@ -33,7 +33,7 @@ define(
 					}),
 					audienceHeaderPane = new ContentPane({
 						region: "top",
-						content: "Audience response",
+						content: "Audience",
 						"class": "headerPane sidePanel"
 					}),
 					audienceTabs = new TabContainer({
