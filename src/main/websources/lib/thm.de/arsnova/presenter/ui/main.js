@@ -9,11 +9,15 @@ define(
 		"dijit/layout/BorderContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Button",
+		"dijit/form/ComboButton",
+		"dijit/form/DropDownButton",
+		"dijit/Menu",
+		"dijit/MenuItem",
 		"dijit/form/Select",
 		"dgerhardt/common/fullscreen",
 		"version"
 	],
-	function(on, dom, domConstruct, domGeometry, domStyle, registry, BorderContainer, ContentPane, Button, Select, fullscreen, version) {
+	function(on, dom, domConstruct, domGeometry, domStyle, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, fullscreen, version) {
 		"use strict";
 		
 		return {
@@ -55,8 +59,37 @@ define(
 				/* Add header content */
 				var exitPanelNode = domConstruct.create("div", {id: "exitPanel"}, "headerPane");
 				/* Miscellaneous buttons */
-				domConstruct.create("button", {id: "mobileButton", type: "button"}, exitPanelNode);
-				new Button({label: "Mobile"}, "mobileButton").startup();
+				var fullScreenMenu = new Menu({style: "display: none"});
+				fullScreenMenu.addChild(new MenuItem({
+					label: "Answers to Lecturer's questions"
+				}));
+				fullScreenMenu.addChild(new MenuItem({
+					label: "Audience feedback"
+				}));
+				fullScreenMenu.addChild(new MenuItem({
+					label: "Audience questions"
+				}));
+				new ComboButton({
+					label: "Full screen",
+					dropDown: fullScreenMenu
+				}, domConstruct.create("button", {id: "answersPanelFullscreenButton", type: "button"}, exitPanelNode)).startup();
+				var modeMenu = new Menu({style: "display: none"});
+				modeMenu.addChild(new MenuItem({
+					label: "Presentation"
+				}));
+				modeMenu.addChild(new MenuItem({
+					label: "Editing"
+				}));
+				modeMenu.addChild(new MenuItem({
+					label: "Mobile (lecturer's view)"
+				}));
+				modeMenu.addChild(new MenuItem({
+					label: "Mobile (student's view)"
+				}));
+				new DropDownButton({
+					label: "Mode",
+					dropDown: modeMenu
+				}, domConstruct.create("button", {id: "mobileButton", type: "button"}, exitPanelNode)).startup();
 
 				/* Add footer content */
 				var versionString = version.version;

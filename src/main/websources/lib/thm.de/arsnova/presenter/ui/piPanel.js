@@ -92,9 +92,6 @@ define(
 				domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, answersHeader);
 				domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, answersHeader);
 
-				new Button({
-					label: "Present"
-				}, domConstruct.create("button", {id: "answersPanelFullscreenButton", type: "button"}, answersSettings));
 				domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, answersSettings);
 				
 				on(registry.byId("nextPiQuestionButton"), "click", function(event) {
