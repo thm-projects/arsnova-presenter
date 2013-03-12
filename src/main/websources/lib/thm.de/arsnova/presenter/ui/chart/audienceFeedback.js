@@ -17,7 +17,7 @@ define(
 			init: function() {
 				console.log("-- Chart: audienceFeedback.init --");
 				
-				feedbackChart = new Chart("feedbackChart");
+				feedbackChart = new Chart("audienceFeedbackChart");
 				feedbackChart.setTheme(theme);
 				feedbackChart.addPlot("default", {
 					type: Columns,
@@ -58,12 +58,12 @@ define(
 						if ("hidden" == appContainer.style.visibility) {
 							return;
 						}
-						var panel = dom.byId("audienceFeedbackPanel");
+						var panel = dom.byId("audienceFeedbackPane");
 						var height = panel.clientHeight - 16;
 						feedbackChart.resize(-1, height);
 					}, 20);
 				};
-				registry.byId("audienceFeedbackPanel").on("resize", onResize);
+				registry.byId("audienceFeedbackPane").on("resize", onResize);
 				onResize();
 			},
 			

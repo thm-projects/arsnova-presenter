@@ -6,10 +6,14 @@ define(
 		"dojo/dom-construct",
 		"dojo/dom-style",
 		"dijit/registry",
+		"dijit/layout/BorderContainer",
+		"dijit/layout/TabContainer",
+		"dgerhardt/dijit/layout/ContentPane",
+		"dijit/form/Button",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, dom, domConstruct, domStyle, registry, fullscreen, piAnswersChart) {
+	function(on, when, dom, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, fullscreen, piAnswersChart) {
 		"use strict";
 		
 		var
@@ -26,6 +30,73 @@ define(
 				lecturerQuestionModel = lecturerQuestion;
 				fullscreenNode = dom.byId("fullscreenContainer");
 				
+				var
+					piContainer = new BorderContainer({
+						id: "piContainer",
+						region: "center"
+					}),
+					piHeaderPane = new ContentPane({
+						region: "top",
+						content: "Peer Instruction",
+						"class": "headerPane sidePanel"
+					}),
+					piTabs = new TabContainer({
+						id: "piTabs",
+						region: "center"
+					}),
+					piQuestionsPane = new ContentPane({
+						id: "piQuestionsPane",
+						title: "Questions"
+					}),
+					piAnswersContainer = new BorderContainer({
+						id: "piAnswersContainer",
+						title: "Answers"
+					}),
+					piAnswersControlPane = new ContentPane({
+						id: "piAnswersControlPane",
+						region: "top"
+					}),
+					piAnswersMainPane = new ContentPane({
+						id: "piAnswersMainPane",
+						region: "center"
+					})
+				;
+				
+				registry.byId("mainContainer").addChild(piContainer);
+				piContainer.addChild(piHeaderPane);
+				piContainer.addChild(piTabs);
+				piTabs.addChild(piQuestionsPane);
+				piTabs.addChild(piAnswersContainer);
+				piAnswersContainer.addChild(piAnswersControlPane);
+				piAnswersContainer.addChild(piAnswersMainPane);
+			},
+			
+			startup: function() {
+				domConstruct.create("div", {id: "piQuestionList"}, "piQuestionsPane");
+				domConstruct.create("div", {id: "piAnswersMainPaneContent"}, "piAnswersMainPane");
+				domConstruct.create("div", {id: "piAnswersChart"}, "piAnswersMainPaneContent");
+				
+				var controlPaneContentNode = domConstruct.create("div", {id: "piAnswersControlPaneContent"}, "piAnswersControlPane");
+				var answersNav = domConstruct.create("div", {id: "piAnswersNavigation"}, controlPaneContentNode);
+				var answersHeader = domConstruct.create("header", {id: "piAnswersQuestion"}, controlPaneContentNode);
+				var answersSettings = domConstruct.create("div", {id: "piAnswersSettings"}, controlPaneContentNode);
+				
+				new Button({
+					label: "&#x25C0;"
+				}, domConstruct.create("button", {id: "prevPiQuestionButton", type: "button"}, answersNav));
+				new Button({
+					label: "&#x25B6;"
+				}, domConstruct.create("button", {id: "nextPiQuestionButton", type: "button"}, answersNav));
+				
+				domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, answersHeader);
+				domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, answersHeader);
+				domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, answersHeader);
+
+				new Button({
+					label: "Present"
+				}, domConstruct.create("button", {id: "answersPanelFullscreenButton", type: "button"}, answersSettings));
+				domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, answersSettings);
+				
 				on(registry.byId("nextPiQuestionButton"), "click", function(event) {
 					lecturerQuestionModel.next();
 				});
@@ -40,16 +111,16 @@ define(
 				
 				fullscreen.onChange(function(event, isActive) {
 					if (!isActive) {
-						domStyle.set(dom.byId("answersQuestionSubject"), "display", "none");
-						domStyle.set(dom.byId("answersQuestionTitleSeperator"), "display", "none");
-						domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("answersControlPanel"));
-						domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("answersChartPanel"));
+						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "none");
+						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "none");
+						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("piAnswersControlPane"));
+						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("piAnswersMainPane"));
 					}
 				});
 				
 				fullscreen.onError(function(event) {
-					domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("answersControlPanel"));
-					domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("answersChartPanel"));
+					domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("piAnswersControlPane"));
+					domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("piAnswersMainPane"));
 				});
 				
 				lecturerQuestionModel.watchId(this.onLecturerQuestionIdChange);
@@ -77,7 +148,7 @@ define(
 							var questionNode = domConstruct.toDom("<p class='question'>" + question.text + "</p>");
 							on(questionNode, "click", function(event) {
 								lecturerQuestionModel.setId(question._id);
-								registry.byId("piTabs").selectChild(registry.byId("piAnswersPanel"));
+								registry.byId("piTabs").selectChild(registry.byId("piAnswersContainer"));
 							});
 							domConstruct.place(questionNode, categoryNode);
 						});
@@ -92,8 +163,8 @@ define(
 				
 				/* transform the label and answer count data into arrays usable by dojox/charting */
 				when(question, function(question) {
-					dom.byId("answersQuestionSubject").innerHTML = question.subject;
-					dom.byId("answersQuestionText").innerHTML = question.text;
+					dom.byId("piAnswersQuestionSubject").innerHTML = question.subject;
+					dom.byId("piAnswersQuestionText").innerHTML = question.text;
 					
 					question.possibleAnswers.forEach(function(possibleAnswer, i) {
 						labelReverseMapping[possibleAnswer.text] = i;
@@ -107,7 +178,7 @@ define(
 							totalAnswerCount += answer.answerCount;
 							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
 						}, values);
-						dom.byId("answerCount").innerHTML = totalAnswerCount;
+						dom.byId("piAnswersCount").innerHTML = totalAnswerCount;
 						
 						piAnswersChart.update(labels, values);
 					});
@@ -121,10 +192,10 @@ define(
 						fullscreen.exit();
 					} else {
 						fullscreen.request(fullscreenNode);
-						domStyle.set(dom.byId("answersQuestionSubject"), "display", "inline");
-						domStyle.set(dom.byId("answersQuestionTitleSeperator"), "display", "inline");
-						domConstruct.place(dom.byId("answersControlPanelContent"), dom.byId("fullscreenControl"));
-						domConstruct.place(dom.byId("answersChartPanelContent"), dom.byId("fullscreenContent"));
+						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "inline");
+						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "inline");
+						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("fullscreenControl"));
+						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("fullscreenContent"));
 					}
 				} else {
 					console.log("Fullscreen mode not supported");

@@ -2,10 +2,12 @@ define(
 	[
 		"dojo/when",
 		"dojo/dom",
+		"dojo/dom-construct",
 		"dijit/registry",
-		"dijit/form/DropDownButton"
+		"dijit/form/DropDownButton",
+		"dijit/form/Select"
 	],
-	function(when, dom, registry, DropDownButton) {
+	function(when, dom, domConstruct, registry, DropDownButton, Select) {
 		"use strict";
 		
 		var
@@ -18,12 +20,23 @@ define(
 				console.log("-- UI: sessionControls.init --");
 				
 				sessionModel = session;
-				
-				sessionSelect = registry.byId("sessionSelect");
-				sessionSelect.maxHeight = 200;
-				sessionSelect.onChange = function(value) {
-					sessionModel.setKey(value);
-				};
+
+				/* Session info */
+				var sessionInfoNode = domConstruct.create("div", {id: "sessionInfo"}, "headerPane");
+				domConstruct.create("header", {id: "sessionTitle", innerHTML: "ARSnova Presenter"}, sessionInfoNode);
+				domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, sessionInfoNode);
+				/* Session controls */
+				var sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
+				domConstruct.create("label", {"for": "sessionSelect", innerHTML: "Session"}, sessionPanelNode);
+				domConstruct.create("select", {id: "sessionSelect"}, sessionPanelNode);
+				domConstruct.create("span", {id: "sessionKeyword", innerHTML: "Keyword"}, sessionPanelNode);
+				(sessionSelect = new Select({
+					options: [{label: "Select a session", value: "", selected: true, disabled: true}],
+					maxHeight: 200,
+					onChange: function(value) {
+						sessionModel.setKey(value);
+					}
+				}, "sessionSelect")).startup();
 				
 				/* button is destroyed on creation since it is not needed
 				 * until editing features are available */
@@ -39,6 +52,8 @@ define(
 					dom.byId("activeUserCount").innerHTML = value;
 				});
 			},
+			
+			startup: function() {},
 			
 			updateSessionSelect: function(sessions) {
 				when(sessions, function(sessions) {

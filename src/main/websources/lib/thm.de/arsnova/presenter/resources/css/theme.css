@@ -40,7 +40,7 @@ body {
 	cursor: pointer;
 }
 
-.panelHeading {
+.headerPane {
 	background-color: rgb(226, 235, 242) ! important;
 	text-align: center;
 	font-size: 1.2em;
@@ -52,11 +52,11 @@ body {
 	font-weight: bold;
 }
 
-#answersQuestionSubject {
+#piAnswersQuestionSubject {
 	font-weight: bold;
 }
 
-#answersControlPanel header {
+#piAnswersControlPane header {
 	font-size: 1.2em;
 }
 

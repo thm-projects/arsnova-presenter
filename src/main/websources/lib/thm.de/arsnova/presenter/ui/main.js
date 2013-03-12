@@ -5,24 +5,67 @@ define(
 		"dojo/dom-construct",
 		"dojo/dom-geometry",
 		"dojo/dom-style",
+		"dijit/registry",
+		"dijit/layout/BorderContainer",
+		"dgerhardt/dijit/layout/ContentPane",
+		"dijit/form/Button",
+		"dijit/form/Select",
 		"dgerhardt/common/fullscreen",
 		"version"
 	],
-	function(on, dom, domConstruct, domGeometry, domStyle, fullscreen, version) {
+	function(on, dom, domConstruct, domGeometry, domStyle, registry, BorderContainer, ContentPane, Button, Select, fullscreen, version) {
 		"use strict";
 		
 		return {
 			init: function() {
 				console.log("-- UI: main.init --");
 				
+				var
+					appContainerNode = domConstruct.create("div", {id: "appContainer"}, document.body),
+					
+					appContainer = new BorderContainer({
+						id: "appContainer",
+						design: "headline"
+					}, appContainerNode),
+					mainContainer = new BorderContainer({
+						id: "mainContainer",
+						region: "center"
+					}),
+					headerPane = new ContentPane({
+						id: "headerPane",
+						region: "top",
+						"class": "sidePanel"
+					}),
+					footerPane = new ContentPane({
+						id: "footerPane",
+						region: "bottom",
+						"class": "sidePanel"
+					})
+				;
+				
+				appContainer.addChild(mainContainer);
+				appContainer.addChild(headerPane);
+				appContainer.addChild(footerPane);
+			},
+			
+			startup: function() {
+				var appContainer = registry.byId("appContainer");
+				appContainer.startup();
+				
+				/* Add header content */
+				var exitPanelNode = domConstruct.create("div", {id: "exitPanel"}, "headerPane");
+				/* Miscellaneous buttons */
+				domConstruct.create("button", {id: "mobileButton", type: "button"}, exitPanelNode);
+				new Button({label: "Mobile"}, "mobileButton").startup();
+
+				/* Add footer content */
 				var versionString = version.version;
 				if (version.commitId) {
 					versionString += " [" + version.commitId + "]";
 				}
-				dom.byId("productVersionNumber").innerHTML = versionString;
-				
-				var sessionInfoNode = domConstruct.toDom("<div id='sessionInfo'><header id='sessionTitle'>ARSnova Presenter</header><span id='activeUserCount'>-</span></div>");
-				domConstruct.place(sessionInfoNode, "headerPanel");
+				domConstruct.create("img", {id: "productLogo", src: "images/logo-16x16.png"}, "footerPane");
+				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "ARSnova Presenter"}, "footerPane");
+				domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel", innerHTML: "Version: " + versionString}, "footerPane");
 				
 				/* prevent window scrolling (needed for IE) */
 				on(window, "scroll", function(event) {
@@ -80,6 +123,8 @@ define(
 				};
 				on(window, "resize", windowOnResize);
 				windowOnResize();
+				
+				appContainer.resize();
 			}
 		};
 	}

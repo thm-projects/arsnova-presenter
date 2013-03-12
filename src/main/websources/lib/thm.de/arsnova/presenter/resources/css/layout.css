@@ -36,7 +36,7 @@ html, body {
 
 #appContainer {
 	height: 100%;
-	visibility: hidden;
+	-visibility: hidden;
 }
 
 #fullscreenContainer {
@@ -97,41 +97,51 @@ html, body {
 	float: right;
 }
 
-#piPanel, #audiencePanel {
+#piContainer, #audienceContainer {
 	width: 49%;
 	padding: 0;
 }
 
-#answersNavigation, #answersControlPanelContent header {
+#piAnswersNavigation, #piAnswersControlPanelContent header {
 	float: left;
 }
 
-#answersSettingsContainer {
+#piAnswersSettings {
 	float: right;
 	white-space: no-wrap;
 }
 
-#answersSettingsContainer > * {
+#piAnswersSettings > * {
 	float: left;
 	margin-left: 0.5em;
 	margin-right: 0.5em;
 }
 
-#answersChartPanel, #audienceFeedbackPanel {
+#piAnswersMainPane, #audienceFeedbackPane {
 	overflow: hidden;
 }
 
-#answersControlPanelContent header {
+#piAnswersNavigation {
+	display: inline-block;
+}
+
+#piAnswersQuestion {
+	display: inline-block;
+	line-height: 34px;
+}
+
+#piAnswersControlPaneContent header {
 	margin-left: 0.5em;
 	margin-right: 0.5em;
 	line-height: 34px;
 	white-space: no-wrap;
 }
 
-#answersQuestionSubject, #answersQuestionTitleSeperator {
+#piAnswersQuestionSubject, #piAnswersQuestionTitleSeperator {
 	display: none;
 }
 
-#answerStats {
+#piAnswersCount {
+	display: inline-block;
 	line-height: 34px;
 }

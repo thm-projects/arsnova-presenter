@@ -18,7 +18,7 @@ define(
 			init: function() {
 				console.log("-- Chart: piAnswers.init --");
 				
-				answersChart = new Chart("answersChart");
+				answersChart = new Chart("piAnswersChart");
 				answersChart.setTheme(theme);
 				answersChart.addPlot("default", {
 					type: Columns,
@@ -42,12 +42,12 @@ define(
 						if ("hidden" == appContainer.style.visibility) {
 							return;
 						}
-						var panel = fullscreen.isActive() ? dom.byId("fullscreenContent") : dom.byId("answersChartPanel");
+						var panel = fullscreen.isActive() ? dom.byId("fullscreenContent") : dom.byId("piAnswersMainPane");
 						var height = panel.clientHeight - 16;
 						answersChart.resize(-1, height);
 					}, 20);
 				};
-				registry.byId("answersChartPanel").on("resize", onResize);
+				registry.byId("piAnswersMainPane").on("resize", onResize);
 				//onResize();
 			},
 			

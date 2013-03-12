@@ -19,23 +19,29 @@ define(
 		
 		var
 			init = function() {
+				ready(function() {
+					mainUi.init();
+					authControls.init(authService);
+				});
 				authService.init(function() {
 					/* user is not logged in an can not be logged in automatically */
 					ready(function() {
-						authControls.init(authService);
 						authControls.showLoginDialog();
 					});
 				});
 				ready(function() {
-					mainUi.init();
-					authControls.init(authService);
-					
 					if (authService.isLoggedIn()) {
 						socket.connect();
 						
 						sessionControls.init(sessionModel);
 						piPanel.init(lecturerQuestionModel);
 						audiencePanel.init(audienceQuestionModel);
+
+						mainUi.startup();
+						sessionControls.startup();
+						authControls.startup();
+						piPanel.startup();
+						audiencePanel.startup();
 						
 						sessionModel.watchKey(onSessionKeyChange);
 						

@@ -5,20 +5,61 @@ define(
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dojo/dom-class",
+		"dijit/registry",
+		"dijit/layout/BorderContainer",
+		"dijit/layout/TabContainer",
+		"dgerhardt/dijit/layout/ContentPane",
 		"arsnova-api/feedback",
 		"arsnova-presenter/ui/chart/audienceFeedback"
 	],
-	function(on, when, dom, domConstruct, domClass, feedbackModel, audienceFeedbackChart) {
+	function(on, when, dom, domConstruct, domClass, registry, BorderContainer, TabContainer, ContentPane, feedbackModel, audienceFeedbackChart) {
 		"use strict";
 		
+		var self = null;
 		var audienceQuestionModel = null;
 		
 		return {
 			init: function(audienceQuestion) {
 				console.log("-- UI: audiencePanel.init --");
 				
-				var self = this;
+				self = this;
 				audienceQuestionModel = audienceQuestion;
+				
+				var
+					audienceContainer = new BorderContainer({
+						id: "audienceContainer",
+						region: "right",
+						splitter: true
+					}),
+					audienceHeaderPane = new ContentPane({
+						region: "top",
+						content: "Audience response",
+						"class": "headerPane sidePanel"
+					}),
+					audienceTabs = new TabContainer({
+						id: "audienceTabs",
+						region: "center"
+					}),
+					audienceFeedbackPane = new ContentPane({
+						id: "audienceFeedbackPane",
+						title: "Feedback"
+					}),
+					audienceQuestionsPane = new ContentPane({
+						id: "audienceQuestionsPane",
+						title: "Questions"
+					})
+				;
+				
+				registry.byId("mainContainer").addChild(audienceContainer);
+				audienceContainer.addChild(audienceHeaderPane);
+				audienceContainer.addChild(audienceTabs);
+				audienceTabs.addChild(audienceFeedbackPane);
+				audienceTabs.addChild(audienceQuestionsPane);
+			},
+			
+			startup: function() {
+				domConstruct.create("div", {id: "audienceFeedbackChart"}, "audienceFeedbackPane");
+				domConstruct.create("div", {id: "audienceQuestionList"}, "audienceQuestionsPane");
 				
 				audienceFeedbackChart.init();
 				
@@ -31,8 +72,6 @@ define(
 			},
 			
 			updateQuestionsPanel: function(questions) {
-				/* self is needed because of scope change */
-				var self = this;
 				var questionListNode = dom.byId("audienceQuestionList");
 				questionListNode.innerHTML = "";
 				when(questions, function(questions) {
@@ -63,7 +102,7 @@ define(
 				when(question, function(question) {
 					domClass.remove(questionNode, "unread");
 					domClass.add(questionNode, "opened");
-					domConstruct.place("<p>" + question.text + "</p>", questionNode);
+					domConstruct.create("p", {innerHTML: question.text}, questionNode);
 				});
 			}
 		};

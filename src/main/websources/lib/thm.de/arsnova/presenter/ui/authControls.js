@@ -16,7 +16,11 @@ define(
 				console.log("-- UI: authControls.init --");
 				
 				authService = auth;
-				
+			},
+			
+			startup: function() {
+				domConstruct.create("button", {id: "logoutButton", type: "button"}, "exitPanel");
+				new Button({label: "Logout"}, "logoutButton").startup();
 				registry.byId("logoutButton").onClick = authService.logout;
 			},
 			
