@@ -159,20 +159,34 @@ define(
 					}
 				});
 				
-				var lowResNode = dom.byId("lowResolution");
+				var lowResNode = domConstruct.create("div", {id: "lowResolution"}, document.body);
+				domStyle.set(lowResNode, "visibility", "hidden");
+				var lowResContentWrapperNode = domConstruct.create("div", null, lowResNode);
+				domConstruct.create("img", {src: "images/arsnova.png", alt: "ARSnova"},
+					domConstruct.create("h1", null,
+						domConstruct.create("header", null, lowResContentWrapperNode)
+					)
+				);
+				var lowResMessage = domConstruct.create("p", {id: "lowResolutionMessage"}, lowResContentWrapperNode);
+				new Button({
+					label: "ARSnova mobile",
+					onClick: function() {
+						location.href = config.arsnova.mobileUrl;
+					}
+				}).placeAt(
+					domConstruct.create("p", null, lowResContentWrapperNode)
+				).startup();
 				var resizeLog = "";
 				var resizeLogTimeout = null;
-				domStyle.set(lowResNode, "visibility", "hidden");
-				domConstruct.place(lowResNode, document.body);
 				var windowOnResize = function(event) {
 					if (screen.availWidth < 780 || screen.availHeight < 460) {
 						resizeLog = "Small resolution detected: " + screen.availWidth + "x" + screen.availHeight;
-						dom.byId("lowResolutionMessage").innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Presenter is optimized for notebook, tablet and desktop devices.";
+						lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Presenter is optimized for notebook, tablet and desktop devices.";
 						domStyle.set(appContainer, "visibility", "hidden");
 						domStyle.set(lowResNode, "visibility", "visible");
 					} else if (document.body.clientWidth < 780 || document.body.clientHeight < 460) {
 						resizeLog = "Small window detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
-						dom.byId("lowResolutionMessage").innerHTML = "This application cannot be run because the resolution requirements are not met. Please increase the size of your browser's window.";
+						lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. Please increase the size of your browser's window.";
 						domStyle.set(appContainer, "visibility", "hidden");
 						domStyle.set(lowResNode, "visibility", "visible");
 					} else {

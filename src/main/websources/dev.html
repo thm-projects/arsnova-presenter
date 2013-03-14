@@ -5,34 +5,11 @@
 <title>ARSnova Presenter [DEV]</title>
 <link rel="shortcut icon" href="images/logo-16x16.png" type="image/png" />
 <link rel="stylesheet" href="lib/dojotoolkit.org/dijit/themes/claro/claro.css" media="screen" />
-<link rel="stylesheet" href="lib/thm.de/arsnova/presenter/resources/css/layout.css" media="screen" />
-<link rel="stylesheet" href="lib/thm.de/arsnova/presenter/resources/css/theme.css" media="screen" />
+<link rel="stylesheet" href="lib/thm.de/arsnova/presenter/resources/css/presenter.css" media="screen" />
 </head>
 
 <body class="claro">
 <noscript><div id="noJs"><div><header><h1><img src="images/arsnova.png" alt="ARSnova" /></h1></header><p>This application needs JavaScript to be enabled in your browser.</p></div></div></noscript>
-
-<div id="widgets">
-	<div id="loginDialog" title="Login" data-dojo-type="dijit/Dialog">
-		<div>Please choose a service to login with.</div>
-		<div id="loginServiceButtons"></div>
-	</div>
-	
-	<div id="newSessionDialog" data-dojo-type="dijit/TooltipDialog">
-		<input id="sessionNameField" type="text" placeholder="Short name" maxlength="12" data-dojo-type="dijit/form/TextBox" /><br />
-		<input id="sessionDescField" type="text" placeholder="Description" data-dojo-type="dijit/form/TextBox" /><br />
-		<button id="createSessionButton" type="button" data-dojo-type="dijit/form/Button">Create</button> 
-	</div>
-	
-	<div id="lowResolution">
-		<div>
-			<header><h1><img src="images/arsnova.png" alt="ARSnova" /></h1></header>
-			<p id="lowResolutionMessage"></p>
-			<p><button id="lowResolutionMobileButton" type="button" data-dojo-type="dijit/form/Button">ARSnova mobile</button></p>
-		</div>
-	</div>
-</div>
-
 <script>
 var dojoConfig = {
 	arsnova: {
@@ -48,19 +25,9 @@ var dojoConfig = {
 <script>
 require(
 	[
-		"arsnova-presenter/controller",
-		"dojo/parser",
-		"dijit/layout/BorderContainer",
-		"dijit/layout/TabContainer",
-		"dgerhardt/dijit/layout/ContentPane",
-		"dijit/Dialog",
-		"dijit/TooltipDialog",
-		"dijit/form/Button",
-		"dijit/form/TextBox",
-		"dijit/form/Select"
+		"arsnova-presenter/controller"
 	],
-	function(app, parser) {
-		parser.parse();
+	function(app) {
 		app.startup();
 	}
 );

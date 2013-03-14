@@ -4,9 +4,10 @@ define(
 		"dojo/dom-construct",
 		"dojo/dom-style",
 		"dijit/registry",
-		"dijit/form/Button"
+		"dijit/form/Button",
+		"dijit/Dialog"
 	],
-	function(dom, domConstruct, domStyle, registry, Button) {
+	function(dom, domConstruct, domStyle, registry, Button, Dialog) {
 		"use strict";
 		
 		var authService = null;
@@ -25,9 +26,17 @@ define(
 			},
 			
 			showLoginDialog: function() {
+				var loginDialogContent = domConstruct.create("div");
+				domConstruct.create("div", {innerHTML: "Please choose a service to login with:"}, loginDialogContent);
+				var loginDialog = new Dialog({
+					title: "Login",
+					content: loginDialogContent,
+					onCancel: function() {
+						console.debug("Cancel action is disabled");
+					}
+				});
 				var services = authService.getServices();
 				for (var service in services) {
-					var domButton = domConstruct.place("<button type='button'>" + service + "</button>", "loginServiceButtons");
 					new Button({
 						label: services[service].title,
 						onClick: function(url) {
@@ -36,14 +45,10 @@ define(
 								location.href = url + "&referer=" + encodeURIComponent(location.href);
 							};
 						}(services[service].url)
-					}, domButton);
+					}).placeAt(loginDialogContent);
 				}
-				var dlg = registry.byId("loginDialog");
-				dlg.onCancel = function() {
-					console.debug("Cancel action is disabled");
-				};
-				domStyle.set(dlg.closeButtonNode, "display", "none");
-				dlg.show();
+				domStyle.set(loginDialog.closeButtonNode, "display", "none");
+				loginDialog.show();
 			}
 		};
 	}
