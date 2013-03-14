@@ -73,9 +73,9 @@ html, body {
 }
 
 #sessionInfo {
-	position: fixed;
-	left: 250px;
-	right: 250px;
+	position: absolute;
+	left: 320px;
+	right: 320px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-align: center;
@@ -102,8 +102,16 @@ html, body {
 }
 
 #piContainer, #audienceContainer {
-	width: 49%;
+	width: 49.5%;
 	padding: 0;
+}
+
+#piAnswersContainer {
+	padding: 0;
+}
+
+#piAnswersContainer > * {
+	border: none;
 }
 
 #piAnswersNavigation, #piAnswersControlPanelContent header {
@@ -112,7 +120,7 @@ html, body {
 
 #piAnswersSettings {
 	float: right;
-	white-space: no-wrap;
+	white-space: nowrap;
 }
 
 #piAnswersSettings > * {
@@ -145,7 +153,18 @@ html, body {
 	display: none;
 }
 
+#piNavigationStatus {
+	margin: 0 0.25em;
+}
+
 #piAnswersCount {
 	display: inline-block;
 	line-height: 34px;
+}
+
+#footerTime {
+	position: absolute;
+	left: 320px;
+	right: 320px;
+	text-align: center;
 }

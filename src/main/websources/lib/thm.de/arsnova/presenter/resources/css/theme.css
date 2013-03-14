@@ -60,6 +60,10 @@ body {
 	font-size: 1.2em;
 }
 
+#footerTime {
+	font-weight: bold;
+}
+
 .question.unread {
 	font-weight: bold;
 }

@@ -5,6 +5,7 @@ define(
 		"dojo/dom-construct",
 		"dojo/dom-geometry",
 		"dojo/dom-style",
+		"dojo/date/locale",
 		"dijit/registry",
 		"dijit/layout/BorderContainer",
 		"dgerhardt/dijit/layout/ContentPane",
@@ -14,10 +15,11 @@ define(
 		"dijit/Menu",
 		"dijit/MenuItem",
 		"dijit/form/Select",
+		"dijit/Tooltip",
 		"dgerhardt/common/fullscreen",
 		"version"
 	],
-	function(on, dom, domConstruct, domGeometry, domStyle, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, fullscreen, version) {
+	function(on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullscreen, version) {
 		"use strict";
 		
 		return {
@@ -99,6 +101,15 @@ define(
 				domConstruct.create("img", {id: "productLogo", src: "images/logo-16x16.png"}, "footerPane");
 				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "ARSnova Presenter"}, "footerPane");
 				domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel", innerHTML: "Version: " + versionString}, "footerPane");
+				var timeNode = domConstruct.create("div", {id: "footerTime"}, "footerPane");
+				setInterval(function() {
+					timeNode.innerHTML = dateLocale.format(new Date(), {selector: "time", formatLength: "short"});
+					new Tooltip({
+						connectId: ["footerTime"],
+						label: dateLocale.format(new Date(), {selector: "date", formatLength: "short"}),
+						position: ["above-centered"]
+					});
+				}, 500);
 				
 				/* prevent window scrolling (needed for IE) */
 				on(window, "scroll", function(event) {
