@@ -1,16 +1,21 @@
 define(
 	[
+		"dojo/_base/config",
+		"dojo/string",
+		"dojo/on",
 		"dojo/when",
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dijit/registry",
 		"dijit/form/DropDownButton",
-		"dijit/form/Select"
+		"dijit/form/Select",
+		"dijit/Dialog",
 	],
-	function(when, dom, domConstruct, registry, DropDownButton, Select) {
+	function(config, string, on, when, dom, domConstruct, registry, DropDownButton, Select, Dialog) {
 		"use strict";
 		
 		var
+			self = null,
 			sessionModel = null,
 			sessionSelect = null
 		;
@@ -19,6 +24,7 @@ define(
 			init: function(session) {
 				console.log("-- UI: sessionControls.init --");
 				
+				self = this;
 				sessionModel = session;
 
 				/* Session info */
@@ -95,6 +101,52 @@ define(
 					;
 					dom.byId("sessionKeyword").innerHTML = keyword;
 				});
+				
+				/* update mode menu items */
+				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
+				if ("undefined" !== typeof config.arsnova.mobileLecturerSessionUrl) {
+					on(mobileLecturersViewMenuItem, "click", function() {
+						self.openMobileSession(config.arsnova.mobileLecturerSessionUrl, value);
+					});
+					mobileLecturersViewMenuItem.set("disabled", false);
+				}
+				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
+				if ("undefined" !== typeof config.arsnova.mobileStudentSessionUrl) {
+					on(mobileStudentsViewMenuItem, "click", function() {
+						self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
+					});
+					mobileStudentsViewMenuItem.set("disabled", false);
+				}
+			},
+			
+			openMobileSession: function(url) {
+				url = string.substitute(url, {sessionKey: sessionModel.getKey()});
+				
+				if (document.body.clientWidth < 500 || document.body.clientHeight < 850) {
+					window.open(url, "_blank");
+					
+					return;
+				}
+				
+				var mobileFrame = domConstruct.create("iframe", {
+					id: "mobileFrame",
+					src: url,
+					width: 480,
+					height: 800
+				});
+				var mobileDialog = registry.byId("mobileDialog");
+				if (null == mobileDialog) {
+					mobileDialog = new Dialog({
+						id: "mobileDialog",
+						title: "ARSnova",
+						style: "width: 480px; height: 830px",
+						onHide: function() {
+							domConstruct.destroy("mobileFrame");
+						}
+					});
+				}
+				mobileDialog.set("content", mobileFrame);
+				mobileDialog.show();
 			}
 		};
 	}

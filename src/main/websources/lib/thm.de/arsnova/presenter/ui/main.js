@@ -78,7 +78,7 @@ define(
 				
 				/* Add header content */
 				var exitPanelNode = domConstruct.create("div", {id: "exitPanel"}, "headerPane");
-				/* Miscellaneous buttons */
+				
 				var fullScreenMenu = new Menu({id: "fullScreenMenu", style: "display: none"});
 				/* Menu items are added in the specific UI modules */
 				new ComboButton({
@@ -86,18 +86,27 @@ define(
 					onClick: this.enableFullScreenMode,
 					dropDown: fullScreenMenu
 				}, domConstruct.create("button", {id: "fullScreenButton", type: "button"}, exitPanelNode)).startup();
-				var modeMenu = new Menu({style: "display: none"});
+				
+				var modeMenu = new Menu({
+					id: "modeMenu",
+					style: "display: none"
+				});
 				modeMenu.addChild(new MenuItem({
 					label: "Presentation"
 				}));
 				modeMenu.addChild(new MenuItem({
-					label: "Editing"
+					label: "Editing",
+					disabled: true
 				}));
 				modeMenu.addChild(new MenuItem({
-					label: "Mobile (lecturer's view)"
+					id: "mobileLecturersViewMenuItem",
+					label: "Mobile (lecturer's view)",
+					disabled: true
 				}));
 				modeMenu.addChild(new MenuItem({
-					label: "Mobile (student's view)"
+					id: "mobileStudentsViewMenuItem",
+					label: "Mobile (student's view)",
+					disabled: true
 				}));
 				new DropDownButton({
 					label: "Mode",

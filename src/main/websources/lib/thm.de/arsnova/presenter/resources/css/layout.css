@@ -163,3 +163,15 @@ html, body {
 	right: 320px;
 	text-align: center;
 }
+
+#mobileDialog .dijitDialogPaneContent {
+	padding: 0;
+	overflow: hidden ! important;
+	height: 800px ! important; /* needed because there seems to be a bug with the Dijit calculations  */
+	background: black;
+}
+
+#mobileDialog iframe {
+	overflow: hidden;
+	border: none;
+}
