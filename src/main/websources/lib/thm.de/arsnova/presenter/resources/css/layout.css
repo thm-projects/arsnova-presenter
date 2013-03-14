@@ -39,7 +39,7 @@ html, body {
 	-visibility: hidden;
 }
 
-#fullscreenContainer {
+#fullScreenContainer {
 	width: 100%;
 	height: 100%;
 	display: none;
@@ -47,11 +47,11 @@ html, body {
 	background-color: white;
 }
 
-#fullscreenControls, #fullscreenHeader, #fullscreenContent {
+#fullScreenControls, #fullScreenHeader, #fullScreenContent {
 	overflow: hidden;
 }
 
-#fullscreenLogo {
+#fullScreenLogo {
 	position: fixed;
 	right: 12px;
 	bottom: 12px;

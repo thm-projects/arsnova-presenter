@@ -9,10 +9,11 @@ define(
 		"dijit/layout/BorderContainer",
 		"dijit/layout/TabContainer",
 		"dgerhardt/dijit/layout/ContentPane",
+		"dijit/MenuItem",
 		"arsnova-api/feedback",
 		"arsnova-presenter/ui/chart/audienceFeedback"
 	],
-	function(on, when, dom, domConstruct, domClass, registry, BorderContainer, TabContainer, ContentPane, feedbackModel, audienceFeedbackChart) {
+	function(on, when, dom, domConstruct, domClass, registry, BorderContainer, TabContainer, ContentPane, MenuItem, feedbackModel, audienceFeedbackChart) {
 		"use strict";
 		
 		var self = null;
@@ -60,6 +61,16 @@ define(
 			startup: function() {
 				domConstruct.create("div", {id: "audienceFeedbackChart"}, "audienceFeedbackPane");
 				domConstruct.create("div", {id: "audienceQuestionList"}, "audienceQuestionsPane");
+				
+				var fullScreenMenu = registry.byId("fullScreenMenu");
+				fullScreenMenu.addChild(new MenuItem({
+					label: "Audience feedback",
+					disabled: true
+				}));
+				fullScreenMenu.addChild(new MenuItem({
+					label: "Audience questions",
+					disabled: true
+				}));
 				
 				audienceFeedbackChart.init();
 				

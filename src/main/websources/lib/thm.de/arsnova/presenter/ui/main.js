@@ -19,7 +19,7 @@ define(
 		"dgerhardt/common/fullscreen",
 		"version"
 	],
-	function(on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullscreen, version) {
+	function(on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullScreen, version) {
 		"use strict";
 		
 		return {
@@ -52,6 +52,24 @@ define(
 				appContainer.addChild(mainContainer);
 				appContainer.addChild(headerPane);
 				appContainer.addChild(footerPane);
+
+				/* Add dom nodes needed for full screen mode */
+				var fullScreenContainer = new BorderContainer({
+					id: "fullScreenContainer"
+				});
+				fullScreenContainer.addChild(new ContentPane({
+					id: "fullScreenControl",
+					region: "top"
+				}));
+				fullScreenContainer.addChild(new ContentPane({
+					id: "fullScreenHeader",
+					region: "top"
+				}));
+				fullScreenContainer.addChild(new ContentPane({
+					id: "fullScreenContent",
+					region: "center"
+				}));
+				fullScreenContainer.placeAt(document.body);
 			},
 			
 			startup: function() {
@@ -61,20 +79,13 @@ define(
 				/* Add header content */
 				var exitPanelNode = domConstruct.create("div", {id: "exitPanel"}, "headerPane");
 				/* Miscellaneous buttons */
-				var fullScreenMenu = new Menu({style: "display: none"});
-				fullScreenMenu.addChild(new MenuItem({
-					label: "Answers to Lecturer's questions"
-				}));
-				fullScreenMenu.addChild(new MenuItem({
-					label: "Audience feedback"
-				}));
-				fullScreenMenu.addChild(new MenuItem({
-					label: "Audience questions"
-				}));
+				var fullScreenMenu = new Menu({id: "fullScreenMenu", style: "display: none"});
+				/* Menu items are added in the specific UI modules */
 				new ComboButton({
 					label: "Full screen",
+					onClick: this.enableFullScreenMode,
 					dropDown: fullScreenMenu
-				}, domConstruct.create("button", {id: "answersPanelFullscreenButton", type: "button"}, exitPanelNode)).startup();
+				}, domConstruct.create("button", {id: "fullScreenButton", type: "button"}, exitPanelNode)).startup();
 				var modeMenu = new Menu({style: "display: none"});
 				modeMenu.addChild(new MenuItem({
 					label: "Presentation"
@@ -116,24 +127,26 @@ define(
 					scrollTo(0, 0);
 					console.debug("Prevented document scrolling");
 				});
-				
-				fullscreen.onChange(function(event, isActive) {
-					var fullscreenNode = dom.byId("fullscreenContainer");
-					var logo = dom.byId("fullscreenLogo");
+
+				/* Full screen mode */
+				registry.byId("fullScreenContainer").startup();
+				var fullScreenLogo = domConstruct.create("img", {id: "fullScreenLogo", src: "images/arsnova.png"}, "fullScreenContainer");
+				fullScreen.onChange(function(event, isActive) {
+					var fullScreenNode = dom.byId("fullScreenContainer");
 					if (isActive) {
-						console.log("Fullscreen mode enabled");
-						domStyle.set(fullscreenNode, "display", "block");
+						console.log("Full screen mode enabled");
+						domStyle.set(fullScreenNode, "display", "block");
 						
 						/* calculate logo size */
 						var docGeometry = domGeometry.getContentBox(document.body);
 						var vRatio = docGeometry.h / 30.0;
-						var ratio = logo.offsetWidth / logo.offsetHeight;
-						domStyle.set(logo, "height", vRatio);
-						domStyle.set(logo, "width", (vRatio * ratio) + "px");
-						domStyle.set(logo, "display", "block");
+						var ratio = fullScreenLogo.offsetWidth / fullScreenLogo.offsetHeight;
+						domStyle.set(fullScreenLogo, "height", vRatio);
+						domStyle.set(fullScreenLogo, "width", (vRatio * ratio) + "px");
+						domStyle.set(fullScreenLogo, "display", "block");
 					} else {
-						console.log("Fullscreen mode disabled");
-						domStyle.set(fullscreenNode, "display", "none");
+						console.log("Full screen mode disabled");
+						domStyle.set(fullScreenNode, "display", "none");
 					}
 				});
 				
@@ -169,6 +182,10 @@ define(
 				windowOnResize();
 				
 				appContainer.resize();
+			},
+			
+			enableFullScreenMode: function() {
+				fullScreen.request();
 			}
 		};
 	}

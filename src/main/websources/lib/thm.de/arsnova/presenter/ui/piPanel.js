@@ -16,13 +16,13 @@ define(
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, dom, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Menu, MenuItem, fullscreen, piAnswersChart) {
+	function(on, when, dom, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Menu, MenuItem, fullScreen, piAnswersChart) {
 		"use strict";
 		
 		var
 			self = null,
 			lecturerQuestionModel = null,
-			fullscreenNode = null
+			fullScreenNode = null
 		;
 		
 		return {
@@ -31,7 +31,7 @@ define(
 				
 				self = this;
 				lecturerQuestionModel = lecturerQuestion;
-				fullscreenNode = dom.byId("fullscreenContainer");
+				fullScreenNode = dom.byId("fullScreenContainer");
 				
 				var
 					piContainer = new BorderContainer({
@@ -133,11 +133,12 @@ define(
 					lecturerQuestionModel.prev();
 				});
 				
-				on(registry.byId("answersPanelFullscreenButton"), "click", function(event) {
-					self.togglePresentMode();
-				});
+				registry.byId("fullScreenMenu").addChild(new MenuItem({
+					label: "Answers to Lecturer's questions",
+					onClick: self.togglePresentMode
+				}));
 				
-				fullscreen.onChange(function(event, isActive) {
+				fullScreen.onChange(function(event, isActive) {
 					if (!isActive) {
 						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "none");
 						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "none");
@@ -147,7 +148,7 @@ define(
 					}
 				});
 				
-				fullscreen.onError(function(event) {
+				fullScreen.onError(function(event) {
 					domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("piAnswersControlPane"));
 					domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("piAnswersTitlePane"));
 					domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("piAnswersMainPane"));
@@ -216,17 +217,17 @@ define(
 			},
 			
 			togglePresentMode: function() {
-				if (fullscreen.isSupported()) {
-					if (fullscreen.isActive()) {
+				if (fullScreen.isSupported()) {
+					if (fullScreen.isActive()) {
 						/* dom node rearrangement takes place in fullscreenchange event handler */
-						fullscreen.exit();
+						fullScreen.exit();
 					} else {
-						fullscreen.request(fullscreenNode);
+						fullScreen.request(fullScreenNode);
 						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "inline");
 						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "inline");
-						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("fullscreenControl"));
-						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("fullscreenHeader"));
-						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("fullscreenContent"));
+						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("fullScreenControl"));
+						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("fullScreenHeader"));
+						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("fullScreenContent"));
 					}
 				} else {
 					console.log("Fullscreen mode not supported");

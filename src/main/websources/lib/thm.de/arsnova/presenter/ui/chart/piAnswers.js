@@ -9,7 +9,7 @@ define(
 	 	"dojo/fx/easing",
 	 	"./theme"
 	],
-	function(dom, registry, Chart, Columns, AxisDefault, fullscreen, easing, theme) {
+	function(dom, registry, Chart, Columns, AxisDefault, fullScreen, easing, theme) {
 		"use strict";
 		
 		var answersChart = null;
@@ -42,7 +42,7 @@ define(
 						if ("hidden" == appContainer.style.visibility) {
 							return;
 						}
-						var panel = fullscreen.isActive() ? dom.byId("fullscreenContent") : dom.byId("piAnswersMainPane");
+						var panel = fullScreen.isActive() ? dom.byId("fullScreenContent") : dom.byId("piAnswersMainPane");
 						var height = panel.clientHeight - 16;
 						answersChart.resize(-1, height);
 					}, 20);

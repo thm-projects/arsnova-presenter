@@ -59,7 +59,7 @@ define(
 							console.log("Router: loading session " + params.sessionKey);
 							sessionModel.setKey(params.sessionKey);
 							
-							/* FIXME: This is not working yet. Fullscreen has to be activated by user interaction */
+							/* FIXME: This is not working yet. Full screen mode has to be activated by user interaction */
 							if (params.present) {
 								switch (params.present) {
 								case "pi":

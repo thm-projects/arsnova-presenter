@@ -15,7 +15,7 @@ define(
 		} else if (document.documentElement.msRequestFullscreen) {
 			mode = "ms";
 		}
-		console.debug("Fullscreen support: " + (null != mode ? mode : "none"));
+		console.debug("Full screen mode support: " + (null != mode ? mode : "none"));
 		
 		return {
 			isSupported: function() {
