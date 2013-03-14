@@ -47,7 +47,7 @@ html, body {
 	background-color: white;
 }
 
-#fullscreenControls, #fullscreenContent {
+#fullscreenControls, #fullscreenHeader, #fullscreenContent {
 	overflow: hidden;
 }
 
@@ -114,8 +114,10 @@ html, body {
 	border: none;
 }
 
-#piAnswersNavigation, #piAnswersControlPanelContent header {
-	float: left;
+#piAnswersTitlePane {
+	padding: 0 0.5em;
+	text-align: center;
+	font-size: 1.2em;
 }
 
 #piAnswersSettings {
@@ -140,13 +142,6 @@ html, body {
 #piAnswersQuestion {
 	display: inline-block;
 	line-height: 34px;
-}
-
-#piAnswersControlPaneContent header {
-	margin-left: 0.5em;
-	margin-right: 0.5em;
-	line-height: 34px;
-	white-space: no-wrap;
 }
 
 #piAnswersQuestionSubject, #piAnswersQuestionTitleSeperator {

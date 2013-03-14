@@ -10,10 +10,13 @@ define(
 		"dijit/layout/TabContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Button",
+		"dijit/form/ComboButton",
+		"dijit/Menu",
+		"dijit/MenuItem",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, dom, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, fullscreen, piAnswersChart) {
+	function(on, when, dom, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Menu, MenuItem, fullscreen, piAnswersChart) {
 		"use strict";
 		
 		var
@@ -56,6 +59,10 @@ define(
 						id: "piAnswersControlPane",
 						region: "top"
 					}),
+					piAnswersTitlePane = new ContentPane({
+						id: "piAnswersTitlePane",
+						region: "top"
+					}),
 					piAnswersMainPane = new ContentPane({
 						id: "piAnswersMainPane",
 						region: "center"
@@ -68,6 +75,7 @@ define(
 				piTabs.addChild(piQuestionsPane);
 				piTabs.addChild(piAnswersContainer);
 				piAnswersContainer.addChild(piAnswersControlPane);
+				piAnswersContainer.addChild(piAnswersTitlePane);
 				piAnswersContainer.addChild(piAnswersMainPane);
 			},
 			
@@ -83,14 +91,37 @@ define(
 				
 				new Button({
 					label: "&#x25C0;"
+				}, domConstruct.create("button", {id: "firstPiQuestionButton", type: "button"}, answersNav));
+				new Button({
+					label: "&#x25C0;"
 				}, domConstruct.create("button", {id: "prevPiQuestionButton", type: "button"}, answersNav));
+				domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
 				new Button({
 					label: "&#x25B6;"
 				}, domConstruct.create("button", {id: "nextPiQuestionButton", type: "button"}, answersNav));
+				new Button({
+					label: "&#x25B6;"
+				}, domConstruct.create("button", {id: "lastPiQuestionButton", type: "button"}, answersNav));
 				
-				domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, answersHeader);
-				domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, answersHeader);
-				domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, answersHeader);
+				var showAnswersMenu = new Menu({style: "display: none"});
+				showAnswersMenu.addChild(new MenuItem({
+					label: "Correct answers"
+				}));
+				showAnswersMenu.addChild(new MenuItem({
+					label: "Before discussion (PI)"
+				}));
+				showAnswersMenu.addChild(new MenuItem({
+					label: "After discussion (PI)"
+				}));
+				new ComboButton({
+					label: "Show",
+					dropDown: showAnswersMenu
+				}, domConstruct.create("button", {id: "piAnswersShowButton", type: "button"}, answersNav));
+
+				var titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, "piAnswersTitlePane");
+				domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, titlePaneContentNode);
+				domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, titlePaneContentNode);
+				domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, titlePaneContentNode);
 
 				domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, answersSettings);
 				
@@ -111,12 +142,14 @@ define(
 						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "none");
 						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "none");
 						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("piAnswersControlPane"));
+						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("piAnswersTitlePane"));
 						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("piAnswersMainPane"));
 					}
 				});
 				
 				fullscreen.onError(function(event) {
 					domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("piAnswersControlPane"));
+					domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("piAnswersTitlePane"));
 					domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("piAnswersMainPane"));
 				});
 				
@@ -192,6 +225,7 @@ define(
 						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "inline");
 						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "inline");
 						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("fullscreenControl"));
+						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("fullscreenHeader"));
 						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("fullscreenContent"));
 					}
 				} else {
