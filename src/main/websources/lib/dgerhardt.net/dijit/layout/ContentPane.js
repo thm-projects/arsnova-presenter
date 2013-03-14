@@ -7,7 +7,7 @@ define(
 	function(declare, Evented, ContentPane) {
 		//"use strict";
 		
-		return declare("ContentPane", [Evented, ContentPane], {
+		return declare("ContentPane", [ContentPane, Evented], {
 			constructor: function() {
 				this.inherited(arguments);
 			},
