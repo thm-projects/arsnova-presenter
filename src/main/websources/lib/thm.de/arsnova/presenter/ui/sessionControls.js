@@ -59,7 +59,17 @@ define(
 				});
 			},
 			
-			startup: function() {},
+			startup: function() {
+				/* update mode menu item click events */
+				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
+				on(mobileLecturersViewMenuItem, "click", function() {
+					self.openMobileSession(config.arsnova.mobileLecturerSessionUrl, value);
+				});
+				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
+				on(mobileStudentsViewMenuItem, "click", function() {
+					self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
+				});
+			},
 			
 			updateSessionSelect: function(sessions) {
 				when(sessions, function(sessions) {
@@ -102,19 +112,13 @@ define(
 					dom.byId("sessionKey").innerHTML = keyword;
 				});
 				
-				/* update mode menu items */
+				/* enable mode menu items */
 				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
 				if ("undefined" !== typeof config.arsnova.mobileLecturerSessionUrl) {
-					on(mobileLecturersViewMenuItem, "click", function() {
-						self.openMobileSession(config.arsnova.mobileLecturerSessionUrl, value);
-					});
 					mobileLecturersViewMenuItem.set("disabled", false);
 				}
 				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
 				if ("undefined" !== typeof config.arsnova.mobileStudentSessionUrl) {
-					on(mobileStudentsViewMenuItem, "click", function() {
-						self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
-					});
 					mobileStudentsViewMenuItem.set("disabled", false);
 				}
 			},
