@@ -92,26 +92,38 @@ define(
 					id: "firstPiQuestionButton",
 					label: "First question",
 					showLabel: false,
-					iconClass: "iconFirst"
+					iconClass: "iconFirst",
+					onClick: function() {
+						lecturerQuestionModel.first();
+					}
 				}).placeAt(answersNav).startup();
 				new Button({
 					id: "prevPiQuestionButton",
 					label: "Previous question",
 					showLabel: false,
-					iconClass: "iconPrev"
+					iconClass: "iconPrev",
+					onClick: function() {
+						lecturerQuestionModel.prev();
+					}
 				}).placeAt(answersNav).startup();
 				domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
 				new Button({
 					id: "nextPiQuestionButton",
 					label: "Next question",
 					showLabel: false,
-					iconClass: "iconNext"
+					iconClass: "iconNext",
+					onClick: function() {
+						lecturerQuestionModel.next();
+					}
 				}).placeAt(answersNav).startup();
 				new Button({
 					id: "lastPiQuestionButton",
 					label: "Last question",
 					showLabel: false,
-					iconClass: "iconLast"
+					iconClass: "iconLast",
+					onClick: function() {
+						lecturerQuestionModel.last();
+					}
 				}).placeAt(answersNav).startup();
 				
 				var showAnswersMenu = new Menu({style: "display: none"});
@@ -136,14 +148,6 @@ define(
 				domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, titlePaneContentNode);
 
 				domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, answersSettings);
-				
-				on(registry.byId("nextPiQuestionButton"), "click", function(event) {
-					lecturerQuestionModel.next();
-				});
-				
-				on(registry.byId("prevPiQuestionButton"), "click", function(event) {
-					lecturerQuestionModel.prev();
-				});
 				
 				registry.byId("fullScreenMenu").addChild(new MenuItem({
 					label: "Answers to Lecturer's questions",

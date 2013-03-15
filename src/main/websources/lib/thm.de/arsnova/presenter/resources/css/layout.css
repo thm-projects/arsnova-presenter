@@ -152,6 +152,10 @@ html, body {
 	margin: 0 0.25em;
 }
 
+#piAnswersShowButton {
+	margin-left: 0.5em;
+}
+
 #sessionKey, #piAnswersCount {
 	display: inline-block;
 	line-height: 34px;

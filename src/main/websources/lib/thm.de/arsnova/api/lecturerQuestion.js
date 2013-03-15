@@ -110,6 +110,7 @@ define(
 					console.log("No session selected");
 					return;
 				}
+				
 				var index = questionMemory.index;
 				var firstQuestionId = null;
 				var nextQuestionId = null;
@@ -138,6 +139,7 @@ define(
 					console.log("No session selected");
 					return;
 				}
+				
 				var index = questionMemory.index;
 				var lastQuestionId = null;
 				var lastQuestionIndex = null;
@@ -160,6 +162,48 @@ define(
 				}
 				if (null != prevQuestionId) {
 					this.setId(prevQuestionId);
+				}
+			},
+			
+			first: function() {
+				if (null == questionState.get("sessionKey")) {
+					console.log("No session selected");
+					return;
+				}
+				
+				var index = questionMemory.index;
+				var firstQuestionId = null;
+				var firstQuestionIndex = Number.MAX_VALUE;
+				
+				for (var questionId in index) {
+					if (index[questionId] < firstQuestionIndex) {
+						firstQuestionIndex = index[questionId];
+						firstQuestionId = questionId;
+					}
+				};
+				if (null != firstQuestionId) {
+					this.setId(firstQuestionId);
+				}
+			},
+			
+			last: function() {
+				if (null == questionState.get("sessionKey")) {
+					console.log("No session selected");
+					return;
+				}
+				
+				var index = questionMemory.index;
+				var lastQuestionId = null;
+				var lastQuestionIndex = -1;
+				
+				for (var questionId in index) {
+					if (index[questionId] > lastQuestionIndex) {
+						lastQuestionIndex = index[questionId];
+						lastQuestionId = questionId;
+					}
+				};
+				if (null != lastQuestionId) {
+					this.setId(lastQuestionId);
 				}
 			},
 			
