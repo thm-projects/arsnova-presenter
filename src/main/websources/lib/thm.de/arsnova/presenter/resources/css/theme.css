@@ -71,6 +71,13 @@ body {
 	font-weight: bold;
 }
 
+#productLogo {
+	background: url(../../../../../../images/arsnova-84x16.png) no-repeat center center;
+	width: 84px;
+	height: 16px;
+	margin-top: -1px;
+}
+
 /* claro theme adjustments */
 .claro .dijitButton .dijitButtonNode, .claro .dijitDropDownButton .dijitButtonNode, .claro .dijitComboButton .dijitButtonNode, .claro .dijitToggleButton .dijitButtonNode, .claro .dijitMenuItem {
 	color: #333;

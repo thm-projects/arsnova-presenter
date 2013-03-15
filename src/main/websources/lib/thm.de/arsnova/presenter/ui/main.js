@@ -118,8 +118,8 @@ define(
 				if (version.commitId) {
 					versionString += " [" + version.commitId + "]";
 				}
-				domConstruct.create("img", {id: "productLogo", src: "images/logo-16x16.png"}, "footerPane");
-				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "ARSnova Presenter"}, "footerPane");
+				domConstruct.create("span", {id: "productLogo", title: "ARSnova"}, "footerPane");
+				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "Presenter"}, "footerPane");
 				domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel", innerHTML: "Version: " + versionString}, "footerPane");
 				var timeNode = domConstruct.create("div", {id: "footerTime"}, "footerPane");
 				setInterval(function() {
