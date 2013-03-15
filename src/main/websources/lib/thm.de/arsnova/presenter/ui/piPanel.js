@@ -86,22 +86,33 @@ define(
 				
 				var controlPaneContentNode = domConstruct.create("div", {id: "piAnswersControlPaneContent"}, "piAnswersControlPane");
 				var answersNav = domConstruct.create("div", {id: "piAnswersNavigation"}, controlPaneContentNode);
-				var answersHeader = domConstruct.create("header", {id: "piAnswersQuestion"}, controlPaneContentNode);
 				var answersSettings = domConstruct.create("div", {id: "piAnswersSettings"}, controlPaneContentNode);
 				
 				new Button({
-					label: "&#x25C0;"
-				}, domConstruct.create("button", {id: "firstPiQuestionButton", type: "button"}, answersNav));
+					id: "firstPiQuestionButton",
+					label: "First question",
+					showLabel: false,
+					iconClass: "iconFirst"
+				}).placeAt(answersNav).startup();
 				new Button({
-					label: "&#x25C0;"
-				}, domConstruct.create("button", {id: "prevPiQuestionButton", type: "button"}, answersNav));
+					id: "prevPiQuestionButton",
+					label: "Previous question",
+					showLabel: false,
+					iconClass: "iconPrev"
+				}).placeAt(answersNav).startup();
 				domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
 				new Button({
-					label: "&#x25B6;"
-				}, domConstruct.create("button", {id: "nextPiQuestionButton", type: "button"}, answersNav));
+					id: "nextPiQuestionButton",
+					label: "Next question",
+					showLabel: false,
+					iconClass: "iconNext"
+				}).placeAt(answersNav).startup();
 				new Button({
-					label: "&#x25B6;"
-				}, domConstruct.create("button", {id: "lastPiQuestionButton", type: "button"}, answersNav));
+					id: "lastPiQuestionButton",
+					label: "Last question",
+					showLabel: false,
+					iconClass: "iconLast"
+				}).placeAt(answersNav).startup();
 				
 				var showAnswersMenu = new Menu({style: "display: none"});
 				showAnswersMenu.addChild(new MenuItem({
@@ -114,9 +125,10 @@ define(
 					label: "After discussion (PI)"
 				}));
 				new ComboButton({
+					id: "piAnswersShowButton",
 					label: "Show",
 					dropDown: showAnswersMenu
-				}, domConstruct.create("button", {id: "piAnswersShowButton", type: "button"}, answersNav));
+				}).placeAt(answersNav).startup();
 
 				var titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, "piAnswersTitlePane");
 				domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, titlePaneContentNode);
