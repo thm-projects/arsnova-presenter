@@ -144,6 +144,10 @@ html, body {
 	overflow: hidden;
 }
 
+#piAnswersMainPaneContent, #audienceFeedbackPaneContent {
+	height: 100%;
+}
+
 #piAnswersNavigation {
 	display: inline-block;
 }

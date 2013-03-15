@@ -10,10 +10,11 @@ define(
 		"dijit/layout/TabContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/MenuItem",
+		"dgerhardt/common/fullscreen",
 		"arsnova-api/feedback",
 		"arsnova-presenter/ui/chart/audienceFeedback"
 	],
-	function(on, when, dom, domConstruct, domClass, registry, BorderContainer, TabContainer, ContentPane, MenuItem, feedbackModel, audienceFeedbackChart) {
+	function(on, when, dom, domConstruct, domClass, registry, BorderContainer, TabContainer, ContentPane, MenuItem, fullScreen, feedbackModel, audienceFeedbackChart) {
 		"use strict";
 		
 		var self = null;
@@ -59,18 +60,10 @@ define(
 			},
 			
 			startup: function() {
-				domConstruct.create("div", {id: "audienceFeedbackChart"}, "audienceFeedbackPane");
+				domConstruct.create("div", {id: "audienceFeedbackChart"},
+					domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, "audienceFeedbackPane")
+				);
 				domConstruct.create("div", {id: "audienceQuestionList"}, "audienceQuestionsPane");
-				
-				var fullScreenMenu = registry.byId("fullScreenMenu");
-				fullScreenMenu.addChild(new MenuItem({
-					label: "Audience feedback",
-					disabled: true
-				}));
-				fullScreenMenu.addChild(new MenuItem({
-					label: "Audience questions",
-					disabled: true
-				}));
 				
 				audienceFeedbackChart.init();
 				
@@ -79,6 +72,35 @@ define(
 					feedback[0] = feedback[1];
 					feedback[1] = feedback0;
 					self.updateFeedbackPanel(feedback);
+				});
+				
+				/* add full screen menu items */
+				var fullScreenMenu = registry.byId("fullScreenMenu");
+				fullScreenMenu.addChild(new MenuItem({
+					label: "Audience feedback",
+					onClick: this.toggleFeedbackPresentMode
+				}));
+				fullScreenMenu.addChild(new MenuItem({
+					label: "Audience questions",
+					onClick: this.toggleQuestionsPresentMode
+				}));
+				
+				/* handle events fired when full screen mode is canceled */
+				fullScreen.onChange(function(event, isActive) {
+					if (!isActive) {
+						domConstruct.place(dom.byId("audienceFeedbackPaneContent"), dom.byId("audienceFeedbackPane"));
+						domConstruct.destroy("audienceFeedbackTitle");
+
+						domConstruct.place(dom.byId("audienceQuestionList"), dom.byId("audienceQuestionsPane"));
+						domConstruct.destroy("audienceQuestionsTitle");
+					}
+				});
+				fullScreen.onError(function(event) {
+					domConstruct.place(dom.byId("audienceFeedbackPaneContent"), dom.byId("audienceFeedbackPane"));
+					domConstruct.destroy("audienceFeedbackTitle");
+
+					domConstruct.place(dom.byId("audienceQuestionList"), dom.byId("audienceQuestionsPane"));
+					domConstruct.destroy("audienceQuestionsTitle");
 				});
 			},
 			
@@ -115,7 +137,37 @@ define(
 					domClass.add(questionNode, "opened");
 					domConstruct.create("p", {innerHTML: question.text}, questionNode);
 				});
-			}
+			},
+			
+			toggleFeedbackPresentMode: function() {
+				if (fullScreen.isSupported()) {
+					if (fullScreen.isActive()) {
+						/* dom node rearrangement takes place in fullscreenchange event handler */
+						fullScreen.exit();
+					} else {
+						fullScreen.request(dom.byId("fullScreenContainer"));
+						domConstruct.create("header", {id: "audienceFeedbackTitle", innerHTML: "Audience feedback"}, "fullScreenHeader");
+						domConstruct.place(dom.byId("audienceFeedbackPaneContent"), dom.byId("fullScreenContent"));
+					}
+				} else {
+					console.log("Fullscreen mode not supported");
+				}
+			},
+			
+			toggleQuestionsPresentMode: function() {
+				if (fullScreen.isSupported()) {
+					if (fullScreen.isActive()) {
+						/* dom node rearrangement takes place in fullscreenchange event handler */
+						fullScreen.exit();
+					} else {
+						fullScreen.request(dom.byId("fullScreenContainer"));
+						domConstruct.create("header", {id: "audienceQuestionsTitle", innerHTML: "Audience questions"}, "fullScreenHeader");
+						domConstruct.place(dom.byId("audienceQuestionList"), dom.byId("fullScreenContent"));
+					}
+				} else {
+					console.log("Fullscreen mode not supported");
+				}
+			},
 		};
 	}
 );

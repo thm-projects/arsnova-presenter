@@ -83,7 +83,7 @@ define(
 				/* Menu items are added in the specific UI modules */
 				new ComboButton({
 					label: "Full screen",
-					onClick: this.enableFullScreenMode,
+					onClick: this.toggleFullScreenMode,
 					dropDown: fullScreenMenu
 				}, domConstruct.create("button", {id: "fullScreenButton", type: "button"}, exitPanelNode)).startup();
 				
@@ -207,8 +207,8 @@ define(
 				appContainer.resize();
 			},
 			
-			enableFullScreenMode: function() {
-				fullScreen.request();
+			toggleFullScreenMode: function() {
+				fullScreen.toggle();
 			}
 		};
 	}

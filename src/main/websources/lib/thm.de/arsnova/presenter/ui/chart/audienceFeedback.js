@@ -58,8 +58,8 @@ define(
 						if ("hidden" == appContainer.style.visibility) {
 							return;
 						}
-						var panel = dom.byId("audienceFeedbackPane");
-						var height = panel.clientHeight - 16;
+						var panel = dom.byId("audienceFeedbackPaneContent");
+						var height = panel.clientHeight;
 						feedbackChart.resize(-1, height);
 					}, 20);
 				};

@@ -22,8 +22,7 @@ define(
 		
 		var
 			self = null,
-			lecturerQuestionModel = null,
-			fullScreenNode = null
+			lecturerQuestionModel = null
 		;
 		
 		return {
@@ -32,7 +31,6 @@ define(
 				
 				self = this;
 				lecturerQuestionModel = lecturerQuestion;
-				fullScreenNode = dom.byId("fullScreenContainer");
 				
 				var
 					piContainer = new BorderContainer({
@@ -158,11 +156,17 @@ define(
 
 				domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, answersSettings);
 				
+				lecturerQuestionModel.watchId(this.onLecturerQuestionIdChange);
+				
+				piAnswersChart.init();
+				
+				/* add full screen menu item */
 				registry.byId("fullScreenMenu").addChild(new MenuItem({
 					label: "Answers to Lecturer's questions",
 					onClick: self.togglePresentMode
 				}));
-				
+
+				/* handle events fired when full screen mode is canceled */
 				fullScreen.onChange(function(event, isActive) {
 					if (!isActive) {
 						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "none");
@@ -172,16 +176,11 @@ define(
 						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("piAnswersMainPane"));
 					}
 				});
-				
 				fullScreen.onError(function(event) {
 					domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("piAnswersControlPane"));
 					domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("piAnswersTitlePane"));
 					domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("piAnswersMainPane"));
 				});
-				
-				lecturerQuestionModel.watchId(this.onLecturerQuestionIdChange);
-				
-				piAnswersChart.init();
 			},
 			
 			updateQuestionsPanel: function(questions) {
@@ -247,7 +246,7 @@ define(
 						/* dom node rearrangement takes place in fullscreenchange event handler */
 						fullScreen.exit();
 					} else {
-						fullScreen.request(fullScreenNode);
+						fullScreen.request(dom.byId("fullScreenContainer"));
 						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "inline");
 						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "inline");
 						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("fullScreenControl"));
