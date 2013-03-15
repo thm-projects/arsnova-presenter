@@ -35,7 +35,7 @@ define(
 				var sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
 				domConstruct.create("label", {"for": "sessionSelect", innerHTML: "Session"}, sessionPanelNode);
 				domConstruct.create("select", {id: "sessionSelect"}, sessionPanelNode);
-				domConstruct.create("span", {id: "sessionKeyword", innerHTML: "Keyword"}, sessionPanelNode);
+				domConstruct.create("span", {id: "sessionKey", innerHTML: "Keyword"}, sessionPanelNode);
 				(sessionSelect = new Select({
 					options: [{label: "Select a session", value: "", selected: true, disabled: true}],
 					maxHeight: 200,
@@ -99,7 +99,7 @@ define(
 						+ " " + session.keyword.substr(4, 2)
 						+ " " + session.keyword.substr(6, 2)
 					;
-					dom.byId("sessionKeyword").innerHTML = keyword;
+					dom.byId("sessionKey").innerHTML = keyword;
 				});
 				
 				/* update mode menu items */

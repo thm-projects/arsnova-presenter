@@ -152,9 +152,10 @@ html, body {
 	margin: 0 0.25em;
 }
 
-#piAnswersCount {
+#sessionKey, #piAnswersCount {
 	display: inline-block;
 	line-height: 34px;
+	vertical-align: middle;
 }
 
 #footerTime {

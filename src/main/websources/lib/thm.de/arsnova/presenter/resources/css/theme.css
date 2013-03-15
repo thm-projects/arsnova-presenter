@@ -16,7 +16,7 @@ body {
 	font-weight: bold;
 }
 
-#activeUserCount, #sessionKeyword, #piAnswersCount {
+#activeUserCount, #sessionKey, #piAnswersCount {
 	min-width: 1em;
 	height: 1em;
 	background-color: white;
@@ -28,7 +28,7 @@ body {
 	text-align: center;
 }
 
-#sessionKeyword {
+#sessionKey {
 	margin-left: 0.25em;
 }
 
