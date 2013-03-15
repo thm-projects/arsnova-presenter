@@ -12,7 +12,7 @@ define(
 		var
 			g = Theme.generateGradient,
 			defaultFill = {type: "linear", space: "shape", x1: 0, y1: 0, x2: 0, y2: 100},
-			axisAndLabelColor = "#666";
+			axisAndLabelColor = "#333";
 		;
 		
 		themes.Arsnova = new Theme({
@@ -85,21 +85,21 @@ define(
 		
 		themes.Arsnova.applyFeedbackColors = function(values) {
 			return [
-				{y: values[0], stroke: "black", fill: g(defaultFill, "#4d4", "#292")},
-				{y: values[1], stroke: "black", fill: g(defaultFill, "#dd4", "#aa2")},
-				{y: values[2], stroke: "black", fill: g(defaultFill, "#e60", "#a30")},
-				{y: values[3], stroke: "black", fill: g(defaultFill, "#aaa", "#666")}
+				{y: values[0], stroke: "black", fill: g(defaultFill, "#43d943", "#25a625")},
+				{y: values[1], stroke: "black", fill: g(defaultFill, "#f2f224", "#bfbf1d")},
+				{y: values[2], stroke: "black", fill: g(defaultFill, "#e64000", "#b33200")},
+				{y: values[3], stroke: "black", fill: g(defaultFill, "#aaa", "#777")}
 			];
 		};
 		
 		themes.Arsnova.applyAnswerColors = function(values) {
 			var colors = [ /* color values based on ARSnova ST */
-				["#164080", "#000e58"],
-				["#308080", "#085858"],
-				["#808019", "#585800"],
-				["#801c80", "#580058"],
-				["#801515", "#580000"],
-				["#804016", "#581800"]
+				["#1f59b3", "#164080"],
+				["#43b3b3", "#308080"],
+				["#b3b323", "#808019"],
+				["#b327b3", "#801c80"],
+				["#b31d1d", "#801515"],
+				["#b3591f", "#804016"]
 			];
 			var result = [];
 			for (var i = 0; i < values.length; i++) {
