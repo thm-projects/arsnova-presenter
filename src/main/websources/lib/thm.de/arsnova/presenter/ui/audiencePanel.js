@@ -34,7 +34,7 @@ define(
 					}),
 					audienceHeaderPane = new ContentPane({
 						region: "top",
-						content: "Audience",
+						content: domConstruct.create("header", {innerHTML: "Audience"}),
 						"class": "headerPane sidePanel"
 					}),
 					audienceTabs = new TabContainer({

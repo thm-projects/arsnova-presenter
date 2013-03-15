@@ -11,12 +11,13 @@ define(
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Button",
 		"dijit/form/ComboButton",
+		"dijit/form/Select",
 		"dijit/Menu",
 		"dijit/MenuItem",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, dom, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Menu, MenuItem, fullScreen, piAnswersChart) {
+	function(on, when, dom, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, fullScreen, piAnswersChart) {
 		"use strict";
 		
 		var
@@ -40,7 +41,7 @@ define(
 					}),
 					piHeaderPane = new ContentPane({
 						region: "top",
-						content: "Lecturer",
+						content: domConstruct.create("header", {innerHTML: "Lecturer: "}),
 						"class": "headerPane sidePanel"
 					}),
 					piTabs = new TabContainer({
@@ -77,6 +78,14 @@ define(
 				piAnswersContainer.addChild(piAnswersControlPane);
 				piAnswersContainer.addChild(piAnswersTitlePane);
 				piAnswersContainer.addChild(piAnswersMainPane);
+				piHeaderPane.addChild(new Select({
+					id: "lecturerPaneModeSelect",
+					options: [
+						{label: "TED", value: "1", disabled: true},
+						{label: "Peer Instruction", value: "2", selected: true},
+						{label: "JiTT", value: "3", disabled: true},
+					]
+				}));
 			},
 			
 			startup: function() {

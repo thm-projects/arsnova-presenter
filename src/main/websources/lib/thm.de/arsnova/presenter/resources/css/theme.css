@@ -44,9 +44,11 @@ body {
 .headerPane {
 	background-color: rgb(226, 235, 242) ! important;
 	text-align: center;
+}
+
+.headerPane header {
 	font-size: 1.2em;
 	font-weight: bold;
-	padding: 0.2em;
 }
 
 .questionCategory header {
