@@ -1,4 +1,5 @@
 body {
+	color: #333;
 	font-family: sans-serif;
 }
 
@@ -66,4 +67,9 @@ body {
 
 .question.unread {
 	font-weight: bold;
+}
+
+/* claro theme adjustments */
+.claro .dijitButton .dijitButtonNode, .claro .dijitDropDownButton .dijitButtonNode, .claro .dijitComboButton .dijitButtonNode, .claro .dijitToggleButton .dijitButtonNode, .claro .dijitMenuItem {
+	color: #333;
 }
