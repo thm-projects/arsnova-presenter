@@ -55,8 +55,8 @@ define(
 				answersChart.addAxis("x", {
 					labels: labels,
 					dropLabels: false,
-					maxLabelSize: 100,
-					rotation: -30,
+					maxLabelSize: 120,
+					rotation: -25,
 					trailingSymbol: "...",
 					minorTicks: false
 				});

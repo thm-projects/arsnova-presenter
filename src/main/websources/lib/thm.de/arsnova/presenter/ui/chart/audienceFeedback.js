@@ -26,7 +26,7 @@ define(
 				});
 				
 				var labels = [
-					{value: 1, text: "I can follow."},
+					{value: 1, text: "I can follow you."},
 					{value: 2, text: "Faster, please!"},
 					{value: 3, text: "Too fast!"},
 					{value: 4, text: "You have lost me."}
@@ -36,8 +36,8 @@ define(
 				feedbackChart.addAxis("x", {
 					labels: labels,
 					dropLabels: false,
-					maxLabelSize: 100,
-					rotation: -30,
+					maxLabelSize: 120,
+					rotation: -25,
 					trailingSymbol: "...",
 					minorTicks: false
 				});
