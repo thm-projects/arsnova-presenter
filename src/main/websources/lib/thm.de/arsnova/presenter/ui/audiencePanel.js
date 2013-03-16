@@ -78,12 +78,10 @@ define(
 			},
 			
 			startup: function() {
-				domConstruct.create("div", {id: "audienceFeedbackChart"},
-					domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, "audienceFeedbackPane")
-				);
+				var feedbackPaneContentNode = domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, "audienceFeedbackPane");
 				domConstruct.create("div", {id: "audienceQuestionList"}, "audienceQuestionsPane");
 				
-				audienceFeedbackChart.init();
+				audienceFeedbackChart.init(feedbackPaneContentNode);
 				
 				feedbackModel.onReceive(function(feedback) {
 					var feedback0 = feedback[0];

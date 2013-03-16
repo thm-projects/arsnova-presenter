@@ -90,8 +90,7 @@ define(
 			
 			startup: function() {
 				domConstruct.create("div", {id: "piQuestionList"}, "piQuestionsPane");
-				domConstruct.create("div", {id: "piAnswersMainPaneContent"}, "piAnswersMainPane");
-				domConstruct.create("div", {id: "piAnswersChart"}, "piAnswersMainPaneContent");
+				var piAnswersMainPaneContentNode = domConstruct.create("div", {id: "piAnswersMainPaneContent"}, "piAnswersMainPane");
 				
 				var controlPaneContentNode = domConstruct.create("div", {id: "piAnswersControlPaneContent"}, "piAnswersControlPane");
 				var answersNav = domConstruct.create("div", {id: "piAnswersNavigation"}, controlPaneContentNode);
@@ -160,7 +159,7 @@ define(
 				
 				lecturerQuestionModel.watchId(this.onLecturerQuestionIdChange);
 				
-				piAnswersChart.init();
+				piAnswersChart.init(piAnswersMainPaneContentNode);
 				
 				/* add full screen menu item */
 				registry.byId("fullScreenMenu").addChild(new MenuItem({
@@ -226,17 +225,27 @@ define(
 					dom.byId("piAnswersQuestionText").innerHTML = question.text;
 					piContainer.resize();
 					
-					question.possibleAnswers.forEach(function(possibleAnswer, i) {
-						labelReverseMapping[possibleAnswer.text] = i;
-						labels.push({value: i + 1, text: possibleAnswer.text});
-						values[i] = 0;
-					});
+					if ("freetext" == question.questionType) {
+						piAnswersChart.hide();
+					} else {
+						question.possibleAnswers.forEach(function(possibleAnswer, i) {
+							labelReverseMapping[possibleAnswer.text] = i;
+							labels.push({value: i + 1, text: possibleAnswer.text});
+							values[i] = 0;
+						});
+						piAnswersChart.show();
+						piAnswersChart.update(labels);
+					}
 					
 					when(answers, function(answers) {
 						var totalAnswerCount = 0;
 						answers.forEach(function(answer) {
 							totalAnswerCount += answer.answerCount;
-							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
+							if ("freetext" == question.questionType) {
+								/* TODO implementation */
+							} else {
+								values[labelReverseMapping[answer.answerText]] = answer.answerCount;
+							}
 						}, values);
 						dom.byId("piAnswersCount").innerHTML = totalAnswerCount;
 						

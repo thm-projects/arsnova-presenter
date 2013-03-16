@@ -1,6 +1,7 @@
 define(
 	[
 		"dojo/dom",
+		"dojo/dom-construct",
 		"dijit/registry",
 	 	"dojox/charting/Chart",
 	 	"dojox/charting/plot2d/Columns",
@@ -8,16 +9,20 @@ define(
 	 	"dojo/fx/easing",
 	 	"./theme"
 	],
-	function(dom, registry, Chart, Columns, AxisDefault, easing, theme) {
+	function(dom, domConstruct, registry, Chart, Columns, AxisDefault, easing, theme) {
 		"use strict";
 		
-		var feedbackChart = null;
+		var
+			feedbackChart = null,
+			feedbackChartNode = null
+		;
 		
 		return {
-			init: function() {
+			init: function(parentNode) {
 				console.log("-- Chart: audienceFeedback.init --");
-				
-				feedbackChart = new Chart("audienceFeedbackChart");
+
+				feedbackChartNode = domConstruct.create("div", {id: "audienceFeedbackChart"}, parentNode);
+				feedbackChart = new Chart(feedbackChartNode);
 				feedbackChart.setTheme(theme);
 				feedbackChart.addPlot("default", {
 					type: Columns,
