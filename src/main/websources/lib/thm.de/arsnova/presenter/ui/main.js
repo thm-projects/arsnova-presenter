@@ -122,13 +122,14 @@ define(
 				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "Presenter"}, "footerPane");
 				domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel", innerHTML: "Version: " + versionString}, "footerPane");
 				var timeNode = domConstruct.create("div", {id: "footerTime"}, "footerPane");
+				var timeTooltip = new Tooltip({
+					connectId: [timeNode],
+					position: ["above-centered"]
+				});
 				setInterval(function() {
-					timeNode.innerHTML = dateLocale.format(new Date(), {selector: "time", formatLength: "short"});
-					new Tooltip({
-						connectId: ["footerTime"],
-						label: dateLocale.format(new Date(), {selector: "date", formatLength: "short"}),
-						position: ["above-centered"]
-					});
+					var date = new Date();
+					timeNode.innerHTML = dateLocale.format(date, {selector: "time", formatLength: "short"});
+					timeTooltip.set("label", dateLocale.format(date, {selector: "date", formatLength: "short"}));
 				}, 500);
 				
 				/* prevent window scrolling (needed for IE) */
