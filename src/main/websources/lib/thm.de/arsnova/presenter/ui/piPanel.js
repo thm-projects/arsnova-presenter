@@ -4,6 +4,7 @@ define(
 		"dojo/when",
 		"dojo/dom",
 		"dojo/dom-construct",
+		"dojo/dom-class",
 		"dojo/dom-style",
 		"dijit/registry",
 		"dijit/layout/BorderContainer",
@@ -17,13 +18,14 @@ define(
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, dom, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, fullScreen, piAnswersChart) {
+	function(on, when, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, fullScreen, piAnswersChart) {
 		"use strict";
 		
 		var
 			self = null,
 			lecturerQuestionModel = null,
-			piContainer = null
+			piContainer = null,
+			freeTextAnswersNode = null
 		;
 		
 		return {
@@ -91,6 +93,8 @@ define(
 			startup: function() {
 				domConstruct.create("div", {id: "piQuestionList"}, "piQuestionsPane");
 				var piAnswersMainPaneContentNode = domConstruct.create("div", {id: "piAnswersMainPaneContent"}, "piAnswersMainPane");
+				freeTextAnswersNode = domConstruct.create("div", {id: "piFreeTextAnswers"}, piAnswersMainPaneContentNode);
+				domStyle.set(freeTextAnswersNode, "display", "none");
 				
 				var controlPaneContentNode = domConstruct.create("div", {id: "piAnswersControlPaneContent"}, "piAnswersControlPane");
 				var answersNav = domConstruct.create("div", {id: "piAnswersNavigation"}, controlPaneContentNode);
@@ -227,7 +231,10 @@ define(
 					
 					if ("freetext" == question.questionType) {
 						piAnswersChart.hide();
+						domConstruct.empty(freeTextAnswersNode);
+						domStyle.set(freeTextAnswersNode, "display", "block");
 					} else {
+						domStyle.set(freeTextAnswersNode, "display", "none");
 						question.possibleAnswers.forEach(function(possibleAnswer, i) {
 							labelReverseMapping[possibleAnswer.text] = i;
 							labels.push({value: i + 1, text: possibleAnswer.text});
@@ -242,7 +249,13 @@ define(
 						answers.forEach(function(answer) {
 							totalAnswerCount += answer.answerCount;
 							if ("freetext" == question.questionType) {
-								/* TODO implementation */
+								var answerNode = domConstruct.create("div", {"class": "answer"});
+								domConstruct.create("p", {"class": "subject", innerHTML: answer.answerSubject}, answerNode);
+								domConstruct.create("p", {"class": "message", innerHTML: answer.answerText}, answerNode);
+								on(answerNode, "click", function() {
+									domClass.toggle(this, "opened");
+								});
+								domConstruct.place(answerNode, freeTextAnswersNode);
 							} else {
 								values[labelReverseMapping[answer.answerText]] = answer.answerCount;
 							}

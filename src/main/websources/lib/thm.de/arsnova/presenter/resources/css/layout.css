@@ -169,6 +169,14 @@ html, body {
 	margin-left: 0.5em;
 }
 
+#piFreeTextAnswers .answer .message {
+	display: none;
+}
+
+#piFreeTextAnswers .answer.opened .message {
+	display: block;
+}
+
 #sessionKey, #piAnswersCount {
 	display: inline-block;
 	line-height: 34px;
