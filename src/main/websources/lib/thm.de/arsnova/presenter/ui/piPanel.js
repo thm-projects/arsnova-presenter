@@ -176,6 +176,8 @@ define(
 						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("piAnswersControlPane"));
 						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("piAnswersTitlePane"));
 						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("piAnswersMainPane"));
+						
+						piContainer.resize();
 					}
 				});
 				fullScreen.onError(function(event) {
@@ -222,6 +224,7 @@ define(
 				when(question, function(question) {
 					dom.byId("piAnswersQuestionSubject").innerHTML = question.subject;
 					dom.byId("piAnswersQuestionText").innerHTML = question.text;
+					piContainer.resize();
 					
 					question.possibleAnswers.forEach(function(possibleAnswer, i) {
 						labelReverseMapping[possibleAnswer.text] = i;
@@ -254,9 +257,11 @@ define(
 						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("fullScreenControl"));
 						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("fullScreenHeader"));
 						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("fullScreenContent"));
+						
+						registry.byId("fullScreenContainer").resize();
 					}
 				} else {
-					console.log("Fullscreen mode not supported");
+					console.log("Full screen mode not supported");
 				}
 			},
 			

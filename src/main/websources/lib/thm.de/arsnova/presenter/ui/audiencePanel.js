@@ -111,6 +111,8 @@ define(
 
 						domConstruct.place(dom.byId("audienceQuestionList"), dom.byId("audienceQuestionsPane"));
 						domConstruct.destroy("audienceQuestionsTitle");
+						
+						audienceContainer.resize();
 					}
 				});
 				fullScreen.onError(function(event) {
@@ -166,9 +168,11 @@ define(
 						fullScreen.request(dom.byId("fullScreenContainer"));
 						domConstruct.create("header", {id: "audienceFeedbackTitle", innerHTML: "Audience feedback"}, "fullScreenHeader");
 						domConstruct.place(dom.byId("audienceFeedbackPaneContent"), dom.byId("fullScreenContent"));
+						
+						registry.byId("fullScreenContainer").resize();
 					}
 				} else {
-					console.log("Fullscreen mode not supported");
+					console.log("Full screen mode not supported");
 				}
 			},
 			
@@ -183,7 +187,7 @@ define(
 						domConstruct.place(dom.byId("audienceQuestionList"), dom.byId("fullScreenContent"));
 					}
 				} else {
-					console.log("Fullscreen mode not supported");
+					console.log("Full screen mode not supported");
 				}
 			},
 		};

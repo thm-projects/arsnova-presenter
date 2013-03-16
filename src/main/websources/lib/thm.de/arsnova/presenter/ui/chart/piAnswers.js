@@ -44,10 +44,15 @@ define(
 						}
 						var panel = dom.byId("piAnswersMainPaneContent");
 						var height = panel.clientHeight;
+						if (height < 1) {
+							/* return if piAnswersMainPaneContent is not visible */
+							return;
+						}
 						answersChart.resize(-1, height);
 					}, 20);
 				};
 				registry.byId("piAnswersMainPane").on("resize", onResize);
+				registry.byId("fullScreenContent").on("resize", onResize);
 				//onResize();
 			},
 			

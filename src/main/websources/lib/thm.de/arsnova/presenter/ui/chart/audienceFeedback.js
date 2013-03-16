@@ -60,10 +60,15 @@ define(
 						}
 						var panel = dom.byId("audienceFeedbackPaneContent");
 						var height = panel.clientHeight;
+						if (height < 1) {
+							/* return if audienceFeedbackPaneContent is not visible */
+							return;
+						}
 						feedbackChart.resize(-1, height);
 					}, 20);
 				};
 				registry.byId("audienceFeedbackPane").on("resize", onResize);
+				registry.byId("fullScreenContent").on("resize", onResize);
 				onResize();
 			},
 			
