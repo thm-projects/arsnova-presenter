@@ -17,8 +17,8 @@ define(
 				this.emit("resize", {
 					bubbles: false,
 					cancelable: false,
-					w: this.w,
-					h: this.h
+					w: arguments[0].w,
+					h: arguments[0].h
 				});
 			}
 		});
