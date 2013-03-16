@@ -22,7 +22,8 @@ define(
 		
 		var
 			self = null,
-			lecturerQuestionModel = null
+			lecturerQuestionModel = null,
+			piContainer = null
 		;
 		
 		return {
@@ -32,11 +33,12 @@ define(
 				self = this;
 				lecturerQuestionModel = lecturerQuestion;
 				
+				piContainer = new BorderContainer({
+					id: "piContainer",
+					region: "center"
+				});
+				
 				var
-					piContainer = new BorderContainer({
-						id: "piContainer",
-						region: "center"
-					}),
 					piHeaderPane = new ContentPane({
 						region: "top",
 						content: domConstruct.create("header", {innerHTML: "Lecturer: "}),

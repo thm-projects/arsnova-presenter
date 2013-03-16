@@ -5,6 +5,7 @@ define(
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dojo/dom-class",
+		"dojo/dom-style",
 		"dijit/registry",
 		"dijit/layout/BorderContainer",
 		"dijit/layout/TabContainer",
@@ -14,11 +15,15 @@ define(
 		"arsnova-api/feedback",
 		"arsnova-presenter/ui/chart/audienceFeedback"
 	],
-	function(on, when, dom, domConstruct, domClass, registry, BorderContainer, TabContainer, ContentPane, MenuItem, fullScreen, feedbackModel, audienceFeedbackChart) {
+	function(on, when, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, MenuItem, fullScreen, feedbackModel, audienceFeedbackChart) {
 		"use strict";
 		
-		var self = null;
-		var audienceQuestionModel = null;
+		var
+			MIN_WIDTH = 360,
+			self = null,
+			audienceQuestionModel = null,
+			audienceContainer = null
+		;
 		
 		return {
 			init: function(audienceQuestion) {
@@ -26,13 +31,14 @@ define(
 				
 				self = this;
 				audienceQuestionModel = audienceQuestion;
+				audienceContainer = new BorderContainer({
+					id: "audienceContainer",
+					region: "right",
+					splitter: true,
+					minSize: MIN_WIDTH
+				});
 				
 				var
-					audienceContainer = new BorderContainer({
-						id: "audienceContainer",
-						region: "right",
-						splitter: true
-					}),
 					audienceHeaderPane = new ContentPane({
 						region: "top",
 						content: domConstruct.create("header", {innerHTML: "Audience"}),
@@ -57,6 +63,18 @@ define(
 				audienceContainer.addChild(audienceTabs);
 				audienceTabs.addChild(audienceFeedbackPane);
 				audienceTabs.addChild(audienceQuestionsPane);
+				
+				var onWindowResize = function() {
+					var maxSize = document.body.clientWidth - MIN_WIDTH;
+					audienceContainer.set("maxSize", maxSize);
+					var width = domStyle.get("audienceContainer", "width");
+					if (width > maxSize) {
+						domStyle.set("audienceContainer", "width", "49.5%");
+						registry.byId("mainContainer").resize();
+					}
+				};
+				on(window, "resize", onWindowResize);
+				onWindowResize();
 			},
 			
 			startup: function() {
