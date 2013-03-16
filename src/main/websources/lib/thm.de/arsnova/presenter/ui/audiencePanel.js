@@ -50,7 +50,7 @@ define(
 					}),
 					audienceFeedbackPane = new ContentPane({
 						id: "audienceFeedbackPane",
-						title: "Feedback"
+						title: "Live Feedback"
 					}),
 					audienceQuestionsPane = new ContentPane({
 						id: "audienceQuestionsPane",

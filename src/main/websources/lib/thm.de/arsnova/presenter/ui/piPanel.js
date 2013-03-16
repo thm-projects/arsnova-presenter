@@ -81,9 +81,9 @@ define(
 				piHeaderPane.addChild(new Select({
 					id: "lecturerPaneModeSelect",
 					options: [
-						{label: "TED", value: "1", disabled: true},
-						{label: "Peer Instruction", value: "2", selected: true},
-						{label: "JiTT", value: "3", disabled: true},
+						{label: "Clicker Questions", value: "1", disabled: true},
+						{label: "Peer Instruction (PI)", value: "2", selected: true},
+						{label: "Pre-Class Assignments (JiTT)", value: "3", disabled: true},
 					]
 				}));
 			},
