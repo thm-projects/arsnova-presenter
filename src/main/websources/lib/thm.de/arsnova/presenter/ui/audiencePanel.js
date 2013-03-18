@@ -127,14 +127,14 @@ define(
 				questionListNode.innerHTML = "";
 				when(questions, function(questions) {
 					questions.forEach(function(question) {
-						var questionNode = domConstruct.toDom("<div class='question'><p class='subject'>" + question.subject + "</p></div>");
+						var questionNode = domConstruct.create("div", {"class": "question"}, questionListNode);
+						domConstruct.create("p", {"class": "subject", innerHTML: question.subject}, questionNode);
 						if (!question.read) {
 							domClass.add(questionNode, "unread");
 						}
 						on(questionNode, "click", function(event) {
 							self.openQuestion(question._id, questionNode);
 						});
-						domConstruct.place(questionNode, questionListNode);
 					});
 				});
 			},

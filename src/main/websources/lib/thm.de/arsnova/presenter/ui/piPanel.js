@@ -209,15 +209,14 @@ define(
 					});
 					
 					for (var category in categories) {
-						var categoryNode = domConstruct.toDom("<div class='questionCategory'><header>" + category + "</header></div>");
-						domConstruct.place(categoryNode, questionList);
+						var categoryNode = domConstruct.create("div", {"class": "questionCategory"}, questionList);
+						domConstruct.create("header", {innerHTML: category}, categoryNode);
 						categories[category].forEach(function(question) {
-							var questionNode = domConstruct.toDom("<p class='question'>" + question.text + "</p>");
+							var questionNode = domConstruct.create("p", {"class": "question", innerHTML: question.text}, categoryNode);
 							on(questionNode, "click", function(event) {
 								lecturerQuestionModel.setId(question._id);
 								registry.byId("piTabs").selectChild(registry.byId("piAnswersContainer"));
 							});
-							domConstruct.place(questionNode, categoryNode);
 						});
 					}
 				});
