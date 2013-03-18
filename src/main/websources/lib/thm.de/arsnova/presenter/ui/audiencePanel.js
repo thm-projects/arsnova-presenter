@@ -11,11 +11,12 @@ define(
 		"dijit/layout/TabContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/MenuItem",
+		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
 		"arsnova-api/feedback",
 		"arsnova-presenter/ui/chart/audienceFeedback"
 	],
-	function(on, when, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, MenuItem, fullScreen, feedbackModel, audienceFeedbackChart) {
+	function(on, when, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, MenuItem, confirmDialog, fullScreen, feedbackModel, audienceFeedbackChart) {
 		"use strict";
 		
 		var
@@ -137,8 +138,13 @@ define(
 							self.openQuestion(question._id, questionNode);
 						});
 						on(deleteNode, "click", function() {
-							audienceQuestionModel.remove(question._id);
-							domConstruct.destroy(questionNode);
+							confirmDialog.confirm("Delete answer", "Do you really want to delete this answer?", {
+								"Delete": function() {
+									audienceQuestionModel.remove(question._id);
+									domConstruct.destroy(questionNode);
+								},
+								"Cancel": null
+							});
 						});
 					});
 				});
