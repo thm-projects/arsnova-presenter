@@ -225,6 +225,7 @@ define(
 				
 				/* transform the label and answer count data into arrays usable by dojox/charting */
 				when(question, function(question) {
+					dom.byId("piNavigationStatus").innerHTML = (lecturerQuestionModel.getPosition() + 1) + "/" + lecturerQuestionModel.getCount();
 					dom.byId("piAnswersQuestionSubject").innerHTML = question.subject;
 					dom.byId("piAnswersQuestionText").innerHTML = question.text;
 					piContainer.resize();
