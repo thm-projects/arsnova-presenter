@@ -258,6 +258,15 @@ define(
 				return answerStore.query({
 					sessionkey: questionState.get("sessionKey")
 				});
+			},
+			
+			removeAnswer: function(id) {
+				if (null == answerStore) {
+					console.log("No question selected");
+					
+					return null;
+				}
+				answerStore.remove(id);
 			}
 		};
 	}

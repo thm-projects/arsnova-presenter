@@ -56,6 +56,10 @@ define(
 				}
 				
 				return question;
+			},
+			
+			remove: function(id) {
+				questionStore.remove(id);
 			}
 		};
 	}
