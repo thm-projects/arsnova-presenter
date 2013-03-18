@@ -78,8 +78,6 @@ define(
 			},
 			
 			onSessionKeyChange = function(name, oldValue, value) {
-				lecturerQuestionModel.setSessionKey(value);
-				audienceQuestionModel.setSessionKey(value);
 				var lQuestions = lecturerQuestionModel.getAll();
 				var aQuestions = audienceQuestionModel.getAll();
 				piPanel.updateQuestionsPanel(lQuestions);

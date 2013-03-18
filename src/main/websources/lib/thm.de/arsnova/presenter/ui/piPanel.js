@@ -193,6 +193,11 @@ define(
 			updateQuestionsPanel: function(questions) {
 				var questionList = dom.byId("piQuestionList");
 				questionList.innerHTML = "";
+				
+				if (null == questions) {
+					return;
+				}
+				
 				when(questions, function(questions) {
 					/* group questions by category */
 					var categories = {};
@@ -222,6 +227,16 @@ define(
 				var labelReverseMapping = {};
 				var labels = [];
 				var values = [];
+				
+				if (null == question) {
+					dom.byId("piNavigationStatus").innerHTML = "0/0";
+					dom.byId("piAnswersQuestionSubject").innerHTML = "Question subject";
+					dom.byId("piAnswersQuestionText").innerHTML = "Question text";
+					piContainer.resize();
+					piAnswersChart.update([], []);
+					
+					return;
+				}
 				
 				when(question, function(question) {
 					dom.byId("piNavigationStatus").innerHTML = (lecturerQuestionModel.getPosition() + 1) + "/" + lecturerQuestionModel.getCount();
