@@ -266,9 +266,14 @@ define(
 							if ("freetext" == question.questionType) {
 								var answerNode = domConstruct.create("div", {"class": "answer"});
 								domConstruct.create("p", {"class": "subject", innerHTML: answer.answerSubject}, answerNode);
+								var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, answerNode);
 								domConstruct.create("p", {"class": "message", innerHTML: answer.answerText}, answerNode);
 								on(answerNode, "click", function() {
 									domClass.toggle(this, "opened");
+								});
+								on(deleteNode, "click", function() {
+									lecturerQuestionModel.removeAnswer(answer._id);
+									domConstruct.destroy(answerNode);
 								});
 								domConstruct.place(answerNode, freeTextAnswersNode);
 							} else {

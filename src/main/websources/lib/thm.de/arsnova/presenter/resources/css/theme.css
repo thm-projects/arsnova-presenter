@@ -41,6 +41,12 @@ body {
 	cursor: pointer;
 }
 
+#piFreeTextAnswers .answer .delete, #audienceQuestionList .question .delete {
+	font-weight: bold;
+	color: red;
+	cursor: pointer;
+}
+
 .headerPane {
 	background-color: rgb(226, 235, 242) ! important;
 	text-align: center;

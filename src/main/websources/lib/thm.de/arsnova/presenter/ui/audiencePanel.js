@@ -129,11 +129,16 @@ define(
 					questions.forEach(function(question) {
 						var questionNode = domConstruct.create("div", {"class": "question"}, questionListNode);
 						domConstruct.create("p", {"class": "subject", innerHTML: question.subject}, questionNode);
+						var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, questionNode);
 						if (!question.read) {
 							domClass.add(questionNode, "unread");
 						}
 						on(questionNode, "click", function(event) {
 							self.openQuestion(question._id, questionNode);
+						});
+						on(deleteNode, "click", function() {
+							audienceQuestionModel.remove(question._id);
+							domConstruct.destroy(questionNode);
 						});
 					});
 				});
@@ -146,7 +151,7 @@ define(
 			openQuestion: function(questionId, questionNode) {
 				var question = audienceQuestionModel.get(questionId);
 				if (domClass.contains(questionNode, "opened")) {
-					domConstruct.destroy(questionNode.children[1]);
+					domConstruct.destroy(questionNode.children[2]);
 					domClass.remove(questionNode, "opened");
 					return;
 				}

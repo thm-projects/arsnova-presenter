@@ -174,12 +174,20 @@ html, body {
 	overflow: auto;
 }
 
+#piFreeTextAnswers .answer .subject, #audienceQuestionList .question .subject {
+	display: inline-block;
+}
+
 #piFreeTextAnswers .answer .message {
 	display: none;
 }
 
 #piFreeTextAnswers .answer.opened .message {
 	display: block;
+}
+
+#piFreeTextAnswers .answer .delete, #audienceQuestionList .question .delete {
+	float: right;
 }
 
 #sessionKey, #piAnswersCount {
