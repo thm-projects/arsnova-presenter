@@ -55,6 +55,10 @@
 							<outputDirectory>${outputDir}</outputDirectory>
 							<resources>
 								<resource>
+									<directory>vendor/dgerhardt.net/dgerhardt-dojo</directory>
+									<targetPath>lib/dgerhardt.net</targetPath>
+								</resource>
+								<resource>
 									<directory>vendor/socket.io/socket.io-client/dist</directory>
 									<targetPath>lib/socket.io</targetPath>
 								</resource>

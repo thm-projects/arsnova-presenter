@@ -13,3 +13,6 @@
 [submodule "vendor/dojotoolkit.org/util"]
 	path = vendor/dojotoolkit.org/util
 	url = https://github.com/dojo/util.git
+[submodule "vendor/dgerhardt.net/dgerhardt-dojo"]
+	path = vendor/dgerhardt.net/dgerhardt-dojo
+	url = https://github.com/dgerhardt/dgerhardt-dojo.git
