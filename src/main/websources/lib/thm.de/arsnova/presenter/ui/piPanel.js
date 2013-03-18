@@ -15,10 +15,11 @@ define(
 		"dijit/form/Select",
 		"dijit/Menu",
 		"dijit/MenuItem",
+		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, fullScreen, piAnswersChart) {
+	function(on, when, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, confirmDialog, fullScreen, piAnswersChart) {
 		"use strict";
 		
 		var
@@ -272,8 +273,13 @@ define(
 									domClass.toggle(this, "opened");
 								});
 								on(deleteNode, "click", function() {
-									lecturerQuestionModel.removeAnswer(answer._id);
-									domConstruct.destroy(answerNode);
+									confirmDialog.confirm("Delete answer", "Do you really want to delete this answer?", {
+										"Delete": function() {
+											lecturerQuestionModel.removeAnswer(answer._id);
+											domConstruct.destroy(answerNode);
+										},
+										"Cancel": null
+									});
 								});
 								domConstruct.place(answerNode, freeTextAnswersNode);
 							} else {

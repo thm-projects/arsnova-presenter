@@ -214,3 +214,9 @@ html, body {
 	overflow: hidden;
 	border: none;
 }
+
+.confirmDialogButtons {
+	margin-top: 0.5em;
+	padding-top: 0.5em;
+	text-align: right;
+}

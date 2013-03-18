@@ -88,3 +88,7 @@ body {
 .claro .dijitButton .dijitButtonNode, .claro .dijitDropDownButton .dijitButtonNode, .claro .dijitComboButton .dijitButtonNode, .claro .dijitToggleButton .dijitButtonNode, .claro .dijitMenuItem {
 	color: #333;
 }
+
+.confirmDialogButtons {
+	border-top: 1px solid #ccc;
+}
