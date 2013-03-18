@@ -207,6 +207,22 @@ define(
 				}
 			},
 			
+			getPosition: function() {
+				if (null == questionState.get("sessionKey")) {
+					return 0;
+				}
+				
+				return questionMemory.index[questionState.get("id")];
+			},
+			
+			getCount: function() {
+				if (null == questionState.get("sessionKey")) {
+					return 0;
+				}
+				
+				return questionMemory.data.length;
+			},
+			
 			getUnanswered: function() {
 				return questionStore.query({
 					sessionkey: questionState.get("sessionKey"),
