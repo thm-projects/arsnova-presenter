@@ -2,6 +2,7 @@
 
 Presenter is a rich internet application for lecturers intended to be used for presentation of (Peer Instruction) questions and their results. In contrast to ARSnova (arsnova-legacy-js, Sencha Touch) and ARSnova2 (arsnova-js, Dojo) the presenter targets desktop browsers.
 
+
 ## Installation
 
 
@@ -10,7 +11,7 @@ Presenter is a rich internet application for lecturers intended to be used for p
 * a Java servlet container running arsnova-war
 * the presenter application in form of a .war file
 
-ARSnova Presenter is a front end application running on top of arsnova-war. See installation instructions provided by arsnova-war if it is not installed yet. If you want to adjust the default settings of ARSnova Presenter and/or do not want to use a provided .war archive, start with the "Build" section.
+ARSnova Presenter is a front end application running on top of arsnova-war. See installation instructions provided by arsnova-war if it is not installed yet. If you want to adjust the default settings of Presenter and/or do not want to use a provided .war archive, start with the "Build" section.
 
 
 ### Deployment in a Java servlet container
@@ -23,7 +24,7 @@ For information about how to deploy a .war archive with your servlet container p
 
 ### Requirements
 
-* Java JDK 7 or OpenJDK 7
+* Java JDK 6 or OpenJDK 6 (or later)
 * Maven 3
 
 While ARSnova Presenter runs on any platform supported by Java servlet containers it can currently only be built in Unix-like environments (Linux, MacOS X).
@@ -31,7 +32,7 @@ While ARSnova Presenter runs on any platform supported by Java servlet container
 
 ### Adjust settings for your production environment
 
-If the ARSnova RESTful API (arsnova-war) is not deployed in the ROOT context (/) of the servlet container, you need to make the adjustments to the file src/main/websources/prod.html. Look for the following section:
+If the ARSnova RESTful API (provided by arsnova-war) is not deployed in the ROOT context (/) of the servlet container, you need to make the adjustments to the file src/main/websources/prod.html. Look for the following section:
 
 	var dojoConfig = {
 		arsnova: {
@@ -42,7 +43,7 @@ If the ARSnova RESTful API (arsnova-war) is not deployed in the ROOT context (/)
 		}
 	};
 
-Prepend the context path of arsnova-war to the URLs set with "mobileStudentSessionUrl" and "root".
+Prepend the context path of arsnova-war to the URLs set with "mobileStudentSessionUrl" and "root". If you are planning to run Presenter under another (sub)domain you have to make sure that arsnova-war is configured correctly to allow Cross Origin Requests (CORS) form that host. Otherwise browsers will block the requests sent by Presenter.
 
 
 ### Build a package for production use
@@ -63,7 +64,7 @@ To create a WAR archive ready for deployment in a Java servlet container run the
 
 ### Setting up the environment
 
-If you want to make changes to the ARSnova Presenter application simply run the following to commands to set up a development environment with a running Java servlet container and all dependencies:
+If you want to make changes to the Presenter application, simply run the following to commands to set up a development environment with a running Java servlet container and all dependencies:
 
 	$ mvn -Parsnova-war clean process-resources
 	$ mvn -Denv=dev package jetty:run
