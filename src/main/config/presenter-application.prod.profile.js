@@ -46,7 +46,7 @@ var profile = (function() {
 			},
 			{
 				name: "dgerhardt",
-				location: libPath + "dgerhardt.net"
+				location: "vendor/dgerhardt.net/dgerhardt-dojo"
 			},
 			{
 				name: "version",
