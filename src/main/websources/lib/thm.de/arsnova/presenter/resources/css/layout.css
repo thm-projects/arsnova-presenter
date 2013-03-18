@@ -169,6 +169,11 @@ html, body {
 	margin-left: 0.5em;
 }
 
+#piFreeTextAnswers {
+	height: 100%;
+	overflow: auto;
+}
+
 #piFreeTextAnswers .answer .message {
 	display: none;
 }
