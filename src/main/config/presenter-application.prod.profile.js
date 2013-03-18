@@ -99,6 +99,7 @@ var profile = (function() {
 					"dojox/charting/axis2d/Default",
 					
 					"dgerhardt/dijit/layout/ContentPane",
+					"dgerhardt/common/confirmDialog",
 					"dgerhardt/common/fullscreen",
 					
 					"arsnova-presenter/controller",
