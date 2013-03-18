@@ -223,7 +223,6 @@ define(
 				var labels = [];
 				var values = [];
 				
-				/* transform the label and answer count data into arrays usable by dojox/charting */
 				when(question, function(question) {
 					dom.byId("piNavigationStatus").innerHTML = (lecturerQuestionModel.getPosition() + 1) + "/" + lecturerQuestionModel.getCount();
 					dom.byId("piAnswersQuestionSubject").innerHTML = question.subject;
@@ -237,6 +236,7 @@ define(
 					} else {
 						domStyle.set(freeTextAnswersNode, "display", "none");
 						question.possibleAnswers.forEach(function(possibleAnswer, i) {
+							/* transform the label and answer count data into arrays usable by dojox/charting */
 							labelReverseMapping[possibleAnswer.text] = i;
 							labels.push({value: i + 1, text: possibleAnswer.text});
 							values[i] = 0;
