@@ -7,9 +7,10 @@ define(
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
 		"dojo/store/Cache",
+		"arsnova-api/session",
 		"arsnova-api/socket"
 	],
-	function(config, declare, string, Stateful, JsonRestStore, MemoryStore, CacheStore, socket) {
+	function(config, declare, string, Stateful, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
 		"use strict";
 		
 		var
@@ -17,12 +18,10 @@ define(
 			answerPath = apiPrefix + "${questionId}/answer/",
 			
 			QuestionState = declare([Stateful], {
-				sessionKey: null,
 				id: null
 			}),
 		
 			questionState = new QuestionState({
-				sessionKey: null,
 				id: null
 			}),
 
@@ -40,7 +39,7 @@ define(
 			answerStore = CacheStore(answerJsonRest, answerMemory)
 		;
 		
-		questionState.watch("sessionKey", function(name, oldValue, value) {
+		sessionModel.watchKey(function(name, oldValue, value) {
 			questionJsonRest = new JsonRestStore({
 				target: apiPrefix,
 				idProperty: "_id"
@@ -49,9 +48,14 @@ define(
 				idProperty: "_id"
 			});
 			questionStore = CacheStore(questionJsonRest, questionMemory);
+			questionState.set("id", null);
 		});
 		
 		questionState.watch("id", function(name, oldValue, value) {
+			if (null == value) {
+				return;
+			}
+			
 			console.log("Question id changed: " + value);
 			answerJsonRest = new JsonRestStore({
 				target: string.substitute(answerPath, {questionId: value}),
@@ -85,29 +89,34 @@ define(
 				}
 			},
 			
-			setSessionKey: function(key) {
-				if (questionState.get("key") != key) {
-					questionState.set("sessionKey", key);
-				}
-			},
-			
 			getStore: function() {
 				return questionStore;
 			},
 			
 			getAll: function() {
+				if (null == questionStore) {
+					console.log("No session selected");
+					
+					return null;
+				}
+				
 				return questionStore.query({
-					sessionkey: questionState.get("sessionKey")
+					sessionkey: sessionModel.getKey()
 				});
 			},
 			
 			get: function() {
+				if (null == this.getId()) {
+					return null;
+				}
+				
 				return questionStore.get(questionState.get("id"));
 			},
 			
 			next: function() {
-				if (null == questionState.get("sessionKey")) {
-					console.log("No session selected");
+				if (0 == this.getCount()) {
+					console.log("No questions available");
+					
 					return;
 				}
 				
@@ -135,8 +144,9 @@ define(
 			},
 			
 			prev: function() {
-				if (null == questionState.get("sessionKey")) {
-					console.log("No session selected");
+				if (0 == this.getCount()) {
+					console.log("No questions available");
+					
 					return;
 				}
 				
@@ -166,8 +176,9 @@ define(
 			},
 			
 			first: function() {
-				if (null == questionState.get("sessionKey")) {
-					console.log("No session selected");
+				if (0 == this.getCount()) {
+					console.log("No questions available");
+					
 					return;
 				}
 				
@@ -187,8 +198,9 @@ define(
 			},
 			
 			last: function() {
-				if (null == questionState.get("sessionKey")) {
-					console.log("No session selected");
+				if (0 == this.getCount()) {
+					console.log("No questions available");
+					
 					return;
 				}
 				
@@ -208,15 +220,15 @@ define(
 			},
 			
 			getPosition: function() {
-				if (null == questionState.get("sessionKey")) {
-					return 0;
+				if (0 == this.getCount()) {
+					return -1;
 				}
 				
 				return questionMemory.index[questionState.get("id")];
 			},
 			
 			getCount: function() {
-				if (null == questionState.get("sessionKey")) {
+				if (null == questionMemory) {
 					return 0;
 				}
 				
@@ -224,6 +236,12 @@ define(
 			},
 			
 			getUnanswered: function() {
+				if (null == questionStore) {
+					console.log("No session selected");
+					
+					return null;
+				}
+				
 				return questionStore.query({
 					sessionkey: questionState.get("sessionKey"),
 					filter: "unanswered"
@@ -231,6 +249,12 @@ define(
 			},
 			
 			getAnswers: function() {
+				if (null == answerStore) {
+					console.log("No question selected");
+					
+					return null;
+				}
+				
 				return answerStore.query({
 					sessionkey: questionState.get("sessionKey")
 				});
