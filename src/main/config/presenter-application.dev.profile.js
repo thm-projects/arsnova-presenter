@@ -14,13 +14,13 @@ var profile = (function() {
 			async: true,
 			isDebug: true,
 			baseUrl: "app/",
-			modulePaths: {
+			paths: {
 				"dojo": "../lib/dojotoolkit.org/dojo",
 				"dijit": "../lib/dojotoolkit.org/dijit",
 				"dojox": "../lib/dojotoolkit.org/dojox",
 				"dgerhardt": "../lib/dgerhardt.net",
-				"arsnova-presenter": "../lib/thm.de/arsnova/presenter",
-				"arsnova-api": "../lib/thm.de/arsnova/api"
+				"arsnova-api": "../lib/thm.de/arsnova/api",
+				"arsnova-presenter": "../lib/thm.de/arsnova/presenter"
 			},
 		    gfxRenderer: "svg,silverlight,vml"
 		},

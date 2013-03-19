@@ -15,7 +15,7 @@ var profile = (function() {
 		defaultConfig: {
 			async: true,
 			baseUrl: "app/",
-			modulePaths: {
+			paths: {
 				"dojo": "../lib/dojotoolkit.org/dojo",
 				"dijit": "../lib/dojotoolkit.org/dijit",
 				"dojox": "../lib/dojotoolkit.org/dojox"
