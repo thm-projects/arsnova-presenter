@@ -140,7 +140,7 @@ html, body {
 	margin-right: 0.5em;
 }
 
-#piAnswersMainPane, #audienceFeedbackPane {
+#piAnswersMainPane, #piQuestionsPane, #audienceFeedbackPane, #audienceQuestionsPane {
 	overflow: hidden;
 }
 
@@ -169,7 +169,7 @@ html, body {
 	margin-left: 0.5em;
 }
 
-#piFreeTextAnswers {
+#piQuestionList, #piFreeTextAnswers, #audienceQuestionList {
 	height: 100%;
 	overflow: auto;
 }
