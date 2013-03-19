@@ -138,7 +138,7 @@ define(
 							self.openQuestion(question._id, questionNode);
 						});
 						on(deleteNode, "click", function() {
-							confirmDialog.confirm("Delete answer", "Do you really want to delete this answer?", {
+							confirmDialog.confirm("Delete answer", "Do you really want to delete this question?", {
 								"Delete": function() {
 									audienceQuestionModel.remove(question._id);
 									domConstruct.destroy(questionNode);
