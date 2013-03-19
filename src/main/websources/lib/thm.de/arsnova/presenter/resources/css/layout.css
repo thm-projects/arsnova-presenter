@@ -175,14 +175,15 @@ html, body {
 }
 
 #piFreeTextAnswers .answer .subject, #audienceQuestionList .question .subject {
-	display: inline-block;
+	float: left;
 }
 
-#piFreeTextAnswers .answer .message {
+#piFreeTextAnswers .answer .message, #audienceQuestionList .question .message {
 	display: none;
+	margin-top: 0.25em;
 }
 
-#piFreeTextAnswers .answer.opened .message {
+#piFreeTextAnswers .answer.opened .message, #audienceQuestionList .question.opened .message {
 	display: block;
 }
 
@@ -219,4 +220,17 @@ html, body {
 	margin-top: 0.5em;
 	padding-top: 0.5em;
 	text-align: right;
+}
+
+.clearFix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+.clearFix {
+	display: inline-block;
 }

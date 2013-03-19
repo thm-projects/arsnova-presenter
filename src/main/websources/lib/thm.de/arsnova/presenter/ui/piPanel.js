@@ -289,6 +289,7 @@ define(
 								var answerNode = domConstruct.create("div", {"class": "answer"});
 								domConstruct.create("p", {"class": "subject", innerHTML: answer.answerSubject}, answerNode);
 								var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, answerNode);
+								domConstruct.create("div", {"class": "clearFix"}, answerNode);
 								domConstruct.create("p", {"class": "message", innerHTML: answer.answerText}, answerNode);
 								on(answerNode, "click", function() {
 									domClass.toggle(this, "opened");

@@ -73,8 +73,16 @@ body {
 	font-weight: bold;
 }
 
-.question.unread {
+.question.unread .subject {
 	font-weight: bold;
+}
+
+.question .creationTime {
+	margin-top: 0.5em;
+	width: 12em;
+	border-top: 1px solid #999;
+	color: #999;
+	font-size: 0.8em;
 }
 
 #productLogo {

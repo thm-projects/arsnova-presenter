@@ -6,6 +6,7 @@ define(
 		"dojo/dom-construct",
 		"dojo/dom-class",
 		"dojo/dom-style",
+		"dojo/date/locale",
 		"dijit/registry",
 		"dijit/layout/BorderContainer",
 		"dijit/layout/TabContainer",
@@ -16,7 +17,7 @@ define(
 		"arsnova-api/feedback",
 		"arsnova-presenter/ui/chart/audienceFeedback"
 	],
-	function(on, when, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, MenuItem, confirmDialog, fullScreen, feedbackModel, audienceFeedbackChart) {
+	function(on, when, dom, domConstruct, domClass, domStyle, dateLocale, registry, BorderContainer, TabContainer, ContentPane, MenuItem, confirmDialog, fullScreen, feedbackModel, audienceFeedbackChart) {
 		"use strict";
 		
 		var
@@ -131,11 +132,18 @@ define(
 						var questionNode = domConstruct.create("div", {"class": "question"}, questionListNode);
 						domConstruct.create("p", {"class": "subject", innerHTML: question.subject}, questionNode);
 						var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, questionNode);
+						domConstruct.create("div", {"class": "clearFix"}, questionNode);
+						var messageNode = domConstruct.create("p", {"class": "message"}, questionNode);
 						if (!question.read) {
 							domClass.add(questionNode, "unread");
 						}
+						var date = new Date(question.timestamp);
+						var dateTime = dateLocale.format(date, {selector: "date", formatLength: "long"})
+							+ " " + dateLocale.format(date, {selector: "time", formatLength: "short"})
+						;
+						domConstruct.create("footer", {"class": "creationTime", innerHTML: dateTime}, questionNode);
 						on(questionNode, "click", function(event) {
-							self.openQuestion(question._id, questionNode);
+							self.openQuestion(question._id, questionNode, messageNode);
 						});
 						on(deleteNode, "click", function() {
 							confirmDialog.confirm("Delete answer", "Do you really want to delete this question?", {
@@ -154,17 +162,23 @@ define(
 				audienceFeedbackChart.update(feedback);
 			},
 			
-			openQuestion: function(questionId, questionNode) {
-				var question = audienceQuestionModel.get(questionId);
+			openQuestion: function(questionId, questionNode, messageNode) {
 				if (domClass.contains(questionNode, "opened")) {
-					domConstruct.destroy(questionNode.children[2]);
 					domClass.remove(questionNode, "opened");
+					
 					return;
 				}
+				if (domClass.contains(questionNode, "loaded")) {
+					domClass.add(questionNode, "opened");
+					
+					return;
+				}
+				var question = audienceQuestionModel.get(questionId);
 				when(question, function(question) {
 					domClass.remove(questionNode, "unread");
 					domClass.add(questionNode, "opened");
-					domConstruct.create("p", {innerHTML: question.text}, questionNode);
+					domClass.add(questionNode, "loaded");
+					messageNode.innerHTML = question.text;
 				});
 			},
 			
