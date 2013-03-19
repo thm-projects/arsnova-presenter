@@ -26,7 +26,9 @@ define(
 			self = null,
 			lecturerQuestionModel = null,
 			piContainer = null,
-			freeTextAnswersNode = null
+			freeTextAnswersNode = null,
+			showAnswers = false,
+			showCorrect = false;
 		;
 		
 		return {
@@ -141,7 +143,12 @@ define(
 				
 				var showAnswersMenu = new Menu({style: "display: none"});
 				showAnswersMenu.addChild(new MenuItem({
-					label: "Correct answers"
+					label: "Correct answers",
+					onClick: function() {
+						showAnswers = true;
+						showCorrect = !showCorrect;
+						self.updateAnswersPanel(lecturerQuestionModel.get(), lecturerQuestionModel.getAnswers());
+					}
 				}));
 				showAnswersMenu.addChild(new MenuItem({
 					label: "Before discussion (PI)"
@@ -152,7 +159,11 @@ define(
 				new ComboButton({
 					id: "piAnswersShowButton",
 					label: "Show",
-					dropDown: showAnswersMenu
+					dropDown: showAnswersMenu,
+					onClick: function() {
+						showAnswers = !showAnswers;
+						self.updateAnswersPanel(lecturerQuestionModel.get(), lecturerQuestionModel.getAnswers());
+					}
 				}).placeAt(answersNav).startup();
 
 				var titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, "piAnswersTitlePane");
@@ -244,6 +255,8 @@ define(
 					dom.byId("piAnswersQuestionText").innerHTML = question.text;
 					piContainer.resize();
 					
+					var correctIndexes = [];
+					
 					if ("freetext" == question.questionType) {
 						piAnswersChart.hide();
 						domConstruct.empty(freeTextAnswersNode);
@@ -255,6 +268,9 @@ define(
 							labelReverseMapping[possibleAnswer.text] = i;
 							labels.push({value: i + 1, text: possibleAnswer.text});
 							values[i] = 0;
+							if (showCorrect && possibleAnswer.correct) {
+								correctIndexes.push(i);
+							}
 						});
 						piAnswersChart.show();
 						piAnswersChart.update(labels);
@@ -264,6 +280,11 @@ define(
 						var totalAnswerCount = 0;
 						answers.forEach(function(answer) {
 							totalAnswerCount += answer.answerCount;
+							
+							if (!showAnswers) {
+								return;
+							}
+							
 							if ("freetext" == question.questionType) {
 								var answerNode = domConstruct.create("div", {"class": "answer"});
 								domConstruct.create("p", {"class": "subject", innerHTML: answer.answerSubject}, answerNode);
@@ -287,8 +308,8 @@ define(
 							}
 						}, values);
 						dom.byId("piAnswersCount").innerHTML = totalAnswerCount;
-						
-						piAnswersChart.update(labels, values);
+
+						piAnswersChart.update(labels, values, correctIndexes);
 					});
 				});
 			},
@@ -314,6 +335,8 @@ define(
 			},
 			
 			onLecturerQuestionIdChange: function(name, oldValue, value) {
+				showAnswers = false;
+				showCorrect = false;
 				self.updateAnswersPanel(lecturerQuestionModel.get(), lecturerQuestionModel.getAnswers());
 			},
 		};

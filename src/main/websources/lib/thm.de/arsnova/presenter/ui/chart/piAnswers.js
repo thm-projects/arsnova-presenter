@@ -70,7 +70,7 @@ define(
 				domStyle.set(answersChartNode, "display", "none");
 			},
 			
-			update: function(labels, values) {
+			update: function(labels, values, correctIndexes) {
 				answersChart.addAxis("x", {
 					labels: labels,
 					dropLabels: false,
@@ -85,7 +85,10 @@ define(
 						values.push(0);
 					}
 				}
-				answersChart.addSeries("Answer count", theme.applyAnswerColors(values));
+				var showCorrect = correctIndexes && correctIndexes.length > 0;
+				answersChart.addSeries("Answer count",
+					showCorrect ? theme.applyAnswerMarkCorrectColors(values, correctIndexes) : theme.applyAnswerColors(values)
+				);
 				answersChart.render();
 			}
 		};

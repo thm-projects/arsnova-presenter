@@ -1,11 +1,12 @@
 define(
 	[
 	 	"dojo/_base/lang",
+	 	"dojo/_base/array",
 		"dojox/charting/Theme",
 		"dojox/gfx/gradutils",
 		"dojox/charting/themes/common"
 	],
-	function(lang, Theme, gradutils, themes) {
+	function(lang, array, Theme, gradutils, themes) {
 		"use strict";
 		/* based on Claro charting theme */
 	
@@ -104,6 +105,15 @@ define(
 			var result = [];
 			for (var i = 0; i < values.length; i++) {
 				result.push({y: values[i], stroke: "black", fill: g(defaultFill, colors[i][0], colors[i][1])});
+			}
+			return result;
+		};
+		
+		themes.Arsnova.applyAnswerMarkCorrectColors = function(values, correctIndexes) {
+			var result = [];
+			for (var i = 0; i < values.length; i++) {
+				var fillColor = array.indexOf(correctIndexes, i) >= 0 ? g(defaultFill, "#43d943", "#25a625") : g(defaultFill, "#ccc", "#999");
+				result.push({y: values[i], stroke: "black", fill: fillColor});
 			}
 			return result;
 		};
