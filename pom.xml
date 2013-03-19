@@ -62,6 +62,13 @@
 									<directory>vendor/socket.io/socket.io-client/dist</directory>
 									<targetPath>lib/socket.io</targetPath>
 								</resource>
+								<resource>
+									<directory>vendor/d-project.com/qrcode-generator-js</directory>
+									<targetPath>lib/d-project.com/qrcode-generator</targetPath>
+									<includes>
+										<include>qrcode.js</include>
+									</includes>
+								</resource>
 							</resources>
 						</configuration>
 					</execution>

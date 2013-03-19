@@ -16,3 +16,6 @@
 [submodule "vendor/dgerhardt.net/dgerhardt-dojo"]
 	path = vendor/dgerhardt.net/dgerhardt-dojo
 	url = https://github.com/dgerhardt/dgerhardt-dojo.git
+[submodule "vendor/d-project.com/qrcode-generator-js"]
+	path = vendor/d-project.com/qrcode-generator-js
+	url = git://scm.thm.de/dgerhardt-public/qr-code-generator-js.git
