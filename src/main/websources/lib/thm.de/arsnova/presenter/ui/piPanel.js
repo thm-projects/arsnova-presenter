@@ -339,7 +339,7 @@ define(
 				showAnswers = false;
 				showCorrect = false;
 				self.updateAnswersPanel(lecturerQuestionModel.get(), lecturerQuestionModel.getAnswers());
-			},
+			}
 		};
 	}
 );

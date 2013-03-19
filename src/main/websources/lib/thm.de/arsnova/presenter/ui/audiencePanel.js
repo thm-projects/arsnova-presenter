@@ -212,7 +212,7 @@ define(
 				} else {
 					console.log("Full screen mode not supported");
 				}
-			},
+			}
 		};
 	}
 );
