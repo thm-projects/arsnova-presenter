@@ -183,7 +183,7 @@ define(
 					if (document.body.clientWidth < 768 || document.body.clientHeight < 480) {
 						if (screen.availWidth < 768 || screen.availHeight < 480) {
 							resizeLog = "Small resolution detected: " + screen.availWidth + "x" + screen.availHeight;
-							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Presenter is optimized for notebook, tablet and desktop devices.";
+							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Presenter is optimized for notebook, tablet and desktop devices. If you are using a tablet an see this message, please try landscape orientation.";
 						} else {
 							resizeLog = "Small window detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
 							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. Please increase the size of your browser's window or reduce the zoom factor (if zooming is active).";
