@@ -255,9 +255,7 @@ define(
 					return null;
 				}
 				
-				return answerStore.query({
-					sessionkey: questionState.get("sessionKey")
-				});
+				return answerStore.query();
 			},
 			
 			removeAnswer: function(id) {
