@@ -79,8 +79,8 @@ html, body {
 
 #sessionInfo {
 	position: absolute;
-	left: 350px;
-	right: 350px;
+	left: 320px;
+	right: 320px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-align: center;

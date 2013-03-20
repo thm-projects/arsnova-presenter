@@ -37,7 +37,12 @@ define(
 				/* Session controls */
 				var sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
 				domConstruct.create("select", {id: "sessionSelect"}, sessionPanelNode);
-				domConstruct.create("span", {id: "sessionKey", innerHTML: "Keyword"}, sessionPanelNode);
+				var sessionKeyNode = domConstruct.create("span", {id: "sessionKey", innerHTML: "00 00 00 00"}, sessionPanelNode);
+				new Tooltip({
+					connectId: [sessionKeyNode],
+					position: ["below-centered"],
+					label: "The session key you give to your audience"
+				});
 				
 				(sessionSelect = new Select({
 					options: [{label: "Select a session", value: "", selected: true, disabled: true}],

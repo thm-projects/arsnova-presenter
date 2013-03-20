@@ -34,6 +34,10 @@ body {
 	text-align: center;
 }
 
+#sessionKey {
+	border-radius: .3em;
+}
+
 #piQuestionList .question, #audienceQuestionList .question, #piFreeTextAnswers .answer {
 	background-color: rgb(226, 235, 242);
 	border-radius: 0.8em;
