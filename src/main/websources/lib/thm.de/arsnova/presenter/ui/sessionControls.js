@@ -6,12 +6,15 @@ define(
 		"dojo/when",
 		"dojo/dom",
 		"dojo/dom-construct",
+		"dojo/dom-style",
+		"dojo/request/script",
 		"dijit/registry",
 		"dijit/form/DropDownButton",
 		"dijit/form/Select",
 		"dijit/Dialog",
+		"dijit/Tooltip"
 	],
-	function(config, string, on, when, dom, domConstruct, registry, DropDownButton, Select, Dialog) {
+	function(config, string, on, when, dom, domConstruct, domStyle, script, registry, DropDownButton, Select, Dialog, Tooltip) {
 		"use strict";
 		
 		var
@@ -36,6 +39,7 @@ define(
 				domConstruct.create("label", {"for": "sessionSelect", innerHTML: "Session"}, sessionPanelNode);
 				domConstruct.create("select", {id: "sessionSelect"}, sessionPanelNode);
 				domConstruct.create("span", {id: "sessionKey", innerHTML: "Keyword"}, sessionPanelNode);
+				
 				(sessionSelect = new Select({
 					options: [{label: "Select a session", value: "", selected: true, disabled: true}],
 					maxHeight: 200,
@@ -43,6 +47,15 @@ define(
 						sessionModel.setKey(value);
 					}
 				}, "sessionSelect")).startup();
+				
+				if ("undefined" !== typeof config.arsnova.mobileStudentSessionUrl) {
+					var sessionQrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr"}, sessionPanelNode);
+					new Tooltip({
+						connectId: [sessionQrNode],
+						label: "Show QR Code for mobile ARSnova session",
+						position: ["below-centered"]
+					}).startup();
+				}
 				
 				/* button is destroyed on creation since it is not needed
 				 * until editing features are available */
@@ -68,6 +81,11 @@ define(
 				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
 				on(mobileStudentsViewMenuItem, "click", function() {
 					self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
+				});
+				
+				on(dom.byId("sessionQr"), "click", function() {
+					var url = string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionModel.getKey()});
+					self.showQr(self.getAbsoluteUrl(url));
 				});
 			},
 			
@@ -151,6 +169,43 @@ define(
 				}
 				mobileDialog.set("content", mobileFrame);
 				mobileDialog.show();
+			},
+			
+			showQr: function(data) {
+				var QR_TYPE_NUMBER = 4;
+				var QR_ERROR_CORRECT_LEVEL = "M";
+				var QR_CELL_COUNT = 33;
+				var QR_BORDER_SIZE_FACTOR = 2;
+				var showQrOverlay = function() {
+					var qrOverlayNode = domConstruct.create("div", {id: "qrOverlay"}, document.body);
+					var qrOverlayContentNode = domConstruct.create("div", null, qrOverlayNode);
+					on(qrOverlayNode, "click", function() {
+						domConstruct.destroy(qrOverlayNode);
+					});
+					var maxSize = -50 + (document.body.clientWidth < document.body.clientHeight ? document.body.clientWidth : document.body.clientHeight);
+					var cellSize = Math.floor(maxSize / (QR_CELL_COUNT + QR_BORDER_SIZE_FACTOR * 2));
+					var qr = qrcode(QR_TYPE_NUMBER, QR_ERROR_CORRECT_LEVEL);
+					qr.addData(data);
+					qr.make();
+					qrOverlayContentNode.innerHTML = qr.createTableTag(cellSize);
+					domStyle.set(qrOverlayContentNode.firstChild, "border", (cellSize * QR_BORDER_SIZE_FACTOR) + "px solid white");
+					domConstruct.create("p", {innerHTML: data}, qrOverlayContentNode);
+				};
+				if ("undefined" == typeof qrcode) {
+					script.get("lib/d-project.com/qrcode-generator/qrcode.js").then(function() {
+						console.log("QR Code generation library loaded");
+						showQrOverlay();
+					}, function(error) {
+						console.error("QR Code generation library could not be loaded");
+					});
+				} else {
+					showQrOverlay();
+				}
+			},
+			
+			getAbsoluteUrl: function(url) {
+				var tag = domConstruct.create("a", {href: url}, document.body);
+				return tag.href;
 			}
 		};
 	}

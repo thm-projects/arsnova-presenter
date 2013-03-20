@@ -16,6 +16,16 @@ body {
 	font-weight: bold;
 }
 
+#sessionQr {
+	cursor: pointer;
+}
+
+#qrOverlay {
+	background: white;
+	background-color: rgba(255, 255, 255, 0.75);
+	cursor: pointer;
+}
+
 #activeUserCount, #sessionKey, #piAnswersCount {
 	min-width: 1em;
 	height: 1em;
@@ -99,4 +109,9 @@ body {
 
 .confirmDialogButtons {
 	border-top: 1px solid #ccc;
+}
+
+#qrOverlay p {
+	font-size: 1.2em;
+	font-weight: bold;
 }

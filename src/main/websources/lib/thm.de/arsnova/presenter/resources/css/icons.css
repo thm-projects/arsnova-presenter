@@ -1,3 +1,9 @@
+.iconQr {
+	background: url(../../../../../../images/icons/blog-qr.png) no-repeat center center;
+	width: 33px;
+	height: 33px;
+}
+
 .iconPrev {
 	background: url(../../../../../../images/icons/arrow-left.png) no-repeat center center;
 	width: 16px;
