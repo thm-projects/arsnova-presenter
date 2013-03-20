@@ -36,7 +36,6 @@ define(
 				domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, sessionInfoNode);
 				/* Session controls */
 				var sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
-				domConstruct.create("label", {"for": "sessionSelect", innerHTML: "Session"}, sessionPanelNode);
 				domConstruct.create("select", {id: "sessionSelect"}, sessionPanelNode);
 				domConstruct.create("span", {id: "sessionKey", innerHTML: "Keyword"}, sessionPanelNode);
 				

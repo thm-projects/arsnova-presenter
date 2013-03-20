@@ -64,13 +64,12 @@ html, body {
 	line-height: 34px;
 }
 
-#sessionSelect {
-	margin: 0 0.5em;
+#sessionPanel > * {
+	margin-right: 0.4em;
 }
 
 #sessionQr {
 	display: inline-block;
-	margin: 0 0.5em;
 	vertical-align: middle;
 }
 

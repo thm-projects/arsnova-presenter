@@ -7,10 +7,6 @@ body {
 	background-color: rgb(226, 235, 242) ! important;
 }
 
-.sidePanel label {
-	font-weight: bold;
-}
-
 #sessionTitle {
 	font-size: 1.2em;
 	font-weight: bold;
@@ -36,10 +32,6 @@ body {
 	font-size: 1.1em;
 	line-height: 1.1em;
 	text-align: center;
-}
-
-#sessionKey {
-	margin-left: 0.25em;
 }
 
 #piQuestionList .question, #audienceQuestionList .question, #piFreeTextAnswers .answer {
@@ -114,4 +106,5 @@ body {
 #qrOverlay p {
 	font-size: 1.2em;
 	font-weight: bold;
+	background: white;
 }
