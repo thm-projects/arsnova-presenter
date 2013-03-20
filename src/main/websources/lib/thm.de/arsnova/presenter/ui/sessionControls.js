@@ -89,7 +89,11 @@ define(
 				});
 				
 				on(dom.byId("sessionQr"), "click", function() {
-					var url = string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionModel.getKey()});
+					var sessionKey = sessionModel.getKey();
+					if (null == sessionKey) {
+						return;
+					}
+					var url = string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionKey});
 					self.showQr(self.getAbsoluteUrl(url));
 				});
 			},
