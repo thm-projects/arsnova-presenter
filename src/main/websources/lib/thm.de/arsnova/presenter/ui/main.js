@@ -75,6 +75,7 @@ define(
 			startup: function() {
 				var appContainer = registry.byId("appContainer");
 				appContainer.startup();
+				fullScreen.setPageNode(appContainer.domNode);
 				
 				/* Add header content */
 				var exitPanelNode = domConstruct.create("div", {id: "exitPanel"}, "headerPane");
