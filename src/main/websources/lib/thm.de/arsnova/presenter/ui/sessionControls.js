@@ -6,6 +6,7 @@ define(
 		"dojo/when",
 		"dojo/dom",
 		"dojo/dom-construct",
+		"dojo/dom-class",
 		"dojo/dom-style",
 		"dojo/request/script",
 		"dijit/registry",
@@ -14,7 +15,7 @@ define(
 		"dijit/Dialog",
 		"dijit/Tooltip"
 	],
-	function(config, string, on, when, dom, domConstruct, domStyle, script, registry, DropDownButton, Select, Dialog, Tooltip) {
+	function(config, string, on, when, dom, domConstruct, domClass, domStyle, script, registry, DropDownButton, Select, Dialog, Tooltip) {
 		"use strict";
 		
 		var
@@ -37,7 +38,7 @@ define(
 				/* Session controls */
 				var sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
 				domConstruct.create("select", {id: "sessionSelect"}, sessionPanelNode);
-				var sessionKeyNode = domConstruct.create("span", {id: "sessionKey", innerHTML: "00 00 00 00"}, sessionPanelNode);
+				var sessionKeyNode = domConstruct.create("span", {id: "sessionKey", "class": "noSession", innerHTML: "00 00 00 00"}, sessionPanelNode);
 				new Tooltip({
 					connectId: [sessionKeyNode],
 					position: ["below-centered"],
@@ -131,7 +132,9 @@ define(
 						+ " " + session.keyword.substr(4, 2)
 						+ " " + session.keyword.substr(6, 2)
 					;
-					dom.byId("sessionKey").innerHTML = keyword;
+					var sessionKeyNode = dom.byId("sessionKey");
+					sessionKeyNode.innerHTML = keyword;
+					domClass.remove(sessionKeyNode, "noSession");
 				});
 				
 				/* enable mode menu items */

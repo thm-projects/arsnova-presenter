@@ -38,6 +38,10 @@ body {
 	border-radius: .3em;
 }
 
+#sessionKey.noSession {
+	color: #999;
+}
+
 #piQuestionList .question, #audienceQuestionList .question, #piFreeTextAnswers .answer {
 	background-color: rgb(226, 235, 242);
 	border-radius: 0.8em;
