@@ -27,6 +27,7 @@ define(
 			lecturerQuestionModel = null,
 			piContainer = null,
 			freeTextAnswersNode = null,
+			piRoundButton = null,
 			showAnswers = false,
 			showCorrect = false;
 		;
@@ -165,6 +166,13 @@ define(
 						self.updateAnswersPanel(lecturerQuestionModel.get(), lecturerQuestionModel.getAnswers());
 					}
 				}).placeAt(answersNav).startup();
+				(piRoundButton = new Button({
+					id: "piRoundButton",
+					onClick: function() {
+						lecturerQuestionModel.startSecondPiRound();
+					}
+				})).placeAt(answersNav).startup();
+				domStyle.set(piRoundButton.domNode, "display", "none");
 
 				var titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, "piAnswersTitlePane");
 				domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, titlePaneContentNode);
@@ -245,6 +253,7 @@ define(
 					dom.byId("piAnswersQuestionText").innerHTML = "Question text";
 					piContainer.resize();
 					piAnswersChart.update([], []);
+					domStyle.set(piRoundButton, "display", "none");
 					
 					return;
 				}
@@ -261,8 +270,17 @@ define(
 						piAnswersChart.hide();
 						domConstruct.empty(freeTextAnswersNode);
 						domStyle.set(freeTextAnswersNode, "display", "block");
+						domStyle.set(piRoundButton.domNode, "display", "none");
 					} else {
 						domStyle.set(freeTextAnswersNode, "display", "none");
+						if (question.piRound == 2) {
+							piRoundButton.set("label", "2nd");
+							piRoundButton.set("disabled", true);
+						} else {
+							piRoundButton.set("label", "1st");
+							piRoundButton.set("disabled", false);
+						}
+						domStyle.set(piRoundButton.domNode, "display", "");
 						question.possibleAnswers.forEach(function(possibleAnswer, i) {
 							/* transform the label and answer count data into arrays usable by dojox/charting */
 							labelReverseMapping[possibleAnswer.text] = i;
