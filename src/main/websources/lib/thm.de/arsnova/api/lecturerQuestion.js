@@ -105,12 +105,22 @@ define(
 				});
 			},
 			
-			get: function() {
-				if (null == this.getId()) {
-					return null;
+			get: function(questionId) {
+				if (null == questionId) {
+					if (null == this.getId()) {
+						return null;
+					}
+					questionId = questionState.get("id");
 				}
 				
-				return questionStore.get(questionState.get("id"));
+				return questionStore.get(questionId);
+			},
+			
+			update: function(question) {
+				questionStore.put(question, {
+					id: question._id,
+					overwrite: true
+				});
 			},
 			
 			next: function() {
@@ -265,6 +275,12 @@ define(
 					return null;
 				}
 				answerStore.remove(id);
+			},
+			
+			startSecondPiRound: function(questionId) {
+				var question = this.get(questionId);
+				question.piRound = 2;
+				this.update(question);
 			}
 		};
 	}
