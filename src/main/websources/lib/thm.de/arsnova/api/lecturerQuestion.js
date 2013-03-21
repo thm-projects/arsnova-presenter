@@ -259,7 +259,7 @@ define(
 			},
 			
 			getAnswers: function() {
-				if (null == answerStore) {
+				if (null == this.getId()) {
 					console.log("No question selected");
 					
 					return null;
@@ -269,7 +269,7 @@ define(
 			},
 			
 			removeAnswer: function(id) {
-				if (null == answerStore) {
+				if (null == this.getId()) {
 					console.log("No question selected");
 					
 					return null;
