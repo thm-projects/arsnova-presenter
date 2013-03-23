@@ -28,6 +28,8 @@ define(
 				answersChart.setTheme(theme);
 				answersChart.addPlot("default", {
 					type: ClusteredColumns,
+					gap: 5,
+					maxBarSize: 180,
 					animate: {duration: 500, easing: easing.expoOut}
 				});
 				answersChart.addAxis("x");

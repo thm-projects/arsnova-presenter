@@ -26,7 +26,8 @@ define(
 				feedbackChart.setTheme(theme);
 				feedbackChart.addPlot("default", {
 					type: Columns,
-					gap: 3,
+					gap: 5,
+					maxBarSize: 180,
 					animate: {duration: 500, easing: easing.expoOut}
 				});
 				
