@@ -5,13 +5,13 @@ define(
 		"dojo/dom-style",
 		"dijit/registry",
 	 	"dojox/charting/Chart",
-	 	"dojox/charting/plot2d/Columns",
+	 	"dojox/charting/plot2d/ClusteredColumns",
 	 	"dojox/charting/axis2d/Default",
 	 	"dgerhardt/common/fullscreen",
 	 	"dojo/fx/easing",
 	 	"./theme"
 	],
-	function(dom, domConstruct, domStyle, registry, Chart, Columns, AxisDefault, fullScreen, easing, theme) {
+	function(dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, AxisDefault, fullScreen, easing, theme) {
 		"use strict";
 		
 		var
@@ -27,8 +27,7 @@ define(
 				answersChart = new Chart(answersChartNode);
 				answersChart.setTheme(theme);
 				answersChart.addPlot("default", {
-					type: Columns,
-					gap: 3,
+					type: ClusteredColumns,
 					animate: {duration: 500, easing: easing.expoOut}
 				});
 				answersChart.addAxis("x");
@@ -70,25 +69,48 @@ define(
 				domStyle.set(answersChartNode, "display", "none");
 			},
 			
-			update: function(labels, values, correctIndexes) {
+			update: function(labels, correctIndexes, series) {
 				answersChart.addAxis("x", {
 					labels: labels,
 					dropLabels: false,
 					maxLabelSize: 120,
 					rotation: -25,
 					trailingSymbol: "...",
-					minorTicks: false
+					minorTicks: false,
 				});
-				if (null == values) {
-					values = [];
+				
+				answersChart.removeSeries("No data");
+				answersChart.removeSeries("PI round 1");
+				answersChart.removeSeries("PI round 2");
+				
+				var seriesCount = 0;
+				if (null != series) {
+					var showCorrect = correctIndexes && correctIndexes.length > 0;
+					
+					/* sort series object property name */
+					var seriesNames = [];
+					for (var seriesName in series) {
+						seriesNames.push(seriesName);
+					}
+					seriesNames.sort();
+					
+					for (var i = 0; i < seriesNames.length; i++) {
+						var seriesName = seriesNames[i];
+						answersChart.addSeries(seriesName,
+							showCorrect
+								? theme.applyAnswerMarkCorrectColors(series[seriesName], correctIndexes)
+								: theme.applyAnswerColors(series[seriesName])
+						);
+						seriesCount++;
+					}
+				}
+				if (0 == seriesCount) {
+					var values = [];
 					for (var i = 0; i < labels.length; i++) {
 						values.push(0);
 					}
+					answersChart.addSeries("No data", values);
 				}
-				var showCorrect = correctIndexes && correctIndexes.length > 0;
-				answersChart.addSeries("Answer count",
-					showCorrect ? theme.applyAnswerMarkCorrectColors(values, correctIndexes) : theme.applyAnswerColors(values)
-				);
 				answersChart.render();
 			}
 		};

@@ -2,6 +2,7 @@ define(
 	[
 		"dojo/on",
 		"dojo/when",
+		"dojo/promise/all",
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dojo/dom-class",
@@ -19,7 +20,7 @@ define(
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, confirmDialog, fullScreen, piAnswersChart) {
+	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, confirmDialog, fullScreen, piAnswersChart) {
 		"use strict";
 		
 		var
@@ -29,7 +30,8 @@ define(
 			freeTextAnswersNode = null,
 			piRoundButton = null,
 			showAnswers = false,
-			showCorrect = false;
+			showRounds = [],
+			showCorrect = false
 		;
 		
 		return {
@@ -148,14 +150,24 @@ define(
 					onClick: function() {
 						showAnswers = true;
 						showCorrect = !showCorrect;
-						self.updateAnswersPanel(lecturerQuestionModel.get(), lecturerQuestionModel.getAnswers());
+						self.updateAnswersPaneAnswers();
 					}
 				}));
 				showAnswersMenu.addChild(new MenuItem({
-					label: "Before discussion (PI)"
+					label: "Before discussion (PI)",
+					onClick: function() {
+						showAnswers = true;
+						showRounds[1] = !showRounds[1];
+						self.updateAnswersPaneAnswers();
+					}
 				}));
 				showAnswersMenu.addChild(new MenuItem({
-					label: "After discussion (PI)"
+					label: "After discussion (PI)",
+					onClick: function() {
+						showAnswers = true;
+						showRounds[2] = !showRounds[2];
+						self.updateAnswersPaneAnswers();
+					}
 				}));
 				new ComboButton({
 					id: "piAnswersShowButton",
@@ -163,7 +175,7 @@ define(
 					dropDown: showAnswersMenu,
 					onClick: function() {
 						showAnswers = !showAnswers;
-						self.updateAnswersPanel(lecturerQuestionModel.get(), lecturerQuestionModel.getAnswers());
+						self.updateAnswersPaneAnswers();
 					}
 				}).placeAt(answersNav).startup();
 				(piRoundButton = new Button({
@@ -242,10 +254,8 @@ define(
 				});
 			},
 			
-			updateAnswersPanel: function(question, answers) {
-				var labelReverseMapping = {};
+			updateAnswersPaneQuestion: function(question) {
 				var labels = [];
-				var values = [];
 				
 				if (null == question) {
 					dom.byId("piNavigationStatus").innerHTML = "0/0";
@@ -258,79 +268,129 @@ define(
 					return;
 				}
 				
-				when(question, function(question) {
-					dom.byId("piNavigationStatus").innerHTML = (lecturerQuestionModel.getPosition() + 1) + "/" + lecturerQuestionModel.getCount();
-					dom.byId("piAnswersQuestionSubject").innerHTML = question.subject;
-					dom.byId("piAnswersQuestionText").innerHTML = question.text;
-					piContainer.resize();
-					
-					var correctIndexes = [];
-					
-					if ("freetext" == question.questionType) {
-						piAnswersChart.hide();
-						domConstruct.empty(freeTextAnswersNode);
-						domStyle.set(freeTextAnswersNode, "display", "block");
-						domStyle.set(piRoundButton.domNode, "display", "none");
+				dom.byId("piNavigationStatus").innerHTML = (lecturerQuestionModel.getPosition() + 1) + "/" + lecturerQuestionModel.getCount();
+				dom.byId("piAnswersQuestionSubject").innerHTML = question.subject;
+				dom.byId("piAnswersQuestionText").innerHTML = question.text;
+				piContainer.resize();
+				
+				if ("freetext" == question.questionType) {
+					piAnswersChart.hide();
+					domConstruct.empty(freeTextAnswersNode);
+					domStyle.set(freeTextAnswersNode, "display", "block");
+					domStyle.set(piRoundButton.domNode, "display", "none");
+				} else {
+					domStyle.set(freeTextAnswersNode, "display", "none");
+					if (question.piRound == 2) {
+						piRoundButton.set("label", "2nd");
+						piRoundButton.set("disabled", true);
 					} else {
-						domStyle.set(freeTextAnswersNode, "display", "none");
-						if (question.piRound == 2) {
-							piRoundButton.set("label", "2nd");
-							piRoundButton.set("disabled", true);
-						} else {
-							piRoundButton.set("label", "1st");
-							piRoundButton.set("disabled", false);
-						}
-						domStyle.set(piRoundButton.domNode, "display", "");
-						question.possibleAnswers.forEach(function(possibleAnswer, i) {
-							/* transform the label and answer count data into arrays usable by dojox/charting */
-							labelReverseMapping[possibleAnswer.text] = i;
-							labels.push({value: i + 1, text: possibleAnswer.text});
-							values[i] = 0;
-							if (showCorrect && possibleAnswer.correct) {
-								correctIndexes.push(i);
-							}
+						piRoundButton.set("label", "1st");
+						piRoundButton.set("disabled", false);
+					}
+					domStyle.set(piRoundButton.domNode, "display", "");
+					question.possibleAnswers.forEach(function(possibleAnswer, i) {
+						labels.push({value: i + 1, text: possibleAnswer.text});
+					});
+					piAnswersChart.show();
+					piAnswersChart.update(labels);
+				}
+			},
+			
+			updateAnswersPaneAnswers: function() {
+				when(lecturerQuestionModel.get(), function(question) {
+					if ("freetext" == question.questionType) {
+						when(lecturerQuestionModel.getAnswers(), function(answers) {
+							self.updateAnswersPaneFreeText(answers);
 						});
-						piAnswersChart.show();
-						piAnswersChart.update(labels);
+					} else {
+						var rounds = {};
+						for (var i = 0; i < showRounds.length; i++) {
+							if (!showRounds[i]) {
+								continue;
+							}
+							rounds["PI round " + i] = lecturerQuestionModel.getAnswers(i);
+						}
+						/* update UI when data for answer rounds are ready */
+						promiseAll(rounds).then(self.updateAnswersPaneChart);
+					}
+				});
+			},
+			
+			updateAnswersPaneFreeText: function(answers) {
+				var totalAnswerCount = 0;
+				domConstruct.empty(freeTextAnswersNode);
+				answers.forEach(function(answer) {
+					totalAnswerCount += answer.answerCount;
+					
+					if (!showAnswers) {
+						return;
 					}
 					
-					when(answers, function(answers) {
-						var totalAnswerCount = 0;
-						answers.forEach(function(answer) {
-							totalAnswerCount += answer.answerCount;
-							
-							if (!showAnswers) {
-								return;
-							}
-							
-							if ("freetext" == question.questionType) {
-								var answerNode = domConstruct.create("div", {"class": "answer"});
-								domConstruct.create("p", {"class": "subject", innerHTML: answer.answerSubject}, answerNode);
-								var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, answerNode);
-								domConstruct.create("div", {"class": "clearFix"}, answerNode);
-								domConstruct.create("p", {"class": "message", innerHTML: answer.answerText}, answerNode);
-								on(answerNode, "click", function() {
-									domClass.toggle(this, "opened");
-								});
-								on(deleteNode, "click", function() {
-									confirmDialog.confirm("Delete answer", "Do you really want to delete this answer?", {
-										"Delete": function() {
-											lecturerQuestionModel.removeAnswer(answer._id);
-											domConstruct.destroy(answerNode);
-										},
-										"Cancel": null
-									});
-								});
-								domConstruct.place(answerNode, freeTextAnswersNode);
-							} else {
-								values[labelReverseMapping[answer.answerText]] = answer.answerCount;
-							}
-						}, values);
-						dom.byId("piAnswersCount").innerHTML = totalAnswerCount;
-
-						piAnswersChart.update(labels, values, correctIndexes);
+					var answerNode = domConstruct.create("div", {"class": "answer"});
+					domConstruct.create("p", {"class": "subject", innerHTML: answer.answerSubject}, answerNode);
+					var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, answerNode);
+					domConstruct.create("div", {"class": "clearFix"}, answerNode);
+					domConstruct.create("p", {"class": "message", innerHTML: answer.answerText}, answerNode);
+					on(answerNode, "click", function() {
+						domClass.toggle(this, "opened");
 					});
+					on(deleteNode, "click", function() {
+						confirmDialog.confirm("Delete answer", "Do you really want to delete this answer?", {
+							"Delete": function() {
+								lecturerQuestionModel.removeAnswer(answer._id);
+								domConstruct.destroy(answerNode);
+							},
+							"Cancel": null
+						});
+					});
+					domConstruct.place(answerNode, freeTextAnswersNode);
 				});
+				
+				dom.byId("piAnswersCount").innerHTML = totalAnswerCount;
+			},
+			
+			updateAnswersPaneChart: function(rounds) {
+				var question = lecturerQuestionModel.get();
+				var totalAnswerCount = 0;
+				var possibleAnswersCount = 0;
+				var valueSeries = {};
+				var values = [];
+				var labels = [];
+				var labelReverseMapping = {};
+				var correctIndexes = [];
+				
+				question.possibleAnswers.forEach(function(possibleAnswer, i) {
+					/* transform the label and answer count data into arrays usable by dojox/charting */
+					labelReverseMapping[possibleAnswer.text] = i;
+					labels.push({value: i + 1, text: possibleAnswer.text});
+					values[i] = 0;
+					if (showCorrect && possibleAnswer.correct) {
+						correctIndexes.push(i);
+					}
+					possibleAnswersCount++;
+				});
+
+				for (var round in rounds) {
+					var answers = rounds[round];
+					var values = [];
+					answers.forEach(function(answer) {
+						totalAnswerCount += answer.answerCount;
+						
+						if (!showAnswers) {
+							return;
+						}
+						
+						values[labelReverseMapping[answer.answerText]] = answer.answerCount;
+					});
+					while (values.length < possibleAnswersCount) {
+						values.push(0);
+					}
+					
+					valueSeries[round] = values;
+				}
+				piAnswersChart.update(labels, correctIndexes, valueSeries);
+				
+				dom.byId("piAnswersCount").innerHTML = totalAnswerCount;
 			},
 			
 			togglePresentMode: function() {
@@ -356,7 +416,15 @@ define(
 			onLecturerQuestionIdChange: function(name, oldValue, value) {
 				showAnswers = false;
 				showCorrect = false;
-				self.updateAnswersPanel(lecturerQuestionModel.get(), lecturerQuestionModel.getAnswers());
+				showRounds = [];
+				var question = lecturerQuestionModel.get();
+				when(question, function(question) {
+					self.updateAnswersPaneQuestion(question);
+					if (null != question) {
+						showRounds[question.piRound] = true;
+						self.updateAnswersPaneAnswers();
+					}
+				});
 			}
 		};
 	}
