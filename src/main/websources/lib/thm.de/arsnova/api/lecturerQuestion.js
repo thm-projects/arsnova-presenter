@@ -3,6 +3,7 @@ define(
 		"dojo/_base/config",
 		"dojo/_base/declare",
 		"dojo/string",
+		"dojo/when",
 		"dojo/Stateful",
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
@@ -10,7 +11,7 @@ define(
 		"arsnova-api/session",
 		"arsnova-api/socket"
 	],
-	function(config, declare, string, Stateful, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
+	function(config, declare, string, when, Stateful, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
 		"use strict";
 		
 		var
@@ -29,14 +30,13 @@ define(
 			questionMemory = null,
 			questionStore = null,
 
-			answerJsonRest = new JsonRestStore({
-				target: answerPath,
-				idProperty: "_id"
-			}),
-			answerMemory = new MemoryStore({
-				idProperty: "_id"
-			}),
-			answerStore = CacheStore(answerJsonRest, answerMemory)
+			ftAnswerJsonRest = null,
+			ftAnswerMemory = null,
+			ftAnswerStore = null,
+
+			answerCountJsonRest = [],
+			answerCountMemory = [],
+			answerCountStore = []
 		;
 		
 		sessionModel.watchKey(function(name, oldValue, value) {
@@ -57,14 +57,17 @@ define(
 			}
 			
 			console.log("Question id changed: " + value);
-			answerJsonRest = new JsonRestStore({
+			ftAnswerJsonRest = new JsonRestStore({
 				target: string.substitute(answerPath, {questionId: value}),
 				idProperty: "_id"
 			});
-			answerMemory = new MemoryStore({
+			ftAnswerMemory = new MemoryStore({
 				idProperty: "_id"
 			});
-			answerStore = CacheStore(answerJsonRest, answerMemory);
+			ftAnswerStore = CacheStore(ftAnswerJsonRest, ftAnswerMemory);
+			
+			/* remove cached answers */
+			answerCountStore = [];
 		});
 		
 		socket.on("lecQuestionAvail", function(lecturerQuestionId) {
@@ -107,10 +110,9 @@ define(
 			
 			get: function(questionId) {
 				if (null == questionId) {
-					if (null == this.getId()) {
+					if (null == (questionId = this.getId())) {
 						return null;
 					}
-					questionId = questionState.get("id");
 				}
 				
 				return questionStore.get(questionId);
@@ -258,14 +260,41 @@ define(
 				});
 			},
 			
-			getAnswers: function() {
+			getAnswers: function(piRound, refresh) {
 				if (null == this.getId()) {
 					console.log("No question selected");
 					
 					return null;
 				}
 				
-				return answerStore.query();
+				return when(this.get(), function(question) {
+					if ("freetext" == question.questionType) {
+						if (ftAnswerMemory.data.length > 0) {
+							return ftAnswerMemory.query();
+						}
+						
+						return ftAnswerStore.query();
+					}
+					
+					if (null == piRound || piRound < 1 || piRound > 2) {
+						piRound = question.piRound;
+					}
+					
+					if (refresh || !answerCountStore[piRound]) {
+						answerCountJsonRest[piRound] = new JsonRestStore({
+							target: string.substitute(answerPath, {questionId: question._id}),
+							idProperty: "answerText"
+						});
+						answerCountMemory[piRound] = new MemoryStore({
+							idProperty: "answerText"
+						});
+						answerCountStore[piRound] = new CacheStore(answerCountJsonRest[piRound], answerCountMemory[piRound]);
+
+						return answerCountStore[piRound].query({piround: piRound});
+					}
+
+					return answerCountMemory[piRound].query();
+				});
 			},
 			
 			removeAnswer: function(id) {
