@@ -123,7 +123,7 @@ define(
 			},
 			
 			update: function(question) {
-				questionStore.put(question, {
+				return questionStore.put(question, {
 					id: question._id,
 					overwrite: true
 				});
@@ -285,9 +285,12 @@ define(
 			},
 			
 			startSecondPiRound: function(questionId) {
+				var self = this;
 				var question = this.get(questionId);
-				question.piRound = 2;
-				this.update(question);
+				return when(question, function(question) {
+					question.piRound = 2;
+					return self.update(question);
+				});
 			}
 		};
 		
