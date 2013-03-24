@@ -155,7 +155,7 @@ define(
 					}
 				}));
 				showAnswersMenu.addChild(showPiRoundMenuItem[1] = new CheckedMenuItem({
-					label: "Before discussion (PI)",
+					label: "Before discussion (1st)",
 					onClick: function() {
 						if (showAnswers) {
 							self.updateAnswersPaneAnswers();
@@ -163,7 +163,7 @@ define(
 					}
 				}));
 				showAnswersMenu.addChild(showPiRoundMenuItem[2] = new CheckedMenuItem({
-					label: "After discussion (PI)",
+					label: "After discussion (2nd)",
 					onClick: function() {
 						if (showAnswers) {
 							self.updateAnswersPaneAnswers();
