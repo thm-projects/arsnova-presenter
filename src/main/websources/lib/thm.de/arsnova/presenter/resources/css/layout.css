@@ -221,6 +221,10 @@ html, body {
 	border: none;
 }
 
+.confirmDialogContent {
+	max-width: 400px;
+}
+
 .confirmDialogButtons {
 	margin-top: 0.5em;
 	padding-top: 0.5em;
