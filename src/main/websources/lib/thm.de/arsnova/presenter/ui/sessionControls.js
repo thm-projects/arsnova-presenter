@@ -200,7 +200,8 @@ define(
 					qr.make();
 					qrOverlayContentNode.innerHTML = qr.createTableTag(cellSize);
 					domStyle.set(qrOverlayContentNode.firstChild, "border", (cellSize * QR_BORDER_SIZE_FACTOR) + "px solid white");
-					domConstruct.create("p", {innerHTML: data}, qrOverlayContentNode);
+					var urlNode = domConstruct.create("p", {innerHTML: data}, qrOverlayContentNode);
+					domStyle.set(urlNode, "width", ((QR_CELL_COUNT + QR_BORDER_SIZE_FACTOR * 2) * cellSize) + "px");
 				};
 				if ("undefined" == typeof qrcode) {
 					script.get("lib/d-project.com/qrcode-generator/qrcode.js").then(function() {

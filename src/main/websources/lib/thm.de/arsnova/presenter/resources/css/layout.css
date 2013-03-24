@@ -261,5 +261,5 @@ html, body {
 }
 
 #qrOverlay p {
-	padding-top: 1em;
+	padding: 0.5em 0;
 }
