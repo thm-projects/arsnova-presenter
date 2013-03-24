@@ -29,6 +29,7 @@ define(
 			questionJsonRest = null,
 			questionMemory = null,
 			questionStore = null,
+			questionSortIndex = null,
 
 			ftAnswerJsonRest = null,
 			ftAnswerMemory = null,
@@ -78,7 +79,7 @@ define(
 			
 		});
 			
-		return {
+		var lecturerQuestion = {
 			watchId: function(callback) {
 				questionState.watch("id", callback);
 			},
@@ -103,9 +104,12 @@ define(
 					return null;
 				}
 				
-				return questionStore.query({
+				var questions = questionStore.query({
 					sessionkey: sessionModel.getKey()
 				});
+				questions.then(buildQuestionSortIndex);
+				
+				return questions;
 			},
 			
 			get: function(questionId) {
@@ -132,24 +136,17 @@ define(
 					return;
 				}
 				
-				var index = questionMemory.index;
-				var firstQuestionId = null;
-				var nextQuestionId = null;
-				var nextQuestionIndex = index[questionState.get("id")] + 1;
-				
-				for (var questionId in index) {
-					if (index[questionId] == nextQuestionIndex) {
-						nextQuestionId = questionId;
+				var nextQuestionIndex = null;
+				for (var i = 0; i < questionSortIndex.length; i++) {
+					if (this.getId() == questionSortIndex[i]) {
+						nextQuestionIndex = questionSortIndex.length - 1 == i ? 0 : i + 1;
+						
 						break;
 					}
-					if (0 == index[questionId]) {
-						firstQuestionId = questionId;
-					}
 				}
 				
-				if (null == nextQuestionId) {
-					nextQuestionId = firstQuestionId;
-				}
+				var nextQuestionId = questionSortIndex[nextQuestionIndex];
+				
 				if (null != nextQuestionId) {
 					this.setId(nextQuestionId);
 				}
@@ -162,26 +159,17 @@ define(
 					return;
 				}
 				
-				var index = questionMemory.index;
-				var lastQuestionId = null;
-				var lastQuestionIndex = null;
-				var prevQuestionId = null;
-				var prevQuestionIndex = index[questionState.get("id")] - 1;
-				
-				for (var questionId in index) {
-					if (index[questionId] == prevQuestionIndex) {
-						prevQuestionId = questionId;
+				var prevQuestionIndex = null;
+				for (var i = questionSortIndex.length - 1; i >= 0 ; i--) {
+					if (this.getId() == questionSortIndex[i]) {
+						prevQuestionIndex = 0 == i ? questionSortIndex.length - 1 : i - 1;
+						
 						break;
 					}
-					if (lastQuestionIndex < index[questionId]) {
-						lastQuestionIndex = index[questionId];
-						lastQuestionId = questionId;
-					}
-				};
-				
-				if (null == prevQuestionId) {
-					prevQuestionId = lastQuestionId;
 				}
+				
+				var prevQuestionId = questionSortIndex[prevQuestionIndex];
+				
 				if (null != prevQuestionId) {
 					this.setId(prevQuestionId);
 				}
@@ -194,16 +182,8 @@ define(
 					return;
 				}
 				
-				var index = questionMemory.index;
-				var firstQuestionId = null;
-				var firstQuestionIndex = Number.MAX_VALUE;
+				var firstQuestionId = questionSortIndex[0];
 				
-				for (var questionId in index) {
-					if (index[questionId] < firstQuestionIndex) {
-						firstQuestionIndex = index[questionId];
-						firstQuestionId = questionId;
-					}
-				};
 				if (null != firstQuestionId) {
 					this.setId(firstQuestionId);
 				}
@@ -216,16 +196,8 @@ define(
 					return;
 				}
 				
-				var index = questionMemory.index;
-				var lastQuestionId = null;
-				var lastQuestionIndex = -1;
+				var lastQuestionId = questionSortIndex[questionSortIndex.length - 1];
 				
-				for (var questionId in index) {
-					if (index[questionId] > lastQuestionIndex) {
-						lastQuestionIndex = index[questionId];
-						lastQuestionId = questionId;
-					}
-				};
 				if (null != lastQuestionId) {
 					this.setId(lastQuestionId);
 				}
@@ -236,7 +208,13 @@ define(
 					return -1;
 				}
 				
-				return questionMemory.index[questionState.get("id")];
+				for (var i = 0; i < questionSortIndex.length; i++) {
+					if (this.getId() == questionSortIndex[i]) {
+						return i;
+					}
+				}
+				
+				return -1;
 			},
 			
 			getCount: function() {
@@ -312,5 +290,17 @@ define(
 				this.update(question);
 			}
 		};
+		
+		var buildQuestionSortIndex = function() {
+			questionSortIndex = [];
+			for (var questionId in questionMemory.index) {
+				//var question = lecturerQuestion.get(questionId);
+				/* Use question.number as soon as the property is set
+				 * by the ARSnova clients. Currently it is always 0. */
+				questionSortIndex.push(questionId);
+			}
+		};
+		
+		return lecturerQuestion;
 	}
 );
