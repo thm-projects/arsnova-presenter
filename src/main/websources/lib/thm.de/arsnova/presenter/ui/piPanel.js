@@ -16,11 +16,12 @@ define(
 		"dijit/form/Select",
 		"dijit/Menu",
 		"dijit/MenuItem",
+		"dijit/CheckedMenuItem",
 		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, confirmDialog, fullScreen, piAnswersChart) {
+	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, CheckedMenuItem, confirmDialog, fullScreen, piAnswersChart) {
 		"use strict";
 		
 		var
@@ -30,8 +31,8 @@ define(
 			freeTextAnswersNode = null,
 			piRoundButton = null,
 			showAnswers = false,
-			showRounds = [],
-			showCorrect = false
+			showCorrectMenuItem = null,
+			showPiRoundMenuItem = []
 		;
 		
 		return {
@@ -145,28 +146,28 @@ define(
 				}).placeAt(answersNav).startup();
 				
 				var showAnswersMenu = new Menu({style: "display: none"});
-				showAnswersMenu.addChild(new MenuItem({
+				showAnswersMenu.addChild(showCorrectMenuItem = new CheckedMenuItem({
 					label: "Correct answers",
 					onClick: function() {
-						showAnswers = true;
-						showCorrect = !showCorrect;
-						self.updateAnswersPaneAnswers();
+						if (showAnswers) {
+							self.updateAnswersPaneAnswers();
+						}
 					}
 				}));
-				showAnswersMenu.addChild(new MenuItem({
+				showAnswersMenu.addChild(showPiRoundMenuItem[1] = new CheckedMenuItem({
 					label: "Before discussion (PI)",
 					onClick: function() {
-						showAnswers = true;
-						showRounds[1] = !showRounds[1];
-						self.updateAnswersPaneAnswers();
+						if (showAnswers) {
+							self.updateAnswersPaneAnswers();
+						}
 					}
 				}));
-				showAnswersMenu.addChild(new MenuItem({
+				showAnswersMenu.addChild(showPiRoundMenuItem[2] = new CheckedMenuItem({
 					label: "After discussion (PI)",
 					onClick: function() {
-						showAnswers = true;
-						showRounds[2] = !showRounds[2];
-						self.updateAnswersPaneAnswers();
+						if (showAnswers) {
+							self.updateAnswersPaneAnswers();
+						}
 					}
 				}));
 				new ComboButton({
@@ -184,6 +185,8 @@ define(
 						confirmDialog.confirm("Peer Instruction", "Do you really want to start the next Peer Instruction round? Answers for the current round will be locked permanently.", {
 							"Proceed": function() {
 								lecturerQuestionModel.startSecondPiRound();
+								piRoundButton.set("label", "2nd");
+								piRoundButton.set("disabled", true);
 							},
 							"Cancel": null
 						});
@@ -309,8 +312,8 @@ define(
 						});
 					} else {
 						var rounds = {};
-						for (var i = 0; i < showRounds.length; i++) {
-							if (!showRounds[i]) {
+						for (var i = 1; i < showPiRoundMenuItem.length; i++) {
+							if (!showPiRoundMenuItem[i].get("checked")) {
 								continue;
 							}
 							rounds["PI round " + i] = lecturerQuestionModel.getAnswers(i);
@@ -369,7 +372,7 @@ define(
 					labelReverseMapping[possibleAnswer.text] = i;
 					labels.push({value: i + 1, text: possibleAnswer.text});
 					values[i] = 0;
-					if (showCorrect && possibleAnswer.correct) {
+					if (showCorrectMenuItem.get("checked") && possibleAnswer.correct) {
 						correctIndexes.push(i);
 					}
 					possibleAnswersCount++;
@@ -419,14 +422,16 @@ define(
 			},
 			
 			onLecturerQuestionIdChange: function(name, oldValue, value) {
+				showCorrectMenuItem.set("checked", false);
+				for (var i = 1; i < showPiRoundMenuItem.length; i++) {
+					showPiRoundMenuItem[i].set("checked", false);
+				}
 				showAnswers = false;
-				showCorrect = false;
-				showRounds = [];
 				var question = lecturerQuestionModel.get();
 				when(question, function(question) {
 					self.updateAnswersPaneQuestion(question);
 					if (null != question) {
-						showRounds[question.piRound] = true;
+						showPiRoundMenuItem[question.piRound].set("checked", true);
 						self.updateAnswersPaneAnswers();
 					}
 				});
