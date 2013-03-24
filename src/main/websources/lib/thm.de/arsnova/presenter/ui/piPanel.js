@@ -181,7 +181,12 @@ define(
 				(piRoundButton = new Button({
 					id: "piRoundButton",
 					onClick: function() {
-						lecturerQuestionModel.startSecondPiRound();
+						confirmDialog.confirm("Peer Instruction", "Do you really want to start the next Peer Instruction round? Answers for the current round will be locked permanently.", {
+							"Proceed": function() {
+								lecturerQuestionModel.startSecondPiRound();
+							},
+							"Cancel": null
+						});
 					}
 				})).placeAt(answersNav).startup();
 				domStyle.set(piRoundButton.domNode, "display", "none");
