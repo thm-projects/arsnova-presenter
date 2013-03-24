@@ -3,17 +3,23 @@ define(
 	 	"dojo/_base/lang",
 	 	"dojo/_base/array",
 		"dojox/charting/Theme",
-		"dojox/gfx/gradutils",
-		"dojox/charting/themes/common"
+		"dojox/charting/themes/common",
+		"dojox/charting/themes/gradientGenerator",
+	 	"dojox/color",
 	],
-	function(lang, array, Theme, gradutils, themes) {
+	function(lang, array, Theme, themes, gradGen, color) {
 		"use strict";
 		/* based on Claro charting theme */
 	
 		var
 			g = Theme.generateGradient,
 			defaultFill = {type: "linear", space: "shape", x1: 0, y1: 0, x2: 0, y2: 100},
-			axisAndLabelColor = "#333";
+			axisAndLabelColor = "#333",
+			fillColors = {
+				"answers": ["#1f59b3", "#43b3b3", "#b3b323", "#b327b3", "#b31d1d", "#b3591f"],
+				"markCorrect": ["#43d943", "#000"],
+				"feedback": ["#43d943", "#f2f224", "#e64000", "#000"]
+			}
 		;
 		
 		themes.Arsnova = new Theme({
@@ -84,37 +90,25 @@ define(
 			]
 		});
 		
-		themes.Arsnova.applyFeedbackColors = function(values) {
-			return [
-				{y: values[0], stroke: "black", fill: g(defaultFill, "#43d943", "#25a625")},
-				{y: values[1], stroke: "black", fill: g(defaultFill, "#f2f224", "#bfbf1d")},
-				{y: values[2], stroke: "black", fill: g(defaultFill, "#e64000", "#b33200")},
-				{y: values[3], stroke: "black", fill: g(defaultFill, "#aaa", "#777")}
-			];
-		};
-		
-		themes.Arsnova.applyAnswerColors = function(values) {
-			var colors = [ /* color values based on ARSnova ST */
-				["#1f59b3", "#164080"],
-				["#43b3b3", "#308080"],
-				["#b3b323", "#808019"],
-				["#b327b3", "#801c80"],
-				["#b31d1d", "#801515"],
-				["#b3591f", "#804016"]
-			];
+		themes.Arsnova.applyColors = function(values, theme, pale, highlightValues) {
+			var colors = fillColors[theme];
+			var fills = pale
+				? gradGen.generateFills(colors, defaultFill, 80, 65)
+				: gradGen.generateFills(colors, defaultFill, 55, 40)
+			;
 			var result = [];
 			for (var i = 0; i < values.length; i++) {
-				result.push({y: values[i], stroke: "black", fill: g(defaultFill, colors[i][0], colors[i][1])});
+				var strokeColor = color.fromHex(colors[
+					highlightValues ? (array.indexOf(highlightValues, i) >= 0 ? 0 : 1) : i
+				]);
+				var hsl = strokeColor.toHsl();
+				result.push({
+					y: values[i],
+					stroke: pale ? color.fromHsl(hsl.h, hsl.s, 35).toHex() :  color.fromHsl(hsl.h, hsl.s, 20).toHex(),
+					fill: fills[highlightValues ? (array.indexOf(highlightValues, i) >= 0 ? 0 : 1) : i]
+				});
 			}
-			return result;
-		};
-		
-		themes.Arsnova.applyAnswerMarkCorrectColors = function(values, correctIndexes) {
-			var result = [];
-			for (var i = 0; i < values.length; i++) {
-				var fillColor = array.indexOf(correctIndexes, i) >= 0 ? g(defaultFill, "#43d943", "#25a625") : g(defaultFill, "#ccc", "#999");
-				result.push({y: values[i], stroke: "black", fill: fillColor});
-			}
+			
 			return result;
 		};
 		

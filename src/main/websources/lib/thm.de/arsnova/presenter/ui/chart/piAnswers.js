@@ -100,8 +100,8 @@ define(
 						var seriesName = seriesNames[i];
 						answersChart.addSeries(seriesName,
 							showCorrect
-								? theme.applyAnswerMarkCorrectColors(series[seriesName], correctIndexes)
-								: theme.applyAnswerColors(series[seriesName])
+								? theme.applyColors(series[seriesName], "markCorrect", i < seriesNames.length - 1, correctIndexes)
+								: theme.applyColors(series[seriesName], "answers", i < seriesNames.length - 1)
 						);
 						seriesCount++;
 					}

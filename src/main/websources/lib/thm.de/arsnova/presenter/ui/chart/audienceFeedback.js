@@ -79,7 +79,7 @@ define(
 			},
 			
 			update: function(feedback) {
-				feedbackChart.updateSeries("Feedback", theme.applyFeedbackColors(feedback));
+				feedbackChart.updateSeries("Feedback", theme.applyColors(feedback, "feedback"));
 				feedbackChart.render();
 			}
 		};
