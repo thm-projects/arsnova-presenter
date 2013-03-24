@@ -32,11 +32,7 @@ define(
 			questionStore = CacheStore(questionJsonRest, questionMemory);
 		});
 		
-		socket.on("audQuestionAvail", function(audienceQuestionId) {
-			
-		});
-		
-		return {
+		var audienceQuestion = {
 			getStore: function() {
 				return questionStore;
 			},
@@ -60,7 +56,13 @@ define(
 			
 			remove: function(id) {
 				questionStore.remove(id);
+			},
+			
+			onQuestionAvailable: function(callback) {
+				socket.on("audQuestionAvail", callback);
 			}
 		};
+		
+		return audienceQuestion;
 	}
 );

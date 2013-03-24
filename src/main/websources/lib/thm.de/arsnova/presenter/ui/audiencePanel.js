@@ -24,7 +24,8 @@ define(
 			MIN_WIDTH = 370,
 			self = null,
 			audienceQuestionModel = null,
-			audienceContainer = null
+			audienceContainer = null,
+			questionListNode = null
 		;
 		
 		return {
@@ -92,6 +93,13 @@ define(
 					self.updateFeedbackPanel(feedback);
 				});
 				
+				audienceQuestionModel.onQuestionAvailable(function(questionId) {
+					var question = audienceQuestionModel.get(questionId);
+					question.then(function(question) {
+						self.prependQuestionToList(question);
+					});
+				});
+				
 				/* add full screen menu items */
 				var fullScreenMenu = registry.byId("fullScreenMenu");
 				fullScreenMenu.addChild(new MenuItem({
@@ -124,36 +132,44 @@ define(
 				});
 			},
 			
+			prependQuestionToList: function(question) {
+				var questionNode = domConstruct.create("div", {"class": "question"}, questionListNode, "first");
+				domConstruct.create("p", {"class": "subject", innerHTML: question.subject}, questionNode);
+				var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, questionNode);
+				domConstruct.create("div", {"class": "clearFix"}, questionNode);
+				var messageNode = domConstruct.create("p", {"class": "message"}, questionNode);
+				if (!question.read) {
+					domClass.add(questionNode, "unread");
+				}
+				if (null != question.text) {
+					domClass.add(questionNode, "loaded");
+					messageNode.innerHTML = question.text;
+				}
+				var date = new Date(question.timestamp);
+				var dateTime = dateLocale.format(date, {selector: "date", formatLength: "long"})
+					+ " " + dateLocale.format(date, {selector: "time", formatLength: "short"})
+				;
+				domConstruct.create("footer", {"class": "creationTime", innerHTML: dateTime}, questionNode);
+				on(questionNode, "click", function(event) {
+					self.openQuestion(question._id, questionNode, messageNode);
+				});
+				on(deleteNode, "click", function() {
+					confirmDialog.confirm("Delete question", "Do you really want to delete this question?", {
+						"Delete": function() {
+							audienceQuestionModel.remove(question._id);
+							domConstruct.destroy(questionNode);
+						},
+						"Cancel": null
+					});
+				});
+			},
+			
 			updateQuestionsPanel: function(questions) {
-				var questionListNode = dom.byId("audienceQuestionList");
+				questionListNode = dom.byId("audienceQuestionList");
 				questionListNode.innerHTML = "";
 				when(questions, function(questions) {
 					questions.forEach(function(question) {
-						var questionNode = domConstruct.create("div", {"class": "question"}, questionListNode);
-						domConstruct.create("p", {"class": "subject", innerHTML: question.subject}, questionNode);
-						var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, questionNode);
-						domConstruct.create("div", {"class": "clearFix"}, questionNode);
-						var messageNode = domConstruct.create("p", {"class": "message"}, questionNode);
-						if (!question.read) {
-							domClass.add(questionNode, "unread");
-						}
-						var date = new Date(question.timestamp);
-						var dateTime = dateLocale.format(date, {selector: "date", formatLength: "long"})
-							+ " " + dateLocale.format(date, {selector: "time", formatLength: "short"})
-						;
-						domConstruct.create("footer", {"class": "creationTime", innerHTML: dateTime}, questionNode);
-						on(questionNode, "click", function(event) {
-							self.openQuestion(question._id, questionNode, messageNode);
-						});
-						on(deleteNode, "click", function() {
-							confirmDialog.confirm("Delete question", "Do you really want to delete this question?", {
-								"Delete": function() {
-									audienceQuestionModel.remove(question._id);
-									domConstruct.destroy(questionNode);
-								},
-								"Cancel": null
-							});
-						});
+						self.prependQuestionToList(question);
 					});
 				});
 			},
