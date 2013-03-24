@@ -184,9 +184,11 @@ define(
 					onClick: function() {
 						confirmDialog.confirm("Peer Instruction", "Do you really want to start the next Peer Instruction round? Answers for the current round will be locked permanently.", {
 							"Proceed": function() {
-								lecturerQuestionModel.startSecondPiRound();
-								piRoundButton.set("label", "2nd");
-								piRoundButton.set("disabled", true);
+								lecturerQuestionModel.startSecondPiRound().then(function() {
+									piRoundButton.set("label", "2nd");
+									piRoundButton.set("disabled", true);
+									showPiRoundMenuItem[2].set("disabled", false);
+								});
 							},
 							"Cancel": null
 						});
