@@ -431,7 +431,28 @@ define(
 				when(question, function(question) {
 					self.updateAnswersPaneQuestion(question);
 					if (null != question) {
-						showPiRoundMenuItem[question.piRound].set("checked", true);
+						if ("freetext" == question.questionType) {
+							showCorrectMenuItem.set("disabled", true);
+							for (var i = 1; i < showPiRoundMenuItem.length; i++) {
+								showPiRoundMenuItem[i].set("disabled", true);
+							}
+						} else {
+							var noCorrectAnswer = true;
+							question.possibleAnswers.forEach(function(answer) {
+								if (answer.correct) {
+									noCorrectAnswer = false;
+								}
+							});
+							showCorrectMenuItem.set("disabled", noCorrectAnswer);
+							for (var i = 1; i < showPiRoundMenuItem.length; i++) {
+								if (i > question.piRound) {
+									showPiRoundMenuItem[i].set("disabled", true);
+								} else {
+									showPiRoundMenuItem[i].set("disabled", false);
+								}
+							}
+							showPiRoundMenuItem[question.piRound].set("checked", true);
+						}
 						self.updateAnswersPaneAnswers();
 					}
 				});
