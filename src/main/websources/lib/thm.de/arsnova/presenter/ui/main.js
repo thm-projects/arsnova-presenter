@@ -58,10 +58,6 @@ define(
 					id: "fullScreenContainer"
 				});
 				fullScreenContainer.addChild(new ContentPane({
-					id: "fullScreenControl",
-					region: "top"
-				}));
-				fullScreenContainer.addChild(new ContentPane({
 					id: "fullScreenHeader",
 					region: "top"
 				}));

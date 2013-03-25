@@ -17,11 +17,13 @@ define(
 		"dijit/Menu",
 		"dijit/MenuItem",
 		"dijit/CheckedMenuItem",
+		"dojo/fx",
+		"dojo/fx/Toggler",
 		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, CheckedMenuItem, confirmDialog, fullScreen, piAnswersChart) {
+	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, CheckedMenuItem, fx, Toggler, confirmDialog, fullScreen, piAnswersChart) {
 		"use strict";
 		
 		var
@@ -32,8 +34,19 @@ define(
 			piRoundButton = null,
 			showAnswers = false,
 			showCorrectMenuItem = null,
-			showPiRoundMenuItem = []
+			showPiRoundMenuItem = [],
+			fullScreenControlsNode = null,
+			fsControlsToggleHandlers = [],
+			fsControlsToggleFx = {}
 		;
+		
+		var toggleFsControls = function(event) {
+			if (event.clientY < 100) {
+				fsControlsToggleFx.show.play();
+			} else if (event.clientY > 150) {
+				fsControlsToggleFx.hide.play();
+			}
+		};
 		
 		return {
 			init: function(lecturerQuestion) {
@@ -212,6 +225,27 @@ define(
 					label: "Answers to Lecturer's questions",
 					onClick: self.togglePresentMode
 				}));
+				
+				fullScreenControlsNode = domConstruct.create("div", {id: "fullScreenControls"}, document.body);
+				
+				var onResize = function() {
+					domStyle.set(fullScreenControlsNode, "left", Math.round(document.body.clientWidth / 2 - 250) + "px");
+
+					fsControlsToggleFx.show = fx.slideTo({
+						node: fullScreenControlsNode,
+						top: 20,
+						left: domStyle.get(fullScreenControlsNode, "left"),
+						unit: "px"
+					});
+					fsControlsToggleFx.hide = fx.slideTo({
+						node: fullScreenControlsNode,
+						top: -40,
+						left: domStyle.get(fullScreenControlsNode, "left"),
+						unit: "px"
+					});
+				};
+				on(window, "resize", onResize);
+				onResize();
 
 				/* handle events fired when full screen mode is canceled */
 				fullScreen.onChange(function(event, isActive) {
@@ -221,6 +255,12 @@ define(
 						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("piAnswersControlPane"));
 						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("piAnswersTitlePane"));
 						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("piAnswersMainPane"));
+						
+						for (var i = 0; i < fsControlsToggleHandlers.length; i++) {
+							fsControlsToggleHandlers[i].remove();
+						}
+						fsControlsToggleHandlers = [];
+						fsControlsToggleFx.hide.play();
 						
 						piContainer.resize();
 					}
@@ -412,11 +452,14 @@ define(
 						fullScreen.request(dom.byId("fullScreenContainer"));
 						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "inline");
 						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "inline");
-						domConstruct.place(dom.byId("piAnswersControlPaneContent"), dom.byId("fullScreenControl"));
+						domConstruct.place(dom.byId("piAnswersControlPaneContent"), fullScreenControlsNode);
 						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), dom.byId("fullScreenHeader"));
 						domConstruct.place(dom.byId("piAnswersMainPaneContent"), dom.byId("fullScreenContent"));
 						
 						registry.byId("fullScreenContainer").resize();
+						
+						fsControlsToggleHandlers.push(on(document.body, "mousemove", toggleFsControls));
+						fsControlsToggleHandlers.push(on(document.body, "click", toggleFsControls));
 					}
 				} else {
 					console.log("Full screen mode not supported");

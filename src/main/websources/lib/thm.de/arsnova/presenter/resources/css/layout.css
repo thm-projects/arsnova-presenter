@@ -59,6 +59,13 @@ html, body {
 	opacity: 0.4;
 }
 
+#fullScreenControls {
+	position: fixed;
+	width: 500px;
+	top: -100px;
+	z-index: 99;
+}
+
 #sessionPanel {
 	float: left;
 	line-height: 34px;
