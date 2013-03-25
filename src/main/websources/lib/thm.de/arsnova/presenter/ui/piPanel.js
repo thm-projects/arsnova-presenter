@@ -13,6 +13,7 @@ define(
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Button",
 		"dijit/form/ComboButton",
+		"dijit/form/DropDownButton",
 		"dijit/form/Select",
 		"dijit/Menu",
 		"dijit/MenuItem",
@@ -23,7 +24,7 @@ define(
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, Select, Menu, MenuItem, CheckedMenuItem, fx, Toggler, confirmDialog, fullScreen, piAnswersChart) {
+	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, TabContainer, ContentPane, Button, ComboButton, DropDownButton, Select, Menu, MenuItem, CheckedMenuItem, fx, Toggler, confirmDialog, fullScreen, piAnswersChart) {
 		"use strict";
 		
 		var
@@ -35,6 +36,10 @@ define(
 			showAnswers = false,
 			showCorrectMenuItem = null,
 			showPiRoundMenuItem = [],
+			unlockMenu = null,
+			unlockQuestionMenuItem = null,
+			unlockAnswerStatsMenuItem = null,
+			unlockCorrectAnswerMenuItem = null,
 			fullScreenControlsNode = null,
 			fsControlsToggleHandlers = [],
 			fsControlsToggleFx = {}
@@ -46,6 +51,15 @@ define(
 			} else if (event.clientY > 150) {
 				fsControlsToggleFx.hide.play();
 			}
+		};
+		
+		var updateLocks = function() {
+			lecturerQuestionModel.updateLocks(
+				null,
+				!unlockQuestionMenuItem.get("checked"),
+				!unlockAnswerStatsMenuItem.get("checked"),
+				!unlockCorrectAnswerMenuItem.get("checked")
+			);
 		};
 		
 		return {
@@ -208,6 +222,24 @@ define(
 					}
 				})).placeAt(answersSettings).startup();
 				domStyle.set(piRoundButton.domNode, "display", "none");
+				unlockMenu = new Menu({style: "display: none"});
+				unlockMenu.addChild(unlockQuestionMenuItem = new CheckedMenuItem({
+					label: "Question",
+					onClick: updateLocks
+				}));
+				unlockMenu.addChild(unlockAnswerStatsMenuItem = new CheckedMenuItem({
+					onClick: updateLocks
+				}));
+				unlockMenu.addChild(unlockCorrectAnswerMenuItem = new CheckedMenuItem({
+					label: "Correct answer",
+					onClick: updateLocks
+				}));
+				var unlockButton = new DropDownButton({
+					id: "piUnlockButton",
+					label: "Unlock",
+					dropDown: unlockMenu
+				});
+				unlockButton.placeAt(answersSettings).startup();
 
 				var titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, "piAnswersTitlePane");
 				var questionNode = domConstruct.create("header", {id: "piAnswersQuestion"}, titlePaneContentNode);
@@ -477,11 +509,17 @@ define(
 				when(question, function(question) {
 					self.updateAnswersPaneQuestion(question);
 					if (null != question) {
+						unlockQuestionMenuItem.set("checked", question.active);
+						unlockAnswerStatsMenuItem.set("checked", question.showStatistic);
+						unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);
 						if ("freetext" == question.questionType) {
 							showCorrectMenuItem.set("disabled", true);
 							for (var i = 1; i < showPiRoundMenuItem.length; i++) {
 								showPiRoundMenuItem[i].set("disabled", true);
 							}
+							unlockCorrectAnswerMenuItem.set("disabled", true);
+							unlockCorrectAnswerMenuItem.set("checked", false);
+							unlockAnswerStatsMenuItem.set("label", "View of answers");
 						} else {
 							var noCorrectAnswer = true;
 							question.possibleAnswers.forEach(function(answer) {
@@ -490,6 +528,9 @@ define(
 								}
 							});
 							showCorrectMenuItem.set("disabled", noCorrectAnswer);
+							unlockCorrectAnswerMenuItem.set("disabled", noCorrectAnswer);
+							unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);
+							unlockAnswerStatsMenuItem.set("label", "Answers statistics");
 							for (var i = 1; i < showPiRoundMenuItem.length; i++) {
 								if (i > question.piRound) {
 									showPiRoundMenuItem[i].set("disabled", true);
