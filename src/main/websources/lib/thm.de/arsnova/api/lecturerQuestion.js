@@ -284,6 +284,19 @@ define(
 				answerStore.remove(id);
 			},
 			
+			updateLocks: function(questionId, lockQuestion, lockStats, lockCorrect) {
+				var self = this;
+				var question = this.get(questionId);
+				
+				return when(question, function(question) {
+					question.active = !lockQuestion;
+					question.showStatistic = !lockStats;
+					question.showAnswer = !lockCorrect;
+					
+					return self.update(question);
+				});
+			},
+			
 			startSecondPiRound: function(questionId) {
 				var self = this;
 				var question = this.get(questionId);
