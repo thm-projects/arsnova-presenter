@@ -355,6 +355,7 @@ define(
 				dom.byId("piAnswersQuestionSubject").innerHTML = question.subject;
 				dom.byId("piAnswersQuestionText").innerHTML = question.text;
 				piContainer.resize();
+				registry.byId("fullScreenContainer").resize();
 				
 				if ("freetext" == question.questionType) {
 					piAnswersChart.hide();
