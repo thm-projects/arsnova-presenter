@@ -206,15 +206,16 @@ define(
 							"Cancel": null
 						});
 					}
-				})).placeAt(answersNav).startup();
+				})).placeAt(answersSettings).startup();
 				domStyle.set(piRoundButton.domNode, "display", "none");
 
 				var titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, "piAnswersTitlePane");
-				domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, titlePaneContentNode);
-				domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, titlePaneContentNode);
-				domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, titlePaneContentNode);
+				var questionNode = domConstruct.create("header", {id: "piAnswersQuestion"}, titlePaneContentNode);
+				domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, questionNode);
+				domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, questionNode);
+				domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, questionNode);
 
-				domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, answersSettings);
+				domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, titlePaneContentNode);
 				
 				lecturerQuestionModel.watchId(this.onLecturerQuestionIdChange);
 				

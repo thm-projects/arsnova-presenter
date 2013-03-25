@@ -138,7 +138,6 @@ html, body {
 #piAnswersTitlePane {
 	padding: 0 0.5em;
 	text-align: center;
-	font-size: 1.2em;
 }
 
 #piAnswersSettings {
@@ -148,8 +147,6 @@ html, body {
 
 #piAnswersSettings > * {
 	float: left;
-	margin-left: 0.5em;
-	margin-right: 0.5em;
 }
 
 #piAnswersMainPane, #piQuestionsPane, #audienceFeedbackPane, #audienceQuestionsPane {
@@ -207,6 +204,10 @@ html, body {
 	display: inline-block;
 	line-height: 34px;
 	vertical-align: middle;
+}
+
+#piAnswersCount {
+	float: right;
 }
 
 #footerTime {

@@ -75,8 +75,13 @@ body {
 	font-weight: bold;
 }
 
-#piAnswersHeaderPane {
+#piAnswersTitlePaneContent header {
 	font-size: 1.2em;
+}
+
+#audienceFeedbackTitle, #audienceQuestionsTitle {
+	font-size: 1.2em;
+	font-weight: bold;
 }
 
 #footerTime {
