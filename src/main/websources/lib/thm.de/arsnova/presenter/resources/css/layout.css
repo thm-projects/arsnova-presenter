@@ -135,11 +135,6 @@ html, body {
 	border: none;
 }
 
-#piAnswersTitlePane {
-	padding: 0 0.5em;
-	text-align: center;
-}
-
 #piAnswersSettings {
 	float: right;
 	white-space: nowrap;
@@ -157,13 +152,30 @@ html, body {
 	height: 100%;
 }
 
+
+#piAnswersControlPane {
+	padding-bottom: 0;
+}
+
+#piAnswersTitlePane {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+#piAnswersMainPane {
+	padding-top: 0;
+}
+
 #piAnswersNavigation {
 	display: inline-block;
 }
 
 #piAnswersQuestion {
 	display: inline-block;
-	line-height: 34px;
+}
+
+#piAnswersQuestion {
+	padding-top: 0.2em;
 }
 
 #piAnswersQuestionSubject, #piAnswersQuestionTitleSeperator {
@@ -208,6 +220,7 @@ html, body {
 
 #piAnswersCount {
 	float: right;
+	margin-left: 0.5em;
 }
 
 #footerTime {
