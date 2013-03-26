@@ -9,18 +9,20 @@ define(
 		"dojo/dom-class",
 		"dojo/dom-style",
 		"dojo/request/script",
+		"dojo/store/Memory",
 		"dijit/registry",
 		"dijit/form/DropDownButton",
-		"dijit/form/Select",
+		"dijit/form/FilteringSelect",
 		"dijit/Dialog",
 		"dijit/Tooltip"
 	],
-	function(config, string, on, when, dom, domConstruct, domClass, domStyle, script, registry, DropDownButton, Select, Dialog, Tooltip) {
+	function(config, string, on, when, dom, domConstruct, domClass, domStyle, script, Memory, registry, DropDownButton, FilteringSelect, Dialog, Tooltip) {
 		"use strict";
 		
 		var
 			self = null,
 			sessionModel = null,
+			sessionMemory = null,
 			
 			/* DOM */
 			sessionInfoNode = null,
@@ -46,12 +48,19 @@ define(
 				domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, sessionInfoNode);
 				/* Session controls */
 				sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
-				(sessionSelect = new Select({
+				(sessionSelect = new FilteringSelect({
 					id: "sessionSelect",
-					options: [{label: "Select a session", value: "", selected: true, disabled: true}],
+					placeHolder: "Select a session",
+					store: sessionMemory = new Memory(),
+					labelAttr: "label",
+					labelType: "html",
+					searchAttr: "shortName",
 					maxHeight: 200,
+					style: "width: 160px;",
 					onChange: function(value) {
-						sessionModel.setKey(value);
+						if (value) {
+							sessionModel.setKey(value);
+						}
 					}
 				})).placeAt(sessionPanelNode).startup();
 				sessionKeyNode = domConstruct.create("span", {id: "sessionKey", "class": "noSession", innerHTML: "00 00 00 00"}, sessionPanelNode);
@@ -109,9 +118,11 @@ define(
 			updateSessionSelect: function(sessions) {
 				when(sessions, function(sessions) {
 					sessions.forEach(function(session) {
-						sessionSelect.addOption({
-							label: session.shortName,
-							value: session.keyword
+						sessionMemory.put({
+							id: session.keyword,
+							shortName: session.shortName,
+							name: session.name,
+							label: "<strong>" + session.shortName + "</strong> (" + session.keyword + ")" + "<br>" + session.name
 						});
 					});
 					console.log("UI: session list updated");
