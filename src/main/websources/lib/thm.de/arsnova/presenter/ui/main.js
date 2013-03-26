@@ -22,39 +22,46 @@ define(
 	function(on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullScreen, version) {
 		"use strict";
 		
+		var
+			/* Dijit */
+			appContainer = null,
+			mainContainer = null,
+			headerPane = null,
+			footerPane = null,
+			fullScreenContainer = null
+		;
+		
 		return {
 			init: function() {
 				console.log("-- UI: main.init --");
 				
-				var
-					appContainerNode = domConstruct.create("div", {id: "appContainer"}, document.body),
-					
-					appContainer = new BorderContainer({
-						id: "appContainer",
-						design: "headline"
-					}, appContainerNode),
-					mainContainer = new BorderContainer({
-						id: "mainContainer",
-						region: "center"
-					}),
-					headerPane = new ContentPane({
-						id: "headerPane",
-						region: "top",
-						"class": "sidePanel"
-					}),
-					footerPane = new ContentPane({
-						id: "footerPane",
-						region: "bottom",
-						"class": "sidePanel"
-					})
-				;
+				var appContainerNode = domConstruct.create("div", {id: "appContainer", style: "visibility: hidden"}, document.body);
+				
+				appContainer = new BorderContainer({
+					id: "appContainer",
+					design: "headline"
+				}, appContainerNode);
+				mainContainer = new BorderContainer({
+					id: "mainContainer",
+					region: "center"
+				});
+				headerPane = new ContentPane({
+					id: "headerPane",
+					region: "top",
+					"class": "sidePanel"
+				});
+				footerPane = new ContentPane({
+					id: "footerPane",
+					region: "bottom",
+					"class": "sidePanel"
+				});
 				
 				appContainer.addChild(mainContainer);
 				appContainer.addChild(headerPane);
 				appContainer.addChild(footerPane);
 
 				/* Add dom nodes needed for full screen mode */
-				var fullScreenContainer = new BorderContainer({
+				fullScreenContainer = new BorderContainer({
 					id: "fullScreenContainer"
 				});
 				fullScreenContainer.addChild(new ContentPane({
@@ -69,12 +76,12 @@ define(
 			},
 			
 			startup: function() {
-				var appContainer = registry.byId("appContainer");
 				appContainer.startup();
+				domStyle.set(appContainer.domNode, "visibility", "visible");
 				fullScreen.setPageNode(appContainer.domNode);
 				
 				/* Add header content */
-				var exitPanelNode = domConstruct.create("div", {id: "exitPanel"}, "headerPane");
+				var exitPanelNode = domConstruct.create("div", {id: "exitPanel"}, headerPane.domNode);
 				
 				var fullScreenMenu = new Menu({id: "fullScreenMenu", style: "display: none"});
 				/* Menu items are added in the specific UI modules */
@@ -115,10 +122,10 @@ define(
 				if (version.commitId) {
 					versionString += " [" + version.commitId + "]";
 				}
-				domConstruct.create("span", {id: "productLogo", title: "ARSnova"}, "footerPane");
-				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "Presenter"}, "footerPane");
-				domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel", innerHTML: "Version: " + versionString}, "footerPane");
-				var timeNode = domConstruct.create("div", {id: "footerTime"}, "footerPane");
+				domConstruct.create("span", {id: "productLogo", title: "ARSnova"}, footerPane.domNode);
+				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "Presenter"}, footerPane.domNode);
+				domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel", innerHTML: "Version: " + versionString}, footerPane.domNode);
+				var timeNode = domConstruct.create("div", {id: "footerTime"}, footerPane.domNode);
 				var timeTooltip = new Tooltip({
 					connectId: [timeNode],
 					position: ["above-centered"]
@@ -136,13 +143,12 @@ define(
 				});
 
 				/* Full screen mode */
-				registry.byId("fullScreenContainer").startup();
-				var fullScreenLogo = domConstruct.create("img", {id: "fullScreenLogo", src: "images/arsnova.png"}, "fullScreenContainer");
+				fullScreenContainer.startup();
+				var fullScreenLogo = domConstruct.create("img", {id: "fullScreenLogo", src: "images/arsnova.png"}, fullScreenContainer.domNode);
 				fullScreen.onChange(function(event, isActive) {
-					var fullScreenNode = dom.byId("fullScreenContainer");
 					if (isActive) {
 						console.log("Full screen mode enabled");
-						domStyle.set(fullScreenNode, "display", "block");
+						domStyle.set(fullScreenContainer.domNode, "display", "block");
 						
 						/* calculate logo size */
 						var docGeometry = domGeometry.getContentBox(document.body);
@@ -153,7 +159,7 @@ define(
 						domStyle.set(fullScreenLogo, "display", "block");
 					} else {
 						console.log("Full screen mode disabled");
-						domStyle.set(fullScreenNode, "display", "none");
+						domStyle.set(fullScreenContainer.domNode, "display", "none");
 					}
 				});
 				
@@ -202,7 +208,7 @@ define(
 				};
 				on(window, "resize", windowOnResize);
 				windowOnResize();
-				
+
 				appContainer.resize();
 			},
 			

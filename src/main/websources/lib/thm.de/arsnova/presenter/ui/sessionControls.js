@@ -21,7 +21,16 @@ define(
 		var
 			self = null,
 			sessionModel = null,
-			sessionSelect = null
+			
+			/* DOM */
+			sessionInfoNode = null,
+			sessionPanelNode = null,
+			sessionKeyNode = null,
+			sessionQrNode = null,
+			
+			/* Dijit */
+			sessionSelect = null,
+			mobileDialog = null
 		;
 		
 		return {
@@ -32,29 +41,28 @@ define(
 				sessionModel = session;
 
 				/* Session info */
-				var sessionInfoNode = domConstruct.create("div", {id: "sessionInfo"}, "headerPane");
+				sessionInfoNode = domConstruct.create("div", {id: "sessionInfo"}, "headerPane");
 				domConstruct.create("header", {id: "sessionTitle", innerHTML: "ARSnova Presenter"}, sessionInfoNode);
 				domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, sessionInfoNode);
 				/* Session controls */
-				var sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
-				domConstruct.create("select", {id: "sessionSelect"}, sessionPanelNode);
-				var sessionKeyNode = domConstruct.create("span", {id: "sessionKey", "class": "noSession", innerHTML: "00 00 00 00"}, sessionPanelNode);
+				sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
+				(sessionSelect = new Select({
+					id: "sessionSelect",
+					options: [{label: "Select a session", value: "", selected: true, disabled: true}],
+					maxHeight: 200,
+					onChange: function(value) {
+						sessionModel.setKey(value);
+					}
+				})).placeAt(sessionPanelNode).startup();
+				sessionKeyNode = domConstruct.create("span", {id: "sessionKey", "class": "noSession", innerHTML: "00 00 00 00"}, sessionPanelNode);
 				new Tooltip({
 					connectId: [sessionKeyNode],
 					position: ["below-centered"],
 					label: "The session key you give to your audience"
 				});
 				
-				(sessionSelect = new Select({
-					options: [{label: "Select a session", value: "", selected: true, disabled: true}],
-					maxHeight: 200,
-					onChange: function(value) {
-						sessionModel.setKey(value);
-					}
-				}, "sessionSelect")).startup();
-				
 				if ("undefined" !== typeof config.arsnova.mobileStudentSessionUrl) {
-					var sessionQrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr"}, sessionPanelNode);
+					sessionQrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr"}, sessionPanelNode);
 					new Tooltip({
 						connectId: [sessionQrNode],
 						label: "Show QR Code for mobile ARSnova session",
@@ -88,7 +96,7 @@ define(
 					self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
 				});
 				
-				on(dom.byId("sessionQr"), "click", function() {
+				on(sessionQrNode, "click", function() {
 					var sessionKey = sessionModel.getKey();
 					if (null == sessionKey) {
 						return;
@@ -136,7 +144,6 @@ define(
 						+ " " + session.keyword.substr(4, 2)
 						+ " " + session.keyword.substr(6, 2)
 					;
-					var sessionKeyNode = dom.byId("sessionKey");
 					sessionKeyNode.innerHTML = keyword;
 					domClass.remove(sessionKeyNode, "noSession");
 				});
@@ -161,13 +168,12 @@ define(
 					return;
 				}
 				
-				var mobileFrame = domConstruct.create("iframe", {
+				var mobileFrameNode = domConstruct.create("iframe", {
 					id: "mobileFrame",
 					src: url,
 					width: 480,
 					height: 800
 				});
-				var mobileDialog = registry.byId("mobileDialog");
 				if (null == mobileDialog) {
 					mobileDialog = new Dialog({
 						id: "mobileDialog",
@@ -178,7 +184,7 @@ define(
 						}
 					});
 				}
-				mobileDialog.set("content", mobileFrame);
+				mobileDialog.set("content", mobileFrameNode);
 				mobileDialog.show();
 			},
 			

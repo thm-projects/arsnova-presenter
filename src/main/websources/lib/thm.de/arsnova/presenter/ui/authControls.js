@@ -10,7 +10,9 @@ define(
 	function(dom, domConstruct, domStyle, registry, Button, Dialog) {
 		"use strict";
 		
-		var authService = null;
+		var
+			authService = null
+		;
 		
 		return {
 			init: function(auth) {

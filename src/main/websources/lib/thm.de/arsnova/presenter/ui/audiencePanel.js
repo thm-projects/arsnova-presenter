@@ -24,8 +24,16 @@ define(
 			MIN_WIDTH = 470,
 			self = null,
 			audienceQuestionModel = null,
+			
+			/* DOM */
+			questionListNode = null,
+			
+			/* Dijit */
 			audienceContainer = null,
-			questionListNode = null
+			audienceHeaderPane = null,
+			audienceTabs = null,
+			audienceFeedbackPane = null,
+			audienceQuestionsPane = null
 		;
 		
 		return {
@@ -41,25 +49,23 @@ define(
 					minSize: MIN_WIDTH
 				});
 				
-				var
-					audienceHeaderPane = new ContentPane({
-						region: "top",
-						content: domConstruct.create("header", {innerHTML: "Audience"}),
-						"class": "headerPane sidePanel"
-					}),
-					audienceTabs = new TabContainer({
-						id: "audienceTabs",
-						region: "center"
-					}),
-					audienceFeedbackPane = new ContentPane({
-						id: "audienceFeedbackPane",
-						title: "Live Feedback"
-					}),
-					audienceQuestionsPane = new ContentPane({
-						id: "audienceQuestionsPane",
-						title: "Questions"
-					})
-				;
+				audienceHeaderPane = new ContentPane({
+					region: "top",
+					content: domConstruct.create("header", {innerHTML: "Audience"}),
+					"class": "headerPane sidePanel"
+				});
+				audienceTabs = new TabContainer({
+					id: "audienceTabs",
+					region: "center"
+				});
+				audienceFeedbackPane = new ContentPane({
+					id: "audienceFeedbackPane",
+					title: "Live Feedback"
+				});
+				audienceQuestionsPane = new ContentPane({
+					id: "audienceQuestionsPane",
+					title: "Questions"
+				});
 				
 				registry.byId("mainContainer").addChild(audienceContainer);
 				audienceContainer.addChild(audienceHeaderPane);
@@ -70,9 +76,9 @@ define(
 				var onWindowResize = function() {
 					var maxSize = document.body.clientWidth - MIN_WIDTH;
 					audienceContainer.set("maxSize", maxSize);
-					var width = domStyle.get("audienceContainer", "width");
+					var width = domStyle.get(audienceContainer.domNode, "width");
 					if (width > maxSize) {
-						domStyle.set("audienceContainer", "width", "49.5%");
+						domStyle.set(audienceContainer.domNode, "width", "49.5%");
 						registry.byId("mainContainer").resize();
 					}
 				};
@@ -81,8 +87,8 @@ define(
 			},
 			
 			startup: function() {
-				var feedbackPaneContentNode = domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, "audienceFeedbackPane");
-				domConstruct.create("div", {id: "audienceQuestionList"}, "audienceQuestionsPane");
+				var feedbackPaneContentNode = domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, audienceFeedbackPane.domNode);
+				questionListNode = domConstruct.create("div", {id: "audienceQuestionList"}, audienceQuestionsPane.domNode);
 				
 				audienceFeedbackChart.init(feedbackPaneContentNode);
 				
@@ -114,20 +120,20 @@ define(
 				/* handle events fired when full screen mode is canceled */
 				fullScreen.onChange(function(event, isActive) {
 					if (!isActive) {
-						domConstruct.place(dom.byId("audienceFeedbackPaneContent"), dom.byId("audienceFeedbackPane"));
+						domConstruct.place(dom.byId("audienceFeedbackPaneContent"), audienceFeedbackPane.domNode);
 						domConstruct.destroy("audienceFeedbackTitle");
 
-						domConstruct.place(dom.byId("audienceQuestionList"), dom.byId("audienceQuestionsPane"));
+						domConstruct.place(dom.byId("audienceQuestionList"), audienceQuestionsPane.domNode);
 						domConstruct.destroy("audienceQuestionsTitle");
 						
 						audienceContainer.resize();
 					}
 				});
 				fullScreen.onError(function(event) {
-					domConstruct.place(dom.byId("audienceFeedbackPaneContent"), dom.byId("audienceFeedbackPane"));
+					domConstruct.place(dom.byId("audienceFeedbackPaneContent"), audienceFeedbackPane.domNode);
 					domConstruct.destroy("audienceFeedbackTitle");
 
-					domConstruct.place(dom.byId("audienceQuestionList"), dom.byId("audienceQuestionsPane"));
+					domConstruct.place(dom.byId("audienceQuestionList"), audienceQuestionsPane.domNode);
 					domConstruct.destroy("audienceQuestionsTitle");
 				});
 			},
@@ -165,7 +171,6 @@ define(
 			},
 			
 			updateQuestionsPanel: function(questions) {
-				questionListNode = dom.byId("audienceQuestionList");
 				questionListNode.innerHTML = "";
 				when(questions, function(questions) {
 					questions.forEach(function(question) {
@@ -206,7 +211,7 @@ define(
 					} else {
 						fullScreen.request(dom.byId("fullScreenContainer"));
 						domConstruct.create("header", {id: "audienceFeedbackTitle", innerHTML: "Audience feedback"}, "fullScreenHeader");
-						domConstruct.place(dom.byId("audienceFeedbackPaneContent"), dom.byId("fullScreenContent"));
+						domConstruct.place(dom.byId("audienceFeedbackPaneContent"), "fullScreenContent");
 						
 						registry.byId("fullScreenContainer").resize();
 					}
@@ -223,7 +228,7 @@ define(
 					} else {
 						fullScreen.request(dom.byId("fullScreenContainer"));
 						domConstruct.create("header", {id: "audienceQuestionsTitle", innerHTML: "Audience questions"}, "fullScreenHeader");
-						domConstruct.place(dom.byId("audienceQuestionList"), dom.byId("fullScreenContent"));
+						domConstruct.place(questionListNode, "fullScreenContent");
 					}
 				} else {
 					console.log("Full screen mode not supported");

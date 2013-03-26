@@ -13,8 +13,11 @@ define(
 		"use strict";
 		
 		var
-			feedbackChart = null,
-			feedbackChartNode = null
+			/* DOM */
+			feedbackChartNode = null,
+			
+			/* dojox.charting */
+			feedbackChart = null
 		;
 		
 		return {

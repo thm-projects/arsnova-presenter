@@ -15,8 +15,11 @@ define(
 		"use strict";
 		
 		var
-			answersChart = null,
-			answersChartNode = null
+			/* DOM */
+			answersChartNode = null,
+			
+			/* dojox.charting */
+			answersChart = null
 		;
 		
 		return {
