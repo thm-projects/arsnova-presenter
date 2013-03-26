@@ -288,3 +288,19 @@ html, body {
 #qrOverlay p {
 	padding: 0.5em 0;
 }
+
+#loginLogo {
+	display: inline-block;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 950; /* same as Dijit dialog's z-index */
+}
+
+#loginFooter {
+	position: fixed;
+	bottom: 0;
+	z-index: 950; /* same as Dijit dialog's z-index */
+	width: 100%;
+	text-align: center;
+}

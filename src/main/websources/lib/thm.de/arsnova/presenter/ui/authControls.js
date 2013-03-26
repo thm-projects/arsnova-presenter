@@ -5,9 +5,10 @@ define(
 		"dojo/dom-style",
 		"dijit/registry",
 		"dijit/form/Button",
-		"dijit/Dialog"
+		"dijit/Dialog",
+		"version"
 	],
-	function(dom, domConstruct, domStyle, registry, Button, Dialog) {
+	function(dom, domConstruct, domStyle, registry, Button, Dialog, version) {
 		"use strict";
 		
 		var
@@ -28,6 +29,13 @@ define(
 			},
 			
 			showLoginDialog: function() {
+				domConstruct.create("img", {id: "loginLogo", src: "images/arsnova.png"}, document.body);
+				var versionString = version.version;
+				if (version.commitId) {
+					versionString += " [" + version.commitId + "]";
+				}
+				domConstruct.create("div", {id: "loginFooter", innerHTML: "ARSnova Presenter " + versionString}, document.body);
+				
 				var loginDialogContent = domConstruct.create("div");
 				domConstruct.create("div", {innerHTML: "Please choose a service to login with:"}, loginDialogContent);
 				var loginDialog = new Dialog({

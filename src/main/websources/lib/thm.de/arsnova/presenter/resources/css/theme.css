@@ -128,3 +128,16 @@ body {
 	border: 1px solid rgb(181, 188, 199);
 	border-radius: 0.3em;
 }
+
+#loginLogo {
+	background-image: url(../../../../../../images/arsnova.png) no-repeat center center);
+	width: 288px;
+	height: 55px;
+	margin-left: -144px;
+	margin-top: -120px;
+}
+
+#loginFooter {
+	color: #ccc;
+	font-size: 0.7em;
+}
