@@ -129,6 +129,12 @@ body {
 	border-radius: 0.3em;
 }
 
+#fullScreenInfo {
+	background-color: #333;
+	color: #ccc;
+	border-radius: 0.5em;
+}
+
 #loginLogo {
 	background-image: url(../../../../../../images/arsnova.png) no-repeat center center);
 	width: 288px;

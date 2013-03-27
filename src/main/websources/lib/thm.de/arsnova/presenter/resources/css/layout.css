@@ -66,6 +66,15 @@ html, body {
 	z-index: 99;
 }
 
+#fullScreenInfo {
+	position: fixed;
+	width: 300px;
+	left: 50%;
+	margin-left: -150px;
+	top: 10%;
+	padding: 0.5em;
+}
+
 #sessionPanel {
 	float: left;
 	line-height: 34px;
