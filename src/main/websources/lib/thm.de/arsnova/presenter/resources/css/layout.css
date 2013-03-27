@@ -71,8 +71,9 @@ html, body {
 	width: 300px;
 	left: 50%;
 	margin-left: -150px;
-	top: 10%;
+	top: 5%;
 	padding: 0.5em;
+	z-index: 99999;
 }
 
 #sessionPanel {
