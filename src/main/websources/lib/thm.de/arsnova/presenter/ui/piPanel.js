@@ -58,9 +58,9 @@ define(
 		;
 		
 		var toggleFsControls = function(event) {
-			if (event.clientY < 100) {
+			if (event.clientY < 150) {
 				fsControlsToggleFx.show.play();
-			} else if (event.clientY > 150) {
+			} else if (event.clientY > 200) {
 				fsControlsToggleFx.hide.play();
 			}
 		};
@@ -276,7 +276,7 @@ define(
 
 					fsControlsToggleFx.show = fx.slideTo({
 						node: fullScreenControlsNode,
-						top: 20,
+						top: 70,
 						left: domStyle.get(fullScreenControlsNode, "left"),
 						unit: "px"
 					});
