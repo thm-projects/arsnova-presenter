@@ -308,11 +308,6 @@ define(
 						piContainer.resize();
 					}
 				});
-				fullScreen.onError(function(event) {
-					domConstruct.place(dom.byId("piAnswersControlPaneContent"), piAnswersControlPane.domNode);
-					domConstruct.place(dom.byId("piAnswersTitlePaneContent"), piAnswersTitlePane.domNode);
-					domConstruct.place(dom.byId("piAnswersMainPaneContent"), piAnswersMainPane.domNode);
-				});
 			},
 			
 			updateQuestionsPanel: function(questions) {
@@ -487,25 +482,21 @@ define(
 			},
 			
 			togglePresentMode: function() {
-				if (fullScreen.isSupported()) {
-					if (fullScreen.isActive()) {
-						/* dom node rearrangement takes place in fullscreenchange event handler */
-						fullScreen.exit();
-					} else {
-						fullScreen.request(dom.byId("fullScreenContainer"));
-						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "inline");
-						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "inline");
-						domConstruct.place(dom.byId("piAnswersControlPaneContent"), fullScreenControlsNode);
-						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), "fullScreenHeader");
-						domConstruct.place(dom.byId("piAnswersMainPaneContent"), "fullScreenContent");
-						
-						registry.byId("fullScreenContainer").resize();
-						
-						fsControlsToggleHandlers.push(on(document.body, "mousemove", toggleFsControls));
-						fsControlsToggleHandlers.push(on(document.body, "click", toggleFsControls));
-					}
+				if (fullScreen.isActive()) {
+					/* dom node rearrangement takes place in fullscreenchange event handler */
+					fullScreen.exit();
 				} else {
-					console.log("Full screen mode not supported");
+					fullScreen.request(dom.byId("fullScreenContainer"));
+					domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "inline");
+					domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "inline");
+					domConstruct.place(dom.byId("piAnswersControlPaneContent"), fullScreenControlsNode);
+					domConstruct.place(dom.byId("piAnswersTitlePaneContent"), "fullScreenHeader");
+					domConstruct.place(dom.byId("piAnswersMainPaneContent"), "fullScreenContent");
+					
+					registry.byId("fullScreenContainer").resize();
+					
+					fsControlsToggleHandlers.push(on(document.body, "mousemove", toggleFsControls));
+					fsControlsToggleHandlers.push(on(document.body, "click", toggleFsControls));
 				}
 			},
 			

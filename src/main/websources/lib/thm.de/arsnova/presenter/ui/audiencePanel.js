@@ -129,13 +129,6 @@ define(
 						audienceContainer.resize();
 					}
 				});
-				fullScreen.onError(function(event) {
-					domConstruct.place(dom.byId("audienceFeedbackPaneContent"), audienceFeedbackPane.domNode);
-					domConstruct.destroy("audienceFeedbackTitle");
-
-					domConstruct.place(dom.byId("audienceQuestionList"), audienceQuestionsPane.domNode);
-					domConstruct.destroy("audienceQuestionsTitle");
-				});
 			},
 			
 			prependQuestionToList: function(question) {
@@ -221,17 +214,13 @@ define(
 			},
 			
 			toggleQuestionsPresentMode: function() {
-				if (fullScreen.isSupported()) {
-					if (fullScreen.isActive()) {
-						/* dom node rearrangement takes place in fullscreenchange event handler */
-						fullScreen.exit();
-					} else {
-						fullScreen.request(dom.byId("fullScreenContainer"));
-						domConstruct.create("header", {id: "audienceQuestionsTitle", innerHTML: "Audience questions"}, "fullScreenHeader");
-						domConstruct.place(questionListNode, "fullScreenContent");
-					}
+				if (fullScreen.isActive()) {
+					/* dom node rearrangement takes place in fullscreenchange event handler */
+					fullScreen.exit();
 				} else {
-					console.log("Full screen mode not supported");
+					fullScreen.request(dom.byId("fullScreenContainer"));
+					domConstruct.create("header", {id: "audienceQuestionsTitle", innerHTML: "Audience questions"}, "fullScreenHeader");
+					domConstruct.place(questionListNode, "fullScreenContent");
 				}
 			}
 		};

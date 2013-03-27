@@ -157,6 +157,8 @@ define(
 						domStyle.set(fullScreenLogo, "height", vRatio);
 						domStyle.set(fullScreenLogo, "width", (vRatio * ratio) + "px");
 						domStyle.set(fullScreenLogo, "display", "block");
+						
+						fullScreenContainer.resize()
 					} else {
 						console.log("Full screen mode disabled");
 						domStyle.set(fullScreenContainer.domNode, "display", "none");
