@@ -10,7 +10,9 @@ define(
 		var socketApiPrefix = config.arsnovaApi.root + "socket/";
 		var socketUrl = request.get(socketApiPrefix + "url");
 		var socket = null;
+		var firstConnect = true;
 		var callbacks = [];
+		var reconnectListeners = [];
 		
 		return {
 			connect: function() {
@@ -22,13 +24,12 @@ define(
 				socket = when(socketUrl, function(socketUrl) {
 					var socketConn = io.connect(socketUrl);
 					socketConn.on("connect", function() {
+						if (!firstConnect) {
+							return;
+						}
+						firstConnect = false;
 						console.log("Socket.IO: connected");
-						request.post(socketApiPrefix + "assign", {
-							headers: {"Content-Type": "application/json"},
-							data: JSON.stringify({session: socketConn.socket.sessionid})
-						}).then(function() {
-							console.log("Socket.IO: sessionid " + socketConn.socket.sessionid + " assigned to user");
-						});
+						self.assign();
 
 						for (var i = 0; i < callbacks.length; i++) {
 							self.on(callbacks[i][0], callbacks[i][1]);
@@ -38,9 +39,32 @@ define(
 					socketConn.on("disconnect", function() {
 						console.log("Socket.IO: disconnected");
 					});
+					socketConn.on("reconnect", function() {
+						console.log("Socket.IO: reconnected");
+						when(self.assign(), function() {
+							for (var i = 0; i < reconnectListeners.length; i++) {
+								reconnectListeners[i]();
+							}
+						});
+					});
 					
 					return socketConn;
 				});
+			},
+			
+			assign: function() {
+				return when(socket, function(socket) {
+					return request.post(socketApiPrefix + "assign", {
+						headers: {"Content-Type": "application/json"},
+						data: JSON.stringify({session: socket.socket.sessionid})
+					}).then(function() {
+						console.log("Socket.IO: sessionid " + socket.socket.sessionid + " assigned to user");
+					});
+				});
+			},
+			
+			onReconnect: function(listener) {
+				reconnectListeners.push(listener);
 			},
 			
 			on: function(eventName, callback) {

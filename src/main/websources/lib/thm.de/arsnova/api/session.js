@@ -40,11 +40,17 @@ define(
 			socket.emit("setSession", {keyword: value});
 		});
 		
+		socket.onReconnect(function() {
+			if (null != session.getKey()) {
+				socket.emit("setSession", {keyword: session.getKey()});
+			}
+		});
+		
 		socket.on("activeUserCountData", function(activeUserCount) {
 			sessionState.set("activeUserCount", activeUserCount);
 		});
 		
-		return {
+		var session = {
 			watchKey: function(callback) {
 				sessionState.watch("key", callback);
 			},
@@ -95,5 +101,7 @@ define(
 				sessionState.watch("activeUserCount", callback);
 			}
 		};
+		
+		return session;
 	}
 );
