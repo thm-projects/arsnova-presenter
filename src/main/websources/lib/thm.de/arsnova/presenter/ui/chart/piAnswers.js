@@ -39,7 +39,7 @@ define(
 				answersChart.addAxis("y", {
 					vertical: true,
 					includeZero: true,
-					minorTicks: false
+					natural: true
 				});
 				answersChart.render();
 				

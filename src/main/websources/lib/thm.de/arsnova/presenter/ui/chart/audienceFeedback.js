@@ -53,7 +53,7 @@ define(
 				feedbackChart.addAxis("y", {
 					vertical: true,
 					includeZero: true,
-					minorTicks: false
+					natural: true
 				});
 				feedbackChart.addSeries("Feedback", data);
 				feedbackChart.render();
