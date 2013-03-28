@@ -7,17 +7,18 @@ define(
 	function(config, when, request) {
 		"use strict";
 		
-		var socketApiPrefix = config.arsnovaApi.root + "socket/";
-		var socketUrl = request.get(socketApiPrefix + "url");
-		var socket = null;
-		var firstConnect = true;
-		var callbacks = [];
-		var reconnectListeners = [];
+		var
+			self = null,
+			socketApiPrefix = config.arsnovaApi.root + "socket/",
+			socketUrl = request.get(socketApiPrefix + "url"),
+			socket = null,
+			firstConnect = true,
+			callbacks = [],
+			reconnectListeners = []
+		;
 		
-		return {
+		self = {
 			connect: function() {
-				var self = this;
-				
 				if (!io || socket) {
 					return;
 				}
@@ -70,6 +71,7 @@ define(
 			on: function(eventName, callback) {
 				if (!socket) {
 					callbacks.push([eventName, callback]);
+					
 					return;
 				}
 				when(socket, function(socket) {
@@ -91,5 +93,7 @@ define(
 				});
 			}
 		};
+		
+		return self;
 	}
 );

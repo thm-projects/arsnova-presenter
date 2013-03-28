@@ -13,6 +13,7 @@ define(
 		"use strict";
 		
 		var
+			self = null,
 			apiPrefix = config.arsnovaApi.root + "session/",
 			
 			SessionState = declare([Stateful], {
@@ -50,7 +51,7 @@ define(
 			sessionState.set("activeUserCount", activeUserCount);
 		});
 		
-		var session = {
+		self = {
 			watchKey: function(callback) {
 				sessionState.watch("key", callback);
 			},
@@ -89,6 +90,7 @@ define(
 					function(response) {
 						console.log("Session created: " + response._id);
 						sessionState.set(key, response._id);
+						
 						return true;
 					},
 					function(error) {
@@ -102,6 +104,6 @@ define(
 			}
 		};
 		
-		return session;
+		return self;
 	}
 );

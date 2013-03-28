@@ -8,6 +8,7 @@ define(
 		"use strict";
 		
 		var
+			self = null,
 			apiRoot = config.arsnovaApi.root,
 			loginError = false,
 			loginType = null,
@@ -26,7 +27,7 @@ define(
 			}
 		;
 		
-		return {
+		self = {
 			init: function(loginHandler) {
 				console.log("-- auth.init --");
 				
@@ -93,5 +94,7 @@ define(
 				return !loginError;
 			}
 		};
+		
+		return self;
 	}
 );

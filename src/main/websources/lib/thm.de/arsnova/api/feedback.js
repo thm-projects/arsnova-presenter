@@ -5,10 +5,16 @@ define(
 	function(socket) {
 		"use strict";
 		
-		return {
+		var
+			self = null
+		;
+		
+		self = {
 			onReceive: function(callback) {
 				socket.on("feedbackData", callback);
 			}
 		};
+		
+		return self;
 	}
 );

@@ -15,6 +15,7 @@ define(
 		"use strict";
 		
 		var
+			self = null,
 			apiPrefix = config.arsnovaApi.root + "lecturerquestion/",
 			answerPath = apiPrefix + "${questionId}/answer/",
 			
@@ -79,7 +80,7 @@ define(
 			
 		});
 			
-		var lecturerQuestion = {
+		self = {
 			watchId: function(callback) {
 				questionState.watch("id", callback);
 			},
@@ -109,7 +110,7 @@ define(
 				});
 				questions.then(function() {
 					buildQuestionSortIndex();
-					lecturerQuestion.setId(questionSortIndex[0]);
+					self.setId(questionSortIndex[0]);
 				});
 				
 				return questions;
@@ -117,7 +118,7 @@ define(
 			
 			get: function(questionId) {
 				if (null == questionId) {
-					if (null == (questionId = this.getId())) {
+					if (null == (questionId = self.getId())) {
 						return null;
 					}
 				}
@@ -133,7 +134,7 @@ define(
 			},
 			
 			next: function() {
-				if (0 == this.getCount()) {
+				if (0 == self.getCount()) {
 					console.log("No questions available");
 					
 					return;
@@ -141,7 +142,7 @@ define(
 				
 				var nextQuestionIndex = null;
 				for (var i = 0; i < questionSortIndex.length; i++) {
-					if (this.getId() == questionSortIndex[i]) {
+					if (self.getId() == questionSortIndex[i]) {
 						nextQuestionIndex = questionSortIndex.length - 1 == i ? 0 : i + 1;
 						
 						break;
@@ -151,12 +152,12 @@ define(
 				var nextQuestionId = questionSortIndex[nextQuestionIndex];
 				
 				if (null != nextQuestionId) {
-					this.setId(nextQuestionId);
+					self.setId(nextQuestionId);
 				}
 			},
 			
 			prev: function() {
-				if (0 == this.getCount()) {
+				if (0 == self.getCount()) {
 					console.log("No questions available");
 					
 					return;
@@ -164,7 +165,7 @@ define(
 				
 				var prevQuestionIndex = null;
 				for (var i = questionSortIndex.length - 1; i >= 0 ; i--) {
-					if (this.getId() == questionSortIndex[i]) {
+					if (self.getId() == questionSortIndex[i]) {
 						prevQuestionIndex = 0 == i ? questionSortIndex.length - 1 : i - 1;
 						
 						break;
@@ -174,12 +175,12 @@ define(
 				var prevQuestionId = questionSortIndex[prevQuestionIndex];
 				
 				if (null != prevQuestionId) {
-					this.setId(prevQuestionId);
+					self.setId(prevQuestionId);
 				}
 			},
 			
 			first: function() {
-				if (0 == this.getCount()) {
+				if (0 == self.getCount()) {
 					console.log("No questions available");
 					
 					return;
@@ -188,12 +189,12 @@ define(
 				var firstQuestionId = questionSortIndex[0];
 				
 				if (null != firstQuestionId) {
-					this.setId(firstQuestionId);
+					self.setId(firstQuestionId);
 				}
 			},
 			
 			last: function() {
-				if (0 == this.getCount()) {
+				if (0 == self.getCount()) {
 					console.log("No questions available");
 					
 					return;
@@ -202,17 +203,17 @@ define(
 				var lastQuestionId = questionSortIndex[questionSortIndex.length - 1];
 				
 				if (null != lastQuestionId) {
-					this.setId(lastQuestionId);
+					self.setId(lastQuestionId);
 				}
 			},
 			
 			getPosition: function() {
-				if (0 == this.getCount()) {
+				if (0 == self.getCount()) {
 					return -1;
 				}
 				
 				for (var i = 0; i < questionSortIndex.length; i++) {
-					if (this.getId() == questionSortIndex[i]) {
+					if (self.getId() == questionSortIndex[i]) {
 						return i;
 					}
 				}
@@ -242,13 +243,13 @@ define(
 			},
 			
 			getAnswers: function(piRound, refresh) {
-				if (null == this.getId()) {
+				if (null == self.getId()) {
 					console.log("No question selected");
 					
 					return null;
 				}
 				
-				return when(this.get(), function(question) {
+				return when(self.get(), function(question) {
 					if ("freetext" == question.questionType) {
 						if (!refresh && ftAnswerMemory.data.length > 0) {
 							return ftAnswerMemory.query();
@@ -279,7 +280,7 @@ define(
 			},
 			
 			removeAnswer: function(id) {
-				if (null == this.getId()) {
+				if (null == self.getId()) {
 					console.log("No question selected");
 					
 					return null;
@@ -288,8 +289,7 @@ define(
 			},
 			
 			updateLocks: function(questionId, lockQuestion, lockStats, lockCorrect) {
-				var self = this;
-				var question = this.get(questionId);
+				var question = self.get(questionId);
 				
 				return when(question, function(question) {
 					question.active = !lockQuestion;
@@ -301,8 +301,7 @@ define(
 			},
 			
 			startSecondPiRound: function(questionId) {
-				var self = this;
-				var question = this.get(questionId);
+				var question = self.get(questionId);
 				return when(question, function(question) {
 					question.piRound = 2;
 					return self.update(question);
@@ -317,13 +316,13 @@ define(
 		var buildQuestionSortIndex = function() {
 			questionSortIndex = [];
 			for (var questionId in questionMemory.index) {
-				//var question = lecturerQuestion.get(questionId);
+				//var question = self.get(questionId);
 				/* Use question.number as soon as the property is set
 				 * by the ARSnova clients. Currently it is always 0. */
 				questionSortIndex.push(questionId);
 			}
 		};
 		
-		return lecturerQuestion;
+		return self;
 	}
 );

@@ -14,6 +14,7 @@ define(
 		"use strict";
 		
 		var
+			self = null,
 			apiPrefix = config.arsnovaApi.root + "audiencequestion/",
 			
 			questionJsonRest = null,
@@ -32,7 +33,7 @@ define(
 			questionStore = CacheStore(questionJsonRest, questionMemory);
 		});
 		
-		var audienceQuestion = {
+		self = {
 			getStore: function() {
 				return questionStore;
 			},
@@ -63,6 +64,6 @@ define(
 			}
 		};
 		
-		return audienceQuestion;
+		return self;
 	}
 );
