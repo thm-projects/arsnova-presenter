@@ -107,7 +107,10 @@ define(
 				var questions = questionStore.query({
 					sessionkey: sessionModel.getKey()
 				});
-				questions.then(buildQuestionSortIndex);
+				questions.then(function() {
+					buildQuestionSortIndex();
+					lecturerQuestion.setId(questionSortIndex[0]);
+				});
 				
 				return questions;
 			},
