@@ -316,6 +316,18 @@ define(
 						piContainer.resize();
 					}
 				});
+				
+				lecturerQuestionModel.onAnswersAvailable(function(questionId) {
+					if (lecturerQuestionModel.getId() != questionId) {
+						return;
+					}
+					var question = lecturerQuestionModel.get();
+					when(question, function(question) {
+						when(lecturerQuestionModel.getAnswers(question.piRound, true), function() {
+							self.updateAnswersPaneAnswers();
+						});
+					});
+				});
 			},
 			
 			updateQuestionsPanel: function(questions) {
