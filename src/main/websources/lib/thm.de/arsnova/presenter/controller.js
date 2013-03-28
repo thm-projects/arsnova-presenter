@@ -6,8 +6,8 @@ define(
 		"arsnova-presenter/ui/main",
 		"arsnova-presenter/ui/authControls",
 		"arsnova-presenter/ui/sessionControls",
-		"arsnova-presenter/ui/piPanel",
-		"arsnova-presenter/ui/audiencePanel",
+		"arsnova-presenter/ui/lecturerPane",
+		"arsnova-presenter/ui/audiencePane",
 		"arsnova-api/socket",
 		"arsnova-api/auth",
 		"arsnova-api/session",
@@ -15,7 +15,7 @@ define(
 		"arsnova-api/audienceQuestion",
 		"arsnova-api/feedback"
 	],
-	function(ready, when, router, mainUi, authControls, sessionControls, piPane, audiencePane, socket, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel, feedbackModel) {
+	function(ready, when, router, mainUi, authControls, sessionControls, lecturerPane, audiencePane, socket, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel, feedbackModel) {
 		"use strict";
 		
 		var init = function() {
@@ -34,13 +34,13 @@ define(
 					socket.connect();
 					
 					sessionControls.init(sessionModel);
-					piPane.init(sessionModel, lecturerQuestionModel);
+					lecturerPane.init(sessionModel, lecturerQuestionModel);
 					audiencePane.init(sessionModel, audienceQuestionModel, feedbackModel);
 
 					mainUi.startup();
 					sessionControls.startup();
 					authControls.startup();
-					piPane.startup();
+					lecturerPane.startup();
 					audiencePane.startup();
 					
 					/* register routes in form #!/12345678;paramName=paramValue */
@@ -56,16 +56,6 @@ define(
 						
 						console.log("Router: loading session " + params.sessionKey);
 						sessionModel.setKey(params.sessionKey);
-						
-						/* FIXME: This is not working yet. Full screen mode has to be activated by user interaction */
-						if (params.present) {
-							switch (params.present) {
-							case "pi":
-								console.log("Router: activating present mode for Peer Instruction");
-								piPane.togglePresentMode();
-								break;
-							}
-						}
 						
 						location.hash = "";
 					});
