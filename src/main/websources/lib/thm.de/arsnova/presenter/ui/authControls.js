@@ -18,10 +18,10 @@ define(
 		
 		self = {
 			/* public "methods" */
-			init: function(auth) {
+			init: function(_authService) {
 				console.log("-- UI: authControls.init --");
 				
-				authService = auth;
+				authService = _authService;
 			},
 			
 			startup: function() {

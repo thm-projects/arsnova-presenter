@@ -22,9 +22,9 @@ define(
 			feedbackModel = null,
 			
 			/* Dijit */
-			audienceContainer = null,
-			audienceHeaderPane = null,
-			audienceTabs = null
+			container = null,
+			headerPane = null,
+			tabs = null
 		;
 		
 		self = {
@@ -36,35 +36,35 @@ define(
 				audienceQuestionModel = _audienceQuestionModel;
 				feedbackModel = _feedbackModel;
 				
-				audienceContainer = new BorderContainer({
+				container = new BorderContainer({
 					id: "audienceContainer",
 					region: "right",
 					splitter: true,
 					minSize: MIN_WIDTH
 				});
-				audienceHeaderPane = new ContentPane({
+				headerPane = new ContentPane({
 					region: "top",
 					content: domConstruct.create("header", {innerHTML: "Audience"}),
 					"class": "headerPane sidePanel"
 				});
-				audienceTabs = new TabContainer({
+				tabs = new TabContainer({
 					id: "audienceTabs",
 					region: "center"
 				});
 				
-				registry.byId("mainContainer").addChild(audienceContainer);
-				audienceContainer.addChild(audienceHeaderPane);
-				audienceContainer.addChild(audienceTabs);
+				registry.byId("mainContainer").addChild(container);
+				container.addChild(headerPane);
+				container.addChild(tabs);
 				
-				feedbackTab.init(audienceTabs, feedbackModel);
-				questionsTab.init(audienceTabs, audienceQuestionModel);
+				feedbackTab.init(tabs, feedbackModel);
+				questionsTab.init(tabs, audienceQuestionModel);
 				
 				var onWindowResize = function() {
 					var maxSize = document.body.clientWidth - MIN_WIDTH;
-					audienceContainer.set("maxSize", maxSize);
-					var width = domStyle.get(audienceContainer.domNode, "width");
+					container.set("maxSize", maxSize);
+					var width = domStyle.get(container.domNode, "width");
 					if (width > maxSize) {
-						domStyle.set(audienceContainer.domNode, "width", "49.5%");
+						domStyle.set(container.domNode, "width", "49.5%");
 						registry.byId("mainContainer").resize();
 					}
 				};

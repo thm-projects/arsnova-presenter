@@ -11,31 +11,31 @@ define(
 		
 		var
 			self = null,
-			lecturerQuestionModel = null,
+			model = null,
 			
 			/* DOM */
 			questionListNode = null,
 			
 			/* Dijit */
 			tabContainer = null,
-			piQuestionsPane = null
+			questionsPane = null
 		;
 		
 		self = {
 			/* public "methods" */
-			init: function(_tabContainer, _lecturerQuestionModel) {
+			init: function(_tabContainer, lecturerQuestionModel) {
 				tabContainer = _tabContainer;
-				lecturerQuestionModel = _lecturerQuestionModel;
+				model = lecturerQuestionModel;
 
-				piQuestionsPane = new ContentPane({
+				questionsPane = new ContentPane({
 					id: "piQuestionsPane",
 					title: "Questions"
 				});
-				tabContainer.addChild(piQuestionsPane);
+				tabContainer.addChild(questionsPane);
 			},
 			
 			startup: function() {
-				questionListNode = domConstruct.create("div", {id: "piQuestionList"}, piQuestionsPane.domNode);
+				questionListNode = domConstruct.create("div", {id: "piQuestionList"}, questionsPane.domNode);
 			},
 			
 			update: function(questions) {
@@ -63,7 +63,7 @@ define(
 							var questionNode = domConstruct.create("p", {"class": "question"}, categoryNode);
 							questionNode.appendChild(document.createTextNode(question.text));
 							on(questionNode, "click", function(event) {
-								lecturerQuestionModel.setId(question._id);
+								model.setId(question._id);
 								answersTab.selectTab();
 							});
 						});

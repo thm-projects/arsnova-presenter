@@ -14,40 +14,40 @@ define(
 		
 		var
 			self = null,
-			feedbackModel = null,
+			model = null,
 			
 			/* Dijit */
-			audienceFeedbackPane = null
+			pane = null
 		;
 		
 		self = {
 			/* public "methods" */
-			init: function(tabContainer, feedback) {
-				feedbackModel = feedback;
+			init: function(tabContainer, feedbackModel) {
+				model = feedbackModel;
 				
-				audienceFeedbackPane = new ContentPane({
+				pane = new ContentPane({
 					id: "audienceFeedbackPane",
 					title: "Live Feedback"
 				});
-				tabContainer.addChild(audienceFeedbackPane);
+				tabContainer.addChild(pane);
 			},
 			
 			startup: function() {
-				var feedbackPaneContentNode = domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, audienceFeedbackPane.domNode);
+				var feedbackPaneContentNode = domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, pane.domNode);
 				audienceFeedbackChart.init(feedbackPaneContentNode);
 				
-				feedbackModel.onReceive(function(feedback) {
+				model.onReceive(function(feedback) {
 					var feedback0 = feedback[0];
 					feedback[0] = feedback[1];
 					feedback[1] = feedback0;
-					self.updateFeedbackPanel(feedback);
+					self.update(feedback);
 				});
 				
 				/* add full screen menu items */
 				var fullScreenMenu = registry.byId("fullScreenMenu");
 				fullScreenMenu.addChild(new MenuItem({
 					label: "Audience feedback",
-					onClick: this.togglePresentMode
+					onClick: this.toggleFullScreenMode
 				}));
 				
 				/* handle events fired when full screen mode is canceled */
@@ -55,16 +55,16 @@ define(
 					if (!isActive) {
 						self.exitFullScreenMode();
 						
-						audienceFeedbackPane.resize();
+						pane.resize();
 					}
 				});
 			},
 			
-			updateFeedbackPanel: function(feedback) {
+			update: function(feedback) {
 				audienceFeedbackChart.update(feedback);
 			},
 			
-			togglePresentMode: function() {
+			toggleFullScreenMode: function() {
 				if (fullScreen.isActive()) {
 					/* dom node rearrangement takes place in fullscreenchange event handler */
 					fullScreen.exit();
@@ -78,7 +78,7 @@ define(
 			},
 			
 			exitFullScreenMode: function() {
-				domConstruct.place(dom.byId("audienceFeedbackPaneContent"), audienceFeedbackPane.domNode);
+				domConstruct.place(dom.byId("audienceFeedbackPaneContent"), pane.domNode);
 				domConstruct.destroy("audienceFeedbackTitle");
 			}
 		};

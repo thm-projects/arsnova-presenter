@@ -16,10 +16,10 @@ define(
 			self = null,
 			
 			/* DOM */
-			feedbackChartNode = null,
+			chartNode = null,
 			
 			/* dojox.charting */
-			feedbackChart = null
+			chart = null
 		;
 		
 		self = {
@@ -27,10 +27,10 @@ define(
 			init: function(parentNode) {
 				console.log("-- Chart: audienceFeedback.init --");
 
-				feedbackChartNode = domConstruct.create("div", {id: "audienceFeedbackChart"}, parentNode);
-				feedbackChart = new Chart(feedbackChartNode);
-				feedbackChart.setTheme(theme);
-				feedbackChart.addPlot("default", {
+				chartNode = domConstruct.create("div", {id: "audienceFeedbackChart"}, parentNode);
+				chart = new Chart(chartNode);
+				chart.setTheme(theme);
+				chart.addPlot("default", {
 					type: Columns,
 					gap: 5,
 					maxBarSize: 180,
@@ -45,7 +45,7 @@ define(
 				];
 				var data = [0, 0, 0, 0];
 				
-				feedbackChart.addAxis("x", {
+				chart.addAxis("x", {
 					labels: labels,
 					dropLabels: false,
 					maxLabelSize: 120,
@@ -53,13 +53,13 @@ define(
 					trailingSymbol: "...",
 					minorTicks: false
 				});
-				feedbackChart.addAxis("y", {
+				chart.addAxis("y", {
 					vertical: true,
 					includeZero: true,
 					natural: true
 				});
-				feedbackChart.addSeries("Feedback", data);
-				feedbackChart.render();
+				chart.addSeries("Feedback", data);
+				chart.render();
 
 				var resizeTimeout = null;
 				var onResize = function(event) {
@@ -76,7 +76,7 @@ define(
 							/* return if audienceFeedbackPaneContent is not visible */
 							return;
 						}
-						feedbackChart.resize(-1, height);
+						chart.resize(-1, height);
 					}, 20);
 				};
 				registry.byId("audienceFeedbackPane").on("resize", onResize);
@@ -85,8 +85,8 @@ define(
 			},
 			
 			update: function(feedback) {
-				feedbackChart.updateSeries("Feedback", theme.applyColors(feedback, "feedback"));
-				feedbackChart.render();
+				chart.updateSeries("Feedback", theme.applyColors(feedback, "feedback"));
+				chart.render();
 			}
 		};
 		

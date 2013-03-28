@@ -26,7 +26,7 @@ define(
 		
 		var
 			self = null,
-			lecturerQuestionModel = null,
+			model = null,
 			showAnswers = false,
 			unlockMenu = null,
 			fsControlsToggleHandlers = [],
@@ -35,21 +35,21 @@ define(
 			/* DOM */
 			fullScreenControlsNode = null,
 			freeTextAnswersNode = null,
-			piAnswersMainPaneContentNode = null,
+			mainPaneContentNode = null,
 			controlPaneContentNode = null,
 			titlePaneContentNode = null,
-			piNavigationStatusNode = null,
-			piAnswersQuestionSubjectNode = null,
-			piAnswersQuestionTitleSeperatorNode = null,
-			piAnswersQuestionTextNode = null,
-			piAnswersCountNode = null,
+			navigationStatusNode = null,
+			questionSubjectNode = null,
+			questionTitleSeperatorNode = null,
+			questionTextNode = null,
+			answerCountNode = null,
 			
 			/* Dijit */
 			tabContainer = null,
-			piAnswersContainer = null,
-			piAnswersControlPane = null,
-			piAnswersTitlePane = null,
-			piAnswersMainPane = null,
+			answersContainer = null,
+			controlPane = null,
+			titlePane = null,
+			mainPane = null,
 			piRoundButton = null,
 			showCorrectMenuItem = null,
 			showPiRoundMenuItem = [],
@@ -60,39 +60,39 @@ define(
 		
 		self = {
 			/* public "methods" */
-			init: function(_tabContainer, _lecturerQuestionModel) {
+			init: function(_tabContainer, lecturerQuestionModel) {
 				tabContainer = _tabContainer;
-				lecturerQuestionModel = _lecturerQuestionModel;
+				model = lecturerQuestionModel;
 				
-				piAnswersContainer = new BorderContainer({
+				answersContainer = new BorderContainer({
 					id: "piAnswersContainer",
 					title: "Answers"
 				});
-				tabContainer.addChild(piAnswersContainer);
+				tabContainer.addChild(answersContainer);
 				
-				piAnswersControlPane = new ContentPane({
+				controlPane = new ContentPane({
 					id: "piAnswersControlPane",
 					region: "top"
 				});
-				piAnswersTitlePane = new ContentPane({
+				titlePane = new ContentPane({
 					id: "piAnswersTitlePane",
 					region: "top"
 				});
-				piAnswersMainPane = new ContentPane({
+				mainPane = new ContentPane({
 					id: "piAnswersMainPane",
 					region: "center"
 				});
-				piAnswersContainer.addChild(piAnswersControlPane);
-				piAnswersContainer.addChild(piAnswersTitlePane);
-				piAnswersContainer.addChild(piAnswersMainPane);
+				answersContainer.addChild(controlPane);
+				answersContainer.addChild(titlePane);
+				answersContainer.addChild(mainPane);
 			},
 			
 			startup: function() {
-				piAnswersMainPaneContentNode = domConstruct.create("div", {id: "piAnswersMainPaneContent"}, piAnswersMainPane.domNode);
-				freeTextAnswersNode = domConstruct.create("div", {id: "piFreeTextAnswers"}, piAnswersMainPaneContentNode);
+				mainPaneContentNode = domConstruct.create("div", {id: "piAnswersMainPaneContent"}, mainPane.domNode);
+				freeTextAnswersNode = domConstruct.create("div", {id: "piFreeTextAnswers"}, mainPaneContentNode);
 				domStyle.set(freeTextAnswersNode, "display", "none");
 				
-				controlPaneContentNode = domConstruct.create("div", {id: "piAnswersControlPaneContent"}, piAnswersControlPane.domNode);
+				controlPaneContentNode = domConstruct.create("div", {id: "piAnswersControlPaneContent"}, controlPane.domNode);
 				var answersNav = domConstruct.create("div", {id: "piAnswersNavigation"}, controlPaneContentNode);
 				var answersSettings = domConstruct.create("div", {id: "piAnswersSettings"}, controlPaneContentNode);
 				
@@ -102,7 +102,7 @@ define(
 					showLabel: false,
 					iconClass: "iconFirst",
 					onClick: function() {
-						lecturerQuestionModel.first();
+						model.first();
 					}
 				}).placeAt(answersNav).startup();
 				new Button({
@@ -111,17 +111,17 @@ define(
 					showLabel: false,
 					iconClass: "iconPrev",
 					onClick: function() {
-						lecturerQuestionModel.prev();
+						model.prev();
 					}
 				}).placeAt(answersNav).startup();
-				piNavigationStatusNode = domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
+				navigationStatusNode = domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
 				new Button({
 					id: "nextPiQuestionButton",
 					label: "Next question",
 					showLabel: false,
 					iconClass: "iconNext",
 					onClick: function() {
-						lecturerQuestionModel.next();
+						model.next();
 					}
 				}).placeAt(answersNav).startup();
 				new Button({
@@ -130,7 +130,7 @@ define(
 					showLabel: false,
 					iconClass: "iconLast",
 					onClick: function() {
-						lecturerQuestionModel.last();
+						model.last();
 					}
 				}).placeAt(answersNav).startup();
 				
@@ -173,7 +173,7 @@ define(
 					onClick: function() {
 						confirmDialog.confirm("Peer Instruction", "Do you really want to start the next Peer Instruction round? Answers for the current round will be locked permanently.", {
 							"Proceed": function() {
-								lecturerQuestionModel.startSecondPiRound().then(function() {
+								model.startSecondPiRound().then(function() {
 									piRoundButton.set("label", "2nd");
 									piRoundButton.set("disabled", true);
 									showPiRoundMenuItem[2].set("disabled", false);
@@ -203,19 +203,19 @@ define(
 				});
 				unlockButton.placeAt(answersSettings).startup();
 
-				titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, piAnswersTitlePane.domNode);
+				titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, titlePane.domNode);
 				var questionNode = domConstruct.create("header", {id: "piAnswersQuestion"}, titlePaneContentNode);
-				piAnswersQuestionSubjectNode = domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, questionNode);
-				piAnswersQuestionTitleSeperatorNode = domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, questionNode);
-				piAnswersQuestionTextNode = domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, questionNode);
-				piAnswersCountNode = domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, titlePaneContentNode);
+				questionSubjectNode = domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, questionNode);
+				questionTitleSeperatorNode = domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, questionNode);
+				questionTextNode = domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, questionNode);
+				answerCountNode = domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, titlePaneContentNode);
 				
-				piAnswersChart.init(piAnswersMainPaneContentNode);
+				piAnswersChart.init(mainPaneContentNode);
 				
 				/* add full screen menu item */
 				registry.byId("fullScreenMenu").addChild(new MenuItem({
 					label: "Answers to Lecturer's questions",
-					onClick: self.togglePresentMode
+					onClick: self.toggleFullScreenMode
 				}));
 				
 				fullScreenControlsNode = domConstruct.create("div", {id: "fullScreenControls"}, document.body);
@@ -242,11 +242,11 @@ define(
 				/* handle events fired when full screen mode is canceled */
 				fullScreen.onChange(function(event, isActive) {
 					if (!isActive) {
-						domStyle.set(piAnswersQuestionSubjectNode, "display", "none");
-						domStyle.set(piAnswersQuestionTitleSeperatorNode, "display", "none");
-						domConstruct.place(controlPaneContentNode, piAnswersControlPane.domNode);
-						domConstruct.place(titlePaneContentNode, piAnswersTitlePane.domNode);
-						domConstruct.place(piAnswersMainPaneContentNode, piAnswersMainPane.domNode);
+						domStyle.set(questionSubjectNode, "display", "none");
+						domStyle.set(questionTitleSeperatorNode, "display", "none");
+						domConstruct.place(controlPaneContentNode, controlPane.domNode);
+						domConstruct.place(titlePaneContentNode, titlePane.domNode);
+						domConstruct.place(mainPaneContentNode, mainPane.domNode);
 						
 						for (var i = 0; i < fsControlsToggleHandlers.length; i++) {
 							fsControlsToggleHandlers[i].remove();
@@ -254,18 +254,18 @@ define(
 						fsControlsToggleHandlers = [];
 						fsControlsToggleFx.hide.play();
 						
-						piAnswersContainer.resize();
+						answersContainer.resize();
 					}
 				});
 				
-				lecturerQuestionModel.watchId(onLecturerQuestionIdChange);
-				lecturerQuestionModel.onAnswersAvailable(function(questionId) {
-					if (lecturerQuestionModel.getId() != questionId) {
+				model.watchId(onLecturerQuestionIdChange);
+				model.onAnswersAvailable(function(questionId) {
+					if (model.getId() != questionId) {
 						return;
 					}
-					var question = lecturerQuestionModel.get();
+					var question = model.get();
 					when(question, function(question) {
-						when(lecturerQuestionModel.getAnswers(question.piRound, true), function() {
+						when(model.getAnswers(question.piRound, true), function() {
 							self.updateAnswers();
 						});
 					});
@@ -276,22 +276,22 @@ define(
 				var labels = [];
 				
 				if (null == question) {
-					piNavigationStatusNode.innerHTML = "0/0";
-					piAnswersQuestionSubjectNode.innerHTML = "Question subject";
-					piAnswersQuestionTextNode.innerHTML = "Question text";
-					piAnswersContainer.resize();
+					navigationStatusNode.innerHTML = "0/0";
+					questionSubjectNode.innerHTML = "Question subject";
+					questionTextNode.innerHTML = "Question text";
+					answersContainer.resize();
 					piAnswersChart.update([], []);
 					domStyle.set(piRoundButton, "display", "none");
 					
 					return;
 				}
 				
-				piNavigationStatusNode.innerHTML = (lecturerQuestionModel.getPosition() + 1) + "/" + lecturerQuestionModel.getCount();
-				domConstruct.empty(piAnswersQuestionSubjectNode);
-				piAnswersQuestionSubjectNode.appendChild(document.createTextNode(question.subject));
-				domConstruct.empty(piAnswersQuestionTextNode);
-				piAnswersQuestionTextNode.appendChild(document.createTextNode(question.text));
-				piAnswersContainer.resize();
+				navigationStatusNode.innerHTML = (model.getPosition() + 1) + "/" + model.getCount();
+				domConstruct.empty(questionSubjectNode);
+				questionSubjectNode.appendChild(document.createTextNode(question.subject));
+				domConstruct.empty(questionTextNode);
+				questionTextNode.appendChild(document.createTextNode(question.text));
+				answersContainer.resize();
 				registry.byId("fullScreenContainer").resize();
 				
 				if ("freetext" == question.questionType) {
@@ -318,9 +318,9 @@ define(
 			},
 			
 			updateAnswers: function() {
-				when(lecturerQuestionModel.get(), function(question) {
+				when(model.get(), function(question) {
 					if ("freetext" == question.questionType) {
-						when(lecturerQuestionModel.getAnswers(), function(answers) {
+						when(model.getAnswers(), function(answers) {
 							self.updateFreeText(answers);
 						});
 					} else {
@@ -329,7 +329,7 @@ define(
 							if (!showPiRoundMenuItem[i].get("checked")) {
 								continue;
 							}
-							rounds["PI round " + i] = lecturerQuestionModel.getAnswers(i);
+							rounds["PI round " + i] = model.getAnswers(i);
 						}
 						/* update UI when data for answer rounds are ready */
 						promiseAll(rounds).then(self.updateChart);
@@ -360,7 +360,7 @@ define(
 					on(deleteNode, "click", function() {
 						confirmDialog.confirm("Delete answer", "Do you really want to delete this answer?", {
 							"Delete": function() {
-								lecturerQuestionModel.removeAnswer(answer._id);
+								model.removeAnswer(answer._id);
 								domConstruct.destroy(answerNode);
 							},
 							"Cancel": null
@@ -369,11 +369,11 @@ define(
 					domConstruct.place(answerNode, freeTextAnswersNode);
 				});
 				
-				piAnswersCountNode.innerHTML = totalAnswerCount;
+				answerCountNode.innerHTML = totalAnswerCount;
 			},
 			
 			updateChart: function(rounds) {
-				var question = lecturerQuestionModel.get();
+				var question = model.get();
 				var totalAnswerCount = 0;
 				var possibleAnswersCount = 0;
 				var valueSeries = {};
@@ -413,30 +413,30 @@ define(
 				}
 				piAnswersChart.update(labels, correctIndexes, valueSeries);
 				
-				piAnswersCountNode.innerHTML = totalAnswerCount;
+				answerCountNode.innerHTML = totalAnswerCount;
 			},
 			
-			togglePresentMode: function() {
+			toggleFullScreenMode: function() {
 				if (fullScreen.isActive()) {
 					/* dom node rearrangement takes place in fullscreenchange event handler */
 					fullScreen.exit();
 				} else {
 					fullScreen.request(dom.byId("fullScreenContainer"));
-					domStyle.set(piAnswersQuestionSubjectNode, "display", "inline");
-					domStyle.set(piAnswersQuestionTitleSeperatorNode, "display", "inline");
+					domStyle.set(questionSubjectNode, "display", "inline");
+					domStyle.set(questionTitleSeperatorNode, "display", "inline");
 					domConstruct.place(controlPaneContentNode, fullScreenControlsNode);
 					domConstruct.place(titlePaneContentNode, "fullScreenHeader");
-					domConstruct.place(piAnswersMainPaneContentNode, "fullScreenContent");
+					domConstruct.place(mainPaneContentNode, "fullScreenContent");
 					
 					registry.byId("fullScreenContainer").resize();
 					
-					fsControlsToggleHandlers.push(on(document.body, "mousemove", toggleFsControls));
-					fsControlsToggleHandlers.push(on(document.body, "click", toggleFsControls));
+					fsControlsToggleHandlers.push(on(document.body, "mousemove", toggleFullScreenControls));
+					fsControlsToggleHandlers.push(on(document.body, "click", toggleFullScreenControls));
 				}
 			},
 			
 			selectTab: function() {
-				tabContainer.selectChild(piAnswersContainer);
+				tabContainer.selectChild(answersContainer);
 			}
 		};
 
@@ -447,7 +447,7 @@ define(
 				showPiRoundMenuItem[i].set("checked", false);
 			}
 			showAnswers = false;
-			var question = lecturerQuestionModel.get();
+			var question = model.get();
 			when(question, function(question) {
 				self.updateQuestion(question);
 				if (null != question) {
@@ -487,7 +487,7 @@ define(
 			});
 		};
 		
-		var toggleFsControls = function(event) {
+		var toggleFullScreenControls = function(event) {
 			if (event.clientY < 150) {
 				fsControlsToggleFx.show.play();
 			} else if (event.clientY > 200) {
@@ -496,7 +496,7 @@ define(
 		};
 		
 		var updateLocks = function() {
-			lecturerQuestionModel.updateLocks(
+			model.updateLocks(
 				null,
 				!unlockQuestionMenuItem.get("checked"),
 				!unlockAnswerStatsMenuItem.get("checked"),

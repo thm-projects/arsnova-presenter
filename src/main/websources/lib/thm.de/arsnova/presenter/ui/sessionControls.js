@@ -21,39 +21,39 @@ define(
 		
 		var
 			self = null,
-			sessionModel = null,
-			sessionMemory = null,
+			model = null,
+			memory = null,
 			
 			/* DOM */
-			sessionInfoNode = null,
-			sessionTitleNode = null,
-			sessionPanelNode = null,
-			sessionKeyNode = null,
-			sessionQrNode = null,
+			infoNode = null,
+			titleNode = null,
+			panelNode = null,
+			keyNode = null,
+			qrNode = null,
 			activeUserCountNode = null,
 			
 			/* Dijit */
-			sessionSelect = null,
+			select = null,
 			mobileDialog = null
 		;
 		
 		self = {
 			/* public "methods" */
-			init: function(session) {
+			init: function(sessionModel) {
 				console.log("-- UI: sessionControls.init --");
 				
-				sessionModel = session;
+				model = sessionModel;
 
 				/* Session info */
-				sessionInfoNode = domConstruct.create("div", {id: "sessionInfo"}, "headerPane");
-				sessionTitleNode = domConstruct.create("header", {id: "sessionTitle", innerHTML: "ARSnova Presenter"}, sessionInfoNode);
-				activeUserCountNode = domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, sessionInfoNode);
+				infoNode = domConstruct.create("div", {id: "sessionInfo"}, "headerPane");
+				titleNode = domConstruct.create("header", {id: "sessionTitle", innerHTML: "ARSnova Presenter"}, infoNode);
+				activeUserCountNode = domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, infoNode);
 				/* Session controls */
-				sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
-				(sessionSelect = new FilteringSelect({
+				panelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
+				(select = new FilteringSelect({
 					id: "sessionSelect",
 					placeHolder: "Select a session",
-					store: sessionMemory = new Memory(),
+					store: memory = new Memory(),
 					labelAttr: "label",
 					labelType: "html",
 					searchAttr: "shortName",
@@ -61,21 +61,21 @@ define(
 					style: "width: 160px;",
 					onChange: function(value) {
 						if (value) {
-							sessionModel.setKey(value);
+							model.setKey(value);
 						}
 					}
-				})).placeAt(sessionPanelNode).startup();
-				sessionKeyNode = domConstruct.create("span", {id: "sessionKey", "class": "noSession", innerHTML: "00 00 00 00"}, sessionPanelNode);
+				})).placeAt(panelNode).startup();
+				keyNode = domConstruct.create("span", {id: "sessionKey", "class": "noSession", innerHTML: "00 00 00 00"}, panelNode);
 				new Tooltip({
-					connectId: [sessionKeyNode],
+					connectId: [keyNode],
 					position: ["below-centered"],
 					label: "The session key you give to your audience"
 				});
 				
 				if ("undefined" !== typeof config.arsnova.mobileStudentSessionUrl) {
-					sessionQrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr"}, sessionPanelNode);
+					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr"}, panelNode);
 					new Tooltip({
-						connectId: [sessionQrNode],
+						connectId: [qrNode],
 						label: "Show QR Code for mobile ARSnova session",
 						position: ["below-centered"]
 					}).startup();
@@ -89,9 +89,9 @@ define(
 //				}, "newSessionButton");
 //				registry.byId("createSessionButton").onClick = this.submitCreateSessionForm;
 
-				this.updateSessionSelect(sessionModel.getOwned());
-				sessionModel.watchKey(this.onKeyChange);
-				sessionModel.watchActiveUserCount(function(name, oldValue, value) {
+				this.updateSelect(model.getOwned());
+				model.watchKey(this.onKeyChange);
+				model.watchActiveUserCount(function(name, oldValue, value) {
 					activeUserCountNode.innerHTML = value;
 				});
 			},
@@ -107,8 +107,8 @@ define(
 					self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
 				});
 				
-				on(sessionQrNode, "click", function() {
-					var sessionKey = sessionModel.getKey();
+				on(qrNode, "click", function() {
+					var sessionKey = model.getKey();
 					if (null == sessionKey) {
 						return;
 					}
@@ -117,10 +117,10 @@ define(
 				});
 			},
 			
-			updateSessionSelect: function(sessions) {
+			updateSelect: function(sessions) {
 				when(sessions, function(sessions) {
 					sessions.forEach(function(session) {
-						sessionMemory.put({
+						memory.put({
 							id: session.keyword,
 							shortName: session.shortName,
 							name: session.name,
@@ -129,9 +129,9 @@ define(
 					});
 					console.log("UI: session list updated");
 					
-					var key = sessionModel.getKey();
+					var key = model.getKey();
 					if (key) {
-						sessionSelect.set("value", key);
+						select.set("value", key);
 					}
 				});
 			},
@@ -142,24 +142,24 @@ define(
 					description = registry.byId("sessionDescField").value
 				;
 				
-				if (sessionModel.createSession(shortName, description)) {
+				if (model.createSession(shortName, description)) {
 					registry.byId("newSessionDialog").close();
 				};
 			},
 			
 			onKeyChange: function(name, oldValue, value) {
-				sessionSelect.set("value", value);
-				when(sessionModel.getCurrent(), function(session) {
+				select.set("value", value);
+				when(model.getCurrent(), function(session) {
 					document.title = session.shortName + " - ARSnova Presenter";
-					domConstruct.empty(sessionTitleNode);
-					sessionTitleNode.appendChild(document.createTextNode(session.name));
+					domConstruct.empty(titleNode);
+					titleNode.appendChild(document.createTextNode(session.name));
 					var keyword = session.keyword.substr(0, 2)
 						+ " " + session.keyword.substr(2, 2)
 						+ " " + session.keyword.substr(4, 2)
 						+ " " + session.keyword.substr(6, 2)
 					;
-					sessionKeyNode.innerHTML = keyword;
-					domClass.remove(sessionKeyNode, "noSession");
+					keyNode.innerHTML = keyword;
+					domClass.remove(keyNode, "noSession");
 				});
 				
 				/* enable mode menu items */
@@ -174,7 +174,7 @@ define(
 			},
 			
 			openMobileSession: function(url) {
-				url = string.substitute(url, {sessionKey: sessionModel.getKey()});
+				url = string.substitute(url, {sessionKey: model.getKey()});
 				
 				if (document.body.clientWidth < 500 || document.body.clientHeight < 850) {
 					window.open(url, "_blank");

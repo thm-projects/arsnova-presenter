@@ -17,32 +17,32 @@ define(
 		
 		var
 			self = null,
-			audienceQuestionModel = null,
+			model = null,
 			
 			/* DOM */
 			questionListNode = null,
 			
 			/* Dijit */
-			audienceQuestionsPane = null
+			pane = null
 		;
 		
 		self = {
 			/* public "methods" */
-			init: function(tabContainer, _audienceQuestionModel) {
-				audienceQuestionModel = _audienceQuestionModel;
+			init: function(tabContainer, audienceQuestionModel) {
+				model = audienceQuestionModel;
 				
-				audienceQuestionsPane = new ContentPane({
+				pane = new ContentPane({
 					id: "audienceQuestionsPane",
 					title: "Questions"
 				});
-				tabContainer.addChild(audienceQuestionsPane);
+				tabContainer.addChild(pane);
 			},
 			
 			startup: function() {
-				questionListNode = domConstruct.create("div", {id: "audienceQuestionList"}, audienceQuestionsPane.domNode);
+				questionListNode = domConstruct.create("div", {id: "audienceQuestionList"}, pane.domNode);
 				
-				audienceQuestionModel.onQuestionAvailable(function(questionId) {
-					var question = audienceQuestionModel.get(questionId);
+				model.onQuestionAvailable(function(questionId) {
+					var question = model.get(questionId);
 					question.then(function(question) {
 						self.prependQuestionToList(question);
 					});
@@ -52,7 +52,7 @@ define(
 				var fullScreenMenu = registry.byId("fullScreenMenu");
 				fullScreenMenu.addChild(new MenuItem({
 					label: "Audience questions",
-					onClick: this.togglePresentMode
+					onClick: this.toggleFullScreenMode
 				}));
 				
 				/* handle events fired when full screen mode is canceled */
@@ -60,7 +60,7 @@ define(
 					if (!isActive) {
 						self.exitFullScreenMode();
 						
-						audienceQuestionsPane.resize();
+						pane.resize();
 					}
 				});
 			},
@@ -99,7 +99,7 @@ define(
 				on(deleteNode, "click", function() {
 					confirmDialog.confirm("Delete question", "Do you really want to delete this question?", {
 						"Delete": function() {
-							audienceQuestionModel.remove(question._id);
+							model.remove(question._id);
 							domConstruct.destroy(questionNode);
 						},
 						"Cancel": null
@@ -118,7 +118,7 @@ define(
 					
 					return;
 				}
-				var question = audienceQuestionModel.get(questionId);
+				var question = model.get(questionId);
 				when(question, function(question) {
 					domClass.remove(questionNode, "unread");
 					domClass.add(questionNode, "opened");
@@ -127,7 +127,7 @@ define(
 				});
 			},
 			
-			togglePresentMode: function() {
+			toggleFullScreenMode: function() {
 				if (fullScreen.isActive()) {
 					/* dom node rearrangement takes place in fullscreenchange event handler */
 					fullScreen.exit();
@@ -141,7 +141,7 @@ define(
 			},
 			
 			exitFullScreenMode: function() {
-				domConstruct.place(dom.byId("audienceQuestionList"), audienceQuestionsPane.domNode);
+				domConstruct.place(dom.byId("audienceQuestionList"), pane.domNode);
 				domConstruct.destroy("audienceQuestionsTitle");
 			}
 		};

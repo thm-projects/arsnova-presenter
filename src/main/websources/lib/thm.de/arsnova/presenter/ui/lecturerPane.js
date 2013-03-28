@@ -19,9 +19,9 @@ define(
 			lecturerQuestionModel = null,
 			
 			/* Dijit */
-			piContainer = null,
-			piHeaderPane = null,
-			piTabs = null
+			container = null,
+			headerPane = null,
+			tabs = null
 		;
 		
 		self = {
@@ -32,25 +32,25 @@ define(
 				sessionModel = _sessionModel;
 				lecturerQuestionModel = _lecturerQuestionModel;
 				
-				piContainer = new BorderContainer({
-					id: "piContainer",
+				container = new BorderContainer({
+					id: "lecturerContainer",
 					region: "center"
 				});
-				piHeaderPane = new ContentPane({
+				headerPane = new ContentPane({
 					region: "top",
 					content: domConstruct.create("header", {innerHTML: "Lecturer: "}),
 					"class": "headerPane sidePanel"
 				});
-				piTabs = new TabContainer({
-					id: "piTabs",
+				tabs = new TabContainer({
+					id: "lecturerTabs",
 					region: "center"
 				});
 				
-				registry.byId("mainContainer").addChild(piContainer);
-				piContainer.addChild(piHeaderPane);
-				piContainer.addChild(piTabs);
+				registry.byId("mainContainer").addChild(container);
+				container.addChild(headerPane);
+				container.addChild(tabs);
 				
-				piHeaderPane.addChild(new Select({
+				headerPane.addChild(new Select({
 					id: "lecturerPaneModeSelect",
 					options: [
 						{label: "Clicker Questions", value: "1", disabled: true},
@@ -59,8 +59,8 @@ define(
 					]
 				}));
 				
-				questionsTab.init(piTabs, lecturerQuestionModel);
-				answersTab.init(piTabs, lecturerQuestionModel);
+				questionsTab.init(tabs, lecturerQuestionModel);
+				answersTab.init(tabs, lecturerQuestionModel);
 			},
 			
 			startup: function() {
