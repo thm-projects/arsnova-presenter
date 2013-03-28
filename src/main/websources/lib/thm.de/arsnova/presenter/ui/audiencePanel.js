@@ -2,53 +2,46 @@ define(
 	[
 		"dojo/on",
 		"dojo/when",
-		"dojo/dom",
 		"dojo/dom-construct",
-		"dojo/dom-class",
 		"dojo/dom-style",
-		"dojo/date/locale",
 		"dijit/registry",
 		"dijit/layout/BorderContainer",
 		"dijit/layout/TabContainer",
 		"dgerhardt/dijit/layout/ContentPane",
-		"dijit/MenuItem",
-		"dgerhardt/common/confirmDialog",
-		"dgerhardt/common/fullscreen",
-		"arsnova-api/feedback",
-		"arsnova-presenter/ui/chart/audienceFeedback"
+		"arsnova-presenter/ui/audiencePaneFeedbackTab",
+		"arsnova-presenter/ui/audiencePaneQuestionsTab"
 	],
-	function(on, when, dom, domConstruct, domClass, domStyle, dateLocale, registry, BorderContainer, TabContainer, ContentPane, MenuItem, confirmDialog, fullScreen, feedbackModel, audienceFeedbackChart) {
+	function(on, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, feedbackTab, questionsTab) {
 		"use strict";
 		
 		var
 			MIN_WIDTH = 470,
 			self = null,
+			sessionModel = null,
 			audienceQuestionModel = null,
-			
-			/* DOM */
-			questionListNode = null,
+			feedbackModel = null,
 			
 			/* Dijit */
 			audienceContainer = null,
 			audienceHeaderPane = null,
-			audienceTabs = null,
-			audienceFeedbackPane = null,
-			audienceQuestionsPane = null
+			audienceTabs = null
 		;
 		
-		return {
-			init: function(audienceQuestion) {
-				console.log("-- UI: audiencePanel.init --");
+		self = {
+			/* public "methods" */
+			init: function(_sessionModel, _audienceQuestionModel, _feedbackModel) {
+				console.log("-- UI: audiencePane.init --");
 				
-				self = this;
-				audienceQuestionModel = audienceQuestion;
+				sessionModel = _sessionModel;
+				audienceQuestionModel = _audienceQuestionModel;
+				feedbackModel = _feedbackModel;
+				
 				audienceContainer = new BorderContainer({
 					id: "audienceContainer",
 					region: "right",
 					splitter: true,
 					minSize: MIN_WIDTH
 				});
-				
 				audienceHeaderPane = new ContentPane({
 					region: "top",
 					content: domConstruct.create("header", {innerHTML: "Audience"}),
@@ -58,20 +51,13 @@ define(
 					id: "audienceTabs",
 					region: "center"
 				});
-				audienceFeedbackPane = new ContentPane({
-					id: "audienceFeedbackPane",
-					title: "Live Feedback"
-				});
-				audienceQuestionsPane = new ContentPane({
-					id: "audienceQuestionsPane",
-					title: "Questions"
-				});
 				
 				registry.byId("mainContainer").addChild(audienceContainer);
 				audienceContainer.addChild(audienceHeaderPane);
 				audienceContainer.addChild(audienceTabs);
-				audienceTabs.addChild(audienceFeedbackPane);
-				audienceTabs.addChild(audienceQuestionsPane);
+				
+				feedbackTab.init(audienceTabs, feedbackModel);
+				questionsTab.init(audienceTabs, audienceQuestionModel);
 				
 				var onWindowResize = function() {
 					var maxSize = document.body.clientWidth - MIN_WIDTH;
@@ -87,141 +73,21 @@ define(
 			},
 			
 			startup: function() {
-				var feedbackPaneContentNode = domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, audienceFeedbackPane.domNode);
-				questionListNode = domConstruct.create("div", {id: "audienceQuestionList"}, audienceQuestionsPane.domNode);
+				feedbackTab.startup();
+				questionsTab.startup();
 				
-				audienceFeedbackChart.init(feedbackPaneContentNode);
-				
-				feedbackModel.onReceive(function(feedback) {
-					var feedback0 = feedback[0];
-					feedback[0] = feedback[1];
-					feedback[1] = feedback0;
-					self.updateFeedbackPanel(feedback);
-				});
-				
-				audienceQuestionModel.onQuestionAvailable(function(questionId) {
-					var question = audienceQuestionModel.get(questionId);
-					question.then(function(question) {
-						self.prependQuestionToList(question);
-					});
-				});
-				
-				/* add full screen menu items */
-				var fullScreenMenu = registry.byId("fullScreenMenu");
-				fullScreenMenu.addChild(new MenuItem({
-					label: "Audience feedback",
-					onClick: this.toggleFeedbackPresentMode
-				}));
-				fullScreenMenu.addChild(new MenuItem({
-					label: "Audience questions",
-					onClick: this.toggleQuestionsPresentMode
-				}));
-				
-				/* handle events fired when full screen mode is canceled */
-				fullScreen.onChange(function(event, isActive) {
-					if (!isActive) {
-						domConstruct.place(dom.byId("audienceFeedbackPaneContent"), audienceFeedbackPane.domNode);
-						domConstruct.destroy("audienceFeedbackTitle");
-
-						domConstruct.place(dom.byId("audienceQuestionList"), audienceQuestionsPane.domNode);
-						domConstruct.destroy("audienceQuestionsTitle");
-						
-						audienceContainer.resize();
-					}
-				});
-			},
-			
-			prependQuestionToList: function(question) {
-				var questionNode = domConstruct.create("div", {"class": "question"}, questionListNode, "first");
-				var subjectNode = domConstruct.create("p", {"class": "subject"}, questionNode);
-				subjectNode.appendChild(document.createTextNode(question.subject));
-				var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, questionNode);
-				domConstruct.create("div", {"class": "clearFix"}, questionNode);
-				var messageNode = domConstruct.create("p", {"class": "message"}, questionNode);
-				if (!question.read) {
-					domClass.add(questionNode, "unread");
-				}
-				if (null != question.text) {
-					domClass.add(questionNode, "loaded");
-					messageNode.appendChild(document.createTextNode(question.text));
-				}
-				var date = new Date(question.timestamp);
-				var dateTime = dateLocale.format(date, {selector: "date", formatLength: "long"})
-					+ " " + dateLocale.format(date, {selector: "time", formatLength: "short"})
-				;
-				domConstruct.create("footer", {"class": "creationTime", innerHTML: dateTime}, questionNode);
-				on(questionNode, "click", function(event) {
-					self.openQuestion(question._id, questionNode, messageNode);
-				});
-				on(deleteNode, "click", function() {
-					confirmDialog.confirm("Delete question", "Do you really want to delete this question?", {
-						"Delete": function() {
-							audienceQuestionModel.remove(question._id);
-							domConstruct.destroy(questionNode);
-						},
-						"Cancel": null
-					});
-				});
-			},
-			
-			updateQuestionsPanel: function(questions) {
-				domConstruct.empty(questionListNode);
-				when(questions, function(questions) {
-					questions.forEach(function(question) {
-						self.prependQuestionToList(question);
-					});
-				});
-			},
-			
-			updateFeedbackPanel: function(feedback) {
-				audienceFeedbackChart.update(feedback);
-			},
-			
-			openQuestion: function(questionId, questionNode, messageNode) {
-				if (domClass.contains(questionNode, "opened")) {
-					domClass.remove(questionNode, "opened");
-					
-					return;
-				}
-				if (domClass.contains(questionNode, "loaded")) {
-					domClass.add(questionNode, "opened");
-					
-					return;
-				}
-				var question = audienceQuestionModel.get(questionId);
-				when(question, function(question) {
-					domClass.remove(questionNode, "unread");
-					domClass.add(questionNode, "opened");
-					domClass.add(questionNode, "loaded");
-					messageNode.appendChild(document.createTextNode(question.text));
-				});
-			},
-			
-			toggleFeedbackPresentMode: function() {
-				if (fullScreen.isActive()) {
-					/* dom node rearrangement takes place in fullscreenchange event handler */
-					fullScreen.exit();
-				} else {
-					fullScreen.request(dom.byId("fullScreenContainer"));
-					domConstruct.create("header", {id: "audienceFeedbackTitle", innerHTML: "Audience feedback"}, "fullScreenHeader");
-					domConstruct.place(dom.byId("audienceFeedbackPaneContent"), "fullScreenContent");
-					
-					registry.byId("fullScreenContainer").resize();
-				}
-			},
-			
-			toggleQuestionsPresentMode: function() {
-				if (fullScreen.isActive()) {
-					/* dom node rearrangement takes place in fullscreenchange event handler */
-					fullScreen.exit();
-				} else {
-					fullScreen.request(dom.byId("fullScreenContainer"));
-					domConstruct.create("header", {id: "audienceQuestionsTitle", innerHTML: "Audience questions"}, "fullScreenHeader");
-					domConstruct.place(questionListNode, "fullScreenContent");
-					
-					registry.byId("fullScreenContainer").resize();
-				}
+				sessionModel.watchKey(onSessionKeyChange);
 			}
 		};
+
+		/* private "methods" */
+		var onSessionKeyChange = function(name, oldValue, value) {
+			var questions = audienceQuestionModel.getAll();
+			when(questions, function(questions) {
+				questionsTab.update(questions);
+			});
+		};
+		
+		return self;
 	}
 );

@@ -12,6 +12,7 @@ define(
 		/* based on Claro charting theme */
 	
 		var
+			self = null,
 			g = Theme.generateGradient,
 			defaultFill = {type: "linear", space: "shape", x1: 0, y1: 0, x2: 0, y2: 100},
 			axisAndLabelColor = "#333",
@@ -22,7 +23,7 @@ define(
 			}
 		;
 		
-		themes.Arsnova = new Theme({
+		self = new Theme({
 			chart: {
 				fill: {
 					type: "linear",
@@ -89,8 +90,9 @@ define(
 				{fill: "#ad7b2a", stroke: {color: "#fff"}}
 			]
 		});
-		
-		themes.Arsnova.applyColors = function(values, theme, pale, highlightValues) {
+
+		/* public "methods" */
+		self.applyColors = function(values, theme, pale, highlightValues) {
 			var colors = fillColors[theme];
 			var fills = pale
 				? gradGen.generateFills(colors, defaultFill, 80, 65)
@@ -112,6 +114,8 @@ define(
 			return result;
 		};
 		
-		return themes.Arsnova;
+		themes.Arsnova = self;
+		
+		return self;
 	}
 );

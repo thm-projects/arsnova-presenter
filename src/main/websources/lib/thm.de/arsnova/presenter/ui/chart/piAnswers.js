@@ -15,6 +15,8 @@ define(
 		"use strict";
 		
 		var
+			self = null,
+			
 			/* DOM */
 			answersChartNode = null,
 			
@@ -22,7 +24,8 @@ define(
 			answersChart = null
 		;
 		
-		return {
+		self = {
+			/* public "methods" */
 			init: function(parentNode) {
 				console.log("-- Chart: piAnswers.init --");
 
@@ -119,5 +122,7 @@ define(
 				answersChart.render();
 			}
 		};
+		
+		return self;
 	}
 );

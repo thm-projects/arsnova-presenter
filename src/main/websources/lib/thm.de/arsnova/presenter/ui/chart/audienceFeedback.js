@@ -13,6 +13,8 @@ define(
 		"use strict";
 		
 		var
+			self = null,
+			
 			/* DOM */
 			feedbackChartNode = null,
 			
@@ -20,7 +22,8 @@ define(
 			feedbackChart = null
 		;
 		
-		return {
+		self = {
+			/* public "methods" */
 			init: function(parentNode) {
 				console.log("-- Chart: audienceFeedback.init --");
 
@@ -86,5 +89,7 @@ define(
 				feedbackChart.render();
 			}
 		};
+		
+		return self;
 	}
 );

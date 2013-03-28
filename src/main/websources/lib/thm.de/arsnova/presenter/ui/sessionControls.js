@@ -37,11 +37,11 @@ define(
 			mobileDialog = null
 		;
 		
-		return {
+		self = {
+			/* public "methods" */
 			init: function(session) {
 				console.log("-- UI: sessionControls.init --");
 				
-				self = this;
 				sessionModel = session;
 
 				/* Session info */
@@ -240,5 +240,7 @@ define(
 				return tag.href;
 			}
 		};
+		
+		return self;
 	}
 );

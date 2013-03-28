@@ -23,6 +23,8 @@ define(
 		"use strict";
 		
 		var
+			self = null,
+			
 			/* Dijit */
 			appContainer = null,
 			mainContainer = null,
@@ -31,7 +33,8 @@ define(
 			fullScreenContainer = null
 		;
 		
-		return {
+		self = {
+			/* public "methods" */
 			init: function() {
 				console.log("-- UI: main.init --");
 				
@@ -219,5 +222,7 @@ define(
 				fullScreen.toggle();
 			}
 		};
+		
+		return self;
 	}
 );

@@ -12,10 +12,12 @@ define(
 		"use strict";
 		
 		var
+			self = null,
 			authService = null
 		;
 		
-		return {
+		self = {
+			/* public "methods" */
 			init: function(auth) {
 				console.log("-- UI: authControls.init --");
 				
@@ -62,5 +64,7 @@ define(
 				loginDialog.show();
 			}
 		};
+		
+		return self;
 	}
 );
