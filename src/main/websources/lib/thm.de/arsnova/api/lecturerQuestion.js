@@ -247,7 +247,7 @@ define(
 				
 				return when(this.get(), function(question) {
 					if ("freetext" == question.questionType) {
-						if (ftAnswerMemory.data.length > 0) {
+						if (!refresh && ftAnswerMemory.data.length > 0) {
 							return ftAnswerMemory.query();
 						}
 						
@@ -304,6 +304,10 @@ define(
 					question.piRound = 2;
 					return self.update(question);
 				});
+			},
+			
+			onAnswersAvailable: function(callback) {
+				socket.on("answersToLecQuestionAvail", callback);
 			}
 		};
 		
