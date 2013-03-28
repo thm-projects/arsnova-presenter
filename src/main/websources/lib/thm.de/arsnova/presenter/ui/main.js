@@ -90,7 +90,7 @@ define(
 				/* Menu items are added in the specific UI modules */
 				new ComboButton({
 					label: "Full screen",
-					onClick: this.toggleFullScreenMode,
+					onClick: self.toggleFullScreenMode,
 					dropDown: fullScreenMenu
 				}, domConstruct.create("button", {id: "fullScreenButton", type: "button"}, exitPanelNode)).startup();
 				

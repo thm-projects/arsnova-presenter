@@ -47,7 +47,7 @@ define(
 				var fullScreenMenu = registry.byId("fullScreenMenu");
 				fullScreenMenu.addChild(new MenuItem({
 					label: "Audience feedback",
-					onClick: this.toggleFullScreenMode
+					onClick: self.toggleFullScreenMode
 				}));
 				
 				/* handle events fired when full screen mode is canceled */

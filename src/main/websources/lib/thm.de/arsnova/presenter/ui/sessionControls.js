@@ -89,8 +89,8 @@ define(
 //				}, "newSessionButton");
 //				registry.byId("createSessionButton").onClick = this.submitCreateSessionForm;
 
-				this.updateSelect(model.getOwned());
-				model.watchKey(this.onKeyChange);
+				self.updateSelect(model.getOwned());
+				model.watchKey(self.onKeyChange);
 				model.watchActiveUserCount(function(name, oldValue, value) {
 					activeUserCountNode.innerHTML = value;
 				});
