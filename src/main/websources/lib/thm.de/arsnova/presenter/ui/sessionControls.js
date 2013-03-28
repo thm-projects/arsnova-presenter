@@ -26,9 +26,11 @@ define(
 			
 			/* DOM */
 			sessionInfoNode = null,
+			sessionTitleNode = null,
 			sessionPanelNode = null,
 			sessionKeyNode = null,
 			sessionQrNode = null,
+			activeUserCountNode = null,
 			
 			/* Dijit */
 			sessionSelect = null,
@@ -44,8 +46,8 @@ define(
 
 				/* Session info */
 				sessionInfoNode = domConstruct.create("div", {id: "sessionInfo"}, "headerPane");
-				domConstruct.create("header", {id: "sessionTitle", innerHTML: "ARSnova Presenter"}, sessionInfoNode);
-				domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, sessionInfoNode);
+				sessionTitleNode = domConstruct.create("header", {id: "sessionTitle", innerHTML: "ARSnova Presenter"}, sessionInfoNode);
+				activeUserCountNode = domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, sessionInfoNode);
 				/* Session controls */
 				sessionPanelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
 				(sessionSelect = new FilteringSelect({
@@ -90,7 +92,7 @@ define(
 				this.updateSessionSelect(sessionModel.getOwned());
 				sessionModel.watchKey(this.onKeyChange);
 				sessionModel.watchActiveUserCount(function(name, oldValue, value) {
-					dom.byId("activeUserCount").innerHTML = value;
+					activeUserCountNode.innerHTML = value;
 				});
 			},
 			
@@ -149,7 +151,8 @@ define(
 				sessionSelect.set("value", value);
 				when(sessionModel.getCurrent(), function(session) {
 					document.title = session.shortName + " - ARSnova Presenter";
-					dom.byId("sessionTitle").innerHTML = session.name;
+					domConstruct.empty(sessionTitleNode);
+					sessionTitleNode.appendChild(document.createTextNode(session.name));
 					var keyword = session.keyword.substr(0, 2)
 						+ " " + session.keyword.substr(2, 2)
 						+ " " + session.keyword.substr(4, 2)

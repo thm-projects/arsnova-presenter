@@ -34,7 +34,8 @@ define(
 				if (version.commitId) {
 					versionString += " [" + version.commitId + "]";
 				}
-				domConstruct.create("div", {id: "loginFooter", innerHTML: "ARSnova Presenter " + versionString}, document.body);
+				var footerNode = domConstruct.create("div", {id: "loginFooter"}, document.body);
+				footerNode.appendChild(document.createTextNode("ARSnova Presenter " + versionString));
 				
 				var loginDialogContent = domConstruct.create("div");
 				domConstruct.create("div", {innerHTML: "Please choose a service to login with:"}, loginDialogContent);

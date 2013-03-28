@@ -39,6 +39,14 @@ define(
 			fullScreenControlsNode = null,
 			questionListNode = null,
 			freeTextAnswersNode = null,
+			piAnswersMainPaneContentNode = null,
+			controlPaneContentNode = null,
+			titlePaneContentNode = null,
+			piNavigationStatusNode = null,
+			piAnswersQuestionSubjectNode = null,
+			piAnswersQuestionTitleSeperatorNode = null,
+			piAnswersQuestionTextNode = null,
+			piAnswersCountNode = null,
 			
 			/* Dijit */
 			piContainer = null,
@@ -136,11 +144,11 @@ define(
 			
 			startup: function() {
 				questionListNode = domConstruct.create("div", {id: "piQuestionList"}, piQuestionsPane.domNode);
-				var piAnswersMainPaneContentNode = domConstruct.create("div", {id: "piAnswersMainPaneContent"}, piAnswersMainPane.domNode);
+				piAnswersMainPaneContentNode = domConstruct.create("div", {id: "piAnswersMainPaneContent"}, piAnswersMainPane.domNode);
 				freeTextAnswersNode = domConstruct.create("div", {id: "piFreeTextAnswers"}, piAnswersMainPaneContentNode);
 				domStyle.set(freeTextAnswersNode, "display", "none");
 				
-				var controlPaneContentNode = domConstruct.create("div", {id: "piAnswersControlPaneContent"}, piAnswersControlPane.domNode);
+				controlPaneContentNode = domConstruct.create("div", {id: "piAnswersControlPaneContent"}, piAnswersControlPane.domNode);
 				var answersNav = domConstruct.create("div", {id: "piAnswersNavigation"}, controlPaneContentNode);
 				var answersSettings = domConstruct.create("div", {id: "piAnswersSettings"}, controlPaneContentNode);
 				
@@ -162,7 +170,7 @@ define(
 						lecturerQuestionModel.prev();
 					}
 				}).placeAt(answersNav).startup();
-				domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
+				piNavigationStatusNode = domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
 				new Button({
 					id: "nextPiQuestionButton",
 					label: "Next question",
@@ -251,13 +259,13 @@ define(
 				});
 				unlockButton.placeAt(answersSettings).startup();
 
-				var titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, piAnswersTitlePane.domNode);
+				titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, piAnswersTitlePane.domNode);
 				var questionNode = domConstruct.create("header", {id: "piAnswersQuestion"}, titlePaneContentNode);
-				domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, questionNode);
-				domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, questionNode);
-				domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, questionNode);
+				piAnswersQuestionSubjectNode = domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, questionNode);
+				piAnswersQuestionTitleSeperatorNode = domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, questionNode);
+				piAnswersQuestionTextNode = domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, questionNode);
 
-				domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, titlePaneContentNode);
+				piAnswersCountNode = domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, titlePaneContentNode);
 				
 				lecturerQuestionModel.watchId(this.onLecturerQuestionIdChange);
 				
@@ -293,11 +301,11 @@ define(
 				/* handle events fired when full screen mode is canceled */
 				fullScreen.onChange(function(event, isActive) {
 					if (!isActive) {
-						domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "none");
-						domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "none");
-						domConstruct.place(dom.byId("piAnswersControlPaneContent"), piAnswersControlPane.domNode);
-						domConstruct.place(dom.byId("piAnswersTitlePaneContent"), piAnswersTitlePane.domNode);
-						domConstruct.place(dom.byId("piAnswersMainPaneContent"), piAnswersMainPane.domNode);
+						domStyle.set(piAnswersQuestionSubjectNode, "display", "none");
+						domStyle.set(piAnswersQuestionTitleSeperatorNode, "display", "none");
+						domConstruct.place(controlPaneContentNode, piAnswersControlPane.domNode);
+						domConstruct.place(titlePaneContentNode, piAnswersTitlePane.domNode);
+						domConstruct.place(piAnswersMainPaneContentNode, piAnswersMainPane.domNode);
 						
 						for (var i = 0; i < fsControlsToggleHandlers.length; i++) {
 							fsControlsToggleHandlers[i].remove();
@@ -311,7 +319,7 @@ define(
 			},
 			
 			updateQuestionsPanel: function(questions) {
-				questionListNode.innerHTML = "";
+				domConstruct.empty(questionListNode);
 				
 				if (null == questions) {
 					return;
@@ -329,9 +337,11 @@ define(
 					
 					for (var category in categories) {
 						var categoryNode = domConstruct.create("div", {"class": "questionCategory"}, questionListNode);
-						domConstruct.create("header", {innerHTML: category}, categoryNode);
+						var categoryHeaderNode = domConstruct.create("header", null, categoryNode);
+						categoryHeaderNode.appendChild(document.createTextNode(category));
 						categories[category].forEach(function(question) {
-							var questionNode = domConstruct.create("p", {"class": "question", innerHTML: question.text}, categoryNode);
+							var questionNode = domConstruct.create("p", {"class": "question"}, categoryNode);
+							questionNode.appendChild(document.createTextNode(question.text));
 							on(questionNode, "click", function(event) {
 								lecturerQuestionModel.setId(question._id);
 								piTabs.selectChild(piAnswersContainer);
@@ -345,9 +355,9 @@ define(
 				var labels = [];
 				
 				if (null == question) {
-					dom.byId("piNavigationStatus").innerHTML = "0/0";
-					dom.byId("piAnswersQuestionSubject").innerHTML = "Question subject";
-					dom.byId("piAnswersQuestionText").innerHTML = "Question text";
+					piNavigationStatusNode.innerHTML = "0/0";
+					piAnswersQuestionSubjectNode.innerHTML = "Question subject";
+					piAnswersQuestionTextNode.innerHTML = "Question text";
 					piContainer.resize();
 					piAnswersChart.update([], []);
 					domStyle.set(piRoundButton, "display", "none");
@@ -355,9 +365,11 @@ define(
 					return;
 				}
 				
-				dom.byId("piNavigationStatus").innerHTML = (lecturerQuestionModel.getPosition() + 1) + "/" + lecturerQuestionModel.getCount();
-				dom.byId("piAnswersQuestionSubject").innerHTML = question.subject;
-				dom.byId("piAnswersQuestionText").innerHTML = question.text;
+				piNavigationStatusNode.innerHTML = (lecturerQuestionModel.getPosition() + 1) + "/" + lecturerQuestionModel.getCount();
+				domConstruct.empty(piAnswersQuestionSubjectNode);
+				piAnswersQuestionSubjectNode.appendChild(document.createTextNode(question.subject));
+				domConstruct.empty(piAnswersQuestionTextNode);
+				piAnswersQuestionTextNode.appendChild(document.createTextNode(question.text));
 				piContainer.resize();
 				registry.byId("fullScreenContainer").resize();
 				
@@ -415,10 +427,12 @@ define(
 					}
 					
 					var answerNode = domConstruct.create("div", {"class": "answer"});
-					domConstruct.create("p", {"class": "subject", innerHTML: answer.answerSubject}, answerNode);
+					var subjectNode = domConstruct.create("p", {"class": "subject"}, answerNode);
+					subjectNode.appendChild(document.createTextNode(answer.answerSubject));
 					var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, answerNode);
 					domConstruct.create("div", {"class": "clearFix"}, answerNode);
-					domConstruct.create("p", {"class": "message", innerHTML: answer.answerText}, answerNode);
+					var messageNode = domConstruct.create("p", {"class": "message"}, answerNode);
+					messageNode.appendChild(document.createTextNode(answer.answerText));
 					on(answerNode, "click", function() {
 						domClass.toggle(this, "opened");
 					});
@@ -434,7 +448,7 @@ define(
 					domConstruct.place(answerNode, freeTextAnswersNode);
 				});
 				
-				dom.byId("piAnswersCount").innerHTML = totalAnswerCount;
+				piAnswersCountNode.innerHTML = totalAnswerCount;
 			},
 			
 			updateAnswersPaneChart: function(rounds) {
@@ -478,7 +492,7 @@ define(
 				}
 				piAnswersChart.update(labels, correctIndexes, valueSeries);
 				
-				dom.byId("piAnswersCount").innerHTML = totalAnswerCount;
+				piAnswersCountNode.innerHTML = totalAnswerCount;
 			},
 			
 			togglePresentMode: function() {
@@ -487,11 +501,11 @@ define(
 					fullScreen.exit();
 				} else {
 					fullScreen.request(dom.byId("fullScreenContainer"));
-					domStyle.set(dom.byId("piAnswersQuestionSubject"), "display", "inline");
-					domStyle.set(dom.byId("piAnswersQuestionTitleSeperator"), "display", "inline");
-					domConstruct.place(dom.byId("piAnswersControlPaneContent"), fullScreenControlsNode);
-					domConstruct.place(dom.byId("piAnswersTitlePaneContent"), "fullScreenHeader");
-					domConstruct.place(dom.byId("piAnswersMainPaneContent"), "fullScreenContent");
+					domStyle.set(piAnswersQuestionSubjectNode, "display", "inline");
+					domStyle.set(piAnswersQuestionTitleSeperatorNode, "display", "inline");
+					domConstruct.place(controlPaneContentNode, fullScreenControlsNode);
+					domConstruct.place(titlePaneContentNode, "fullScreenHeader");
+					domConstruct.place(piAnswersMainPaneContentNode, "fullScreenContent");
 					
 					registry.byId("fullScreenContainer").resize();
 					

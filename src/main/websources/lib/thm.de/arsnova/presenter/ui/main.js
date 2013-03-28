@@ -124,7 +124,8 @@ define(
 				}
 				domConstruct.create("span", {id: "productLogo", title: "ARSnova"}, footerPane.domNode);
 				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "Presenter"}, footerPane.domNode);
-				domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel", innerHTML: "Version: " + versionString}, footerPane.domNode);
+				var versionDetailsNode = domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel"}, footerPane.domNode);
+				versionDetailsNode.appendChild(document.createTextNode("Version: " + versionString));
 				var timeNode = domConstruct.create("div", {id: "footerTime"}, footerPane.domNode);
 				var timeTooltip = new Tooltip({
 					connectId: [timeNode],

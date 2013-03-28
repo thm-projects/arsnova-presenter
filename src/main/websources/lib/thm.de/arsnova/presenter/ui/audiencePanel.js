@@ -133,7 +133,8 @@ define(
 			
 			prependQuestionToList: function(question) {
 				var questionNode = domConstruct.create("div", {"class": "question"}, questionListNode, "first");
-				domConstruct.create("p", {"class": "subject", innerHTML: question.subject}, questionNode);
+				var subjectNode = domConstruct.create("p", {"class": "subject"}, questionNode);
+				subjectNode.appendChild(document.createTextNode(question.subject));
 				var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, questionNode);
 				domConstruct.create("div", {"class": "clearFix"}, questionNode);
 				var messageNode = domConstruct.create("p", {"class": "message"}, questionNode);
@@ -142,7 +143,7 @@ define(
 				}
 				if (null != question.text) {
 					domClass.add(questionNode, "loaded");
-					messageNode.innerHTML = question.text;
+					messageNode.appendChild(document.createTextNode(question.text));
 				}
 				var date = new Date(question.timestamp);
 				var dateTime = dateLocale.format(date, {selector: "date", formatLength: "long"})
@@ -164,7 +165,7 @@ define(
 			},
 			
 			updateQuestionsPanel: function(questions) {
-				questionListNode.innerHTML = "";
+				domConstruct.empty(questionListNode);
 				when(questions, function(questions) {
 					questions.forEach(function(question) {
 						self.prependQuestionToList(question);
@@ -192,7 +193,7 @@ define(
 					domClass.remove(questionNode, "unread");
 					domClass.add(questionNode, "opened");
 					domClass.add(questionNode, "loaded");
-					messageNode.innerHTML = question.text;
+					messageNode.appendChild(document.createTextNode(question.text));
 				});
 			},
 			
