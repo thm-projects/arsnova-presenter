@@ -190,3 +190,13 @@ body {
 	color: #ccc;
 	font-size: 0.7em;
 }
+
+#remainingTime {
+	font-size: 6em;
+	font-weight: bold;
+	text-shadow: 0.05em 0.05em #ccc;
+}
+
+#remainingTime.highlight {
+	color: #c00;
+}

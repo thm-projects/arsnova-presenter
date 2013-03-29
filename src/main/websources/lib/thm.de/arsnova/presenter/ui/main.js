@@ -17,9 +17,10 @@ define(
 		"dijit/form/Select",
 		"dijit/Tooltip",
 		"dgerhardt/common/fullscreen",
+		"arsnova-presenter/ui/timer",
 		"version"
 	],
-	function(on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullScreen, version) {
+	function(on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullScreen, timer, version) {
 		"use strict";
 		
 		var
@@ -139,6 +140,9 @@ define(
 					timeNode.innerHTML = dateLocale.format(date, {selector: "time", formatLength: "short"});
 					timeTooltip.set("label", dateLocale.format(date, {selector: "date", formatLength: "short"}));
 				}, 500);
+				on(timeNode, "click", function() {
+					timer.showSettings();
+				});
 				
 				/* prevent window scrolling (needed for IE) */
 				on(window, "scroll", function(event) {

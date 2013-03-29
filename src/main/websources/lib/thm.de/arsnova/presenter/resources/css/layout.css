@@ -238,6 +238,7 @@ html, body {
 	left: 320px;
 	right: 320px;
 	text-align: center;
+	cursor: pointer;
 }
 
 #mobileDialog .dijitDialogPaneContent {
@@ -313,4 +314,26 @@ html, body {
 	z-index: 950; /* same as Dijit dialog's z-index */
 	width: 100%;
 	text-align: center;
+}
+
+#timerUnderlay {
+	display: table;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99;
+	background: rgba(255, 255, 255, 0.5);
+	cursor: pointer;
+}
+
+#timerUnderlay > * {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+#remainingTime {
+	z-index: 100,
 }
