@@ -18,17 +18,20 @@ define(
 		var
 			self = null,
 			model = null,
+			newQuestionsCount = 0,
 			
 			/* DOM */
 			questionListNode = null,
 			
 			/* Dijit */
+			tabContainer = null,
 			pane = null
 		;
 		
 		self = {
 			/* public "methods" */
-			init: function(tabContainer, audienceQuestionModel) {
+			init: function(_tabContainer, audienceQuestionModel) {
+				tabContainer = _tabContainer;
 				model = audienceQuestionModel;
 				
 				pane = new ContentPane({
@@ -45,7 +48,22 @@ define(
 					var question = model.get(questionId);
 					question.then(function(question) {
 						self.prependQuestionToList(question);
+						if (!pane.get("selected")) {
+							newQuestionsCount++;
+							var label = "Questions (+" + newQuestionsCount + ")";
+							pane.set("title", label);
+							pane.controlButton.set("label", label);
+						}
 					});
+				});
+				
+				/* reset new questions count when this tab is activated */
+				tabContainer.watch("selectedChildWidget", function(name, oldValue, value) {
+					if (value == pane) {
+						newQuestionsCount = 0;
+						pane.set("title", "Questions");
+						pane.controlButton.set("label", "Questions");
+					}
 				});
 				
 				/* add full screen menu items */
