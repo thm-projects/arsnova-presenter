@@ -22,7 +22,9 @@ body {
 	cursor: pointer;
 }
 
-#activeUserCount, #sessionKey, #piAnswersCount {
+#activeUserCount, #sessionKey {
+	display: inline-block;
+	vertical-align: middle;
 	min-width: 1em;
 	height: 1em;
 	background-color: white;
@@ -31,6 +33,47 @@ body {
 	border-radius: .8em;
 	font-size: 1.1em;
 	line-height: 1.1em;
+	text-align: center;
+}
+
+#piAnswersCount > .answerCount {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 1.4em;
+	min-width: 1.4em;
+	color: white;
+	background-color: #333;
+	padding: .15em;
+	border-radius: .85em;
+	font-size: 1.1em;
+	font-weight: bold;
+	text-align: center;
+}
+
+#piAnswersCount .piRound {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 0.3em;
+	line-height: 1.4em;
+	padding: 0.2em 0.3em;
+	font-size: 1em;
+	color: white;
+	background-color: #333;
+	border-radius: .4em;
+}
+
+#piAnswersCount .piRound .answerCount {
+	display: inline-block;
+	margin-left: 0.4em;
+	min-width: 1.2em;
+	line-height: 1.2em;
+	padding: .1em;
+	font-size: 1em;
+	font-weight: bold;
+	border-radius: .7em;
+	vertical-align: middle;
+	color: #333;
+	background: white;
 	text-align: center;
 }
 

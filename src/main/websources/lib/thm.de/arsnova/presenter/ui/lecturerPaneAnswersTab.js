@@ -146,17 +146,13 @@ define(
 				showAnswersMenu.addChild(showPiRoundMenuItem[1] = new CheckedMenuItem({
 					label: "Before discussion (1st)",
 					onClick: function() {
-						if (showAnswers) {
-							self.updateAnswers();
-						}
+						self.updateAnswers();
 					}
 				}));
 				showAnswersMenu.addChild(showPiRoundMenuItem[2] = new CheckedMenuItem({
 					label: "After discussion (2nd)",
 					onClick: function() {
-						if (showAnswers) {
-							self.updateAnswers();
-						}
+						self.updateAnswers();
 					}
 				}));
 				new ComboButton({
@@ -318,6 +314,9 @@ define(
 			},
 			
 			updateAnswers: function() {
+				/* hide answer count until answers have been loaded */
+				domStyle.set(answerCountNode, "visibility", "hidden");
+				
 				when(model.get(), function(question) {
 					if ("freetext" == question.questionType) {
 						when(model.getAnswers(), function(answers) {
@@ -332,7 +331,7 @@ define(
 							rounds["PI round " + i] = model.getAnswers(i);
 						}
 						/* update UI when data for answer rounds are ready */
-						promiseAll(rounds).then(self.updateChart);
+						promiseAll(rounds).then(self.updateAnswerStatistics);
 					}
 				});
 			},
@@ -368,13 +367,16 @@ define(
 					});
 					domConstruct.place(answerNode, freeTextAnswersNode);
 				});
-				
-				answerCountNode.innerHTML = totalAnswerCount;
+
+				domConstruct.empty(answerCountNode);
+				var countNode = domConstruct.create("span", {"class": "answerCount"}, answerCountNode);
+				countNode.appendChild(document.createTextNode(totalAnswerCount));
+				domStyle.set(answerCountNode, "visibility", "visible");
 			},
 			
-			updateChart: function(rounds) {
+			updateAnswerStatistics: function(rounds) {
 				var question = model.get();
-				var totalAnswerCount = 0;
+				var answerCountPerRound = [];
 				var possibleAnswersCount = 0;
 				var valueSeries = {};
 				var values = [];
@@ -393,11 +395,22 @@ define(
 					possibleAnswersCount++;
 				});
 
+				domConstruct.empty(answerCountNode);
+				/* sorting is needed since the order of the object's properties is not determined */
+				var roundNames = [];
 				for (var round in rounds) {
+					roundNames.push(round);
+				}
+				roundNames.sort();
+				console.debug(roundNames);
+				for (var i = 0; i < roundNames.length; i++) {
+					console.debug(i);
+					var round = roundNames[i];
 					var answers = rounds[round];
 					var values = [];
+					answerCountPerRound[round] = 0;
 					answers.forEach(function(answer) {
-						totalAnswerCount += answer.answerCount;
+						answerCountPerRound[round] += answer.answerCount;
 						
 						if (!showAnswers) {
 							return;
@@ -410,10 +423,15 @@ define(
 					}
 					
 					valueSeries[round] = values;
+					
+					var piRoundNode = domConstruct.create("span", {"class": "piRound"}, answerCountNode);
+					var roundString = "PI round 2" == round ? "2nd" : ("PI round 1" == round ? "1st" : "");
+					piRoundNode.appendChild(document.createTextNode(roundString));
+					var countNode = domConstruct.create("span", {"class": "answerCount"}, piRoundNode);
+					countNode.appendChild(document.createTextNode(answerCountPerRound[round]));
+					domStyle.set(answerCountNode, "visibility", "visible");
 				}
 				piAnswersChart.update(labels, correctIndexes, valueSeries);
-				
-				answerCountNode.innerHTML = totalAnswerCount;
 			},
 			
 			toggleFullScreenMode: function() {

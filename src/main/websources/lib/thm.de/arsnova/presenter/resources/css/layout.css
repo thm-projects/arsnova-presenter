@@ -222,7 +222,7 @@ html, body {
 	float: right;
 }
 
-#sessionKey, #piAnswersCount {
+#sessionKey {
 	display: inline-block;
 	line-height: 34px;
 	vertical-align: middle;
