@@ -395,16 +395,15 @@ define(
 					possibleAnswersCount++;
 				});
 
-				domConstruct.empty(answerCountNode);
 				/* sorting is needed since the order of the object's properties is not determined */
 				var roundNames = [];
 				for (var round in rounds) {
 					roundNames.push(round);
 				}
 				roundNames.sort();
-				console.debug(roundNames);
+
+				domConstruct.empty(answerCountNode);
 				for (var i = 0; i < roundNames.length; i++) {
-					console.debug(i);
 					var round = roundNames[i];
 					var answers = rounds[round];
 					var values = [];
@@ -424,10 +423,16 @@ define(
 					
 					valueSeries[round] = values;
 					
-					var piRoundNode = domConstruct.create("span", {"class": "piRound"}, answerCountNode);
-					var roundString = "PI round 2" == round ? "2nd" : ("PI round 1" == round ? "1st" : "");
-					piRoundNode.appendChild(document.createTextNode(roundString));
-					var countNode = domConstruct.create("span", {"class": "answerCount"}, piRoundNode);
+					var countNode = null;
+					/* only display PI round label if PI has been started */
+					if (question.piRound > 1) {
+						var piRoundNode = domConstruct.create("span", {"class": "piRound"}, answerCountNode);
+						var roundString = "PI round 2" == round ? "2nd" : ("PI round 1" == round ? "1st" : "");
+						piRoundNode.appendChild(document.createTextNode(roundString));
+						countNode = domConstruct.create("span", {"class": "answerCount"}, piRoundNode);
+					} else {
+						countNode = domConstruct.create("span", {"class": "answerCount"}, answerCountNode);
+					}
 					countNode.appendChild(document.createTextNode(answerCountPerRound[round]));
 					domStyle.set(answerCountNode, "visibility", "visible");
 				}
