@@ -18,9 +18,10 @@ define(
 		"dijit/Tooltip",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/timer",
+		"arsnova-presenter/ui/infoDialog",
 		"version"
 	],
-	function(on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullScreen, timer, version) {
+	function(on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullScreen, timer, infoDialog, version) {
 		"use strict";
 		
 		var
@@ -126,10 +127,29 @@ define(
 				if (version.commitId) {
 					versionString += " [" + version.commitId + "]";
 				}
-				domConstruct.create("span", {id: "productLogo", title: "ARSnova"}, footerPane.domNode);
-				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "Presenter"}, footerPane.domNode);
+				
+				var productInfoNode = domConstruct.create("span", {id: "productInfo"}, footerPane.domNode);
+				domConstruct.create("span", {id: "productLogo", title: "ARSnova"}, productInfoNode);
+				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "Presenter"}, productInfoNode);
+				var productMenu = new Menu({
+					targetNodeIds: ["productInfo"],
+					leftClickToOpen: true
+				});
+				productMenu.addChild(new MenuItem({
+					label: "About Presenter",
+					onClick: infoDialog.show
+				}));
+				productMenu.addChild(new MenuItem({
+					label: "Website",
+					onClick: function() {
+						window.open("http://blog.mni.thm.de/arsnova/arsnova-blog/", "_blank");
+					}
+				}));
+				productMenu.startup();
+				
 				var versionDetailsNode = domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel"}, footerPane.domNode);
 				versionDetailsNode.appendChild(document.createTextNode("Version: " + versionString));
+				
 				var timeNode = domConstruct.create("div", {id: "footerTime"}, footerPane.domNode);
 				var timeTooltip = new Tooltip({
 					connectId: [timeNode],

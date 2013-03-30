@@ -186,6 +186,18 @@ body {
 	margin-top: -120px;
 }
 
+.productLogo {
+	background: url(../../../../../../images/arsnova.png) no-repeat center center;
+	width: 288px;
+	height: 55px;
+}
+
+.thmLogo {
+	background: url(../../../../../../images/thm.png) no-repeat center center;
+	width: 200px;
+	height: 67px;
+}
+
 #loginFooter {
 	color: #ccc;
 	font-size: 0.7em;
@@ -199,4 +211,24 @@ body {
 
 #remainingTime.highlight {
 	color: #c00;
+}
+
+#infoDialogFooter {
+	padding: 0;
+	border: none;
+	text-align: right;
+}
+
+#infoDialogProductInfoTab table {
+	width: 100%;
+	padding: 0;
+	border-spacing: 0;
+}
+
+#infoDialogProductInfoTab > * {
+	margin-top: 0.5em;
+}
+
+#infoDialogProductInfoTab > :first-child {
+	margin-top: 0;
 }

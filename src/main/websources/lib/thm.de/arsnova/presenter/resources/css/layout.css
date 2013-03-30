@@ -337,3 +337,12 @@ html, body {
 #remainingTime {
 	z-index: 100,
 }
+
+#productInfo {
+	cursor: pointer;
+}
+
+#infoDialogProductInfoTab > .productLogo, #infoDialogProductInfoTab > .thmLogo {
+	margin-left: auto;
+	margin-right: auto;
+}
