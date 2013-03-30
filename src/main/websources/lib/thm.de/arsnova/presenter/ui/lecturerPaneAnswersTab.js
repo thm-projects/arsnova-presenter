@@ -51,7 +51,13 @@ define(
 			controlPane = null,
 			titlePane = null,
 			mainPane = null,
+			prevButton = null,
+			nextButton = null,
+			firstButton = null,
+			lastButton = null,
+			showButton = null,
 			piRoundButton = null,
+			unlockButton = null,
 			showCorrectMenuItem = null,
 			showPiRoundMenuItem = [],
 			unlockQuestionMenuItem = null,
@@ -97,7 +103,7 @@ define(
 				var answersNav = domConstruct.create("div", {id: "piAnswersNavigation"}, controlPaneContentNode);
 				var answersSettings = domConstruct.create("div", {id: "piAnswersSettings"}, controlPaneContentNode);
 				
-				new Button({
+				(firstButton = new Button({
 					id: "firstPiQuestionButton",
 					label: "First question",
 					showLabel: false,
@@ -105,8 +111,8 @@ define(
 					onClick: function() {
 						model.first();
 					}
-				}).placeAt(answersNav).startup();
-				new Button({
+				})).placeAt(answersNav).startup();
+				(prevButton = new Button({
 					id: "prevPiQuestionButton",
 					label: "Previous question",
 					showLabel: false,
@@ -114,9 +120,9 @@ define(
 					onClick: function() {
 						model.prev();
 					}
-				}).placeAt(answersNav).startup();
+				})).placeAt(answersNav).startup();
 				navigationStatusNode = domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
-				new Button({
+				(nextButton = new Button({
 					id: "nextPiQuestionButton",
 					label: "Next question",
 					showLabel: false,
@@ -124,8 +130,8 @@ define(
 					onClick: function() {
 						model.next();
 					}
-				}).placeAt(answersNav).startup();
-				new Button({
+				})).placeAt(answersNav).startup();
+				(lastButton = new Button({
 					id: "lastPiQuestionButton",
 					label: "Last question",
 					showLabel: false,
@@ -133,7 +139,7 @@ define(
 					onClick: function() {
 						model.last();
 					}
-				}).placeAt(answersNav).startup();
+				})).placeAt(answersNav).startup();
 				
 				var showAnswersMenu = new Menu({style: "display: none"});
 				showAnswersMenu.addChild(showCorrectMenuItem = new CheckedMenuItem({
@@ -156,7 +162,7 @@ define(
 						self.updateAnswers();
 					}
 				}));
-				new ComboButton({
+				(showButton = new ComboButton({
 					id: "piAnswersShowButton",
 					label: "Show",
 					dropDown: showAnswersMenu,
@@ -164,7 +170,7 @@ define(
 						showAnswers = !showAnswers;
 						self.updateAnswers();
 					}
-				}).placeAt(answersNav).startup();
+				})).placeAt(answersNav).startup();
 				(piRoundButton = new Button({
 					id: "piRoundButton",
 					onClick: function() {
@@ -193,7 +199,7 @@ define(
 					label: "Correct answer",
 					onClick: updateLocks
 				}));
-				var unlockButton = new DropDownButton({
+				unlockButton = new DropDownButton({
 					id: "piUnlockButton",
 					label: "Release",
 					dropDown: unlockMenu
@@ -204,8 +210,11 @@ define(
 				var questionNode = domConstruct.create("header", {id: "piAnswersQuestion"}, titlePaneContentNode);
 				questionSubjectNode = domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, questionNode);
 				questionTitleSeperatorNode = domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, questionNode);
-				questionTextNode = domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "Question text"}, questionNode);
-				answerCountNode = domConstruct.create("span", {id: "piAnswersCount", innerHTML: "-"}, titlePaneContentNode);
+				questionTextNode = domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "No questions available"}, questionNode);
+				answerCountNode = domConstruct.create("span", {id: "piAnswersCount"}, titlePaneContentNode);
+				domConstruct.create("span", {"class": "answerCount", innerHTML: "-"}, answerCountNode);
+				
+				self.enableControls(false);
 				
 				piAnswersChart.init(mainPaneContentNode);
 				
@@ -275,7 +284,7 @@ define(
 				if (null == question) {
 					navigationStatusNode.innerHTML = "0/0";
 					questionSubjectNode.innerHTML = "Question subject";
-					questionTextNode.innerHTML = "Question text";
+					questionTextNode.innerHTML = "No questions available";
 					answersContainer.resize();
 					piAnswersChart.update([], []);
 					domStyle.set(piRoundButton, "display", "none");
@@ -463,6 +472,19 @@ define(
 			
 			selectTab: function() {
 				tabContainer.selectChild(answersContainer);
+			},
+			
+			enableControls: function(enable) {
+				if (!enable) {
+					domStyle.set(piRoundButton.domNode, "display", "none");
+					domStyle.set(answerCountNode, "visibility", "hidden");
+				}
+				showButton.set("disabled", !enable);
+				unlockButton.set("disabled", !enable);
+				prevButton.set("disabled", !enable);
+				nextButton.set("disabled", !enable);
+				firstButton.set("disabled", !enable);
+				lastButton.set("disabled", !enable);
 			}
 		};
 
@@ -509,6 +531,9 @@ define(
 						showPiRoundMenuItem[question.piRound].set("checked", true);
 					}
 					self.updateAnswers();
+					self.enableControls(true);
+				} else {
+					self.enableControls(false);
 				}
 			});
 		};
