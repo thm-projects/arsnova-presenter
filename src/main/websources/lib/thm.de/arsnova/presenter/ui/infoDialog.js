@@ -29,7 +29,7 @@ define(
 			show: function() {
 				if (null == dialog) {
 					container = new BorderContainer({
-						style: "width: 24em; height: 28em;"
+						style: "width: 25em; height: 27em;"
 					});
 					tabContainer = new TabContainer({
 						id: "infoDialogTabs",
@@ -90,6 +90,12 @@ define(
 						id: "infoDialogCreditsTab",
 						title: "Credits"
 					});
+					
+					domConstruct.create("div", {innerHTML: "We would like to thank the following organizations, project groups and individuals for creating the software which Presenter or some of it's features are based on."}, creditsTab.domNode);
+					domConstruct.create("div", {innerHTML: "<strong>Dojo Toolkit</strong><br>Dojo Foundation<br>MIT License"}, creditsTab.domNode);
+					domConstruct.create("div", {innerHTML: "<strong>Socket.IO</strong><br>Guillermo Rauch, LearnBoost<br>MIT License"}, creditsTab.domNode);
+					domConstruct.create("div", {innerHTML: "<strong>MathJax</strong><br>Apache License, Version 2.0"}, creditsTab.domNode);
+					domConstruct.create("div", {innerHTML: "<strong>QR Code Generator</strong><br>Kazuhiko Arase<br>MIT License<br>The word “QR Code” is registered trademark of DENSO WAVE INCORPORATED."}, creditsTab.domNode);
 					
 					tabContainer.addChild(productInfoTab);
 					tabContainer.addChild(contributorsTab);

@@ -225,10 +225,10 @@ body {
 	border-spacing: 0;
 }
 
-#infoDialogProductInfoTab > * {
+#infoDialogProductInfoTab > *, #infoDialogCreditsTab > * {
 	margin-top: 0.5em;
 }
 
-#infoDialogProductInfoTab > :first-child {
+#infoDialogProductInfoTab > :first-child, #infoDialogCreditsTab > :first-child {
 	margin-top: 0;
 }
