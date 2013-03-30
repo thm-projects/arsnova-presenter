@@ -195,7 +195,7 @@ define(
 				}));
 				var unlockButton = new DropDownButton({
 					id: "piUnlockButton",
-					label: "Unlock",
+					label: "Release",
 					dropDown: unlockMenu
 				});
 				unlockButton.placeAt(answersSettings).startup();
