@@ -19,9 +19,10 @@ define(
 		"dojo/fx",
 		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
+		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, piAnswersChart) {
+	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart) {
 		"use strict";
 		
 		var
@@ -287,6 +288,7 @@ define(
 				questionSubjectNode.appendChild(document.createTextNode(question.subject));
 				domConstruct.empty(questionTextNode);
 				questionTextNode.appendChild(document.createTextNode(question.text));
+				mathJax.parse(questionTextNode);
 				answersContainer.resize();
 				registry.byId("fullScreenContainer").resize();
 				
@@ -353,6 +355,7 @@ define(
 					domConstruct.create("div", {"class": "clearFix"}, answerNode);
 					var messageNode = domConstruct.create("p", {"class": "message"}, answerNode);
 					messageNode.appendChild(document.createTextNode(answer.answerText));
+					mathJax.parse(messageNode);
 					on(answerNode, "click", function() {
 						domClass.toggle(this, "opened");
 					});

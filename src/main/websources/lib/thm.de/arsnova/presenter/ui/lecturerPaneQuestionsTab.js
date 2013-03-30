@@ -4,9 +4,10 @@ define(
 		"dojo/when",
 		"dojo/dom-construct",
 		"dgerhardt/dijit/layout/ContentPane",
+		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab"
 	],
-	function(on, when, domConstruct, ContentPane, answersTab) {
+	function(on, when, domConstruct, ContentPane, mathJax, answersTab) {
 		"use strict";
 		
 		var
@@ -62,6 +63,7 @@ define(
 						categories[category].forEach(function(question) {
 							var questionNode = domConstruct.create("p", {"class": "question"}, categoryNode);
 							questionNode.appendChild(document.createTextNode(question.text));
+							mathJax.parse(questionNode);
 							on(questionNode, "click", function(event) {
 								model.setId(question._id);
 								answersTab.selectTab();

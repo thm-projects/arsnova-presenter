@@ -11,8 +11,9 @@ define(
 		"dijit/MenuItem",
 		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
+		"arsnova-presenter/ui/mathJax"
 	],
-	function(on, when, dom, domConstruct, domClass, dateLocale, registry, ContentPane, MenuItem, confirmDialog, fullScreen) {
+	function(on, when, dom, domConstruct, domClass, dateLocale, registry, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax) {
 		"use strict";
 		
 		var
@@ -105,6 +106,7 @@ define(
 				if (null != question.text) {
 					domClass.add(questionNode, "loaded");
 					messageNode.appendChild(document.createTextNode(question.text));
+					mathJax.parse(messageNode);
 				}
 				var date = new Date(question.timestamp);
 				var dateTime = dateLocale.format(date, {selector: "date", formatLength: "long"})
@@ -142,6 +144,7 @@ define(
 					domClass.add(questionNode, "opened");
 					domClass.add(questionNode, "loaded");
 					messageNode.appendChild(document.createTextNode(question.text));
+					mathJax.parse(messageNode);
 				});
 			},
 			
