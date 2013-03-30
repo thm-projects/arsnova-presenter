@@ -52,13 +52,13 @@ define(
 				panelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
 				(select = new FilteringSelect({
 					id: "sessionSelect",
-					placeHolder: "Select a session",
+					placeHolder: "Select",
 					store: memory = new Memory(),
 					labelAttr: "label",
 					labelType: "html",
 					searchAttr: "shortName",
 					maxHeight: 200,
-					style: "width: 160px;",
+					style: "width: 140px;",
 					onChange: function(value) {
 						if (value) {
 							model.setKey(value);
