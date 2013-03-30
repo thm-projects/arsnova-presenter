@@ -498,7 +498,7 @@ define(
 						showCorrectMenuItem.set("disabled", noCorrectAnswer);
 						unlockCorrectAnswerMenuItem.set("disabled", noCorrectAnswer);
 						unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);
-						unlockAnswerStatsMenuItem.set("label", "Answers statistics");
+						unlockAnswerStatsMenuItem.set("label", "Answer statistics");
 						for (var i = 1; i < showPiRoundMenuItem.length; i++) {
 							if (i > question.piRound) {
 								showPiRoundMenuItem[i].set("disabled", true);
