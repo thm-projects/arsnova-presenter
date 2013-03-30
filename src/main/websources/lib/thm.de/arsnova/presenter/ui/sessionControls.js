@@ -52,7 +52,7 @@ define(
 				panelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
 				(select = new FilteringSelect({
 					id: "sessionSelect",
-					placeHolder: "Select",
+					placeHolder: "Session",
 					store: memory = new Memory(),
 					labelAttr: "label",
 					labelType: "html",
