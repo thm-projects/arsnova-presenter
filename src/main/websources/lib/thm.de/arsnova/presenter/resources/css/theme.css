@@ -232,3 +232,8 @@ body {
 #infoDialogProductInfoTab > :first-child, #infoDialogCreditsTab > :first-child {
 	margin-top: 0;
 }
+
+#footerOrganizationName {
+	color: #7cbb2b;
+	font-weight: bold;
+}

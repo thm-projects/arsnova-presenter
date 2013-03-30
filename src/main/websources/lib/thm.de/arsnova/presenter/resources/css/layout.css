@@ -119,8 +119,9 @@ html, body {
 	float: left;
 }
 
-#productVersionDetails {
+#footerOrganizationInfo {
 	float: right;
+	cursor: pointer;
 }
 
 #piContainer, #audienceContainer {

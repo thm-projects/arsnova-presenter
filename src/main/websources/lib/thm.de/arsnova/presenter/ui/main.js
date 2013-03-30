@@ -1,5 +1,7 @@
 define(
 	[
+		"dojo/_base/config",
+		"dojo/string",
 		"dojo/on",
 		"dojo/dom",
 		"dojo/dom-construct",
@@ -21,7 +23,7 @@ define(
 		"arsnova-presenter/ui/infoDialog",
 		"version"
 	],
-	function(on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullScreen, timer, infoDialog, version) {
+	function(config, string, on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullScreen, timer, infoDialog, version) {
 		"use strict";
 		
 		var
@@ -123,11 +125,6 @@ define(
 				}, domConstruct.create("button", {id: "mobileButton", type: "button"}, exitPanelNode)).startup();
 
 				/* Add footer content */
-				var versionString = version.version;
-				if (version.commitId) {
-					versionString += " [" + version.commitId + "]";
-				}
-				
 				var productInfoNode = domConstruct.create("span", {id: "productInfo"}, footerPane.domNode);
 				domConstruct.create("span", {id: "productLogo", title: "ARSnova"}, productInfoNode);
 				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "Presenter"}, productInfoNode);
@@ -140,15 +137,33 @@ define(
 					onClick: infoDialog.show
 				}));
 				productMenu.addChild(new MenuItem({
-					label: "Website",
+					label: "ARSnova website",
 					onClick: function() {
 						window.open("http://blog.mni.thm.de/arsnova/arsnova-blog/", "_blank");
 					}
 				}));
 				productMenu.startup();
 				
-				var versionDetailsNode = domConstruct.create("span", {id: "productVersionDetails", "class": "groupPanel"}, footerPane.domNode);
-				versionDetailsNode.appendChild(document.createTextNode("Version: " + versionString));
+				if (config.arsnova.organization) {
+					var org = config.arsnova.organization;
+					console.debug(org);
+					domConstruct.create("span", {id: "footerOrganizationInfo", innerHTML: org.label}, footerPane.domNode);
+					
+					if (org.links) {
+						var organizationMenu = new Menu({
+							targetNodeIds: ["footerOrganizationInfo"],
+							leftClickToOpen: true
+						});
+						org.links.forEach(function(link) {
+							organizationMenu.addChild(new MenuItem({
+								label: link.label,
+								onClick: function() {
+									window.open(link.url, "_blank");
+								}
+							}));
+						});
+					};
+				}
 				
 				var timeNode = domConstruct.create("div", {id: "footerTime"}, footerPane.domNode);
 				var timeTooltip = new Tooltip({
