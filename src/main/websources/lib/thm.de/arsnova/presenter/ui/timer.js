@@ -15,6 +15,7 @@ define(
 		var
 			self = null,
 			interval = null,
+			warningThresholdSeconds = 0,
 			remainingSeconds = 0.0,
 			
 			/* DOM */
@@ -95,6 +96,7 @@ define(
 				domStyle.set(timerNode, "display", "");
 				
 				remainingSeconds = intervalSeconds;
+				warningThresholdSeconds = remainingSeconds > 180 ? 60 : (remainingSeconds > 60 ? 30 : 10);
 				interval = setInterval(countDown, 500);
 				countDown();
 			},
@@ -111,7 +113,7 @@ define(
 		var countDown = function() {
 			remainingSeconds -= 0.5;
 			
-			if (remainingSeconds <= 5.0) {
+			if (remainingSeconds <= warningThresholdSeconds) {
 				domClass.toggle(remainingTimeNode, "highlight");
 				
 				if (remainingSeconds < 0.5) {
