@@ -30,7 +30,7 @@ define(
 			showSettings: function(defaultInterval) {
 				if (null == dialog) {
 					if (null == defaultInterval) {
-						defaultInterval = "3:00";
+						defaultInterval = "10:00";
 					}
 					var contentNode = domConstruct.create("div");
 					(intervalTextBox = new ValidationTextBox({
