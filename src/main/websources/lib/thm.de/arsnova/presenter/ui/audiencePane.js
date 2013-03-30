@@ -15,7 +15,7 @@ define(
 		"use strict";
 		
 		var
-			MIN_WIDTH = 470,
+			MIN_WIDTH = 485,
 			self = null,
 			sessionModel = null,
 			audienceQuestionModel = null,

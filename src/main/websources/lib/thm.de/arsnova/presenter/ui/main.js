@@ -27,6 +27,8 @@ define(
 		"use strict";
 		
 		var
+			MIN_WIDTH = 980,
+			MIN_HEIGHT = 600,
 			self = null,
 			
 			/* Dijit */
@@ -228,9 +230,9 @@ define(
 				var resizeLog = "";
 				var resizeLogTimeout = null;
 				var windowOnResize = function(event) {
-					if (document.body.clientWidth < 950 || document.body.clientHeight < 600) {
+					if (document.body.clientWidth < MIN_WIDTH || document.body.clientHeight < MIN_HEIGHT) {
 						/* iPad does not swap screen.availWidth with screen.availHeight in landscape orientation */
-						if ((screen.availWidth < 950 && screen.availHeight < 950) || screen.availHeight < 600) {
+						if ((screen.availWidth < MIN_WIDTH && screen.availHeight < MIN_WIDTH) || screen.availHeight < MIN_HEIGHT) {
 							resizeLog = "Small resolution detected: " + screen.availWidth + "x" + screen.availHeight;
 							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Presenter is optimized for notebook, tablet and desktop devices. If you are using a tablet and see this message, please try landscape orientation.";
 						} else {
