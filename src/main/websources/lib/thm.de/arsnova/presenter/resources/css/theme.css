@@ -179,7 +179,7 @@ body {
 }
 
 #loginLogo {
-	background-image: url(../../../../../../images/arsnova.png) no-repeat center center);
+	background: url(../../../../../../images/arsnova.png) no-repeat center center;
 	width: 288px;
 	height: 55px;
 	margin-left: -144px;
