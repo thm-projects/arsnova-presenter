@@ -132,6 +132,7 @@ body {
 }
 
 .question.unread .subject {
+	color: #c00;
 	font-weight: bold;
 }
 
