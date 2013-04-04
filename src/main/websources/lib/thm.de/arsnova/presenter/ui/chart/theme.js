@@ -57,6 +57,11 @@ define(
 					position: "center",
 					font: "normal normal normal 9pt Verdana, Arial, sans-serif",
 					fontColor: axisAndLabelColor
+				},
+				majorTick: {
+					width:  1,
+					length: 6,
+					style: "Dot",
 				}
 			},
 			

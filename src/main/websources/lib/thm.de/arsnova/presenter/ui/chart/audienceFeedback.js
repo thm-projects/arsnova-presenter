@@ -5,11 +5,12 @@ define(
 		"dijit/registry",
 	 	"dojox/charting/Chart",
 	 	"dojox/charting/plot2d/Columns",
+	 	"dojox/charting/plot2d/Grid",
 	 	"dojox/charting/axis2d/Default",
 	 	"dojo/fx/easing",
 	 	"./theme"
 	],
-	function(dom, domConstruct, registry, Chart, Columns, AxisDefault, easing, theme) {
+	function(dom, domConstruct, registry, Chart, Columns, Grid, AxisDefault, easing, theme) {
 		"use strict";
 		
 		var
@@ -35,6 +36,13 @@ define(
 					gap: 5,
 					maxBarSize: 180,
 					animate: {duration: 500, easing: easing.expoOut}
+				});
+				chart.addPlot("grid", {
+					type: Grid,
+					hMajorLines: true,
+					hMinorLines: false,
+					vMajorLines: false,
+					vMinorLines: false
 				});
 				
 				var labels = [

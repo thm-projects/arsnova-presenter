@@ -6,12 +6,13 @@ define(
 		"dijit/registry",
 	 	"dojox/charting/Chart",
 	 	"dojox/charting/plot2d/ClusteredColumns",
+	 	"dojox/charting/plot2d/Grid",
 	 	"dojox/charting/axis2d/Default",
 	 	"dgerhardt/common/fullscreen",
 	 	"dojo/fx/easing",
 	 	"./theme"
 	],
-	function(dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, AxisDefault, fullScreen, easing, theme) {
+	function(dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, Grid, AxisDefault, fullScreen, easing, theme) {
 		"use strict";
 		
 		var
@@ -37,6 +38,13 @@ define(
 					gap: 5,
 					maxBarSize: 180,
 					animate: {duration: 500, easing: easing.expoOut}
+				});
+				chart.addPlot("grid", {
+					type: Grid,
+					hMajorLines: true,
+					hMinorLines: false,
+					vMajorLines: false,
+					vMinorLines: false
 				});
 				chart.addAxis("x");
 				chart.addAxis("y", {
