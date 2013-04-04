@@ -414,6 +414,7 @@ define(
 				}
 				roundNames.sort();
 
+				var percentageValues = roundNames.length > 1;
 				domConstruct.empty(answerCountNode);
 				for (var i = 0; i < roundNames.length; i++) {
 					var round = roundNames[i];
@@ -433,6 +434,11 @@ define(
 						values.push(0);
 					}
 					
+					if (percentageValues) {
+						for (var j = 0; j < values.length; j++) {
+							values[j] *= 100 / answerCountPerRound[round] ;
+						}
+					}
 					valueSeries[round] = values;
 					
 					var countNode = null;
@@ -448,7 +454,7 @@ define(
 					countNode.appendChild(document.createTextNode(answerCountPerRound[round]));
 					domStyle.set(answerCountNode, "visibility", "visible");
 				}
-				piAnswersChart.update(labels, correctIndexes, valueSeries);
+				piAnswersChart.update(labels, correctIndexes, valueSeries, percentageValues);
 			},
 			
 			toggleFullScreenMode: function() {

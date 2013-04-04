@@ -42,7 +42,10 @@ define(
 				chart.addAxis("y", {
 					vertical: true,
 					includeZero: true,
-					natural: true
+					natural: true,
+					labelFunc: function(value) {
+						return value + "%";
+					}
 				});
 				chart.render();
 				
@@ -77,7 +80,7 @@ define(
 				domStyle.set(chartNode, "display", "none");
 			},
 			
-			update: function(labels, correctIndexes, series) {
+			update: function(labels, correctIndexes, series, percentageValues) {
 				chart.addAxis("x", {
 					labels: labels,
 					dropLabels: false,
@@ -85,6 +88,14 @@ define(
 					rotation: -25,
 					trailingSymbol: "...",
 					minorTicks: false,
+				});
+				chart.addAxis("y", {
+					vertical: true,
+					includeZero: true,
+					natural: true,
+					labelFunc: !percentageValues ? null : function(value) {
+						return value + "%";
+					}
 				});
 				
 				chart.removeSeries("No data");
