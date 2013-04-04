@@ -148,7 +148,6 @@ define(
 				
 				if (config.arsnova.organization) {
 					var org = config.arsnova.organization;
-					console.debug(org);
 					domConstruct.create("span", {id: "footerOrganizationInfo", innerHTML: org.label}, footerPane.domNode);
 					
 					if (org.links) {
