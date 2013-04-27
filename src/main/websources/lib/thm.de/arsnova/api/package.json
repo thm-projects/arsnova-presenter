@@ -1,4 +1,14 @@
 {
 	name: "libarsnova-dojo",
-	dojoBuild: "libarsnova-dojo.profile.js"
+	dojoBuild: "libarsnova-dojo.profile.js",
+	contributors: [
+	    name: "Daniel Gerhardt",
+	    email: "anp-dev@z.dgerhardt.net"
+	],
+	licenses: [
+	    {
+	        type: "LGPLv3",
+	        url: "http://www.gnu.org/licenses/lgpl.html"
+	    }
+	]
 }
