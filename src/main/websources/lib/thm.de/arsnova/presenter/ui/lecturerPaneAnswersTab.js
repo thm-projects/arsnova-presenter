@@ -414,7 +414,7 @@ define(
 				}
 				roundNames.sort();
 
-				var percentageValues = roundNames.length > 1;
+				var percentageValues = true; //roundNames.length > 1;
 				domConstruct.empty(answerCountNode);
 				for (var i = 0; i < roundNames.length; i++) {
 					var round = roundNames[i];
