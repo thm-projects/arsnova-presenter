@@ -106,7 +106,7 @@ define(
 				domStyle.set(chartNode, "display", "none");
 			},
 			
-			update: function(labels, correctIndexes, series, percentageValues) {
+			update: function(labels, correctIndexes, series, percentageValues, abstention) {
 				chart.addAxis("x", {
 					labels: labels,
 					dropLabels: false,
@@ -144,7 +144,7 @@ define(
 						chart.addSeries(seriesName,
 							showCorrect
 								? theme.applyColors(series[seriesName], "markCorrect", i < seriesNames.length - 1, correctIndexes)
-								: theme.applyColors(series[seriesName], "answers", i < seriesNames.length - 1)
+								: theme.applyColors(series[seriesName], "answers", i < seriesNames.length - 1, null, abstention ? [labels.length - 1] : null)
 						);
 						seriesCount++;
 					}

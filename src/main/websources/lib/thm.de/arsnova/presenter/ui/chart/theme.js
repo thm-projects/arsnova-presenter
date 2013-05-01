@@ -35,7 +35,7 @@ define(
 			defaultFill = {type: "linear", space: "shape", x1: 0, y1: 0, x2: 0, y2: 100},
 			axisAndLabelColor = "#333",
 			fillColors = {
-				"answers": ["#1f59b3", "#43b3b3", "#b3b323", "#b327b3", "#b31d1d", "#b3591f"],
+				"answers": ["#1f59b3", "#43b3b3", "#b3b323", "#b327b3", "#b31d1d", "#b3591f", "#000"],
 				"markCorrect": ["#43d943", "#000"],
 				"feedback": ["#43d943", "#f2f224", "#e64000", "#000"]
 			}
@@ -115,7 +115,14 @@ define(
 		});
 
 		/* public "methods" */
-		self.applyColors = function(values, theme, pale, highlightValues) {
+		/**
+		 * @param values The data value for the diagram.
+		 * @param theme The color theme for bars.
+		 * @param pale Flags if pale colors are used.
+		 * @param highlightValues Values to indexes contained in this array are highlighted in a special color. Anything else is displayed in a subtle color.
+		 * @param subtleValues Values to indexes contained in this array are displayed in a subtle color.
+		 */
+		self.applyColors = function(values, theme, pale, highlightValues, subtleValues) {
 			var colors = fillColors[theme];
 			var fills = pale
 				? gradGen.generateFills(colors, defaultFill, 80, 65)
@@ -123,14 +130,19 @@ define(
 			;
 			var result = [];
 			for (var i = 0; i < values.length; i++) {
-				var strokeColor = color.fromHex(colors[
-					highlightValues ? (array.indexOf(highlightValues, i) >= 0 ? 0 : 1) : i
-				]);
+				var colorIndex = highlightValues ? (array.indexOf(highlightValues, i) >= 0 ? 0 : 1) : i;
+				
+				/* use last color of a theme if index of current value is in subtleValues */
+				if (subtleValues && array.indexOf(subtleValues, i) >= 0) {
+					colorIndex = colors.length - 1;
+				}
+				
+				var strokeColor = color.fromHex(colors[colorIndex]);
 				var hsl = strokeColor.toHsl();
 				result.push({
 					y: values[i],
 					stroke: pale ? color.fromHsl(hsl.h, hsl.s, 35).toHex() :  color.fromHsl(hsl.h, hsl.s, 20).toHex(),
-					fill: fills[highlightValues ? (array.indexOf(highlightValues, i) >= 0 ? 0 : 1) : i]
+					fill: fills[colorIndex]
 				});
 			}
 			

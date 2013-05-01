@@ -482,7 +482,7 @@ define(
 					countNode.appendChild(document.createTextNode(answerCountPerRound[round]));
 					domStyle.set(answerCountNode, "visibility", "visible");
 				}
-				piAnswersChart.update(labels, correctIndexes, valueSeries, percentageValues);
+				piAnswersChart.update(labels, correctIndexes, valueSeries, percentageValues, question.abstention);
 			},
 			
 			toggleFullScreenMode: function() {
