@@ -367,11 +367,17 @@ define(
 			
 			updateFreeText: function(answers) {
 				var totalAnswerCount = 0;
+				var abstentionCount = 0;
 				domConstruct.empty(freeTextAnswersNode);
 				answers.forEach(function(answer) {
 					totalAnswerCount += answer.answerCount;
 					
 					if (!showAnswers) {
+						return;
+					}
+					if (answer.abstention) {
+						abstentionCount++;
+						
 						return;
 					}
 					
