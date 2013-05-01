@@ -431,14 +431,18 @@ define(
 					roundNames.push(round);
 				}
 				roundNames.sort();
-
 				var percentageValues = true; //roundNames.length > 1;
+
 				domConstruct.empty(answerCountNode);
 				for (var i = 0; i < roundNames.length; i++) {
 					var round = roundNames[i];
 					var answers = rounds[round];
 					var values = [];
+					while (values.length < possibleAnswersCount) {
+						values.push(0);
+					}
 					answerCountPerRound[round] = 0;
+					
 					answers.forEach(function(answer) {
 						answerCountPerRound[round] += answer.answerCount;
 						
@@ -446,11 +450,17 @@ define(
 							return;
 						}
 						
-						values[labelReverseMapping[answer.answerText]] = answer.answerCount;
+						if ("mc" == question.questionType) {
+							/* handle selected options for multiple choice questions */
+							var selectedOptions = answer.answerText.split(",");
+							for (var j = 0; j < selectedOptions.length; j++) {
+								values[j] += parseInt(selectedOptions[j]);
+							}
+						} else {
+							/* handle single answer option */
+							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
+						}
 					});
-					while (values.length < possibleAnswersCount) {
-						values.push(0);
-					}
 					
 					if (percentageValues) {
 						for (var j = 0; j < values.length; j++) {
