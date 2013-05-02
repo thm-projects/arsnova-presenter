@@ -32,11 +32,38 @@
 		</developer>
 	</developers>
 
+	<licenses>
+		<license>
+			<name>GNU General Public License v3.0 or later</name>
+			<url>http://www.gnu.org/licenses/gpl.txt</url>
+		</license>
+	</licenses>
+
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<outputDir>${project.build.directory}/${project.build.finalName}</outputDir>
 		<jetty.version>8.1.9.v20130131</jetty.version>
 		<jetty.scanInterval>10</jetty.scanInterval>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>thmrepo</id>
+			<name>THM Maven Repository</name>
+			<url>http://maven.mni.thm.de/content/repositories</url>
+		</repository>
+		<repository>
+			<id>thmreposnapshots</id>
+			<name>THM Maven Snapshot Repository</name>
+			<url>http://maven.mni.thm.de/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+
+	<scm>
+		<url>https://scm.thm.de/arsnova/arsnova-presenter</url>
+		<connection>scm:git://scm.thm.de/arsnova/arsnova-presenter.git</connection>
+		<developerConnection>scm:ssh://gitorious@scm.thm.de:arsnova/arsnova-presenter.git</developerConnection>
+	</scm>
 
 	<build>
 		<plugins>
