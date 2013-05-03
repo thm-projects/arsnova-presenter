@@ -201,6 +201,7 @@ body {
 
 #loginFooter {
 	color: #ccc;
+	opacity: 0.3;
 	font-size: 0.7em;
 }
 

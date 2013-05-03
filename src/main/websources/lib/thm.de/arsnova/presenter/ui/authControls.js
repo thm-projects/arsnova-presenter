@@ -62,6 +62,7 @@ define(
 				var loginDialog = new Dialog({
 					title: "Login",
 					content: loginDialogContent,
+					draggable: false,
 					onCancel: function() {
 						console.debug("Cancel action is disabled");
 					}

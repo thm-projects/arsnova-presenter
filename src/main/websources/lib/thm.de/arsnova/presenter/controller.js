@@ -21,6 +21,7 @@ define(
 		"dojo/ready",
 		"dojo/when",
 		"dojo/router",
+		"dojo/dom-style",
 		"arsnova-presenter/ui/main",
 		"arsnova-presenter/ui/authControls",
 		"arsnova-presenter/ui/sessionControls",
@@ -33,7 +34,7 @@ define(
 		"arsnova-api/audienceQuestion",
 		"arsnova-api/feedback"
 	],
-	function(ready, when, router, mainUi, authControls, sessionControls, lecturerPane, audiencePane, socket, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel, feedbackModel) {
+	function(ready, when, router, domStyle, mainUi, authControls, sessionControls, lecturerPane, audiencePane, socket, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel, feedbackModel) {
 		"use strict";
 		
 		var init = function() {
@@ -45,6 +46,7 @@ define(
 				/* user is not logged in an can not be logged in automatically */
 				ready(function() {
 					authControls.showLoginDialog();
+					mainUi.hideSplash(true);
 				});
 			});
 			ready(function() {
@@ -79,6 +81,7 @@ define(
 					});
 					
 					router.startup();
+					mainUi.hideSplash();
 				}
 			});
 		};

@@ -276,6 +276,14 @@ define(
 				appContainer.resize();
 			},
 			
+			hideSplash: function(leaveBg) {
+				if (leaveBg) {
+					domStyle.set("splash-content", "display", "none");
+				} else {
+					domStyle.set("splash", "display", "none");
+				}
+			},
+			
 			toggleFullScreenMode: function() {
 				fullScreen.toggle();
 			}

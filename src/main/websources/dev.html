@@ -17,10 +17,34 @@
 
 <link rel="stylesheet" href="lib/dojotoolkit.org/dijit/themes/claro/claro.css" media="screen" />
 <link rel="stylesheet" href="lib/thm.de/arsnova/presenter/resources/css/presenter.css" media="screen" />
+<style>
+#splash-bg, #splash-content {
+	position: fixed;
+	left: 0;
+	top: 0;
+	display: table;
+	width: 100%;
+	height: 100%;
+	z-index: 950;
+}
+#splash-bg > *, #splash-content > * {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+#splash-bg {
+	background: url(images/launch-bg.png);
+	background-size: 100% 100%;
+}
+#splash-content * {
+	padding: .25em;
+}
+</style>
 </head>
 
 <body class="claro">
-<noscript><div id="noJs"><div><header><h1><img src="images/arsnova.png" alt="ARSnova" /></h1></header><p>This application needs JavaScript to be enabled in your browser.</p></div></div></noscript>
+<div id="splash"><div id="splash-bg"><div><img src="images/launch-flash.png" width="500" height="300" /></div></div><div id="splash-flash"></div><div id="splash-content"><div><img src="images/arsnova.png" alt="ARSnova" /><h1>Loading...</h1></div></div></div>
+<noscript><div id="noJs"><div><header><h1></h1></header><p>This application needs JavaScript to be enabled in your browser.</p></div></div></noscript>
 <script>
 var dojoConfig = {
 	arsnova: {
