@@ -393,6 +393,9 @@ define(
 						domClass.toggle(this, "opened");
 					});
 					on(deleteNode, "click", function() {
+						if (event.stopPropagation) { /* IE8 does not support stopPropagation */
+							event.stopPropagation();
+						}
 						confirmDialog.confirm("Delete answer", "Do you really want to delete this answer?", {
 							"Delete": function() {
 								model.removeAnswer(answer._id);

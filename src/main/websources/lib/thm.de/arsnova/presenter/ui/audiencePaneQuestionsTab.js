@@ -134,7 +134,10 @@ define(
 				on(questionNode, "click", function(event) {
 					self.openQuestion(question._id, questionNode, messageNode);
 				});
-				on(deleteNode, "click", function() {
+				on(deleteNode, "click", function(event) {
+					if (event.stopPropagation) { /* IE8 does not support stopPropagation */
+						event.stopPropagation();
+					}
 					confirmDialog.confirm("Delete question", "Do you really want to delete this question?", {
 						"Delete": function() {
 							model.remove(question._id);
