@@ -50,12 +50,16 @@ define(
 			MIN_HEIGHT = 600,
 			self = null,
 			
+			/* DOM */
+			timeNode = null,
+			
 			/* Dijit */
 			appContainer = null,
 			mainContainer = null,
 			headerPane = null,
 			footerPane = null,
-			fullScreenContainer = null
+			fullScreenContainer = null,
+			timeTooltip = null
 		;
 		
 		self = {
@@ -185,16 +189,13 @@ define(
 					};
 				}
 				
-				var timeNode = domConstruct.create("div", {id: "footerTime"}, footerPane.domNode);
-				var timeTooltip = new Tooltip({
+				timeNode = domConstruct.create("div", {id: "footerTime"}, footerPane.domNode);
+				timeTooltip = new Tooltip({
 					connectId: [timeNode],
 					position: ["above-centered"]
 				});
-				setInterval(function() {
-					var date = new Date();
-					timeNode.innerHTML = dateLocale.format(date, {selector: "time", formatLength: "short"});
-					timeTooltip.set("label", dateLocale.format(date, {selector: "date", formatLength: "short"}));
-				}, 500);
+				setInterval(updateTime, 500);
+				updateTime();
 				on(timeNode, "click", function() {
 					timer.showSettings();
 				});
@@ -298,6 +299,13 @@ define(
 			toggleFullScreenMode: function() {
 				fullScreen.toggle();
 			}
+		};
+		
+		/* private "methods" */
+		var updateTime = function() {
+			var date = new Date();
+			timeNode.innerHTML = dateLocale.format(date, {selector: "time", formatLength: "short"});
+			timeTooltip.set("label", dateLocale.format(date, {selector: "date", formatLength: "short"}));
 		};
 		
 		return self;

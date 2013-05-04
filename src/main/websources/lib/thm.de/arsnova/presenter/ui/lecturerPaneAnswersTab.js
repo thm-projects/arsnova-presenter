@@ -392,7 +392,7 @@ define(
 					on(answerNode, "click", function() {
 						domClass.toggle(this, "opened");
 					});
-					on(deleteNode, "click", function() {
+					on(deleteNode, "click", function(event) {
 						if (event.stopPropagation) { /* IE8 does not support stopPropagation */
 							event.stopPropagation();
 						}
