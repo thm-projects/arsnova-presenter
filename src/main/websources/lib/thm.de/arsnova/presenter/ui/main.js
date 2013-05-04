@@ -36,12 +36,13 @@ define(
 		"dijit/MenuItem",
 		"dijit/form/Select",
 		"dijit/Tooltip",
+		"dojo/_base/fx",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/timer",
 		"arsnova-presenter/ui/infoDialog",
 		"version"
 	],
-	function(config, string, on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fullScreen, timer, infoDialog, version) {
+	function(config, string, on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fx, fullScreen, timer, infoDialog, version) {
 		"use strict";
 		
 		var
@@ -274,6 +275,24 @@ define(
 				windowOnResize();
 
 				appContainer.resize();
+			},
+			
+			hideSplash: function(leaveBg) {
+				if (leaveBg) {
+					domStyle.set("splash-content", "display", "none");
+				} else {
+					fx.fadeOut({
+						node: "splash-bg",
+						duration: 500,
+						onEnd: function() {
+							domStyle.set("splash", "display", "none");
+						}
+					}).play();
+					fx.fadeOut({
+						node: "splash-content",
+						duration: 500
+					}).play();
+				}
 			},
 			
 			toggleFullScreenMode: function() {

@@ -5,12 +5,28 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>ARSnova Presenter</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/bookmark/icon-144x144-precomposed.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/bookmark/icon-114x114-precomposed.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/bookmark/icon-72x72-precomposed.png" />
+<link rel="apple-touch-icon-precomposed" href="images/bookmark/icon-57x57-precomposed.png" />
 <link rel="shortcut icon" href="images/logo-16x16.png" type="image/png" />
+<meta name="msapplication-TileImage" content="images/bookmark/icon-144x144-precomposed.png" />
+<meta name="msapplication-TileColor" content="#222222" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+
 <link rel="stylesheet" href="lib/dojotoolkit.org/dijit/themes/claro/claro.css" media="screen" />
 <link rel="stylesheet" href="lib/thm.de/arsnova/presenter/resources/css/presenter.css" media="screen" />
+<style>
+#splash-bg, #splash-content {position: fixed; left: 0; top: 0; display: table; width: 100%; height: 100%; z-index: 950;}
+#splash-bg > *, #splash-content > * {display: table-cell; vertical-align: middle; text-align: center;}
+#splash-bg {background: url(images/launch-bg.png); background-size: 100% 100%;}
+#splash-content * {padding: .25em;}
+</style>
 </head>
 
 <body class="claro">
+<div id="splash"><div id="splash-bg"><div><img src="images/launch-flash.png" width="500" height="300" /></div></div><div id="splash-flash"></div><div id="splash-content"><div><img src="images/arsnova.png" alt="ARSnova" /><h1>Loading...</h1></div></div></div>
 <noscript><div id="noJs"><div><header><h1><img src="images/arsnova.png" alt="ARSnova" /></h1></header><p>This application needs JavaScript to be enabled in your browser.</p></div></div></noscript>
 <script>
 var dojoConfig = {
