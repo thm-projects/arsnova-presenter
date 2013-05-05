@@ -60,7 +60,7 @@ define(
 				var loginDialogContent = domConstruct.create("div");
 				domConstruct.create("div", {innerHTML: "Please choose a service to login with:"}, loginDialogContent);
 				var loginDialog = new Dialog({
-					title: "Login",
+					title: "Presenter Login",
 					content: loginDialogContent,
 					draggable: false,
 					onCancel: function() {
