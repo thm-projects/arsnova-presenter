@@ -27,13 +27,13 @@ define(
 		
 		var
 			self = null,
-			apiRoot = config.arsnovaApi.root,
+			apiPrefix = config.arsnovaApi.root + "auth/",
 			loginError = false,
 			loginType = null,
 			username = null,
 			
 			checkLoginStatus = function() {
-				request.get(apiRoot + "whoami", {sync: true, handleAs: "json"}).then(
+				request.get(apiPrefix, {sync: true, handleAs: "json"}).then(
 					function(response) {
 						if ("ldap" == response.type) {
 							/* guest login */
@@ -59,7 +59,7 @@ define(
 					console.log("Auth: user is not logged in");
 					if (null != loginType) {
 						console.log("Auth: user will be redirected to login service");
-						location.href = apiRoot + "doLogin?type=" + loginType + "&user=" + username;
+						location.href = apiPrefix + "login?type=" + loginType + "&user=" + username;
 					} else {
 						console.log("Auth: user cannot be logged in automatically");
 						loginHandler();
@@ -79,38 +79,38 @@ define(
 //					guest: {
 //						title: "Guest login",
 //						url: string.substitute(
-//								"${prefix}doLogin?type=guest&user=Guest&successurl=${success}&failureurl=${failure}",
-//								{prefix: apiRoot, success: successUrl, failure: failureUrl}
+//								"${prefix}login?type=guest&user=Guest&successurl=${success}&failureurl=${failure}",
+//								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
 //							)
 //					},
 					
 					thm: {
 						title: "THM (CAS)",
 						url: string.substitute(
-								"${prefix}doLogin?type=cas&successurl=${success}&failureurl=${failure}",
-								{prefix: apiRoot, success: successUrl, failure: failureUrl}
+								"${prefix}login?type=cas&successurl=${success}&failureurl=${failure}",
+								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
 							)
 					},
 					
 					google: {
 						title: "Google",
 						url: string.substitute(
-								"${prefix}doLogin?type=google&successurl=${success}&failureurl=${failure}",
-								{prefix: apiRoot, success: successUrl, failure: failureUrl}
+								"${prefix}login?type=google&successurl=${success}&failureurl=${failure}",
+								{prefix: apiPrefix, success: successUrl, failure: failureUrl}
 							)
 					},
 					
 					facebook: {
 						title: "Facebook",
 						url: string.substitute(
-							"${prefix}doLogin?type=facebook&successurl=${success}&failureurl=${failure}",
-							{prefix: apiRoot, success: successUrl, failure: failureUrl}
+							"${prefix}login?type=facebook&successurl=${success}&failureurl=${failure}",
+							{prefix: apiPrefix, success: successUrl, failure: failureUrl}
 						)
 					}
 				};
 			},
 			logout: function() {
-				location.href = apiRoot + "logout";
+				location.href = apiPrefix + "logout";
 			},
 			
 			isLoggedIn: function() {
