@@ -33,10 +33,15 @@ define(
 			username = null,
 			
 			checkLoginStatus = function() {
-				request.get(apiRoot + "whoami", {sync: true}).then(
+				request.get(apiRoot + "whoami", {sync: true, handleAs: "json"}).then(
 					function(response) {
-						loginType = response.type;
-						username = response.username;
+						if ("ldap" == response.type) {
+							/* guest login */
+							loginError = true;
+						} else {
+							loginType = response.type;
+							username = response.username;
+						}
 					},
 					function(error) {
 						loginError = true;
@@ -60,7 +65,7 @@ define(
 						loginHandler();
 					}
 				} else {
-					console.log("Auth: user is already logged in");
+					console.log("Auth: user is already logged in (" + loginType + ")");
 				}
 			},
 			
