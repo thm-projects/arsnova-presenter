@@ -44,7 +44,7 @@ For the release of a new version the following steps should be taken in the Git 
 		$ git commit -m "Changed version for development: x.y.z-SNAPSHOT"
 	Merge x.y-stable into master using "ours" strategy to prevent later merges of the maintenance branch to apply the version change commit to master:
 		$ git checkout master
-		$ git merge -s ours x.y-stable
+		$ git merge -s ours x.y-stable -m "Ignore commits concerning version changes for future merges."
 	Increase the version number in master (only major and minor releases):
 		(adjust pom.xml)
 		$ git commit -m "Changed version for development: x.y.0-SNAPSHOT"
