@@ -303,7 +303,7 @@ define(
 					
 					return null;
 				}
-				answerStore.remove(id);
+				ftAnswerStore.remove(id);
 			},
 			
 			updateLocks: function(questionId, lockQuestion, lockStats, lockCorrect) {
