@@ -105,6 +105,53 @@ define(
 					region: "center"
 				}));
 				fullScreenContainer.placeAt(document.body);
+				
+				/* device resolution check */
+				var lowResNode = domConstruct.create("div", {id: "lowResolution"}, document.body);
+				domStyle.set(lowResNode, "visibility", "hidden");
+				var lowResContentWrapperNode = domConstruct.create("div", null, lowResNode);
+				domConstruct.create("img", {src: "images/arsnova.png", alt: "ARSnova"},
+					domConstruct.create("h1", null,
+						domConstruct.create("header", null, lowResContentWrapperNode)
+					)
+				);
+				var lowResMessage = domConstruct.create("p", {id: "lowResolutionMessage"}, lowResContentWrapperNode);
+				new Button({
+					label: "ARSnova mobile",
+					onClick: function() {
+						location.href = config.arsnova.mobileUrl;
+					}
+				}).placeAt(
+					domConstruct.create("p", null, lowResContentWrapperNode)
+				).startup();
+				var resizeLog = "";
+				var resizeLogTimeout = null;
+				var windowOnResize = function(event) {
+					if (document.body.clientWidth < MIN_WIDTH || document.body.clientHeight < MIN_HEIGHT) {
+						/* iPad does not swap screen.availWidth with screen.availHeight in landscape orientation */
+						if ((screen.availWidth < MIN_WIDTH && screen.availHeight < MIN_WIDTH) || screen.availHeight < MIN_HEIGHT) {
+							resizeLog = "Small resolution detected: " + screen.availWidth + "x" + screen.availHeight;
+							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Presenter is optimized for notebook, tablet and desktop devices. If you are using a tablet and see this message, please try landscape orientation.";
+						} else {
+							resizeLog = "Small window detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
+							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. Please increase the size of your browser's window or reduce the zoom factor (if zooming is active).";
+						}
+						domStyle.set(appContainer, "visibility", "hidden");
+						domStyle.set(lowResNode, "visibility", "visible");
+					} else {
+						resizeLog = "Acceptable client size detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
+						domStyle.set(lowResNode, "visibility", "hidden");
+						domStyle.set(appContainer, "visibility", "visible");
+					}
+					if (resizeLogTimeout) {
+						clearTimeout(resizeLogTimeout);
+					}
+					resizeLogTimeout = setTimeout(function() {
+						console.log(resizeLog);
+					}, 500);
+				};
+				on(window, "resize", windowOnResize);
+				windowOnResize();
 			},
 			
 			startup: function() {
@@ -228,52 +275,6 @@ define(
 						domStyle.set(fullScreenContainer.domNode, "display", "none");
 					}
 				});
-				
-				var lowResNode = domConstruct.create("div", {id: "lowResolution"}, document.body);
-				domStyle.set(lowResNode, "visibility", "hidden");
-				var lowResContentWrapperNode = domConstruct.create("div", null, lowResNode);
-				domConstruct.create("img", {src: "images/arsnova.png", alt: "ARSnova"},
-					domConstruct.create("h1", null,
-						domConstruct.create("header", null, lowResContentWrapperNode)
-					)
-				);
-				var lowResMessage = domConstruct.create("p", {id: "lowResolutionMessage"}, lowResContentWrapperNode);
-				new Button({
-					label: "ARSnova mobile",
-					onClick: function() {
-						location.href = config.arsnova.mobileUrl;
-					}
-				}).placeAt(
-					domConstruct.create("p", null, lowResContentWrapperNode)
-				).startup();
-				var resizeLog = "";
-				var resizeLogTimeout = null;
-				var windowOnResize = function(event) {
-					if (document.body.clientWidth < MIN_WIDTH || document.body.clientHeight < MIN_HEIGHT) {
-						/* iPad does not swap screen.availWidth with screen.availHeight in landscape orientation */
-						if ((screen.availWidth < MIN_WIDTH && screen.availHeight < MIN_WIDTH) || screen.availHeight < MIN_HEIGHT) {
-							resizeLog = "Small resolution detected: " + screen.availWidth + "x" + screen.availHeight;
-							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Presenter is optimized for notebook, tablet and desktop devices. If you are using a tablet and see this message, please try landscape orientation.";
-						} else {
-							resizeLog = "Small window detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
-							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. Please increase the size of your browser's window or reduce the zoom factor (if zooming is active).";
-						}
-						domStyle.set(appContainer, "visibility", "hidden");
-						domStyle.set(lowResNode, "visibility", "visible");
-					} else {
-						resizeLog = "Acceptable client size detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
-						domStyle.set(lowResNode, "visibility", "hidden");
-						domStyle.set(appContainer, "visibility", "visible");
-					}
-					if (resizeLogTimeout) {
-						clearTimeout(resizeLogTimeout);
-					}
-					resizeLogTimeout = setTimeout(function() {
-						console.log(resizeLog);
-					}, 500);
-				};
-				on(window, "resize", windowOnResize);
-				windowOnResize();
 
 				appContainer.resize();
 			},
