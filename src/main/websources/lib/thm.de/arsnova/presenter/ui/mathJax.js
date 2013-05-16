@@ -27,8 +27,8 @@ define(
 		var
 			self = null,
 			/* [\s\S] instead of . used to support multi line statements */
-			boxExpr = new RegExp("\\$\\$[\s\S]+?\\$\\$"),
-			inlineExpr = new RegExp("\\\\(.+?\\\\)"),
+			boxExpr = /\$\$[\s\S]+?\$\$/,
+			inlineExpr = /\(.+?\)/,
 			loaded = null
 		;
 		
