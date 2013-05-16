@@ -47,7 +47,7 @@ vendor/dojotoolkit.org/util/buildscripts/build.sh \
 	releaseDir="$DOJO_BUILD_PATH/dojo"
 
 # Copy Dojo application build and Dojo resources
-rm $(find "$DOJO_BUILD_PATH" -name \*.uncompressed.js -type f)
+find "$DOJO_BUILD_PATH" -name \*.uncompressed.js -type f -print0 | xargs -0 rm
 cp -R "$DOJO_BUILD_PATH/app" "$TARGET_PATH/app"
 mkdir -p "$TARGET_PATH/lib/dojotoolkit.org"
 cp -R "$DOJO_BUILD_PATH/dojo/dojo" "$TARGET_PATH/lib/dojotoolkit.org/dojo"
