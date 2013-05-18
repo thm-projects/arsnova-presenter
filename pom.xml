@@ -42,7 +42,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<outputDir>${project.build.directory}/${project.build.finalName}</outputDir>
-		<jetty.version>8.1.9.v20130131</jetty.version>
+		<jetty.version>9.0.3.v20130506</jetty.version>
 		<jetty.scanInterval>10</jetty.scanInterval>
 		<sonar.language>js</sonar.language>
 	</properties>
@@ -163,7 +163,7 @@
 					</plugin>
 
 					<plugin>
-						<groupId>org.mortbay.jetty</groupId>
+						<groupId>org.eclipse.jetty</groupId>
 						<artifactId>jetty-maven-plugin</artifactId>
 						<version>${jetty.version}</version>
 						<configuration>
@@ -262,7 +262,7 @@
 					</plugin>
 
 					<plugin>
-						<groupId>org.mortbay.jetty</groupId>
+						<groupId>org.eclipse.jetty</groupId>
 						<artifactId>jetty-maven-plugin</artifactId>
 						<version>${jetty.version}</version>
 						<configuration>
