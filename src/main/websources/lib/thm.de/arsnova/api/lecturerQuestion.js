@@ -103,9 +103,10 @@ define(
 				questionState.watch("id", callback);
 			},
 
-			getId: function(id) {
+			getId: function() {
 				return questionState.get("id");
 			},
+
 			setId: function(id) {
 				if (questionState.get("id") != id) {
 					questionState.set("id", id);
