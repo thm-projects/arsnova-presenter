@@ -51,6 +51,11 @@ define(
 			fsControlsToggleHandlers = [],
 			fsControlsToggleFx = {},
 
+			/* declarations of private "methods" */
+			onLecturerQuestionIdChange = null,
+			toggleFullScreenControls = null,
+			updateLocks = null,
+
 			/* DOM */
 			fullScreenControlsNode = null,
 			freeTextAnswersNode = null,
@@ -532,7 +537,7 @@ define(
 		};
 
 		/* private "methods" */
-		var onLecturerQuestionIdChange = function(name, oldValue, value) {
+		onLecturerQuestionIdChange = function(name, oldValue, value) {
 			showCorrectMenuItem.set("checked", false);
 			for (var i = 1; i < showPiRoundMenuItem.length; i++) {
 				showPiRoundMenuItem[i].set("checked", false);
@@ -581,7 +586,7 @@ define(
 			});
 		};
 
-		var toggleFullScreenControls = function(event) {
+		toggleFullScreenControls = function(event) {
 			if (event.clientY < 150) {
 				fsControlsToggleFx.show.play();
 			} else if (event.clientY > 200) {
@@ -589,7 +594,7 @@ define(
 			}
 		};
 
-		var updateLocks = function() {
+		updateLocks = function() {
 			model.updateLocks(
 				null,
 				!unlockQuestionMenuItem.get("checked"),

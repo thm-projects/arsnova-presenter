@@ -36,6 +36,9 @@ define(
 			sessionModel = null,
 			lecturerQuestionModel = null,
 
+			/* declarations of private "methods" */
+			onSessionKeyChange = null,
+
 			/* Dijit */
 			container = null,
 			headerPane = null,
@@ -90,7 +93,7 @@ define(
 		};
 
 		/* private "methods" */
-		var onSessionKeyChange = function(name, oldValue, value) {
+		onSessionKeyChange = function(name, oldValue, value) {
 			var questions = lecturerQuestionModel.getAll();
 			when(questions, function(questions) {
 				questionsTab.update(questions);

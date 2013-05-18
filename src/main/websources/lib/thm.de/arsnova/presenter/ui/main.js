@@ -45,6 +45,9 @@ define(
 			MIN_HEIGHT = 600,
 			self = null,
 
+			/* declarations of private "methods" */
+			updateTime = null,
+
 			/* DOM */
 			timeNode = null,
 
@@ -298,7 +301,7 @@ define(
 		};
 
 		/* private "methods" */
-		var updateTime = function() {
+		updateTime = function() {
 			var date = new Date();
 			timeNode.innerHTML = dateLocale.format(date, {selector: "time", formatLength: "short"});
 			timeTooltip.set("label", dateLocale.format(date, {selector: "date", formatLength: "short"}));

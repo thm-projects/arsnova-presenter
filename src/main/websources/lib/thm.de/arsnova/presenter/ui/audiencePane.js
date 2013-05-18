@@ -39,6 +39,9 @@ define(
 			audienceQuestionModel = null,
 			feedbackModel = null,
 
+			/* declarations of private "methods" */
+			onSessionKeyChange = null,
+
 			/* Dijit */
 			container = null,
 			headerPane = null,
@@ -99,7 +102,7 @@ define(
 		};
 
 		/* private "methods" */
-		var onSessionKeyChange = function(name, oldValue, value) {
+		onSessionKeyChange = function(name, oldValue, value) {
 			var questions = audienceQuestionModel.getAll();
 			when(questions, function(questions) {
 				questionsTab.update(questions);

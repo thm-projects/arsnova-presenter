@@ -36,6 +36,9 @@ define(
 			warningThresholdSeconds = 0,
 			remainingSeconds = 0.0,
 
+			/* declarations of private "methods" */
+			countDown = null,
+
 			/* DOM */
 			timerNode = null,
 			remainingTimeNode = null,
@@ -128,7 +131,7 @@ define(
 		};
 
 		/* private "methods" */
-		var countDown = function() {
+		countDown = function() {
 			remainingSeconds -= 0.5;
 
 			if (remainingSeconds <= warningThresholdSeconds) {

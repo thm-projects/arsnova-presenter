@@ -56,7 +56,10 @@ define(
 
 			answerCountJsonRest = [],
 			answerCountMemory = [],
-			answerCountStore = []
+			answerCountStore = [],
+
+			/* declarations of private "methods" */
+			buildQuestionSortIndex = null
 		;
 
 		sessionModel.watchKey(function(name, oldValue, value) {
@@ -332,7 +335,7 @@ define(
 			}
 		};
 
-		var buildQuestionSortIndex = function() {
+		buildQuestionSortIndex = function() {
 			questionSortIndex = [];
 			for (var questionId in questionMemory.index) {
 				//var question = self.get(questionId);
