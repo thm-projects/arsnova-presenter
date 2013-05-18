@@ -125,7 +125,7 @@ define(
 
 				on(qrNode, "click", function() {
 					var sessionKey = model.getKey();
-					if (null == sessionKey) {
+					if (null === sessionKey) {
 						return;
 					}
 					var url = string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionKey});
@@ -204,7 +204,7 @@ define(
 					width: 480,
 					height: 800
 				});
-				if (null == mobileDialog) {
+				if (null === mobileDialog) {
 					mobileDialog = new Dialog({
 						id: "mobileDialog",
 						title: "ARSnova",
@@ -239,7 +239,7 @@ define(
 					var urlNode = domConstruct.create("p", {innerHTML: data}, qrOverlayContentNode);
 					domStyle.set(urlNode, "width", ((QR_CELL_COUNT + QR_BORDER_SIZE_FACTOR * 2) * cellSize) + "px");
 				};
-				if ("undefined" == typeof qrcode) {
+				if ("undefined" === typeof qrcode) {
 					script.get("lib/d-project.com/qrcode-generator/qrcode.js").then(function() {
 						console.log("QR Code generation library loaded");
 						showQrOverlay();

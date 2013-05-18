@@ -47,8 +47,8 @@ define(
 
 		self = {
 			showSettings: function(defaultInterval) {
-				if (null == dialog) {
-					if (null == defaultInterval) {
+				if (null === dialog) {
+					if ("undefined" === typeof defaultInterval) {
 						defaultInterval = "10:00";
 					}
 					var contentNode = domConstruct.create("div");
@@ -94,11 +94,11 @@ define(
 			},
 
 			start: function(intervalSeconds) {
-				if (null != interval) {
+				if (null !== interval) {
 					clearInterval(interval);
 				}
 
-				if (null == timerNode) {
+				if (null === timerNode) {
 					timerNode = domConstruct.create("div", {id: "timerUnderlay"}, document.body);
 					var timerWrapper = domConstruct.create("div", null, timerNode);
 					remainingTimeNode = domConstruct.create("div", {id: "remainingTime"}, timerWrapper);
@@ -120,7 +120,7 @@ define(
 			},
 
 			stop: function() {
-				if (null != interval) {
+				if (null !== interval) {
 					clearInterval(interval);
 				}
 				domStyle.set(timerNode, "display", "none");

@@ -61,7 +61,7 @@ define(
 
 			get: function(id) {
 				var question = questionStore.get(id);
-				if (null == question.text) {
+				if (null === question.text) {
 					/* force reloading of question */
 					questionMemory.remove(id);
 					question = questionStore.get(id);

@@ -93,7 +93,7 @@ define(
 						clearTimeout(resizeTimeout);
 					}
 					resizeTimeout = setTimeout(function() {
-						if ("hidden" == appContainer.style.visibility) {
+						if ("hidden" === appContainer.style.visibility) {
 							return;
 						}
 						var panel = dom.byId("audienceFeedbackPaneContent");

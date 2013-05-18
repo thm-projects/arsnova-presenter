@@ -35,7 +35,7 @@ define(
 			checkLoginStatus = function() {
 				request.get(apiPrefix, {sync: true, handleAs: "json"}).then(
 					function(response) {
-						if ("ldap" == response.type) {
+						if ("ldap" === response.type) {
 							/* guest login */
 							loginError = true;
 						} else {
@@ -55,9 +55,9 @@ define(
 				console.log("-- auth.init --");
 
 				checkLoginStatus();
-				if (true == loginError) {
+				if (true === loginError) {
 					console.log("Auth: user is not logged in");
-					if (null != loginType) {
+					if (null !== loginType) {
 						console.log("Auth: user will be redirected to login service");
 						location.href = apiPrefix + "login?type=" + loginType + "&user=" + username;
 					} else {

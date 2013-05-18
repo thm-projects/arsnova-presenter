@@ -80,12 +80,12 @@ define(
 						clearTimeout(resizeTimeout);
 					}
 					resizeTimeout = setTimeout(function() {
-						if ("hidden" == appContainer.style.visibility) {
+						if ("hidden" === appContainer.style.visibility) {
 							return;
 						}
 						var panel = dom.byId("piAnswersMainPaneContent");
 						var height = panel.clientHeight;
-						if (height < 1 || "none" == domStyle.get(chartNode, "display")) {
+						if (height < 1 || "none" === domStyle.get(chartNode, "display")) {
 							/* return if piAnswersMainPaneContent is not visible */
 							return;
 						}
@@ -128,7 +128,7 @@ define(
 				chart.removeSeries("PI round 2");
 
 				var seriesCount = 0;
-				if (null != series) {
+				if ("undefined" !== typeof series && null !== series) {
 					var showCorrect = correctIndexes && correctIndexes.length > 0;
 
 					/* sort series object property name */
@@ -148,7 +148,7 @@ define(
 						seriesCount++;
 					}
 				}
-				if (0 == seriesCount) {
+				if (0 === seriesCount) {
 					var values = [];
 					for (var i = 0; i < labels.length; i++) {
 						values.push(0);

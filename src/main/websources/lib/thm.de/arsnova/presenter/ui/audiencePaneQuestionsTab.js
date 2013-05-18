@@ -78,7 +78,7 @@ define(
 
 				/* reset new questions count when this tab is activated */
 				tabContainer.watch("selectedChildWidget", function(name, oldValue, value) {
-					if (value == pane) {
+					if (value === pane) {
 						newQuestionsCount = 0;
 						pane.set("title", "Questions");
 						pane.controlButton.set("label", "Questions");
@@ -121,7 +121,7 @@ define(
 				if (!question.read) {
 					domClass.add(questionNode, "unread");
 				}
-				if (null != question.text) {
+				if (null !== question.text) {
 					domClass.add(questionNode, "loaded");
 					messageNode.appendChild(document.createTextNode(question.text));
 					mathJax.parse(messageNode);

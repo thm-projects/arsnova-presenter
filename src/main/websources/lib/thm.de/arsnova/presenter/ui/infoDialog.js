@@ -45,7 +45,7 @@ define(
 		self = {
 			/* public "methods" */
 			show: function() {
-				if (null == dialog) {
+				if (null === dialog) {
 					container = new BorderContainer({
 						style: "width: 25em; height: 27em;"
 					});

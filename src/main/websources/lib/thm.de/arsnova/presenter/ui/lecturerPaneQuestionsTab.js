@@ -60,7 +60,7 @@ define(
 			update: function(questions) {
 				domConstruct.empty(questionListNode);
 
-				if (null == questions) {
+				if ("undefined" === questions || null === questions) {
 					return;
 				}
 

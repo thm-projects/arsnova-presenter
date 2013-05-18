@@ -72,7 +72,7 @@ define(
 		});
 
 		questionState.watch("id", function(name, oldValue, value) {
-			if (null == value) {
+			if (null === value) {
 				return;
 			}
 
@@ -108,7 +108,7 @@ define(
 			},
 
 			setId: function(id) {
-				if (questionState.get("id") != id) {
+				if (questionState.get("id") !== id) {
 					questionState.set("id", id);
 				}
 			},
@@ -118,7 +118,7 @@ define(
 			},
 
 			getAll: function() {
-				if (null == questionStore) {
+				if (null === questionStore) {
 					console.log("No session selected");
 
 					return null;
@@ -136,8 +136,8 @@ define(
 			},
 
 			get: function(questionId) {
-				if (null == questionId) {
-					if (null == (questionId = self.getId())) {
+				if ("undefined" === typeof questionId || null === questionId) {
+					if (null === (questionId = self.getId())) {
 						return null;
 					}
 				}
@@ -153,7 +153,7 @@ define(
 			},
 
 			next: function() {
-				if (0 == self.getCount()) {
+				if (0 === self.getCount()) {
 					console.log("No questions available");
 
 					return;
@@ -161,8 +161,8 @@ define(
 
 				var nextQuestionIndex = null;
 				for (var i = 0; i < questionSortIndex.length; i++) {
-					if (self.getId() == questionSortIndex[i]) {
-						nextQuestionIndex = questionSortIndex.length - 1 == i ? 0 : i + 1;
+					if (self.getId() === questionSortIndex[i]) {
+						nextQuestionIndex = questionSortIndex.length - 1 === i ? 0 : i + 1;
 
 						break;
 					}
@@ -170,13 +170,13 @@ define(
 
 				var nextQuestionId = questionSortIndex[nextQuestionIndex];
 
-				if (null != nextQuestionId) {
+				if (null !== nextQuestionId) {
 					self.setId(nextQuestionId);
 				}
 			},
 
 			prev: function() {
-				if (0 == self.getCount()) {
+				if (0 === self.getCount()) {
 					console.log("No questions available");
 
 					return;
@@ -184,8 +184,8 @@ define(
 
 				var prevQuestionIndex = null;
 				for (var i = questionSortIndex.length - 1; i >= 0 ; i--) {
-					if (self.getId() == questionSortIndex[i]) {
-						prevQuestionIndex = 0 == i ? questionSortIndex.length - 1 : i - 1;
+					if (self.getId() === questionSortIndex[i]) {
+						prevQuestionIndex = 0 === i ? questionSortIndex.length - 1 : i - 1;
 
 						break;
 					}
@@ -193,13 +193,13 @@ define(
 
 				var prevQuestionId = questionSortIndex[prevQuestionIndex];
 
-				if (null != prevQuestionId) {
+				if (null !== prevQuestionId) {
 					self.setId(prevQuestionId);
 				}
 			},
 
 			first: function() {
-				if (0 == self.getCount()) {
+				if (0 === self.getCount()) {
 					console.log("No questions available");
 
 					return;
@@ -207,13 +207,13 @@ define(
 
 				var firstQuestionId = questionSortIndex[0];
 
-				if (null != firstQuestionId) {
+				if (null !== firstQuestionId) {
 					self.setId(firstQuestionId);
 				}
 			},
 
 			last: function() {
-				if (0 == self.getCount()) {
+				if (0 === self.getCount()) {
 					console.log("No questions available");
 
 					return;
@@ -221,18 +221,18 @@ define(
 
 				var lastQuestionId = questionSortIndex[questionSortIndex.length - 1];
 
-				if (null != lastQuestionId) {
+				if (null !== lastQuestionId) {
 					self.setId(lastQuestionId);
 				}
 			},
 
 			getPosition: function() {
-				if (0 == self.getCount()) {
+				if (0 === self.getCount()) {
 					return -1;
 				}
 
 				for (var i = 0; i < questionSortIndex.length; i++) {
-					if (self.getId() == questionSortIndex[i]) {
+					if (self.getId() === questionSortIndex[i]) {
 						return i;
 					}
 				}
@@ -241,7 +241,7 @@ define(
 			},
 
 			getCount: function() {
-				if (null == questionMemory) {
+				if (null === questionMemory) {
 					return 0;
 				}
 
@@ -249,7 +249,7 @@ define(
 			},
 
 			getUnanswered: function() {
-				if (null == questionStore) {
+				if (null === questionStore) {
 					console.log("No session selected");
 
 					return null;
@@ -262,14 +262,14 @@ define(
 			},
 
 			getAnswers: function(piRound, refresh) {
-				if (null == self.getId()) {
+				if (null === self.getId()) {
 					console.log("No question selected");
 
 					return null;
 				}
 
 				return when(self.get(), function(question) {
-					if ("freetext" == question.questionType) {
+					if ("freetext" === question.questionType) {
 						if (!refresh && ftAnswerMemory.data.length > 0) {
 							return ftAnswerMemory.query();
 						}
@@ -277,7 +277,7 @@ define(
 						return ftAnswerStore.query();
 					}
 
-					if (null == piRound || piRound < 1 || piRound > 2) {
+					if ("undefined" === typeof piRound || piRound < 1 || piRound > 2) {
 						piRound = question.piRound;
 					}
 
@@ -299,7 +299,7 @@ define(
 			},
 
 			removeAnswer: function(id) {
-				if (null == self.getId()) {
+				if (null === self.getId()) {
 					console.log("No question selected");
 
 					return null;

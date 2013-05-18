@@ -284,7 +284,7 @@ define(
 
 				model.watchId(onLecturerQuestionIdChange);
 				model.onAnswersAvailable(function(questionId) {
-					if (model.getId() != questionId) {
+					if (model.getId() !== questionId) {
 						return;
 					}
 					var question = model.get();
@@ -299,7 +299,7 @@ define(
 			updateQuestion: function(question) {
 				var labels = [];
 
-				if (null == question) {
+				if ("undefined" === question || null === question) {
 					navigationStatusNode.innerHTML = "0/0";
 					questionSubjectNode.innerHTML = "Question subject";
 					questionTextNode.innerHTML = "No questions available";
@@ -319,14 +319,14 @@ define(
 				answersContainer.resize();
 				registry.byId("fullScreenContainer").resize();
 
-				if ("freetext" == question.questionType) {
+				if ("freetext" === question.questionType) {
 					piAnswersChart.hide();
 					domConstruct.empty(freeTextAnswersNode);
 					domStyle.set(freeTextAnswersNode, "display", "block");
 					domStyle.set(piRoundButton.domNode, "display", "none");
 				} else {
 					domStyle.set(freeTextAnswersNode, "display", "none");
-					if (question.piRound == 2) {
+					if (2 === question.piRound) {
 						piRoundButton.set("label", "2nd");
 						piRoundButton.set("disabled", true);
 					} else {
@@ -347,7 +347,7 @@ define(
 				domStyle.set(answerCountNode, "visibility", "hidden");
 
 				when(model.get(), function(question) {
-					if ("freetext" == question.questionType) {
+					if ("freetext" === question.questionType) {
 						when(model.getAnswers(), function(answers) {
 							self.updateFreeText(answers);
 						});
@@ -459,7 +459,7 @@ define(
 							return;
 						}
 
-						if ("mc" == question.questionType) {
+						if ("mc" === question.questionType) {
 							/* handle selected options for multiple choice questions */
 							var selectedOptions = answer.answerText.split(",");
 							for (var j = 0; j < selectedOptions.length; j++) {
@@ -482,7 +482,7 @@ define(
 					/* only display PI round label if PI has been started */
 					if (question.piRound > 1) {
 						var piRoundNode = domConstruct.create("span", {"class": "piRound"}, answerCountNode);
-						var roundString = "PI round 2" == round ? "2nd" : ("PI round 1" == round ? "1st" : "");
+						var roundString = "PI round 2" === round ? "2nd" : ("PI round 1" === round ? "1st" : "");
 						piRoundNode.appendChild(document.createTextNode(roundString));
 						countNode = domConstruct.create("span", {"class": "answerCount"}, piRoundNode);
 					} else {
@@ -541,11 +541,11 @@ define(
 			var question = model.get();
 			when(question, function(question) {
 				self.updateQuestion(question);
-				if (null != question) {
+				if (null !== question) {
 					unlockQuestionMenuItem.set("checked", question.active);
 					unlockAnswerStatsMenuItem.set("checked", question.showStatistic);
 					unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);
-					if ("freetext" == question.questionType) {
+					if ("freetext" === question.questionType) {
 						showCorrectMenuItem.set("disabled", true);
 						for (var i = 1; i < showPiRoundMenuItem.length; i++) {
 							showPiRoundMenuItem[i].set("disabled", true);
