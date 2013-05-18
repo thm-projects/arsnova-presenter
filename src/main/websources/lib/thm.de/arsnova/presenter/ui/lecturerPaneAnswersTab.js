@@ -441,7 +441,8 @@ define(
 
 				/* sorting is needed since the order of the object's properties is not determined */
 				var roundNames = [];
-				for (var round in rounds) {
+				var round = null;
+				for (round in rounds) {
 					roundNames.push(round);
 				}
 				roundNames.sort();
@@ -449,9 +450,9 @@ define(
 
 				domConstruct.empty(answerCountNode);
 				for (var i = 0; i < roundNames.length; i++) {
-					var round = roundNames[i];
+					round = roundNames[i];
 					var answers = rounds[round];
-					var values = [];
+					values = [];
 					while (values.length < possibleAnswersCount) {
 						values.push(0);
 					}
@@ -538,8 +539,10 @@ define(
 
 		/* private "methods" */
 		onLecturerQuestionIdChange = function(name, oldValue, value) {
+			var i;
+
 			showCorrectMenuItem.set("checked", false);
-			for (var i = 1; i < showPiRoundMenuItem.length; i++) {
+			for (i = 1; i < showPiRoundMenuItem.length; i++) {
 				showPiRoundMenuItem[i].set("checked", false);
 			}
 			showAnswers = false;
@@ -552,7 +555,7 @@ define(
 					unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);
 					if ("freetext" === question.questionType) {
 						showCorrectMenuItem.set("disabled", true);
-						for (var i = 1; i < showPiRoundMenuItem.length; i++) {
+						for (i = 1; i < showPiRoundMenuItem.length; i++) {
 							showPiRoundMenuItem[i].set("disabled", true);
 						}
 						unlockCorrectAnswerMenuItem.set("disabled", true);
@@ -569,7 +572,7 @@ define(
 						unlockCorrectAnswerMenuItem.set("disabled", noCorrectAnswer);
 						unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);
 						unlockAnswerStatsMenuItem.set("label", "Answer statistics");
-						for (var i = 1; i < showPiRoundMenuItem.length; i++) {
+						for (i = 1; i < showPiRoundMenuItem.length; i++) {
 							if (i > question.piRound) {
 								showPiRoundMenuItem[i].set("disabled", true);
 							} else {

@@ -106,6 +106,8 @@ define(
 			},
 
 			update: function(labels, correctIndexes, series, percentageValues, abstention) {
+				var i;
+
 				chart.addAxis("x", {
 					labels: labels,
 					dropLabels: false,
@@ -133,13 +135,14 @@ define(
 
 					/* sort series object property name */
 					var seriesNames = [];
-					for (var seriesName in series) {
+					var seriesName = null;
+					for (seriesName in series) {
 						seriesNames.push(seriesName);
 					}
 					seriesNames.sort();
 
-					for (var i = 0; i < seriesNames.length; i++) {
-						var seriesName = seriesNames[i];
+					for (i = 0; i < seriesNames.length; i++) {
+						seriesName = seriesNames[i];
 						chart.addSeries(seriesName,
 							showCorrect
 								? theme.applyColors(series[seriesName], "markCorrect", i < seriesNames.length - 1, correctIndexes)
@@ -150,7 +153,7 @@ define(
 				}
 				if (0 === seriesCount) {
 					var values = [];
-					for (var i = 0; i < labels.length; i++) {
+					for (i = 0; i < labels.length; i++) {
 						values.push(0);
 					}
 					chart.addSeries("No data", values);
