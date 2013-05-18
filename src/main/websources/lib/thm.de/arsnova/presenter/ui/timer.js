@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,22 +29,22 @@ define(
 	],
 	function(string, on, domConstruct, domClass, domStyle, Button, ValidationTextBox, Dialog) {
 		"use strict";
-		
+
 		var
 			self = null,
 			interval = null,
 			warningThresholdSeconds = 0,
 			remainingSeconds = 0.0,
-			
+
 			/* DOM */
 			timerNode = null,
 			remainingTimeNode = null,
-			
+
 			/* Dijit */
 			dialog = null,
 			intervalTextBox = null
 		;
-		
+
 		self = {
 			showSettings: function(defaultInterval) {
 				if (null == dialog) {
@@ -92,12 +92,12 @@ define(
 				}
 				dialog.show();
 			},
-			
+
 			start: function(intervalSeconds) {
 				if (null != interval) {
 					clearInterval(interval);
 				}
-				
+
 				if (null == timerNode) {
 					timerNode = domConstruct.create("div", {id: "timerUnderlay"}, document.body);
 					var timerWrapper = domConstruct.create("div", null, timerNode);
@@ -112,13 +112,13 @@ define(
 				}
 				domClass.remove(remainingTimeNode, "highlight");
 				domStyle.set(timerNode, "display", "");
-				
+
 				remainingSeconds = intervalSeconds;
 				warningThresholdSeconds = remainingSeconds > 180 ? 60 : (remainingSeconds > 60 ? 30 : 10);
 				interval = setInterval(countDown, 500);
 				countDown();
 			},
-			
+
 			stop: function() {
 				if (null != interval) {
 					clearInterval(interval);
@@ -126,29 +126,29 @@ define(
 				domStyle.set(timerNode, "display", "none");
 			}
 		};
-		
+
 		/* private "methods" */
 		var countDown = function() {
 			remainingSeconds -= 0.5;
-			
+
 			if (remainingSeconds <= warningThresholdSeconds) {
 				domClass.toggle(remainingTimeNode, "highlight");
-				
+
 				if (remainingSeconds < 0.5) {
 					return;
 				}
 			}
-			
+
 			var hours = Math.floor(remainingSeconds / 3600.0);
 			var minutes = Math.floor(remainingSeconds / 60.0) % 60;
 			var seconds = Math.floor(remainingSeconds % 60);
-			
+
 			var remainingTimeString = (hours > 0 ? hours + ":" + string.pad(minutes, 2) : minutes)
 				+ ":" + string.pad(seconds, 2)
 			;
 			remainingTimeNode.innerHTML = remainingTimeString;
 		};
-		
+
 		return self;
 	}
 );

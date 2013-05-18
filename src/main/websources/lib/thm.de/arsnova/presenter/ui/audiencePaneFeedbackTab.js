@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,59 +29,59 @@ define(
 	],
 	function(on, dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart) {
 		"use strict";
-		
+
 		var
 			self = null,
 			model = null,
-			
+
 			/* Dijit */
 			pane = null
 		;
-		
+
 		self = {
 			/* public "methods" */
 			init: function(tabContainer, feedbackModel) {
 				model = feedbackModel;
-				
+
 				pane = new ContentPane({
 					id: "audienceFeedbackPane",
 					title: "Live Feedback"
 				});
 				tabContainer.addChild(pane);
 			},
-			
+
 			startup: function() {
 				var feedbackPaneContentNode = domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, pane.domNode);
 				audienceFeedbackChart.init(feedbackPaneContentNode);
-				
+
 				model.onReceive(function(feedback) {
 					var feedback0 = feedback[0];
 					feedback[0] = feedback[1];
 					feedback[1] = feedback0;
 					self.update(feedback);
 				});
-				
+
 				/* add full screen menu items */
 				var fullScreenMenu = registry.byId("fullScreenMenu");
 				fullScreenMenu.addChild(new MenuItem({
 					label: "Audience feedback",
 					onClick: self.toggleFullScreenMode
 				}));
-				
+
 				/* handle events fired when full screen mode is canceled */
 				fullScreen.onChange(function(event, isActive) {
 					if (!isActive) {
 						self.exitFullScreenMode();
-						
+
 						pane.resize();
 					}
 				});
 			},
-			
+
 			update: function(feedback) {
 				audienceFeedbackChart.update(feedback);
 			},
-			
+
 			toggleFullScreenMode: function() {
 				if (fullScreen.isActive()) {
 					/* dom node rearrangement takes place in fullscreenchange event handler */
@@ -90,17 +90,17 @@ define(
 					fullScreen.request(dom.byId("fullScreenContainer"));
 					domConstruct.create("header", {id: "audienceFeedbackTitle", innerHTML: "Audience feedback"}, "fullScreenHeader");
 					domConstruct.place(dom.byId("audienceFeedbackPaneContent"), "fullScreenContent");
-					
+
 					registry.byId("fullScreenContainer").resize();
 				}
 			},
-			
+
 			exitFullScreenMode: function() {
 				domConstruct.place(dom.byId("audienceFeedbackPaneContent"), pane.domNode);
 				domConstruct.destroy("audienceFeedbackTitle");
 			}
 		};
-		
+
 		return self;
 	}
 );

@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,12 +36,12 @@ define(
 	],
 	function(config, string, on, when, dom, domConstruct, domClass, domStyle, script, Memory, registry, DropDownButton, FilteringSelect, Dialog, Tooltip) {
 		"use strict";
-		
+
 		var
 			self = null,
 			model = null,
 			memory = null,
-			
+
 			/* DOM */
 			infoNode = null,
 			titleNode = null,
@@ -49,17 +49,17 @@ define(
 			keyNode = null,
 			qrNode = null,
 			activeUserCountNode = null,
-			
+
 			/* Dijit */
 			select = null,
 			mobileDialog = null
 		;
-		
+
 		self = {
 			/* public "methods" */
 			init: function(sessionModel) {
 				console.log("-- UI: sessionControls.init --");
-				
+
 				model = sessionModel;
 
 				/* Session info */
@@ -89,7 +89,7 @@ define(
 					position: ["below-centered"],
 					label: "The session key you give to your audience"
 				});
-				
+
 				if ("undefined" !== typeof config.arsnova.mobileStudentSessionUrl) {
 					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr"}, panelNode);
 					new Tooltip({
@@ -98,7 +98,7 @@ define(
 						position: ["below-centered"]
 					}).startup();
 				}
-				
+
 				/* button is destroyed on creation since it is not needed
 				 * until editing features are available */
 //				new DropDownButton({
@@ -113,7 +113,7 @@ define(
 					activeUserCountNode.innerHTML = value;
 				});
 			},
-			
+
 			startup: function() {
 				/* update mode menu item click events */
 				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
@@ -124,7 +124,7 @@ define(
 				on(mobileStudentsViewMenuItem, "click", function() {
 					self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
 				});
-				
+
 				on(qrNode, "click", function() {
 					var sessionKey = model.getKey();
 					if (null == sessionKey) {
@@ -134,7 +134,7 @@ define(
 					self.showQr(self.getAbsoluteUrl(url));
 				});
 			},
-			
+
 			updateSelect: function(sessions) {
 				when(sessions, function(sessions) {
 					sessions.forEach(function(session) {
@@ -146,25 +146,25 @@ define(
 						});
 					});
 					console.log("UI: session list updated");
-					
+
 					var key = model.getKey();
 					if (key) {
 						select.set("value", key);
 					}
 				});
 			},
-			
+
 			submitCreateSessionForm: function() {
 				var
 					shortName = registry.byId("sessionNameField").value,
 					description = registry.byId("sessionDescField").value
 				;
-				
+
 				if (model.createSession(shortName, description)) {
 					registry.byId("newSessionDialog").close();
 				};
 			},
-			
+
 			onKeyChange: function(name, oldValue, value) {
 				select.set("value", value);
 				when(model.getCurrent(), function(session) {
@@ -179,7 +179,7 @@ define(
 					keyNode.innerHTML = keyword;
 					domClass.remove(keyNode, "noSession");
 				});
-				
+
 				/* enable mode menu items */
 				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
 				if ("undefined" !== typeof config.arsnova.mobileLecturerSessionUrl) {
@@ -190,16 +190,16 @@ define(
 					mobileStudentsViewMenuItem.set("disabled", false);
 				}
 			},
-			
+
 			openMobileSession: function(url) {
 				url = string.substitute(url, {sessionKey: model.getKey()});
-				
+
 				if (document.body.clientWidth < 500 || document.body.clientHeight < 850) {
 					window.open(url, "_blank");
-					
+
 					return;
 				}
-				
+
 				var mobileFrameNode = domConstruct.create("iframe", {
 					id: "mobileFrame",
 					src: url,
@@ -219,7 +219,7 @@ define(
 				mobileDialog.set("content", mobileFrameNode);
 				mobileDialog.show();
 			},
-			
+
 			showQr: function(data) {
 				var QR_TYPE_NUMBER = 4;
 				var QR_ERROR_CORRECT_LEVEL = "M";
@@ -252,13 +252,13 @@ define(
 					showQrOverlay();
 				}
 			},
-			
+
 			getAbsoluteUrl: function(url) {
 				var tag = domConstruct.create("a", {href: url}, document.body);
 				return tag.href;
 			}
 		};
-		
+
 		return self;
 	}
 );

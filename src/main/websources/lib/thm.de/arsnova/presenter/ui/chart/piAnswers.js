@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,17 +32,17 @@ define(
 	],
 	function(dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, Grid, AxisDefault, fullScreen, easing, theme) {
 		"use strict";
-		
+
 		var
 			self = null,
-			
+
 			/* DOM */
 			chartNode = null,
-			
+
 			/* dojox.charting */
 			chart = null
 		;
-		
+
 		self = {
 			/* public "methods" */
 			init: function(parentNode) {
@@ -74,7 +74,7 @@ define(
 					}
 				});
 				chart.render();
-				
+
 				var resizeTimeout = null;
 				var onResize = function(event) {
 					if (resizeTimeout) {
@@ -97,15 +97,15 @@ define(
 				registry.byId("fullScreenContent").on("resize", onResize);
 				//onResize();
 			},
-			
+
 			show: function() {
 				domStyle.set(chartNode, "display", "block");
 			},
-			
+
 			hide: function() {
 				domStyle.set(chartNode, "display", "none");
 			},
-			
+
 			update: function(labels, correctIndexes, series, percentageValues, abstention) {
 				chart.addAxis("x", {
 					labels: labels,
@@ -123,22 +123,22 @@ define(
 						return value + "%";
 					}
 				});
-				
+
 				chart.removeSeries("No data");
 				chart.removeSeries("PI round 1");
 				chart.removeSeries("PI round 2");
-				
+
 				var seriesCount = 0;
 				if (null != series) {
 					var showCorrect = correctIndexes && correctIndexes.length > 0;
-					
+
 					/* sort series object property name */
 					var seriesNames = [];
 					for (var seriesName in series) {
 						seriesNames.push(seriesName);
 					}
 					seriesNames.sort();
-					
+
 					for (var i = 0; i < seriesNames.length; i++) {
 						var seriesName = seriesNames[i];
 						chart.addSeries(seriesName,
@@ -159,7 +159,7 @@ define(
 				chart.render();
 			}
 		};
-		
+
 		return self;
 	}
 );

@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,7 +28,7 @@ define(
 	function(lang, array, Theme, themes, gradGen, color) {
 		"use strict";
 		/* based on Claro charting theme */
-	
+
 		var
 			self = null,
 			g = Theme.generateGradient,
@@ -40,7 +40,7 @@ define(
 				"feedback": ["#43d943", "#f2f224", "#e64000", "#000"]
 			}
 		;
-		
+
 		self = new Theme({
 			chart: {
 				fill: {
@@ -53,7 +53,7 @@ define(
 				},
 				stroke: {color: "#b5bcc7"}
 			},
-			
+
 			plotarea: {
 				fill: {
 					type: "linear",
@@ -64,7 +64,7 @@ define(
 					]
 				}
 			},
-			
+
 			axis: {
 				stroke: {
 					color: axisAndLabelColor,
@@ -82,21 +82,21 @@ define(
 					style: "Dot"
 				}
 			},
-			
+
 			series: {
 				stroke: {width: 2.5, color: "#fff"},
 				outline: null,
 				font: "normal normal normal 7pt Verdana, Arial, sans-serif",
 				fontColor: "#131313"
 			},
-			
+
 			marker: {
 				stroke: {width: 1.25, color: "#131313"},
 				outline: {width: 1.25, color: "#131313"},
 				font: "normal normal normal 8pt Verdana, Arial, sans-serif",
 				fontColor: "#131313"
 			},
-			
+
 			seriesThemes: [
 				{fill: g(defaultFill, "#2a6ead", "#3a99f2")},
 				{fill: g(defaultFill, "#613e04", "#996106")},
@@ -104,7 +104,7 @@ define(
 				{fill: g(defaultFill, "#55aafa", "#3f7fba")},
 				{fill: g(defaultFill, "#ad7b2a", "#db9b35")}
 			],
-			
+
 			markerThemes: [
 				{fill: "#2a6ead", stroke: {color: "#fff"}},
 				{fill: "#613e04", stroke: {color: "#fff"}},
@@ -131,12 +131,12 @@ define(
 			var result = [];
 			for (var i = 0; i < values.length; i++) {
 				var colorIndex = highlightValues ? (array.indexOf(highlightValues, i) >= 0 ? 0 : 1) : i;
-				
+
 				/* use last color of a theme if index of current value is in subtleValues */
 				if (subtleValues && array.indexOf(subtleValues, i) >= 0) {
 					colorIndex = colors.length - 1;
 				}
-				
+
 				var strokeColor = color.fromHex(colors[colorIndex]);
 				var hsl = strokeColor.toHsl();
 				result.push({
@@ -145,12 +145,12 @@ define(
 					fill: fills[colorIndex]
 				});
 			}
-			
+
 			return result;
 		};
-		
+
 		themes.Arsnova = self;
-		
+
 		return self;
 	}
 );

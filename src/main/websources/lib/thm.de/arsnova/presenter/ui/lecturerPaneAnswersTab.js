@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,7 +42,7 @@ define(
 	],
 	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart) {
 		"use strict";
-		
+
 		var
 			self = null,
 			model = null,
@@ -50,7 +50,7 @@ define(
 			unlockMenu = null,
 			fsControlsToggleHandlers = [],
 			fsControlsToggleFx = {},
-			
+
 			/* DOM */
 			fullScreenControlsNode = null,
 			freeTextAnswersNode = null,
@@ -62,7 +62,7 @@ define(
 			questionTitleSeperatorNode = null,
 			questionTextNode = null,
 			answerCountNode = null,
-			
+
 			/* Dijit */
 			tabContainer = null,
 			answersContainer = null,
@@ -82,19 +82,19 @@ define(
 			unlockAnswerStatsMenuItem = null,
 			unlockCorrectAnswerMenuItem = null
 		;
-		
+
 		self = {
 			/* public "methods" */
 			init: function(_tabContainer, lecturerQuestionModel) {
 				tabContainer = _tabContainer;
 				model = lecturerQuestionModel;
-				
+
 				answersContainer = new BorderContainer({
 					id: "piAnswersContainer",
 					title: "Answers"
 				});
 				tabContainer.addChild(answersContainer);
-				
+
 				controlPane = new ContentPane({
 					id: "piAnswersControlPane",
 					region: "top"
@@ -111,16 +111,16 @@ define(
 				answersContainer.addChild(titlePane);
 				answersContainer.addChild(mainPane);
 			},
-			
+
 			startup: function() {
 				mainPaneContentNode = domConstruct.create("div", {id: "piAnswersMainPaneContent"}, mainPane.domNode);
 				freeTextAnswersNode = domConstruct.create("div", {id: "piFreeTextAnswers"}, mainPaneContentNode);
 				domStyle.set(freeTextAnswersNode, "display", "none");
-				
+
 				controlPaneContentNode = domConstruct.create("div", {id: "piAnswersControlPaneContent"}, controlPane.domNode);
 				var answersNav = domConstruct.create("div", {id: "piAnswersNavigation"}, controlPaneContentNode);
 				var answersSettings = domConstruct.create("div", {id: "piAnswersSettings"}, controlPaneContentNode);
-				
+
 				(firstButton = new Button({
 					id: "firstPiQuestionButton",
 					label: "First question",
@@ -158,7 +158,7 @@ define(
 						model.last();
 					}
 				})).placeAt(answersNav).startup();
-				
+
 				var showAnswersMenu = new Menu({style: "display: none"});
 				showAnswersMenu.addChild(showCorrectMenuItem = new CheckedMenuItem({
 					label: "Correct answers",
@@ -231,19 +231,19 @@ define(
 				questionTextNode = domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "No questions available"}, questionNode);
 				answerCountNode = domConstruct.create("span", {id: "piAnswersCount"}, titlePaneContentNode);
 				domConstruct.create("span", {"class": "answerCount", innerHTML: "-"}, answerCountNode);
-				
+
 				self.enableControls(false);
-				
+
 				piAnswersChart.init(mainPaneContentNode);
-				
+
 				/* add full screen menu item */
 				registry.byId("fullScreenMenu").addChild(new MenuItem({
 					label: "Answers to Lecturer's questions",
 					onClick: self.toggleFullScreenMode
 				}));
-				
+
 				fullScreenControlsNode = domConstruct.create("div", {id: "fullScreenControls"}, document.body);
-				
+
 				var onResize = function() {
 					domStyle.set(fullScreenControlsNode, "left", Math.round(document.body.clientWidth / 2 - 250) + "px");
 
@@ -271,17 +271,17 @@ define(
 						domConstruct.place(controlPaneContentNode, controlPane.domNode);
 						domConstruct.place(titlePaneContentNode, titlePane.domNode);
 						domConstruct.place(mainPaneContentNode, mainPane.domNode);
-						
+
 						for (var i = 0; i < fsControlsToggleHandlers.length; i++) {
 							fsControlsToggleHandlers[i].remove();
 						}
 						fsControlsToggleHandlers = [];
 						fsControlsToggleFx.hide.play();
-						
+
 						answersContainer.resize();
 					}
 				});
-				
+
 				model.watchId(onLecturerQuestionIdChange);
 				model.onAnswersAvailable(function(questionId) {
 					if (model.getId() != questionId) {
@@ -295,10 +295,10 @@ define(
 					});
 				});
 			},
-			
+
 			updateQuestion: function(question) {
 				var labels = [];
-				
+
 				if (null == question) {
 					navigationStatusNode.innerHTML = "0/0";
 					questionSubjectNode.innerHTML = "Question subject";
@@ -306,10 +306,10 @@ define(
 					answersContainer.resize();
 					piAnswersChart.update([], []);
 					domStyle.set(piRoundButton, "display", "none");
-					
+
 					return;
 				}
-				
+
 				navigationStatusNode.innerHTML = (model.getPosition() + 1) + "/" + model.getCount();
 				domConstruct.empty(questionSubjectNode);
 				questionSubjectNode.appendChild(document.createTextNode(question.subject));
@@ -318,7 +318,7 @@ define(
 				mathJax.parse(questionTextNode);
 				answersContainer.resize();
 				registry.byId("fullScreenContainer").resize();
-				
+
 				if ("freetext" == question.questionType) {
 					piAnswersChart.hide();
 					domConstruct.empty(freeTextAnswersNode);
@@ -341,11 +341,11 @@ define(
 					piAnswersChart.update(labels);
 				}
 			},
-			
+
 			updateAnswers: function() {
 				/* hide answer count until answers have been loaded */
 				domStyle.set(answerCountNode, "visibility", "hidden");
-				
+
 				when(model.get(), function(question) {
 					if ("freetext" == question.questionType) {
 						when(model.getAnswers(), function(answers) {
@@ -364,23 +364,23 @@ define(
 					}
 				});
 			},
-			
+
 			updateFreeText: function(answers) {
 				var totalAnswerCount = 0;
 				var abstentionCount = 0;
 				domConstruct.empty(freeTextAnswersNode);
 				answers.forEach(function(answer) {
 					totalAnswerCount += answer.answerCount;
-					
+
 					if (!showAnswers) {
 						return;
 					}
 					if (answer.abstention) {
 						abstentionCount++;
-						
+
 						return;
 					}
-					
+
 					var answerNode = domConstruct.create("div", {"class": "answer"});
 					var subjectNode = domConstruct.create("p", {"class": "subject"}, answerNode);
 					subjectNode.appendChild(document.createTextNode(answer.answerSubject));
@@ -412,7 +412,7 @@ define(
 				countNode.appendChild(document.createTextNode(totalAnswerCount));
 				domStyle.set(answerCountNode, "visibility", "visible");
 			},
-			
+
 			updateAnswerStatistics: function(rounds) {
 				var question = model.get();
 				var answerCountPerRound = [];
@@ -422,7 +422,7 @@ define(
 				var labels = [];
 				var labelReverseMapping = {};
 				var correctIndexes = [];
-				
+
 				question.possibleAnswers.forEach(function(possibleAnswer, i) {
 					/* transform the label and answer count data into arrays usable by dojox/charting */
 					labelReverseMapping[possibleAnswer.text] = i;
@@ -451,14 +451,14 @@ define(
 						values.push(0);
 					}
 					answerCountPerRound[round] = 0;
-					
+
 					answers.forEach(function(answer) {
 						answerCountPerRound[round] += answer.answerCount;
-						
+
 						if (!showAnswers) {
 							return;
 						}
-						
+
 						if ("mc" == question.questionType) {
 							/* handle selected options for multiple choice questions */
 							var selectedOptions = answer.answerText.split(",");
@@ -470,14 +470,14 @@ define(
 							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
 						}
 					});
-					
+
 					if (percentageValues) {
 						for (var j = 0; j < values.length; j++) {
 							values[j] *= 100 / answerCountPerRound[round] ;
 						}
 					}
 					valueSeries[round] = values;
-					
+
 					var countNode = null;
 					/* only display PI round label if PI has been started */
 					if (question.piRound > 1) {
@@ -493,7 +493,7 @@ define(
 				}
 				piAnswersChart.update(labels, correctIndexes, valueSeries, percentageValues, question.abstention);
 			},
-			
+
 			toggleFullScreenMode: function() {
 				if (fullScreen.isActive()) {
 					/* dom node rearrangement takes place in fullscreenchange event handler */
@@ -505,18 +505,18 @@ define(
 					domConstruct.place(controlPaneContentNode, fullScreenControlsNode);
 					domConstruct.place(titlePaneContentNode, "fullScreenHeader");
 					domConstruct.place(mainPaneContentNode, "fullScreenContent");
-					
+
 					registry.byId("fullScreenContainer").resize();
-					
+
 					fsControlsToggleHandlers.push(on(document.body, "mousemove", toggleFullScreenControls));
 					fsControlsToggleHandlers.push(on(document.body, "click", toggleFullScreenControls));
 				}
 			},
-			
+
 			selectTab: function() {
 				tabContainer.selectChild(answersContainer);
 			},
-			
+
 			enableControls: function(enable) {
 				if (!enable) {
 					domStyle.set(piRoundButton.domNode, "display", "none");
@@ -580,7 +580,7 @@ define(
 				}
 			});
 		};
-		
+
 		var toggleFullScreenControls = function(event) {
 			if (event.clientY < 150) {
 				fsControlsToggleFx.show.play();
@@ -588,7 +588,7 @@ define(
 				fsControlsToggleFx.hide.play();
 			}
 		};
-		
+
 		var updateLocks = function() {
 			model.updateLocks(
 				null,
@@ -597,7 +597,7 @@ define(
 				!unlockCorrectAnswerMenuItem.get("checked")
 			);
 		};
-		
+
 		return self;
 	}
 );

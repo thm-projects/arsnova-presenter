@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,15 +44,15 @@ define(
 	],
 	function(config, string, on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fx, fullScreen, timer, infoDialog, version) {
 		"use strict";
-		
+
 		var
 			MIN_WIDTH = 980,
 			MIN_HEIGHT = 600,
 			self = null,
-			
+
 			/* DOM */
 			timeNode = null,
-			
+
 			/* Dijit */
 			appContainer = null,
 			mainContainer = null,
@@ -61,14 +61,14 @@ define(
 			fullScreenContainer = null,
 			timeTooltip = null
 		;
-		
+
 		self = {
 			/* public "methods" */
 			init: function() {
 				console.log("-- UI: main.init --");
-				
+
 				var appContainerNode = domConstruct.create("div", {id: "appContainer", style: "visibility: hidden"}, document.body);
-				
+
 				appContainer = new BorderContainer({
 					id: "appContainer",
 					design: "headline"
@@ -87,7 +87,7 @@ define(
 					region: "bottom",
 					"class": "sidePanel"
 				});
-				
+
 				appContainer.addChild(mainContainer);
 				appContainer.addChild(headerPane);
 				appContainer.addChild(footerPane);
@@ -105,7 +105,7 @@ define(
 					region: "center"
 				}));
 				fullScreenContainer.placeAt(document.body);
-				
+
 				/* device resolution check */
 				var lowResNode = domConstruct.create("div", {id: "lowResolution"}, document.body);
 				domStyle.set(lowResNode, "visibility", "hidden");
@@ -153,15 +153,15 @@ define(
 				on(window, "resize", windowOnResize);
 				windowOnResize();
 			},
-			
+
 			startup: function() {
 				appContainer.startup();
 				domStyle.set(appContainer.domNode, "visibility", "visible");
 				fullScreen.setPageNode(appContainer.domNode);
-				
+
 				/* Add header content */
 				var exitPanelNode = domConstruct.create("div", {id: "exitPanel"}, headerPane.domNode);
-				
+
 				var fullScreenMenu = new Menu({id: "fullScreenMenu", style: "display: none"});
 				/* Menu items are added in the specific UI modules */
 				new ComboButton({
@@ -169,7 +169,7 @@ define(
 					onClick: self.toggleFullScreenMode,
 					dropDown: fullScreenMenu
 				}, domConstruct.create("button", {id: "fullScreenButton", type: "button"}, exitPanelNode)).startup();
-				
+
 				var modeMenu = new Menu({
 					id: "modeMenu",
 					style: "display: none"
@@ -215,11 +215,11 @@ define(
 					}
 				}));
 				productMenu.startup();
-				
+
 				if (config.arsnova.organization) {
 					var org = config.arsnova.organization;
 					domConstruct.create("span", {id: "footerOrganizationInfo", innerHTML: org.label}, footerPane.domNode);
-					
+
 					if (org.links) {
 						var organizationMenu = new Menu({
 							targetNodeIds: ["footerOrganizationInfo"],
@@ -235,7 +235,7 @@ define(
 						});
 					};
 				}
-				
+
 				timeNode = domConstruct.create("div", {id: "footerTime"}, footerPane.domNode);
 				timeTooltip = new Tooltip({
 					connectId: [timeNode],
@@ -246,7 +246,7 @@ define(
 				on(timeNode, "click", function() {
 					timer.showSettings();
 				});
-				
+
 				/* prevent window scrolling (needed for IE) */
 				on(window, "scroll", function(event) {
 					scrollTo(0, 0);
@@ -260,7 +260,7 @@ define(
 					if (isActive) {
 						console.log("Full screen mode enabled");
 						domStyle.set(fullScreenContainer.domNode, "display", "block");
-						
+
 						/* calculate logo size */
 						var docGeometry = domGeometry.getContentBox(document.body);
 						var vRatio = docGeometry.h / 30.0;
@@ -268,7 +268,7 @@ define(
 						domStyle.set(fullScreenLogo, "height", vRatio);
 						domStyle.set(fullScreenLogo, "width", (vRatio * ratio) + "px");
 						domStyle.set(fullScreenLogo, "display", "block");
-						
+
 						fullScreenContainer.resize();
 					} else {
 						console.log("Full screen mode disabled");
@@ -278,7 +278,7 @@ define(
 
 				appContainer.resize();
 			},
-			
+
 			hideSplash: function(leaveBg) {
 				if (leaveBg) {
 					domStyle.set("splash-content", "display", "none");
@@ -296,19 +296,19 @@ define(
 					}).play();
 				}
 			},
-			
+
 			toggleFullScreenMode: function() {
 				fullScreen.toggle();
 			}
 		};
-		
+
 		/* private "methods" */
 		var updateTime = function() {
 			var date = new Date();
 			timeNode.innerHTML = dateLocale.format(date, {selector: "time", formatLength: "short"});
 			timeTooltip.set("label", dateLocale.format(date, {selector: "date", formatLength: "short"}));
 		};
-		
+
 		return self;
 	}
 );

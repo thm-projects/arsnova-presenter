@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,36 +33,36 @@ define(
 	],
 	function(on, when, dom, domConstruct, domClass, dateLocale, registry, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax) {
 		"use strict";
-		
+
 		var
 			self = null,
 			model = null,
 			newQuestionsCount = 0,
-			
+
 			/* DOM */
 			questionListNode = null,
-			
+
 			/* Dijit */
 			tabContainer = null,
 			pane = null
 		;
-		
+
 		self = {
 			/* public "methods" */
 			init: function(_tabContainer, audienceQuestionModel) {
 				tabContainer = _tabContainer;
 				model = audienceQuestionModel;
-				
+
 				pane = new ContentPane({
 					id: "audienceQuestionsPane",
 					title: "Questions"
 				});
 				tabContainer.addChild(pane);
 			},
-			
+
 			startup: function() {
 				questionListNode = domConstruct.create("div", {id: "audienceQuestionList"}, pane.domNode);
-				
+
 				model.onQuestionAvailable(function(questionId) {
 					var question = model.get(questionId);
 					question.then(function(question) {
@@ -75,7 +75,7 @@ define(
 						}
 					});
 				});
-				
+
 				/* reset new questions count when this tab is activated */
 				tabContainer.watch("selectedChildWidget", function(name, oldValue, value) {
 					if (value == pane) {
@@ -84,24 +84,24 @@ define(
 						pane.controlButton.set("label", "Questions");
 					}
 				});
-				
+
 				/* add full screen menu items */
 				var fullScreenMenu = registry.byId("fullScreenMenu");
 				fullScreenMenu.addChild(new MenuItem({
 					label: "Audience questions",
 					onClick: self.toggleFullScreenMode
 				}));
-				
+
 				/* handle events fired when full screen mode is canceled */
 				fullScreen.onChange(function(event, isActive) {
 					if (!isActive) {
 						self.exitFullScreenMode();
-						
+
 						pane.resize();
 					}
 				});
 			},
-			
+
 			update: function(questions) {
 				domConstruct.empty(questionListNode);
 				when(questions, function(questions) {
@@ -110,7 +110,7 @@ define(
 					});
 				});
 			},
-			
+
 			prependQuestionToList: function(question) {
 				var questionNode = domConstruct.create("div", {"class": "question"}, questionListNode, "first");
 				var subjectNode = domConstruct.create("p", {"class": "subject"}, questionNode);
@@ -147,16 +147,16 @@ define(
 					});
 				});
 			},
-			
+
 			openQuestion: function(questionId, questionNode, messageNode) {
 				if (domClass.contains(questionNode, "opened")) {
 					domClass.remove(questionNode, "opened");
-					
+
 					return;
 				}
 				if (domClass.contains(questionNode, "loaded")) {
 					domClass.add(questionNode, "opened");
-					
+
 					return;
 				}
 				var question = model.get(questionId);
@@ -168,7 +168,7 @@ define(
 					mathJax.parse(messageNode);
 				});
 			},
-			
+
 			toggleFullScreenMode: function() {
 				if (fullScreen.isActive()) {
 					/* dom node rearrangement takes place in fullscreenchange event handler */
@@ -177,17 +177,17 @@ define(
 					fullScreen.request(dom.byId("fullScreenContainer"));
 					domConstruct.create("header", {id: "audienceQuestionsTitle", innerHTML: "Audience questions"}, "fullScreenHeader");
 					domConstruct.place(questionListNode, "fullScreenContent");
-					
+
 					registry.byId("fullScreenContainer").resize();
 				}
 			},
-			
+
 			exitFullScreenMode: function() {
 				domConstruct.place(dom.byId("audienceQuestionList"), pane.domNode);
 				domConstruct.destroy("audienceQuestionsTitle");
 			}
 		};
-		
+
 		return self;
 	}
 );

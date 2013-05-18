@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,7 +36,7 @@ define(
 	],
 	function(ready, when, router, domStyle, mainUi, authControls, sessionControls, lecturerPane, audiencePane, socket, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel, feedbackModel) {
 		"use strict";
-		
+
 		var init = function() {
 			ready(function() {
 				mainUi.init();
@@ -52,7 +52,7 @@ define(
 			ready(function() {
 				if (authService.isLoggedIn()) {
 					socket.connect();
-					
+
 					sessionControls.init(sessionModel);
 					lecturerPane.init(sessionModel, lecturerQuestionModel);
 					audiencePane.init(sessionModel, audienceQuestionModel, feedbackModel);
@@ -62,7 +62,7 @@ define(
 					authControls.startup();
 					lecturerPane.startup();
 					audiencePane.startup();
-					
+
 					/* register routes in form #!/12345678;paramName=paramValue */
 					router.register(/!\/([0-9]{8})((?:;[a-z0-9_-]+=[a-z0-9_-]*)*)/i, function(event) {
 						/* parse parameters */
@@ -73,23 +73,23 @@ define(
 							params[param[0]] = param[1];
 						}
 						params.sessionKey = event.params[0];
-						
+
 						console.log("Router: loading session " + params.sessionKey);
 						sessionModel.setKey(params.sessionKey);
-						
+
 						location.hash = "";
 					});
-					
+
 					router.startup();
 					mainUi.hideSplash();
 				}
 			});
 		};
-	
+
 		return {
 			startup: function() {
 				console.log("-- Controller: startup --");
-				
+
 				init();
 			}
 		};
