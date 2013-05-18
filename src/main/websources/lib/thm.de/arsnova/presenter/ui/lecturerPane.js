@@ -73,7 +73,7 @@ define(
 					options: [
 						{label: "Clicker Questions", value: "1", disabled: true},
 						{label: "Peer Instruction (PI)", value: "2", selected: true},
-						{label: "Pre-Class Assignments (JiTT)", value: "3", disabled: true},
+						{label: "Pre-Class Assignments (JiTT)", value: "3", disabled: true}
 					]
 				}));
 				

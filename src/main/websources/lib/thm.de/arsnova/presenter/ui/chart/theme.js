@@ -23,7 +23,7 @@ define(
 		"dojox/charting/Theme",
 		"dojox/charting/themes/common",
 		"dojox/charting/themes/gradientGenerator",
-	 	"dojox/color",
+	 	"dojox/color"
 	],
 	function(lang, array, Theme, themes, gradGen, color) {
 		"use strict";
@@ -79,7 +79,7 @@ define(
 				majorTick: {
 					width:  1,
 					length: 6,
-					style: "Dot",
+					style: "Dot"
 				}
 			},
 			

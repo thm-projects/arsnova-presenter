@@ -113,7 +113,7 @@ define(
 					maxLabelSize: 120,
 					rotation: -25,
 					trailingSymbol: "...",
-					minorTicks: false,
+					minorTicks: false
 				});
 				chart.addAxis("y", {
 					vertical: true,
