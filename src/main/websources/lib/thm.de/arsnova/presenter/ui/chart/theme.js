@@ -18,14 +18,13 @@
  */
 define(
 	[
-	 	"dojo/_base/lang",
 	 	"dojo/_base/array",
 		"dojox/charting/Theme",
 		"dojox/charting/themes/common",
 		"dojox/charting/themes/gradientGenerator",
 	 	"dojox/color"
 	],
-	function(lang, array, Theme, themes, gradGen, color) {
+	function(array, Theme, themes, gradGen, color) {
 		"use strict";
 		/* based on Claro charting theme */
 

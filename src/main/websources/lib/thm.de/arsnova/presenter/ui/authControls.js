@@ -18,7 +18,6 @@
  */
 define(
 	[
-		"dojo/dom",
 		"dojo/dom-construct",
 		"dojo/dom-style",
 		"dijit/registry",
@@ -26,7 +25,7 @@ define(
 		"dijit/Dialog",
 		"version"
 	],
-	function(dom, domConstruct, domStyle, registry, Button, Dialog, version) {
+	function(domConstruct, domStyle, registry, Button, Dialog, version) {
 		"use strict";
 
 		var

@@ -25,12 +25,11 @@ define(
 	 	"dojox/charting/Chart",
 	 	"dojox/charting/plot2d/ClusteredColumns",
 	 	"dojox/charting/plot2d/Grid",
-	 	"dojox/charting/axis2d/Default",
-	 	"dgerhardt/common/fullscreen",
 	 	"dojo/fx/easing",
-	 	"./theme"
+	 	"./theme",
+	 	"dojox/charting/axis2d/Default"
 	],
-	function(dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, Grid, AxisDefault, fullScreen, easing, theme) {
+	function(dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, Grid, easing, theme) {
 		"use strict";
 
 		var

@@ -19,14 +19,11 @@
 define(
 	[
 		"dojo/_base/config",
-		"dojo/string",
 		"dojo/on",
-		"dojo/dom",
 		"dojo/dom-construct",
 		"dojo/dom-geometry",
 		"dojo/dom-style",
 		"dojo/date/locale",
-		"dijit/registry",
 		"dijit/layout/BorderContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Button",
@@ -34,15 +31,13 @@ define(
 		"dijit/form/DropDownButton",
 		"dijit/Menu",
 		"dijit/MenuItem",
-		"dijit/form/Select",
 		"dijit/Tooltip",
 		"dojo/_base/fx",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/timer",
-		"arsnova-presenter/ui/infoDialog",
-		"version"
+		"arsnova-presenter/ui/infoDialog"
 	],
-	function(config, string, on, dom, domConstruct, domGeometry, domStyle, dateLocale, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Select, Tooltip, fx, fullScreen, timer, infoDialog, version) {
+	function(config, on, domConstruct, domGeometry, domStyle, dateLocale, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Tooltip, fx, fullScreen, timer, infoDialog) {
 		"use strict";
 
 		var

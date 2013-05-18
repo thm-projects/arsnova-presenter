@@ -24,11 +24,11 @@ define(
 	 	"dojox/charting/Chart",
 	 	"dojox/charting/plot2d/Columns",
 	 	"dojox/charting/plot2d/Grid",
-	 	"dojox/charting/axis2d/Default",
 	 	"dojo/fx/easing",
-	 	"./theme"
+	 	"./theme",
+	 	"dojox/charting/axis2d/Default"
 	],
-	function(dom, domConstruct, registry, Chart, Columns, Grid, AxisDefault, easing, theme) {
+	function(dom, domConstruct, registry, Chart, Columns, Grid, easing, theme) {
 		"use strict";
 
 		var

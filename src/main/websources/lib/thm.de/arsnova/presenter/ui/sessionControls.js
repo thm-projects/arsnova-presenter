@@ -22,19 +22,17 @@ define(
 		"dojo/string",
 		"dojo/on",
 		"dojo/when",
-		"dojo/dom",
 		"dojo/dom-construct",
 		"dojo/dom-class",
 		"dojo/dom-style",
 		"dojo/request/script",
 		"dojo/store/Memory",
 		"dijit/registry",
-		"dijit/form/DropDownButton",
 		"dijit/form/FilteringSelect",
 		"dijit/Dialog",
 		"dijit/Tooltip"
 	],
-	function(config, string, on, when, dom, domConstruct, domClass, domStyle, script, Memory, registry, DropDownButton, FilteringSelect, Dialog, Tooltip) {
+	function(config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, FilteringSelect, Dialog, Tooltip) {
 		"use strict";
 
 		var

@@ -19,16 +19,13 @@
 define(
 	[
 		"dojo/_base/config",
-		"dojo/_base/declare",
-		"dojo/string",
-		"dojo/Stateful",
 		"dojo/store/JsonRest",
 		"dojo/store/Memory",
 		"dojo/store/Cache",
 		"arsnova-api/session",
 		"arsnova-api/socket"
 	],
-	function(config, declare, string, Stateful, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
+	function(config, JsonRestStore, MemoryStore, CacheStore, sessionModel, socket) {
 		"use strict";
 
 		var

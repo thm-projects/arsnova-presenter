@@ -18,7 +18,6 @@
  */
 define(
 	[
-		"dojo/on",
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dijit/registry",
@@ -27,7 +26,7 @@ define(
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/audienceFeedback"
 	],
-	function(on, dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart) {
+	function(dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart) {
 		"use strict";
 
 		var
