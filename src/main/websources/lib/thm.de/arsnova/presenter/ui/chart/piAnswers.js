@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 Daniel Gerhardt <anp-dev@z.dgerhardt.net> <daniel.gerhardt@mni.thm.de>
- * 
+ *
  * This file is part of ARSnova Presenter.
- * 
+ *
  * Presenter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,24 +25,23 @@ define(
 	 	"dojox/charting/Chart",
 	 	"dojox/charting/plot2d/ClusteredColumns",
 	 	"dojox/charting/plot2d/Grid",
-	 	"dojox/charting/axis2d/Default",
-	 	"dgerhardt/common/fullscreen",
 	 	"dojo/fx/easing",
-	 	"./theme"
+	 	"./theme",
+	 	"dojox/charting/axis2d/Default"
 	],
-	function(dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, Grid, AxisDefault, fullScreen, easing, theme) {
+	function(dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, Grid, easing, theme) {
 		"use strict";
-		
+
 		var
 			self = null,
-			
+
 			/* DOM */
 			chartNode = null,
-			
+
 			/* dojox.charting */
 			chart = null
 		;
-		
+
 		self = {
 			/* public "methods" */
 			init: function(parentNode) {
@@ -74,19 +73,19 @@ define(
 					}
 				});
 				chart.render();
-				
+
 				var resizeTimeout = null;
 				var onResize = function(event) {
 					if (resizeTimeout) {
 						clearTimeout(resizeTimeout);
 					}
 					resizeTimeout = setTimeout(function() {
-						if ("hidden" == appContainer.style.visibility) {
+						if ("hidden" === appContainer.style.visibility) {
 							return;
 						}
 						var panel = dom.byId("piAnswersMainPaneContent");
 						var height = panel.clientHeight;
-						if (height < 1 || "none" == domStyle.get(chartNode, "display")) {
+						if (height < 1 || "none" === domStyle.get(chartNode, "display")) {
 							/* return if piAnswersMainPaneContent is not visible */
 							return;
 						}
@@ -97,23 +96,25 @@ define(
 				registry.byId("fullScreenContent").on("resize", onResize);
 				//onResize();
 			},
-			
+
 			show: function() {
 				domStyle.set(chartNode, "display", "block");
 			},
-			
+
 			hide: function() {
 				domStyle.set(chartNode, "display", "none");
 			},
-			
+
 			update: function(labels, correctIndexes, series, percentageValues, abstention) {
+				var i;
+
 				chart.addAxis("x", {
 					labels: labels,
 					dropLabels: false,
 					maxLabelSize: 120,
 					rotation: -25,
 					trailingSymbol: "...",
-					minorTicks: false,
+					minorTicks: false
 				});
 				chart.addAxis("y", {
 					vertical: true,
@@ -123,24 +124,25 @@ define(
 						return value + "%";
 					}
 				});
-				
+
 				chart.removeSeries("No data");
 				chart.removeSeries("PI round 1");
 				chart.removeSeries("PI round 2");
-				
+
 				var seriesCount = 0;
-				if (null != series) {
+				if ("undefined" !== typeof series && null !== series) {
 					var showCorrect = correctIndexes && correctIndexes.length > 0;
-					
+
 					/* sort series object property name */
 					var seriesNames = [];
-					for (var seriesName in series) {
+					var seriesName = null;
+					for (seriesName in series) {
 						seriesNames.push(seriesName);
 					}
 					seriesNames.sort();
-					
-					for (var i = 0; i < seriesNames.length; i++) {
-						var seriesName = seriesNames[i];
+
+					for (i = 0; i < seriesNames.length; i++) {
+						seriesName = seriesNames[i];
 						chart.addSeries(seriesName,
 							showCorrect
 								? theme.applyColors(series[seriesName], "markCorrect", i < seriesNames.length - 1, correctIndexes)
@@ -149,9 +151,9 @@ define(
 						seriesCount++;
 					}
 				}
-				if (0 == seriesCount) {
+				if (0 === seriesCount) {
 					var values = [];
-					for (var i = 0; i < labels.length; i++) {
+					for (i = 0; i < labels.length; i++) {
 						values.push(0);
 					}
 					chart.addSeries("No data", values);
@@ -159,7 +161,7 @@ define(
 				chart.render();
 			}
 		};
-		
+
 		return self;
 	}
 );

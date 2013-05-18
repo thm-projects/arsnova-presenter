@@ -3,13 +3,13 @@ var profile = (function() {
 	var libPath = "src/main/websources/lib/";
 	var dojoPath = "vendor/dojotoolkit.org/";
 	var versionFilePath = "target/tmp/dojo/version/";
-	
+
 	return {
 		basePath: "../../..",
 		action: "release",
 		mini: true,
 		layerOptimize: "shrinksafe.keepLines",
-		
+
 		defaultConfig: {
 			async: true,
 			isDebug: true,
@@ -24,7 +24,7 @@ var profile = (function() {
 			},
 		    gfxRenderer: "svg,silverlight,vml"
 		},
-		
+
 		packages: [
 			{
 				name: "dojo",
@@ -56,7 +56,7 @@ var profile = (function() {
 				main: "version"
 			}
 		],
-		
+
 		layers: {
 			"app/presenter": {
 				customBase: true, // do not add dojo/main automatically
@@ -65,7 +65,7 @@ var profile = (function() {
 					/* only include modules likely to be always used in presenter */
 					"dojo/dojo", // Dojo loader
 					"dojo/selector/acme", // this module is always needed
-					
+
 					"dojo/_base/config",
 					"dojo/_base/declare",
 					"dojo/ready",
@@ -79,15 +79,15 @@ var profile = (function() {
 					"dojo/store/JsonRest",
 					"dojo/store/Memory",
 					"dojo/store/Cache",
-					
+
 					"dijit/_base",
 					"dijit/registry",
 					"dijit/layout/BorderContainer",
 					"dijit/layout/TabContainer",
 					"dijit/layout/ContentPane",
-					
+
 					"dojox/charting/Chart",
-					
+
 					"version"
 				]
 			}
