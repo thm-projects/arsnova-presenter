@@ -44,6 +44,7 @@
 		<outputDir>${project.build.directory}/${project.build.finalName}</outputDir>
 		<jetty.version>8.1.9.v20130131</jetty.version>
 		<jetty.scanInterval>10</jetty.scanInterval>
+		<sonar.language>js</sonar.language>
 	</properties>
 
 	<repositories>
@@ -65,7 +66,19 @@
 		<developerConnection>scm:ssh://gitorious@scm.thm.de:arsnova/arsnova-presenter.git</developerConnection>
 	</scm>
 
+	<issueManagement>
+		<system>Redmine</system>
+		<url>https://scm.thm.de/redmine/projects/arsnova-presenter</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://scm.thm.de/jenkins/job/ARSnova-Presenter.master/</url>
+	</ciManagement>
+
 	<build>
+		<sourceDirectory>src/main/websources</sourceDirectory>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -103,18 +116,18 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>env-dev</id>
-			
+
 			<activation>
 				<property>
 					<name>env</name>
 					<value>dev</value>
 				</property>
 			</activation>
-			
+
 			<build>
 				<plugins>
 					<plugin>
@@ -139,7 +152,7 @@
 							</arguments>
 						</configuration>
 					</plugin>
-					
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
@@ -148,7 +161,7 @@
 							<webXml>src/main/config/WEB-INF/web.dev.xml</webXml>
 						</configuration>
 					</plugin>
-				
+
 					<plugin>
 						<groupId>org.mortbay.jetty</groupId>
 						<artifactId>jetty-maven-plugin</artifactId>
@@ -180,10 +193,10 @@
 				</plugins>
 			</build>
 		</profile>
-		
+
 		<profile>
 			<id>env-prod</id>
-			
+
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<property>
@@ -191,7 +204,7 @@
 					<value>prod</value>
 				</property>
 			</activation>
-			
+
 			<build>
 				<plugins>
 					<plugin>
@@ -217,7 +230,7 @@
 							</arguments>
 						</configuration>
 					</plugin>
-					
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
@@ -238,7 +251,7 @@
 							</execution>
 						</executions>
 					</plugin>
-					
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
@@ -247,7 +260,7 @@
 							<webXml>src/main/config/WEB-INF/web.prod.xml</webXml>
 						</configuration>
 					</plugin>
-				
+
 					<plugin>
 						<groupId>org.mortbay.jetty</groupId>
 						<artifactId>jetty-maven-plugin</artifactId>
@@ -276,10 +289,10 @@
 				</plugins>
 			</build>
 		</profile>
-		
+
 		<profile>
 			<id>arsnova-war</id>
-			
+
 			<dependencies>
 				<dependency>
 					<groupId>de.thm.arsnova</groupId>
@@ -288,7 +301,7 @@
 					<type>war</type>
 				</dependency>
 			</dependencies>
-			
+
 			<build>
 				<plugins>
 					<plugin>
