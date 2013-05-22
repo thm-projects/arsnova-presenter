@@ -7,8 +7,9 @@
 	<version>1.0.4-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>ARSnova Presenter</name>
-	<description>ARSnova presentation client for desktop browsers.</description>
+	<description>ARSnova Presenter is a rich internet application for lecturers intended to be used to present questions and their answer statistics as well as questions and feedback by students. It targets notebooks, tablets and desktop computers and runs with all current webbrowsers.</description>
 	<url>http://blog.mni.thm.de/arsnova/arsnova-blog/</url>
+	<inceptionYear>2013</inceptionYear>
 
 	<developers>
 		<developer>
@@ -29,6 +30,7 @@
 				<role>developer</role>
 			</roles>
 			<url>http://www.dgerhardt.net</url>
+			<email>anp-dev@z.dgerhardt.net</email>
 		</developer>
 	</developers>
 
