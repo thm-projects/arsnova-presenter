@@ -469,7 +469,9 @@ define(
 							/* handle selected options for multiple choice questions */
 							var selectedOptions = answer.answerText.split(",");
 							for (var j = 0; j < selectedOptions.length; j++) {
-								values[j] += parseInt(selectedOptions[j]);
+								if (1 === parseInt(selectedOptions[j])) {
+									values[j] += answer.answerCount;
+								}
 							}
 						} else {
 							/* handle single answer option */
