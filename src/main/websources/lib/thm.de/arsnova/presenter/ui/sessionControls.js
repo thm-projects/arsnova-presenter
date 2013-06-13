@@ -28,11 +28,12 @@ define(
 		"dojo/request/script",
 		"dojo/store/Memory",
 		"dijit/registry",
+		"dijit/a11yclick",
 		"dijit/form/FilteringSelect",
 		"dijit/Dialog",
 		"dijit/Tooltip"
 	],
-	function(config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, FilteringSelect, Dialog, Tooltip) {
+	function(config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip) {
 		"use strict";
 
 		var
@@ -89,7 +90,7 @@ define(
 				});
 
 				if ("undefined" !== typeof config.arsnova.mobileStudentSessionUrl) {
-					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr"}, panelNode);
+					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr", tabindex: 0}, panelNode);
 					new Tooltip({
 						connectId: [qrNode],
 						label: "Show QR Code for mobile ARSnova session",
@@ -123,7 +124,7 @@ define(
 					self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
 				});
 
-				on(qrNode, "click", function() {
+				on(qrNode, a11yclick, function() {
 					var sessionKey = model.getKey();
 					if (null === sessionKey) {
 						return;

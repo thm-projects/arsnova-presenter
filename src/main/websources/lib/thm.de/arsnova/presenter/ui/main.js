@@ -24,6 +24,7 @@ define(
 		"dojo/dom-geometry",
 		"dojo/dom-style",
 		"dojo/date/locale",
+		"dijit/a11yclick",
 		"dijit/layout/BorderContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Button",
@@ -37,7 +38,7 @@ define(
 		"arsnova-presenter/ui/timer",
 		"arsnova-presenter/ui/infoDialog"
 	],
-	function(config, on, domConstruct, domGeometry, domStyle, dateLocale, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Tooltip, fx, fullScreen, timer, infoDialog) {
+	function(config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Tooltip, fx, fullScreen, timer, infoDialog) {
 		"use strict";
 
 		var
@@ -234,14 +235,14 @@ define(
 					};
 				}
 
-				timeNode = domConstruct.create("div", {id: "footerTime"}, footerPane.domNode);
+				timeNode = domConstruct.create("div", {id: "footerTime", tabindex: 0}, footerPane.domNode);
 				timeTooltip = new Tooltip({
 					connectId: [timeNode],
 					position: ["above-centered"]
 				});
 				setInterval(updateTime, 500);
 				updateTime();
-				on(timeNode, "click", function() {
+				on(timeNode, a11yclick, function() {
 					timer.showSettings();
 				});
 
