@@ -21,11 +21,12 @@ define(
 		"dojo/on",
 		"dojo/when",
 		"dojo/dom-construct",
+		"dijit/a11yclick",
 		"dgerhardt/dijit/layout/ContentPane",
 		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab"
 	],
-	function(on, when, domConstruct, ContentPane, mathJax, answersTab) {
+	function(on, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab) {
 		"use strict";
 
 		var
@@ -79,10 +80,10 @@ define(
 						var categoryHeaderNode = domConstruct.create("header", null, categoryNode);
 						categoryHeaderNode.appendChild(document.createTextNode(category));
 						categories[category].forEach(function(question) {
-							var questionNode = domConstruct.create("p", {"class": "question"}, categoryNode);
+							var questionNode = domConstruct.create("p", {"class": "question", tabindex: 0}, categoryNode);
 							questionNode.appendChild(document.createTextNode(question.text));
 							mathJax.parse(questionNode);
-							on(questionNode, "click", function(event) {
+							on(questionNode, a11yclick, function(event) {
 								model.setId(question._id);
 								answersTab.selectTab();
 							});

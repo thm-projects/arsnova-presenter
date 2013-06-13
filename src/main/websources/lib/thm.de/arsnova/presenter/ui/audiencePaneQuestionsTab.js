@@ -25,13 +25,14 @@ define(
 		"dojo/dom-class",
 		"dojo/date/locale",
 		"dijit/registry",
+		"dijit/a11yclick",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/MenuItem",
 		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/mathJax"
 	],
-	function(on, when, dom, domConstruct, domClass, dateLocale, registry, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax) {
+	function(on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax) {
 		"use strict";
 
 		var
@@ -112,10 +113,10 @@ define(
 			},
 
 			prependQuestionToList: function(question) {
-				var questionNode = domConstruct.create("div", {"class": "question"}, questionListNode, "first");
+				var questionNode = domConstruct.create("div", {"class": "question", tabindex: 0}, questionListNode, "first");
 				var subjectNode = domConstruct.create("p", {"class": "subject"}, questionNode);
 				subjectNode.appendChild(document.createTextNode(question.subject));
-				var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, questionNode);
+				var deleteNode = domConstruct.create("span", {"class": "delete", tabindex: 0, title: "Delete", innerHTML: "x"}, questionNode);
 				domConstruct.create("div", {"class": "clearFix"}, questionNode);
 				var messageNode = domConstruct.create("p", {"class": "message"}, questionNode);
 				if (!question.read) {
@@ -131,10 +132,10 @@ define(
 					+ " " + dateLocale.format(date, {selector: "time", formatLength: "short"})
 				;
 				domConstruct.create("footer", {"class": "creationTime", innerHTML: dateTime}, questionNode);
-				on(questionNode, "click", function(event) {
+				on(questionNode, a11yclick, function(event) {
 					self.openQuestion(question._id, questionNode, messageNode);
 				});
-				on(deleteNode, "click", function(event) {
+				on(deleteNode, a11yclick, function(event) {
 					if (event.stopPropagation) { /* IE8 does not support stopPropagation */
 						event.stopPropagation();
 					}

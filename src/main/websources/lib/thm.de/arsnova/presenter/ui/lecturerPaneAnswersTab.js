@@ -26,6 +26,7 @@ define(
 		"dojo/dom-class",
 		"dojo/dom-style",
 		"dijit/registry",
+		"dijit/a11yclick",
 		"dijit/layout/BorderContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Button",
@@ -40,7 +41,7 @@ define(
 		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart) {
+	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart) {
 		"use strict";
 
 		var
@@ -386,18 +387,18 @@ define(
 						return;
 					}
 
-					var answerNode = domConstruct.create("div", {"class": "answer"});
+					var answerNode = domConstruct.create("div", {"class": "answer", tabindex: 0});
 					var subjectNode = domConstruct.create("p", {"class": "subject"}, answerNode);
 					subjectNode.appendChild(document.createTextNode(answer.answerSubject));
-					var deleteNode = domConstruct.create("span", {"class": "delete", innerHTML: "x"}, answerNode);
+					var deleteNode = domConstruct.create("span", {"class": "delete", tabindex: 0, title: "Delete", innerHTML: "x"}, answerNode);
 					domConstruct.create("div", {"class": "clearFix"}, answerNode);
 					var messageNode = domConstruct.create("p", {"class": "message"}, answerNode);
 					messageNode.appendChild(document.createTextNode(answer.answerText));
 					mathJax.parse(messageNode);
-					on(answerNode, "click", function() {
+					on(answerNode, a11yclick, function() {
 						domClass.toggle(this, "opened");
 					});
-					on(deleteNode, "click", function(event) {
+					on(deleteNode, a11yclick, function(event) {
 						if (event.stopPropagation) { /* IE8 does not support stopPropagation */
 							event.stopPropagation();
 						}
