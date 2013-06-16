@@ -25,9 +25,10 @@ define(
 		"dojo/dom-style",
 		"dijit/form/Button",
 		"dijit/form/ValidationTextBox",
-		"dijit/Dialog"
+		"dijit/Dialog",
+		"dgerhardt/common/modalOverlay"
 	],
-	function(string, on, domConstruct, domClass, domStyle, Button, ValidationTextBox, Dialog) {
+	function(string, on, domConstruct, domClass, domStyle, Button, ValidationTextBox, Dialog, modalOverlay) {
 		"use strict";
 
 		var
@@ -38,6 +39,7 @@ define(
 
 			/* declarations of private "methods" */
 			countDown = null,
+			remainingTimeToString = null,
 
 			/* DOM */
 			timerNode = null,
@@ -51,12 +53,8 @@ define(
 		self = {
 			showSettings: function(defaultInterval) {
 				if (null === dialog) {
-					if ("undefined" === typeof defaultInterval) {
-						defaultInterval = "10:00";
-					}
 					var contentNode = domConstruct.create("div");
 					(intervalTextBox = new ValidationTextBox({
-						value: defaultInterval,
 						required: true,
 						/* allow time intervals following the pattern
 						 * [h]h:mm:ss, [m]m:ss with h < 24, m < 60, s < 60 */
@@ -85,14 +83,20 @@ define(
 						}
 					}).placeAt(contentNode).startup();
 					new Button({
-						label: "Stop",
-						onClick: self.stop
+						label: "Close",
+						onClick: function() {
+							dialog.hide();
+						}
 					}).placeAt(contentNode).startup();
 					dialog = new Dialog({
 						title: "Timer",
 						content: contentNode
 					});
 				}
+				if ("undefined" === typeof defaultInterval) {
+					defaultInterval = "10:00";
+				}
+				intervalTextBox.set("value", defaultInterval);
 				dialog.show();
 			},
 
@@ -102,19 +106,19 @@ define(
 				}
 
 				if (null === timerNode) {
-					timerNode = domConstruct.create("div", {id: "timerUnderlay"}, document.body);
-					var timerWrapper = domConstruct.create("div", null, timerNode);
+					//timerNode = domConstruct.create("div", {id: "timerUnderlay"}, document.body););
+					var timerWrapper = domConstruct.create("div", null);
 					remainingTimeNode = domConstruct.create("div", {id: "remainingTime"}, timerWrapper);
-					on(timerNode, "click", function() {
+					modalOverlay.show(timerWrapper, true, function() {
 						if (remainingSeconds < 1.0) {
 							self.stop();
 						} else {
-							dialog.show();
+							self.showSettings(remainingTimeToString());
 						}
 					});
 				}
 				domClass.remove(remainingTimeNode, "highlight");
-				domStyle.set(timerNode, "display", "");
+				//domStyle.set(timerNode, "display", "");
 
 				remainingSeconds = intervalSeconds;
 				warningThresholdSeconds = remainingSeconds > 180 ? 60 : (remainingSeconds > 60 ? 30 : 10);
@@ -126,7 +130,8 @@ define(
 				if (null !== interval) {
 					clearInterval(interval);
 				}
-				domStyle.set(timerNode, "display", "none");
+				//domStyle.set(timerNode, "display", "none");
+				modalOverlay.hide();
 			}
 		};
 
@@ -142,6 +147,10 @@ define(
 				}
 			}
 
+			remainingTimeNode.innerHTML = remainingTimeToString();
+		};
+
+		remainingTimeToString = function() {
 			var hours = Math.floor(remainingSeconds / 3600.0);
 			var minutes = Math.floor(remainingSeconds / 60.0) % 60;
 			var seconds = Math.floor(remainingSeconds % 60);
@@ -149,7 +158,8 @@ define(
 			var remainingTimeString = (hours > 0 ? hours + ":" + string.pad(minutes, 2) : minutes)
 				+ ":" + string.pad(seconds, 2)
 			;
-			remainingTimeNode.innerHTML = remainingTimeString;
+
+			return remainingTimeString;
 		};
 
 		return self;
