@@ -1,3 +1,6 @@
+[submodule "vendor/thm.de/arsnova/libarsnova-js"]
+	path = vendor/thm.de/arsnova/libarsnova-js
+	url = git://scm.thm.de/arsnova/libarsnova-js.git
 [submodule "vendor/dojotoolkit.org/dijit"]
 	path = vendor/dojotoolkit.org/dijit
 	url = https://github.com/dojo/dijit.git

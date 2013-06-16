@@ -97,6 +97,10 @@
 							<outputDirectory>${outputDir}</outputDirectory>
 							<resources>
 								<resource>
+									<directory>vendor/thm.de/arsnova/libarsnova-js/src/main/websources/lib/thm.de/arsnova/api</directory>
+									<targetPath>lib/thm.de/arsnova/api</targetPath>
+								</resource>
+								<resource>
 									<directory>vendor/dgerhardt.net/dgerhardt-dojo</directory>
 									<targetPath>lib/dgerhardt.net</targetPath>
 								</resource>

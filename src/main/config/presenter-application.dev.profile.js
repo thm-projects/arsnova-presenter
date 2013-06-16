@@ -44,7 +44,7 @@ var profile = (function() {
 			},
 			{
 				name: "arsnova-api",
-				location: libPath + "thm.de/arsnova/api"
+				location: "vendor/thm.de/arsnova/libarsnova-js/src/main/websources/lib/thm.de/arsnova/api"
 			},
 			{
 				name: "dgerhardt",
