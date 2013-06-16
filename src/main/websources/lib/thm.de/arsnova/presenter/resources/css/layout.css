@@ -277,7 +277,7 @@ html, body {
 	display: inline-block;
 }
 
-#qrOverlay {
+#modalOverlay {
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -287,18 +287,14 @@ html, body {
 	z-index: 9999;
 }
 
-#qrOverlay > * {
+#modalOverlay > * {
 	display: table-cell;
 	vertical-align: middle;
 	text-align: center;
 }
 
-#qrOverlay * {
+#modalOverlay * {
 	margin: auto ! important;
-}
-
-#qrOverlay p {
-	padding: 0.5em 0;
 }
 
 #loginLogo {

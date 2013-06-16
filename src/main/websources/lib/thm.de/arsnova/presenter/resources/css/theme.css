@@ -16,7 +16,7 @@ body {
 	cursor: pointer;
 }
 
-#qrOverlay {
+#modalOverlay {
 	background: white;
 	background-color: rgba(255, 255, 255, 0.75);
 	cursor: pointer;
@@ -160,10 +160,11 @@ body {
 	border-top: 1px solid #ccc;
 }
 
-#qrOverlay p {
+#qr p {
 	font-size: 1.2em;
 	font-weight: bold;
 	background: white;
+	padding: 0.5em 0;
 }
 
 #fullScreenControls {

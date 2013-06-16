@@ -31,9 +31,10 @@ define(
 		"dijit/a11yclick",
 		"dijit/form/FilteringSelect",
 		"dijit/Dialog",
-		"dijit/Tooltip"
+		"dijit/Tooltip",
+		"dgerhardt/common/modalOverlay"
 	],
-	function(config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip) {
+	function(config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip, modalOverlay) {
 		"use strict";
 
 		var
@@ -225,20 +226,19 @@ define(
 				var QR_CELL_COUNT = 33;
 				var QR_BORDER_SIZE_FACTOR = 2;
 				var showQrOverlay = function() {
-					var qrOverlayNode = domConstruct.create("div", {id: "qrOverlay"}, document.body);
-					var qrOverlayContentNode = domConstruct.create("div", null, qrOverlayNode);
-					on(qrOverlayNode, "click", function() {
-						domConstruct.destroy(qrOverlayNode);
-					});
+					var qrNode = domConstruct.create("div", {id: "qr"});
+
 					var maxSize = -50 + (document.body.clientWidth < document.body.clientHeight ? document.body.clientWidth : document.body.clientHeight);
 					var cellSize = Math.floor(maxSize / (QR_CELL_COUNT + QR_BORDER_SIZE_FACTOR * 2));
 					var qr = qrcode(QR_TYPE_NUMBER, QR_ERROR_CORRECT_LEVEL);
 					qr.addData(data);
 					qr.make();
-					qrOverlayContentNode.innerHTML = qr.createTableTag(cellSize);
-					domStyle.set(qrOverlayContentNode.firstChild, "border", (cellSize * QR_BORDER_SIZE_FACTOR) + "px solid white");
-					var urlNode = domConstruct.create("p", {innerHTML: data}, qrOverlayContentNode);
+					qrNode.innerHTML = qr.createTableTag(cellSize);
+					domStyle.set(qrNode.firstChild, "border", (cellSize * QR_BORDER_SIZE_FACTOR) + "px solid white");
+					var urlNode = domConstruct.create("p", {innerHTML: data}, qrNode);
 					domStyle.set(urlNode, "width", ((QR_CELL_COUNT + QR_BORDER_SIZE_FACTOR * 2) * cellSize) + "px");
+
+					modalOverlay.show(qrNode, true);
 				};
 				if ("undefined" === typeof qrcode) {
 					script.get("lib/d-project.com/qrcode-generator/qrcode.js").then(function() {
