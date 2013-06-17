@@ -44,6 +44,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<outputDir>${project.build.directory}/${project.build.finalName}</outputDir>
+		<submodule.libarsnova-js.path>vendor/thm.de/arsnova/libarsnova-js</submodule.libarsnova-js.path>
+		<submodule.dgerhardt-dojo.path>vendor/dgerhardt.net/dgerhardt-dojo</submodule.dgerhardt-dojo.path>
 		<jetty.version>9.0.3.v20130506</jetty.version>
 		<jetty.scanInterval>10</jetty.scanInterval>
 		<sonar.language>js</sonar.language>
@@ -84,6 +86,12 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.6</version>
 				<executions>
@@ -96,14 +104,6 @@
 						<configuration>
 							<outputDirectory>${outputDir}</outputDirectory>
 							<resources>
-								<resource>
-									<directory>vendor/thm.de/arsnova/libarsnova-js/src/main/websources/lib/thm.de/arsnova/api</directory>
-									<targetPath>lib/thm.de/arsnova/api</targetPath>
-								</resource>
-								<resource>
-									<directory>vendor/dgerhardt.net/dgerhardt-dojo</directory>
-									<targetPath>lib/dgerhardt.net</targetPath>
-								</resource>
 								<resource>
 									<directory>vendor/socket.io/socket.io-client/dist</directory>
 									<targetPath>lib/socket.io</targetPath>
@@ -157,6 +157,28 @@
 								<argument>${outputDir}</argument>
 							</arguments>
 						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<executions>
+							<execution>
+								<id>create-lib-links</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<mkdir dir="${outputDir}/lib/thm.de/arsnova" />
+										<symlink link="${outputDir}/lib/thm.de/arsnova/api" resource="${project.basedir}/${submodule.libarsnova-js.path}/src/main/websources/lib/thm.de/arsnova/api" overwrite="true" />
+										<symlink link="${outputDir}/lib/dgerhardt.net" resource="${project.basedir}/${submodule.dgerhardt-dojo.path}" overwrite="true" />
+									</target>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 
 					<plugin>
@@ -341,6 +363,30 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		
+		<profile>
+			<id>libarsnova-js-exists</id>
+			<activation>
+				<file>
+					<exists>../libarsnova-js</exists>
+				</file>
+			</activation>
+			<properties>
+				<submodule.libarsnova-js.path>../libarsnova-js</submodule.libarsnova-js.path>
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>dgerhardt-dojo-exists</id>
+			<activation>
+				<file>
+					<exists>../dgerhardt-dojo</exists>
+				</file>
+			</activation>
+			<properties>
+				<submodule.dgerhardt-dojo.path>../dgerhardt-dojo</submodule.dgerhardt-dojo.path>
+			</properties>
 		</profile>
 	</profiles>
 </project>
