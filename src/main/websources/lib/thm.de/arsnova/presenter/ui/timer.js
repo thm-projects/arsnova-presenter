@@ -19,16 +19,14 @@
 define(
 	[
 		"dojo/string",
-		"dojo/on",
 		"dojo/dom-construct",
 		"dojo/dom-class",
-		"dojo/dom-style",
 		"dijit/form/Button",
 		"dijit/form/ValidationTextBox",
 		"dijit/Dialog",
 		"dgerhardt/common/modalOverlay"
 	],
-	function(string, on, domConstruct, domClass, domStyle, Button, ValidationTextBox, Dialog, modalOverlay) {
+	function(string, domConstruct, domClass, Button, ValidationTextBox, Dialog, modalOverlay) {
 		"use strict";
 
 		var
@@ -106,7 +104,6 @@ define(
 				}
 
 				if (null === timerNode) {
-					//timerNode = domConstruct.create("div", {id: "timerUnderlay"}, document.body););
 					var timerWrapper = domConstruct.create("div", null);
 					remainingTimeNode = domConstruct.create("div", {id: "remainingTime"}, timerWrapper);
 					modalOverlay.show(timerWrapper, true, function() {
@@ -118,7 +115,6 @@ define(
 					});
 				}
 				domClass.remove(remainingTimeNode, "highlight");
-				//domStyle.set(timerNode, "display", "");
 
 				remainingSeconds = intervalSeconds;
 				warningThresholdSeconds = remainingSeconds > 180 ? 60 : (remainingSeconds > 60 ? 30 : 10);
@@ -130,7 +126,6 @@ define(
 				if (null !== interval) {
 					clearInterval(interval);
 				}
-				//domStyle.set(timerNode, "display", "none");
 				modalOverlay.hide();
 			}
 		};
