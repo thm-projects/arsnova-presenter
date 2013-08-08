@@ -231,7 +231,7 @@ define(
 								}
 							}));
 						});
-					};
+					}
 				}
 
 				timeNode = domConstruct.create("div", {id: "footerTime"}, footerPane.domNode);
