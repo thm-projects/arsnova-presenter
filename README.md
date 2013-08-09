@@ -1,6 +1,6 @@
 # ARSnova Presenter
 
-Presenter is a rich internet application for lecturers intended to be used for presentation of ARSnova data, especially Peer Instruction results. In contrast to ARSnova (arsnova-legacy-js, Sencha Touch) and ARSnova2 (arsnova-js, Dojo) Presenter targets desktop browsers.
+Presenter is a rich internet application for lecturers intended to be used for presentation of ARSnova data, especially Peer Instruction results. In contrast to ARSnova mobile Presenter targets desktop browsers.
 
 ## Development
 

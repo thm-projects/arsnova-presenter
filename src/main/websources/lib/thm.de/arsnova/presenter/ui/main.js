@@ -232,7 +232,7 @@ define(
 								}
 							}));
 						});
-					};
+					}
 				}
 
 				timeNode = domConstruct.create("div", {id: "footerTime", tabindex: 0}, footerPane.domNode);
