@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.thm.arsnova</groupId>
 	<artifactId>arsnova-presenter</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.5</version>
 	<packaging>war</packaging>
 	<name>ARSnova Presenter</name>
 	<description>ARSnova Presenter is a rich internet application for lecturers intended to be used to present questions and their answer statistics as well as questions and feedback by students. It targets notebooks, tablets and desktop computers and runs with all current webbrowsers.</description>
