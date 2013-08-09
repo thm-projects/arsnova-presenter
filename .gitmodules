@@ -22,3 +22,6 @@
 [submodule "vendor/d-project.com/qrcode-generator-js"]
 	path = vendor/d-project.com/qrcode-generator-js
 	url = git://scm.thm.de/dgerhardt-public/qr-code-generator-js.git
+[submodule "vendor/mathjax.org/mathjax"]
+	path = vendor/mathjax.org/mathjax
+	url = git://github.com/mathjax/MathJax.git

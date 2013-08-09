@@ -115,6 +115,19 @@
 										<include>qrcode.js</include>
 									</includes>
 								</resource>
+								<resource>
+									<directory>vendor/mathjax.org/mathjax</directory>
+									<targetPath>lib/mathjax.org/mathjax</targetPath>
+									<includes>
+										<include>MathJax.js</include>
+										<include>config/TeX-AMS_HTML.js</include>
+										<include>extensions/**</include>
+										<include>fonts/**</include>
+										<include>images/**</include>
+										<include>jax/**</include>
+										<include>localization/**</include>´
+									</includes>
+								</resource>
 							</resources>
 						</configuration>
 					</execution>
