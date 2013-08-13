@@ -61,7 +61,9 @@ define(
 					hMajorLines: true,
 					hMinorLines: false,
 					vMajorLines: false,
-					vMinorLines: false
+					vMinorLines: false,
+					majorHLine: {color: "#333", width: 1, style: "Dash"},
+					renderOnAxis: false
 				});
 
 				var labels = [
