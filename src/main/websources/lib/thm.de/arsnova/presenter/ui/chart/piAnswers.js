@@ -80,7 +80,7 @@ define(
 						clearTimeout(resizeTimeout);
 					}
 					resizeTimeout = setTimeout(function() {
-						if ("hidden" === appContainer.style.visibility) {
+						if ("hidden" === domStyle.get(chartNode, "visibility")) {
 							return;
 						}
 						var panel = dom.byId("piAnswersMainPaneContent");
