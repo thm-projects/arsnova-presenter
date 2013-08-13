@@ -116,7 +116,7 @@ define(
 				/* update mode menu item click events */
 				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
 				on(mobileLecturersViewMenuItem, "click", function() {
-					self.openMobileSession(config.arsnova.mobileLecturerSessionUrl, value);
+					self.openMobileSession(config.arsnova.mobileLecturerSessionUrl);
 				});
 				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
 				on(mobileStudentsViewMenuItem, "click", function() {
