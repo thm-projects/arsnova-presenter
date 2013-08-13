@@ -19,14 +19,14 @@
 define(
 	[
 		"dojo/dom-construct",
-	 	"dijit/layout/BorderContainer",
-	 	"dijit/layout/TabContainer",
-	 	"dgerhardt/dijit/layout/ContentPane",
+		"dijit/layout/BorderContainer",
+		"dijit/layout/TabContainer",
+		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Button",
 		"dijit/Dialog",
 		"version"
 	],
-	function(domConstruct, BorderContainer, TabContainer, ContentPane, Button, Dialog, version) {
+	function (domConstruct, BorderContainer, TabContainer, ContentPane, Button, Dialog, version) {
 		"use strict";
 
 		var
@@ -44,7 +44,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			show: function() {
+			show: function () {
 				if (null === dialog) {
 					container = new BorderContainer({
 						style: "width: 25em; height: 27em;"
@@ -59,7 +59,7 @@ define(
 					});
 					new Button({
 						label: "Close",
-						onClick: function() {
+						onClick: function () {
 							dialog.hide();
 						}
 					}).placeAt(footerPane);

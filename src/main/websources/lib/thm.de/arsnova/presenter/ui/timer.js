@@ -26,7 +26,7 @@ define(
 		"dijit/Dialog",
 		"dgerhardt/common/modalOverlay"
 	],
-	function(string, domConstruct, domClass, Button, ValidationTextBox, Dialog, modalOverlay) {
+	function (string, domConstruct, domClass, Button, ValidationTextBox, Dialog, modalOverlay) {
 		"use strict";
 
 		var
@@ -49,7 +49,7 @@ define(
 		;
 
 		self = {
-			showSettings: function(defaultInterval) {
+			showSettings: function (defaultInterval) {
 				if (null === dialog) {
 					var contentNode = domConstruct.create("div");
 					(intervalTextBox = new ValidationTextBox({
@@ -62,7 +62,7 @@ define(
 					})).placeAt(contentNode).startup();
 					new Button({
 						label: "Start",
-						onClick: function() {
+						onClick: function () {
 							if (intervalTextBox.isValid()) {
 								var timeComponents = intervalTextBox.get("value").split(":");
 								if (timeComponents.length < 3) {
@@ -82,7 +82,7 @@ define(
 					}).placeAt(contentNode).startup();
 					new Button({
 						label: "Close",
-						onClick: function() {
+						onClick: function () {
 							dialog.hide();
 						}
 					}).placeAt(contentNode).startup();
@@ -98,7 +98,7 @@ define(
 				dialog.show();
 			},
 
-			start: function(intervalSeconds) {
+			start: function (intervalSeconds) {
 				if (null !== interval) {
 					clearInterval(interval);
 				}
@@ -106,7 +106,7 @@ define(
 				if (null === timerNode) {
 					var timerWrapper = domConstruct.create("div", null);
 					remainingTimeNode = domConstruct.create("div", {id: "remainingTime"}, timerWrapper);
-					modalOverlay.show(timerWrapper, true, function() {
+					modalOverlay.show(timerWrapper, true, function () {
 						if (remainingSeconds < 1.0) {
 							self.stop();
 						} else {
@@ -122,7 +122,7 @@ define(
 				countDown();
 			},
 
-			stop: function() {
+			stop: function () {
 				if (null !== interval) {
 					clearInterval(interval);
 				}
@@ -131,7 +131,7 @@ define(
 		};
 
 		/* private "methods" */
-		countDown = function() {
+		countDown = function () {
 			remainingSeconds -= 0.5;
 
 			if (remainingSeconds <= warningThresholdSeconds) {
@@ -145,7 +145,7 @@ define(
 			remainingTimeNode.innerHTML = remainingTimeToString();
 		};
 
-		remainingTimeToString = function() {
+		remainingTimeToString = function () {
 			var hours = Math.floor(remainingSeconds / 3600.0);
 			var minutes = Math.floor(remainingSeconds / 60.0) % 60;
 			var seconds = Math.floor(remainingSeconds % 60);

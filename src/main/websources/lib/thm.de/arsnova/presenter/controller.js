@@ -32,22 +32,22 @@ define(
 		"arsnova-api/audienceQuestion",
 		"arsnova-api/feedback"
 	],
-	function(ready, router, mainUi, authControls, sessionControls, lecturerPane, audiencePane, socket, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel, feedbackModel) {
+	function (ready, router, mainUi, authControls, sessionControls, lecturerPane, audiencePane, socket, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel, feedbackModel) {
 		"use strict";
 
-		var init = function() {
-			ready(function() {
+		var init = function () {
+			ready(function () {
 				mainUi.init();
 				authControls.init(authService);
 			});
-			authService.init(function() {
+			authService.init(function () {
 				/* user is not logged in an can not be logged in automatically */
-				ready(function() {
+				ready(function () {
 					authControls.showLoginDialog();
 					mainUi.hideSplash(true);
 				});
 			});
-			ready(function() {
+			ready(function () {
 				if (authService.isLoggedIn()) {
 					socket.connect();
 
@@ -62,7 +62,7 @@ define(
 					audiencePane.startup();
 
 					/* register routes in form #!/12345678;paramName=paramValue */
-					router.register(/!\/([0-9]{8})((?:;[a-z0-9_-]+=[a-z0-9_-]*)*)/i, function(event) {
+					router.register(/!\/([0-9]{8})((?:;[a-z0-9_-]+=[a-z0-9_-]*)*)/i, function (event) {
 						/* parse parameters */
 						var paramArray = event.params[1].split(";");
 						var params = {};
@@ -85,7 +85,7 @@ define(
 		};
 
 		return {
-			startup: function() {
+			startup: function () {
 				console.log("-- Controller: startup --");
 
 				init();

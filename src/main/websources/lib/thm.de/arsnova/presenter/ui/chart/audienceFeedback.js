@@ -21,14 +21,14 @@ define(
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dijit/registry",
-	 	"dojox/charting/Chart",
-	 	"dojox/charting/plot2d/Columns",
-	 	"dojox/charting/plot2d/Grid",
-	 	"dojo/fx/easing",
-	 	"./theme",
-	 	"dojox/charting/axis2d/Default"
+		"dojox/charting/Chart",
+		"dojox/charting/plot2d/Columns",
+		"dojox/charting/plot2d/Grid",
+		"dojo/fx/easing",
+		"./theme",
+		"dojox/charting/axis2d/Default"
 	],
-	function(dom, domConstruct, registry, Chart, Columns, Grid, easing, theme) {
+	function (dom, domConstruct, registry, Chart, Columns, Grid, easing, theme) {
 		"use strict";
 
 		var
@@ -43,7 +43,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(parentNode) {
+			init: function (parentNode) {
 				console.log("-- Chart: audienceFeedback.init --");
 
 				chartNode = domConstruct.create("div", {id: "audienceFeedbackChart"}, parentNode);
@@ -88,11 +88,11 @@ define(
 				chart.render();
 
 				var resizeTimeout = null;
-				var onResize = function(event) {
+				var onResize = function (event) {
 					if (resizeTimeout) {
 						clearTimeout(resizeTimeout);
 					}
-					resizeTimeout = setTimeout(function() {
+					resizeTimeout = setTimeout(function () {
 						if ("hidden" === appContainer.style.visibility) {
 							return;
 						}
@@ -110,7 +110,7 @@ define(
 				onResize();
 			},
 
-			update: function(feedback) {
+			update: function (feedback) {
 				chart.updateSeries("Feedback", theme.applyColors(feedback, "feedback"));
 				chart.render();
 			}

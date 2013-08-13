@@ -26,7 +26,7 @@ define(
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/audienceFeedback"
 	],
-	function(dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart) {
+	function (dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart) {
 		"use strict";
 
 		var
@@ -39,7 +39,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(tabContainer, feedbackModel) {
+			init: function (tabContainer, feedbackModel) {
 				model = feedbackModel;
 
 				pane = new ContentPane({
@@ -49,11 +49,11 @@ define(
 				tabContainer.addChild(pane);
 			},
 
-			startup: function() {
+			startup: function () {
 				var feedbackPaneContentNode = domConstruct.create("div", {id: "audienceFeedbackPaneContent"}, pane.domNode);
 				audienceFeedbackChart.init(feedbackPaneContentNode);
 
-				model.onReceive(function(feedback) {
+				model.onReceive(function (feedback) {
 					var feedback0 = feedback[0];
 					feedback[0] = feedback[1];
 					feedback[1] = feedback0;
@@ -68,7 +68,7 @@ define(
 				}));
 
 				/* handle events fired when full screen mode is canceled */
-				fullScreen.onChange(function(event, isActive) {
+				fullScreen.onChange(function (event, isActive) {
 					if (!isActive) {
 						self.exitFullScreenMode();
 
@@ -77,11 +77,11 @@ define(
 				});
 			},
 
-			update: function(feedback) {
+			update: function (feedback) {
 				audienceFeedbackChart.update(feedback);
 			},
 
-			toggleFullScreenMode: function() {
+			toggleFullScreenMode: function () {
 				if (fullScreen.isActive()) {
 					/* dom node rearrangement takes place in fullscreenchange event handler */
 					fullScreen.exit();
@@ -94,7 +94,7 @@ define(
 				}
 			},
 
-			exitFullScreenMode: function() {
+			exitFullScreenMode: function () {
 				domConstruct.place(dom.byId("audienceFeedbackPaneContent"), pane.domNode);
 				domConstruct.destroy("audienceFeedbackTitle");
 			}

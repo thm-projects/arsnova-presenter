@@ -32,7 +32,7 @@ define(
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/mathJax"
 	],
-	function(on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax) {
+	function (on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax) {
 		"use strict";
 
 		var
@@ -50,7 +50,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(_tabContainer, audienceQuestionModel) {
+			init: function (_tabContainer, audienceQuestionModel) {
 				tabContainer = _tabContainer;
 				model = audienceQuestionModel;
 
@@ -61,12 +61,12 @@ define(
 				tabContainer.addChild(pane);
 			},
 
-			startup: function() {
+			startup: function () {
 				questionListNode = domConstruct.create("div", {id: "audienceQuestionList"}, pane.domNode);
 
-				model.onQuestionAvailable(function(questionId) {
+				model.onQuestionAvailable(function (questionId) {
 					var question = model.get(questionId);
-					question.then(function(question) {
+					question.then(function (question) {
 						self.prependQuestionToList(question);
 						if (!pane.get("selected")) {
 							newQuestionsCount++;
@@ -78,7 +78,7 @@ define(
 				});
 
 				/* reset new questions count when this tab is activated */
-				tabContainer.watch("selectedChildWidget", function(name, oldValue, value) {
+				tabContainer.watch("selectedChildWidget", function (name, oldValue, value) {
 					if (value === pane) {
 						newQuestionsCount = 0;
 						pane.set("title", "Questions");
@@ -94,7 +94,7 @@ define(
 				}));
 
 				/* handle events fired when full screen mode is canceled */
-				fullScreen.onChange(function(event, isActive) {
+				fullScreen.onChange(function (event, isActive) {
 					if (!isActive) {
 						self.exitFullScreenMode();
 
@@ -103,16 +103,16 @@ define(
 				});
 			},
 
-			update: function(questions) {
+			update: function (questions) {
 				domConstruct.empty(questionListNode);
-				when(questions, function(questions) {
-					questions.forEach(function(question) {
+				when(questions, function (questions) {
+					questions.forEach(function (question) {
 						self.prependQuestionToList(question);
 					});
 				});
 			},
 
-			prependQuestionToList: function(question) {
+			prependQuestionToList: function (question) {
 				var questionNode = domConstruct.create("div", {"class": "question", tabindex: 0}, questionListNode, "first");
 				var subjectNode = domConstruct.create("p", {"class": "subject"}, questionNode);
 				subjectNode.appendChild(document.createTextNode(question.subject));
@@ -132,15 +132,15 @@ define(
 					+ " " + dateLocale.format(date, {selector: "time", formatLength: "short"})
 				;
 				domConstruct.create("footer", {"class": "creationTime", innerHTML: dateTime}, questionNode);
-				on(questionNode, a11yclick, function(event) {
+				on(questionNode, a11yclick, function (event) {
 					self.openQuestion(question._id, questionNode, messageNode);
 				});
-				on(deleteNode, a11yclick, function(event) {
+				on(deleteNode, a11yclick, function (event) {
 					if (event.stopPropagation) { /* IE8 does not support stopPropagation */
 						event.stopPropagation();
 					}
 					confirmDialog.confirm("Delete question", "Do you really want to delete this question?", {
-						"Delete": function() {
+						"Delete": function () {
 							model.remove(question._id);
 							domConstruct.destroy(questionNode);
 						},
@@ -149,7 +149,7 @@ define(
 				});
 			},
 
-			openQuestion: function(questionId, questionNode, messageNode) {
+			openQuestion: function (questionId, questionNode, messageNode) {
 				if (domClass.contains(questionNode, "opened")) {
 					domClass.remove(questionNode, "opened");
 
@@ -161,7 +161,7 @@ define(
 					return;
 				}
 				var question = model.get(questionId);
-				when(question, function(question) {
+				when(question, function (question) {
 					domClass.remove(questionNode, "unread");
 					domClass.add(questionNode, "opened");
 					domClass.add(questionNode, "loaded");
@@ -170,7 +170,7 @@ define(
 				});
 			},
 
-			toggleFullScreenMode: function() {
+			toggleFullScreenMode: function () {
 				if (fullScreen.isActive()) {
 					/* dom node rearrangement takes place in fullscreenchange event handler */
 					fullScreen.exit();
@@ -183,7 +183,7 @@ define(
 				}
 			},
 
-			exitFullScreenMode: function() {
+			exitFullScreenMode: function () {
 				domConstruct.place(dom.byId("audienceQuestionList"), pane.domNode);
 				domConstruct.destroy("audienceQuestionsTitle");
 			}

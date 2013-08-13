@@ -1,5 +1,5 @@
 /* Dojo application profile for production */
-var profile = (function() {
+var profile = (function () {
 	var libPath = "src/main/websources/lib/";
 	var dojoPath = "vendor/dojotoolkit.org/";
 	var versionFilePath = "target/tmp/dojo/version/";
@@ -20,7 +20,7 @@ var profile = (function() {
 				"dijit": "../lib/dojotoolkit.org/dijit",
 				"dojox": "../lib/dojotoolkit.org/dojox"
 			},
-		    gfxRenderer: "svg,silverlight,vml"
+			gfxRenderer: "svg,silverlight,vml"
 		},
 
 		packages: [

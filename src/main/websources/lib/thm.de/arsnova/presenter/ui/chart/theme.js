@@ -18,20 +18,27 @@
  */
 define(
 	[
-	 	"dojo/_base/array",
+		"dojo/_base/array",
 		"dojox/charting/Theme",
 		"dojox/charting/themes/common",
 		"dojox/charting/themes/gradientGenerator",
-	 	"dojox/color"
+		"dojox/color"
 	],
-	function(array, Theme, themes, gradGen, color) {
+	function (array, Theme, themes, gradGen, color) {
 		"use strict";
 		/* based on Claro charting theme */
 
 		var
 			self = null,
 			g = Theme.generateGradient,
-			defaultFill = {type: "linear", space: "shape", x1: 0, y1: 0, x2: 0, y2: 100},
+			defaultFill = {
+				type: "linear",
+				space: "shape",
+				x1: 0,
+				y1: 0,
+				x2: 0,
+				y2: 10
+			},
 			axisAndLabelColor = "#333",
 			fillColors = {
 				"answers": ["#1f59b3", "#43b3b3", "#b3b323", "#b327b3", "#b31d1d", "#b3591f", "#000"],
@@ -44,7 +51,10 @@ define(
 			chart: {
 				fill: {
 					type: "linear",
-					x1: 0, x2: 0, y1: 0, y2: 100,
+					x1: 0,
+					x2: 0,
+					y1: 0,
+					y2: 100,
 					colors: [
 						{offset: 0, color: "#dbdbdb"},
 						{offset: 1, color: "#efefef"}
@@ -56,7 +66,10 @@ define(
 			plotarea: {
 				fill: {
 					type: "linear",
-					x1: 0, x2: 0, y1: 0, y2: 100,
+					x1: 0,
+					x2: 0,
+					y1: 0,
+					y2: 100,
 					colors: [
 						{offset: 0, color: "#dbdbdb"},
 						{offset: 1, color: "#efefef"}
@@ -121,7 +134,7 @@ define(
 		 * @param highlightValues Values to indexes contained in this array are highlighted in a special color. Anything else is displayed in a subtle color.
 		 * @param subtleValues Values to indexes contained in this array are displayed in a subtle color.
 		 */
-		self.applyColors = function(values, theme, pale, highlightValues, subtleValues) {
+		self.applyColors = function (values, theme, pale, highlightValues, subtleValues) {
 			var colors = fillColors[theme];
 			var fills = pale
 				? gradGen.generateFills(colors, defaultFill, 80, 65)

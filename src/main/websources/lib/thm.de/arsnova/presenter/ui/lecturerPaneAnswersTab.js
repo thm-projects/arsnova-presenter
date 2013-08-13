@@ -41,7 +41,7 @@ define(
 		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/chart/piAnswers"
 	],
-	function(on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart) {
+	function (on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart) {
 		"use strict";
 
 		var
@@ -91,7 +91,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(_tabContainer, lecturerQuestionModel) {
+			init: function (_tabContainer, lecturerQuestionModel) {
 				tabContainer = _tabContainer;
 				model = lecturerQuestionModel;
 
@@ -118,7 +118,7 @@ define(
 				answersContainer.addChild(mainPane);
 			},
 
-			startup: function() {
+			startup: function () {
 				mainPaneContentNode = domConstruct.create("div", {id: "piAnswersMainPaneContent"}, mainPane.domNode);
 				freeTextAnswersNode = domConstruct.create("div", {id: "piFreeTextAnswers"}, mainPaneContentNode);
 				domStyle.set(freeTextAnswersNode, "display", "none");
@@ -132,7 +132,7 @@ define(
 					label: "First question",
 					showLabel: false,
 					iconClass: "iconFirst",
-					onClick: function() {
+					onClick: function () {
 						model.first();
 					}
 				})).placeAt(answersNav).startup();
@@ -141,7 +141,7 @@ define(
 					label: "Previous question",
 					showLabel: false,
 					iconClass: "iconPrev",
-					onClick: function() {
+					onClick: function () {
 						model.prev();
 					}
 				})).placeAt(answersNav).startup();
@@ -151,7 +151,7 @@ define(
 					label: "Next question",
 					showLabel: false,
 					iconClass: "iconNext",
-					onClick: function() {
+					onClick: function () {
 						model.next();
 					}
 				})).placeAt(answersNav).startup();
@@ -160,7 +160,7 @@ define(
 					label: "Last question",
 					showLabel: false,
 					iconClass: "iconLast",
-					onClick: function() {
+					onClick: function () {
 						model.last();
 					}
 				})).placeAt(answersNav).startup();
@@ -168,7 +168,7 @@ define(
 				var showAnswersMenu = new Menu({style: "display: none"});
 				showAnswersMenu.addChild(showCorrectMenuItem = new CheckedMenuItem({
 					label: "Correct answers",
-					onClick: function() {
+					onClick: function () {
 						if (showAnswers) {
 							self.updateAnswers();
 						}
@@ -176,13 +176,13 @@ define(
 				}));
 				showAnswersMenu.addChild(showPiRoundMenuItem[1] = new CheckedMenuItem({
 					label: "Before discussion (1st)",
-					onClick: function() {
+					onClick: function () {
 						self.updateAnswers();
 					}
 				}));
 				showAnswersMenu.addChild(showPiRoundMenuItem[2] = new CheckedMenuItem({
 					label: "After discussion (2nd)",
-					onClick: function() {
+					onClick: function () {
 						self.updateAnswers();
 					}
 				}));
@@ -190,17 +190,17 @@ define(
 					id: "piAnswersShowButton",
 					label: "Show",
 					dropDown: showAnswersMenu,
-					onClick: function() {
+					onClick: function () {
 						showAnswers = !showAnswers;
 						self.updateAnswers();
 					}
 				})).placeAt(answersNav).startup();
 				(piRoundButton = new Button({
 					id: "piRoundButton",
-					onClick: function() {
+					onClick: function () {
 						confirmDialog.confirm("Peer Instruction", "Do you really want to start the next Peer Instruction round? Answers for the current round will be locked permanently.", {
-							"Proceed": function() {
-								model.startSecondPiRound().then(function() {
+							"Proceed": function () {
+								model.startSecondPiRound().then(function () {
 									piRoundButton.set("label", "2nd");
 									piRoundButton.set("disabled", true);
 									showPiRoundMenuItem[2].set("disabled", false);
@@ -250,7 +250,7 @@ define(
 
 				fullScreenControlsNode = domConstruct.create("div", {id: "fullScreenControls"}, document.body);
 
-				var onResize = function() {
+				var onResize = function () {
 					domStyle.set(fullScreenControlsNode, "left", Math.round(document.body.clientWidth / 2 - 250) + "px");
 
 					fsControlsToggleFx.show = fx.slideTo({
@@ -270,7 +270,7 @@ define(
 				onResize();
 
 				/* handle events fired when full screen mode is canceled */
-				fullScreen.onChange(function(event, isActive) {
+				fullScreen.onChange(function (event, isActive) {
 					if (!isActive) {
 						domStyle.set(questionSubjectNode, "display", "none");
 						domStyle.set(questionTitleSeperatorNode, "display", "none");
@@ -289,20 +289,20 @@ define(
 				});
 
 				model.watchId(onLecturerQuestionIdChange);
-				model.onAnswersAvailable(function(questionId) {
+				model.onAnswersAvailable(function (questionId) {
 					if (model.getId() !== questionId) {
 						return;
 					}
 					var question = model.get();
-					when(question, function(question) {
-						when(model.getAnswers(question.piRound, true), function() {
+					when(question, function (question) {
+						when(model.getAnswers(question.piRound, true), function () {
 							self.updateAnswers();
 						});
 					});
 				});
 			},
 
-			updateQuestion: function(question) {
+			updateQuestion: function (question) {
 				var labels = [];
 
 				if ("undefined" === question || null === question) {
@@ -340,7 +340,7 @@ define(
 						piRoundButton.set("disabled", false);
 					}
 					domStyle.set(piRoundButton.domNode, "display", "");
-					question.possibleAnswers.forEach(function(possibleAnswer, i) {
+					question.possibleAnswers.forEach(function (possibleAnswer, i) {
 						labels.push({value: i + 1, text: possibleAnswer.text});
 					});
 					piAnswersChart.show();
@@ -348,13 +348,13 @@ define(
 				}
 			},
 
-			updateAnswers: function() {
+			updateAnswers: function () {
 				/* hide answer count until answers have been loaded */
 				domStyle.set(answerCountNode, "visibility", "hidden");
 
-				when(model.get(), function(question) {
+				when(model.get(), function (question) {
 					if ("freetext" === question.questionType) {
-						when(model.getAnswers(), function(answers) {
+						when(model.getAnswers(), function (answers) {
 							self.updateFreeText(answers);
 						});
 					} else {
@@ -371,11 +371,11 @@ define(
 				});
 			},
 
-			updateFreeText: function(answers) {
+			updateFreeText: function (answers) {
 				var totalAnswerCount = 0;
 				var abstentionCount = 0;
 				domConstruct.empty(freeTextAnswersNode);
-				answers.forEach(function(answer) {
+				answers.forEach(function (answer) {
 					totalAnswerCount += answer.answerCount;
 
 					if (!showAnswers) {
@@ -395,15 +395,15 @@ define(
 					var messageNode = domConstruct.create("p", {"class": "message"}, answerNode);
 					messageNode.appendChild(document.createTextNode(answer.answerText));
 					mathJax.parse(messageNode);
-					on(answerNode, a11yclick, function() {
+					on(answerNode, a11yclick, function () {
 						domClass.toggle(this, "opened");
 					});
-					on(deleteNode, a11yclick, function(event) {
+					on(deleteNode, a11yclick, function (event) {
 						if (event.stopPropagation) { /* IE8 does not support stopPropagation */
 							event.stopPropagation();
 						}
 						confirmDialog.confirm("Delete answer", "Do you really want to delete this answer?", {
-							"Delete": function() {
+							"Delete": function () {
 								model.removeAnswer(answer._id);
 								domConstruct.destroy(answerNode);
 							},
@@ -419,7 +419,7 @@ define(
 				domStyle.set(answerCountNode, "visibility", "visible");
 			},
 
-			updateAnswerStatistics: function(rounds) {
+			updateAnswerStatistics: function (rounds) {
 				var question = model.get();
 				var answerCountPerRound = [];
 				var possibleAnswersCount = 0;
@@ -429,7 +429,7 @@ define(
 				var labelReverseMapping = {};
 				var correctIndexes = [];
 
-				question.possibleAnswers.forEach(function(possibleAnswer, i) {
+				question.possibleAnswers.forEach(function (possibleAnswer, i) {
 					/* transform the label and answer count data into arrays usable by dojox/charting */
 					labelReverseMapping[possibleAnswer.text] = i;
 					labels.push({value: i + 1, text: possibleAnswer.text});
@@ -459,7 +459,7 @@ define(
 					}
 					answerCountPerRound[round] = 0;
 
-					answers.forEach(function(answer) {
+					answers.forEach(function (answer) {
 						answerCountPerRound[round] += answer.answerCount;
 
 						if (!showAnswers) {
@@ -482,7 +482,7 @@ define(
 
 					if (percentageValues) {
 						for (var j = 0; j < values.length; j++) {
-							values[j] *= 100 / answerCountPerRound[round] ;
+							values[j] *= 100 / answerCountPerRound[round];
 						}
 					}
 					valueSeries[round] = values;
@@ -503,7 +503,7 @@ define(
 				piAnswersChart.update(labels, correctIndexes, valueSeries, percentageValues, question.abstention);
 			},
 
-			toggleFullScreenMode: function() {
+			toggleFullScreenMode: function () {
 				if (fullScreen.isActive()) {
 					/* dom node rearrangement takes place in fullscreenchange event handler */
 					fullScreen.exit();
@@ -522,11 +522,11 @@ define(
 				}
 			},
 
-			selectTab: function() {
+			selectTab: function () {
 				tabContainer.selectChild(answersContainer);
 			},
 
-			enableControls: function(enable) {
+			enableControls: function (enable) {
 				if (!enable) {
 					domStyle.set(piRoundButton.domNode, "display", "none");
 					domStyle.set(answerCountNode, "visibility", "hidden");
@@ -541,7 +541,7 @@ define(
 		};
 
 		/* private "methods" */
-		onLecturerQuestionIdChange = function(name, oldValue, value) {
+		onLecturerQuestionIdChange = function (name, oldValue, value) {
 			var i;
 
 			showCorrectMenuItem.set("checked", false);
@@ -550,7 +550,7 @@ define(
 			}
 			showAnswers = false;
 			var question = model.get();
-			when(question, function(question) {
+			when(question, function (question) {
 				self.updateQuestion(question);
 				if (null !== question) {
 					unlockQuestionMenuItem.set("checked", question.active);
@@ -566,7 +566,7 @@ define(
 						unlockAnswerStatsMenuItem.set("label", "View of answers");
 					} else {
 						var noCorrectAnswer = true;
-						question.possibleAnswers.forEach(function(answer) {
+						question.possibleAnswers.forEach(function (answer) {
 							if (answer.correct) {
 								noCorrectAnswer = false;
 							}
@@ -592,7 +592,7 @@ define(
 			});
 		};
 
-		toggleFullScreenControls = function(event) {
+		toggleFullScreenControls = function (event) {
 			if (event.clientY < 150) {
 				fsControlsToggleFx.show.play();
 			} else if (event.clientY > 200) {
@@ -600,7 +600,7 @@ define(
 			}
 		};
 
-		updateLocks = function() {
+		updateLocks = function () {
 			model.updateLocks(
 				null,
 				!unlockQuestionMenuItem.get("checked"),

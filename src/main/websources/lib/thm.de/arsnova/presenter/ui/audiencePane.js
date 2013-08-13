@@ -29,7 +29,7 @@ define(
 		"arsnova-presenter/ui/audiencePaneFeedbackTab",
 		"arsnova-presenter/ui/audiencePaneQuestionsTab"
 	],
-	function(on, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, feedbackTab, questionsTab) {
+	function (on, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, feedbackTab, questionsTab) {
 		"use strict";
 
 		var
@@ -50,7 +50,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(_sessionModel, _audienceQuestionModel, _feedbackModel) {
+			init: function (_sessionModel, _audienceQuestionModel, _feedbackModel) {
 				console.log("-- UI: audiencePane.init --");
 
 				sessionModel = _sessionModel;
@@ -80,7 +80,7 @@ define(
 				feedbackTab.init(tabs, feedbackModel);
 				questionsTab.init(tabs, audienceQuestionModel);
 
-				var onWindowResize = function() {
+				var onWindowResize = function () {
 					var maxSize = document.body.clientWidth - MIN_WIDTH;
 					container.set("maxSize", maxSize);
 					var width = domStyle.get(container.domNode, "width");
@@ -93,7 +93,7 @@ define(
 				onWindowResize();
 			},
 
-			startup: function() {
+			startup: function () {
 				feedbackTab.startup();
 				questionsTab.startup();
 
@@ -102,9 +102,9 @@ define(
 		};
 
 		/* private "methods" */
-		onSessionKeyChange = function(name, oldValue, value) {
+		onSessionKeyChange = function (name, oldValue, value) {
 			var questions = audienceQuestionModel.getAll();
-			when(questions, function(questions) {
+			when(questions, function (questions) {
 				questionsTab.update(questions);
 			});
 		};

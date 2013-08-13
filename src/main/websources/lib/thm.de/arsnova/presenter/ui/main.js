@@ -38,7 +38,7 @@ define(
 		"arsnova-presenter/ui/timer",
 		"arsnova-presenter/ui/infoDialog"
 	],
-	function(config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Tooltip, fx, fullScreen, timer, infoDialog) {
+	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Tooltip, fx, fullScreen, timer, infoDialog) {
 		"use strict";
 
 		var
@@ -63,7 +63,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function() {
+			init: function () {
 				console.log("-- UI: main.init --");
 
 				var appContainerNode = domConstruct.create("div", {id: "appContainer", style: "visibility: hidden"}, document.body);
@@ -117,7 +117,7 @@ define(
 				var lowResMessage = domConstruct.create("p", {id: "lowResolutionMessage"}, lowResContentWrapperNode);
 				new Button({
 					label: "ARSnova mobile",
-					onClick: function() {
+					onClick: function () {
 						location.href = config.arsnova.mobileUrl;
 					}
 				}).placeAt(
@@ -125,7 +125,7 @@ define(
 				).startup();
 				var resizeLog = "";
 				var resizeLogTimeout = null;
-				var windowOnResize = function(event) {
+				var windowOnResize = function (event) {
 					if (document.body.clientWidth < MIN_WIDTH || document.body.clientHeight < MIN_HEIGHT) {
 						/* iPad does not swap screen.availWidth with screen.availHeight in landscape orientation */
 						if ((screen.availWidth < MIN_WIDTH && screen.availHeight < MIN_WIDTH) || screen.availHeight < MIN_HEIGHT) {
@@ -145,7 +145,7 @@ define(
 					if (resizeLogTimeout) {
 						clearTimeout(resizeLogTimeout);
 					}
-					resizeLogTimeout = setTimeout(function() {
+					resizeLogTimeout = setTimeout(function () {
 						console.log(resizeLog);
 					}, 500);
 				};
@@ -153,7 +153,7 @@ define(
 				windowOnResize();
 			},
 
-			startup: function() {
+			startup: function () {
 				appContainer.startup();
 				domStyle.set(appContainer.domNode, "visibility", "visible");
 				fullScreen.setPageNode(appContainer.domNode);
@@ -209,7 +209,7 @@ define(
 				}));
 				productMenu.addChild(new MenuItem({
 					label: "ARSnova website",
-					onClick: function() {
+					onClick: function () {
 						window.open("http://blog.mni.thm.de/arsnova/arsnova-blog/", "_blank");
 					}
 				}));
@@ -224,10 +224,10 @@ define(
 							targetNodeIds: ["footerOrganizationInfo"],
 							leftClickToOpen: true
 						});
-						org.links.forEach(function(link) {
+						org.links.forEach(function (link) {
 							organizationMenu.addChild(new MenuItem({
 								label: link.label,
-								onClick: function() {
+								onClick: function () {
 									window.open(link.url, "_blank");
 								}
 							}));
@@ -242,12 +242,12 @@ define(
 				});
 				setInterval(updateTime, 500);
 				updateTime();
-				on(timeNode, a11yclick, function() {
+				on(timeNode, a11yclick, function () {
 					timer.showSettings();
 				});
 
 				/* prevent window scrolling (needed for IE) */
-				on(window, "scroll", function(event) {
+				on(window, "scroll", function (event) {
 					scrollTo(0, 0);
 					console.debug("Prevented document scrolling");
 				});
@@ -255,7 +255,7 @@ define(
 				/* Full screen mode */
 				fullScreenContainer.startup();
 				var fullScreenLogo = domConstruct.create("img", {id: "fullScreenLogo", src: "images/arsnova.png"}, fullScreenContainer.domNode);
-				fullScreen.onChange(function(event, isActive) {
+				fullScreen.onChange(function (event, isActive) {
 					if (isActive) {
 						console.log("Full screen mode enabled");
 						domStyle.set(fullScreenContainer.domNode, "display", "block");
@@ -278,14 +278,14 @@ define(
 				appContainer.resize();
 			},
 
-			hideSplash: function(leaveBg) {
+			hideSplash: function (leaveBg) {
 				if (leaveBg) {
 					domStyle.set("splash-content", "display", "none");
 				} else {
 					fx.fadeOut({
 						node: "splash-bg",
 						duration: 500,
-						onEnd: function() {
+						onEnd: function () {
 							domStyle.set("splash", "display", "none");
 						}
 					}).play();
@@ -296,13 +296,13 @@ define(
 				}
 			},
 
-			toggleFullScreenMode: function() {
+			toggleFullScreenMode: function () {
 				fullScreen.toggle();
 			}
 		};
 
 		/* private "methods" */
-		updateTime = function() {
+		updateTime = function () {
 			var date = new Date();
 			timeNode.innerHTML = dateLocale.format(date, {selector: "time", formatLength: "short"});
 			timeTooltip.set("label", dateLocale.format(date, {selector: "date", formatLength: "short"}));

@@ -25,7 +25,7 @@ define(
 		"dijit/Dialog",
 		"version"
 	],
-	function(domConstruct, domStyle, registry, Button, Dialog, version) {
+	function (domConstruct, domStyle, registry, Button, Dialog, version) {
 		"use strict";
 
 		var
@@ -35,19 +35,19 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(_authService) {
+			init: function (_authService) {
 				console.log("-- UI: authControls.init --");
 
 				authService = _authService;
 			},
 
-			startup: function() {
+			startup: function () {
 				domConstruct.create("button", {id: "logoutButton", type: "button"}, "exitPanel");
 				new Button({label: "Logout"}, "logoutButton").startup();
 				registry.byId("logoutButton").onClick = authService.logout;
 			},
 
-			showLoginDialog: function() {
+			showLoginDialog: function () {
 				domConstruct.create("img", {id: "loginLogo", src: "images/arsnova.png"}, document.body);
 				var versionString = version.version;
 				if (version.commitId) {
@@ -62,7 +62,7 @@ define(
 					title: "Presenter Login",
 					content: loginDialogContent,
 					draggable: false,
-					onCancel: function() {
+					onCancel: function () {
 						console.debug("Cancel action is disabled");
 					}
 				});
@@ -70,9 +70,9 @@ define(
 				for (var service in services) {
 					new Button({
 						label: services[service].title,
-						onClick: function(url) {
+						onClick: function (url) {
 							/* a function has to be returned because of the closure */
-							return function() {
+							return function () {
 								location.href = url + "&referer=" + encodeURIComponent(location.href);
 							};
 						}(services[service].url)

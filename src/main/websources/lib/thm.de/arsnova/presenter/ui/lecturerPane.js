@@ -28,7 +28,7 @@ define(
 		"arsnova-presenter/ui/lecturerPaneQuestionsTab",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab"
 	],
-	function(when, domConstruct, registry, BorderContainer, TabContainer, ContentPane, Select, questionsTab, answersTab) {
+	function (when, domConstruct, registry, BorderContainer, TabContainer, ContentPane, Select, questionsTab, answersTab) {
 		"use strict";
 
 		var
@@ -47,7 +47,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(_sessionModel, _lecturerQuestionModel) {
+			init: function (_sessionModel, _lecturerQuestionModel) {
 				console.log("-- UI: lecturerPane.init --");
 
 				sessionModel = _sessionModel;
@@ -84,7 +84,7 @@ define(
 				answersTab.init(tabs, lecturerQuestionModel);
 			},
 
-			startup: function() {
+			startup: function () {
 				questionsTab.startup();
 				answersTab.startup();
 
@@ -93,9 +93,9 @@ define(
 		};
 
 		/* private "methods" */
-		onSessionKeyChange = function(name, oldValue, value) {
+		onSessionKeyChange = function (name, oldValue, value) {
 			var questions = lecturerQuestionModel.getAll();
-			when(questions, function(questions) {
+			when(questions, function (questions) {
 				questionsTab.update(questions);
 			});
 		};

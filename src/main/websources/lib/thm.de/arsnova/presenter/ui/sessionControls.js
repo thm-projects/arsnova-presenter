@@ -34,7 +34,7 @@ define(
 		"dijit/Tooltip",
 		"dgerhardt/common/modalOverlay"
 	],
-	function(config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip, modalOverlay) {
+	function (config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip, modalOverlay) {
 		"use strict";
 
 		var
@@ -57,7 +57,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(sessionModel) {
+			init: function (sessionModel) {
 				console.log("-- UI: sessionControls.init --");
 
 				model = sessionModel;
@@ -77,7 +77,7 @@ define(
 					searchAttr: "shortName",
 					maxHeight: 200,
 					style: "width: 140px;",
-					onChange: function(value) {
+					onChange: function (value) {
 						if (value) {
 							model.setKey(value);
 						}
@@ -109,23 +109,23 @@ define(
 
 				self.updateSelect(model.getOwned());
 				model.watchKey(self.onKeyChange);
-				model.watchActiveUserCount(function(name, oldValue, value) {
+				model.watchActiveUserCount(function (name, oldValue, value) {
 					activeUserCountNode.innerHTML = value;
 				});
 			},
 
-			startup: function() {
+			startup: function () {
 				/* update mode menu item click events */
 				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
-				on(mobileLecturersViewMenuItem, "click", function() {
+				on(mobileLecturersViewMenuItem, "click", function () {
 					self.openMobileSession(config.arsnova.mobileLecturerSessionUrl, value);
 				});
 				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
-				on(mobileStudentsViewMenuItem, "click", function() {
+				on(mobileStudentsViewMenuItem, "click", function () {
 					self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
 				});
 
-				on(qrNode, a11yclick, function() {
+				on(qrNode, a11yclick, function () {
 					var sessionKey = model.getKey();
 					if (null === sessionKey) {
 						return;
@@ -135,9 +135,9 @@ define(
 				});
 			},
 
-			updateSelect: function(sessions) {
-				when(sessions, function(sessions) {
-					sessions.forEach(function(session) {
+			updateSelect: function (sessions) {
+				when(sessions, function (sessions) {
+					sessions.forEach(function (session) {
 						memory.put({
 							id: session.keyword,
 							shortName: session.shortName,
@@ -154,7 +154,7 @@ define(
 				});
 			},
 
-			submitCreateSessionForm: function() {
+			submitCreateSessionForm: function () {
 				var
 					shortName = registry.byId("sessionNameField").value,
 					description = registry.byId("sessionDescField").value
@@ -162,12 +162,12 @@ define(
 
 				if (model.createSession(shortName, description)) {
 					registry.byId("newSessionDialog").close();
-				};
+				}
 			},
 
-			onKeyChange: function(name, oldValue, value) {
+			onKeyChange: function (name, oldValue, value) {
 				select.set("value", value);
-				when(model.getCurrent(), function(session) {
+				when(model.getCurrent(), function (session) {
 					document.title = session.shortName + " - ARSnova Presenter";
 					domConstruct.empty(titleNode);
 					titleNode.appendChild(document.createTextNode(session.name));
@@ -191,7 +191,7 @@ define(
 				}
 			},
 
-			openMobileSession: function(url) {
+			openMobileSession: function (url) {
 				url = string.substitute(url, {sessionKey: model.getKey()});
 
 				if (document.body.clientWidth < 500 || document.body.clientHeight < 850) {
@@ -211,7 +211,7 @@ define(
 						id: "mobileDialog",
 						title: "ARSnova",
 						style: "width: 480px; height: 830px",
-						onHide: function() {
+						onHide: function () {
 							domConstruct.destroy("mobileFrame");
 						}
 					});
@@ -220,12 +220,12 @@ define(
 				mobileDialog.show();
 			},
 
-			showQr: function(data) {
+			showQr: function (data) {
 				var QR_TYPE_NUMBER = 4;
 				var QR_ERROR_CORRECT_LEVEL = "M";
 				var QR_CELL_COUNT = 33;
 				var QR_BORDER_SIZE_FACTOR = 2;
-				var showQrOverlay = function() {
+				var showQrOverlay = function () {
 					var qrNode = domConstruct.create("div", {id: "qr"});
 
 					var maxSize = -50 + (document.body.clientWidth < document.body.clientHeight ? document.body.clientWidth : document.body.clientHeight);
@@ -241,10 +241,10 @@ define(
 					modalOverlay.show(qrNode, true);
 				};
 				if ("undefined" === typeof qrcode) {
-					script.get("lib/d-project.com/qrcode-generator/qrcode.js").then(function() {
+					script.get("lib/d-project.com/qrcode-generator/qrcode.js").then(function () {
 						console.log("QR Code generation library loaded");
 						showQrOverlay();
-					}, function(error) {
+					}, function (error) {
 						console.error("QR Code generation library could not be loaded");
 					});
 				} else {
@@ -252,7 +252,7 @@ define(
 				}
 			},
 
-			getAbsoluteUrl: function(url) {
+			getAbsoluteUrl: function (url) {
 				var tag = domConstruct.create("a", {href: url}, document.body);
 				return tag.href;
 			}

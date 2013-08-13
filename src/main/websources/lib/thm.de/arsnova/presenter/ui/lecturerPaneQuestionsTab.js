@@ -26,7 +26,7 @@ define(
 		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab"
 	],
-	function(on, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab) {
+	function (on, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab) {
 		"use strict";
 
 		var
@@ -43,7 +43,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(_tabContainer, lecturerQuestionModel) {
+			init: function (_tabContainer, lecturerQuestionModel) {
 				tabContainer = _tabContainer;
 				model = lecturerQuestionModel;
 
@@ -54,21 +54,21 @@ define(
 				tabContainer.addChild(questionsPane);
 			},
 
-			startup: function() {
+			startup: function () {
 				questionListNode = domConstruct.create("div", {id: "piQuestionList"}, questionsPane.domNode);
 			},
 
-			update: function(questions) {
+			update: function (questions) {
 				domConstruct.empty(questionListNode);
 
 				if ("undefined" === questions || null === questions) {
 					return;
 				}
 
-				when(questions, function(questions) {
+				when(questions, function (questions) {
 					/* group questions by category */
 					var categories = {};
-					questions.forEach(function(question) {
+					questions.forEach(function (question) {
 						if (!categories[question.subject]) {
 							categories[question.subject] = [];
 						}
@@ -79,11 +79,11 @@ define(
 						var categoryNode = domConstruct.create("div", {"class": "questionCategory"}, questionListNode);
 						var categoryHeaderNode = domConstruct.create("header", null, categoryNode);
 						categoryHeaderNode.appendChild(document.createTextNode(category));
-						categories[category].forEach(function(question) {
+						categories[category].forEach(function (question) {
 							var questionNode = domConstruct.create("p", {"class": "question", tabindex: 0}, categoryNode);
 							questionNode.appendChild(document.createTextNode(question.text));
 							mathJax.parse(questionNode);
-							on(questionNode, a11yclick, function(event) {
+							on(questionNode, a11yclick, function (event) {
 								model.setId(question._id);
 								answersTab.selectTab();
 							});

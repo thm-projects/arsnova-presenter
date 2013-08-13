@@ -22,14 +22,14 @@ define(
 		"dojo/dom-construct",
 		"dojo/dom-style",
 		"dijit/registry",
-	 	"dojox/charting/Chart",
-	 	"dojox/charting/plot2d/ClusteredColumns",
-	 	"dojox/charting/plot2d/Grid",
-	 	"dojo/fx/easing",
-	 	"./theme",
-	 	"dojox/charting/axis2d/Default"
+		"dojox/charting/Chart",
+		"dojox/charting/plot2d/ClusteredColumns",
+		"dojox/charting/plot2d/Grid",
+		"dojo/fx/easing",
+		"./theme",
+		"dojox/charting/axis2d/Default"
 	],
-	function(dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, Grid, easing, theme) {
+	function (dom, domConstruct, domStyle, registry, Chart, ClusteredColumns, Grid, easing, theme) {
 		"use strict";
 
 		var
@@ -44,7 +44,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function(parentNode) {
+			init: function (parentNode) {
 				console.log("-- Chart: piAnswers.init --");
 
 				chartNode = domConstruct.create("div", {id: "piAnswersChart"}, parentNode);
@@ -68,18 +68,18 @@ define(
 					vertical: true,
 					includeZero: true,
 					natural: true,
-					labelFunc: function(value) {
+					labelFunc: function (value) {
 						return value + "%";
 					}
 				});
 				chart.render();
 
 				var resizeTimeout = null;
-				var onResize = function(event) {
+				var onResize = function (event) {
 					if (resizeTimeout) {
 						clearTimeout(resizeTimeout);
 					}
-					resizeTimeout = setTimeout(function() {
+					resizeTimeout = setTimeout(function () {
 						if ("hidden" === appContainer.style.visibility) {
 							return;
 						}
@@ -97,15 +97,15 @@ define(
 				//onResize();
 			},
 
-			show: function() {
+			show: function () {
 				domStyle.set(chartNode, "display", "block");
 			},
 
-			hide: function() {
+			hide: function () {
 				domStyle.set(chartNode, "display", "none");
 			},
 
-			update: function(labels, correctIndexes, series, percentageValues, abstention) {
+			update: function (labels, correctIndexes, series, percentageValues, abstention) {
 				var i;
 
 				chart.addAxis("x", {
@@ -120,7 +120,7 @@ define(
 					vertical: true,
 					includeZero: true,
 					natural: true,
-					labelFunc: !percentageValues ? null : function(value) {
+					labelFunc: !percentageValues ? null : function (value) {
 						return value + "%";
 					}
 				});

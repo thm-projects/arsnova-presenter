@@ -21,7 +21,7 @@ define(
 		"dojo/dom-construct",
 		"dojo/request/script"
 	],
-	function(domConstruct, script) {
+	function (domConstruct, script) {
 		"use strict";
 
 		var
@@ -34,7 +34,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			onLoad: function(callback) {
+			onLoad: function (callback) {
 				if (null === loaded && "undefined" === typeof MathJax) {
 					var config = {
 						skipStartupTypeset: true
@@ -43,10 +43,10 @@ define(
 					var head = document.getElementsByTagName("head")[0];
 					var scriptNode = domConstruct.create("script", {type: "text/x-mathjax-config"}, head);
 					scriptNode.text = "MathJax.Hub.Config(" + JSON.stringify(config) + ");";
-					loaded = script.get("lib/mathjax.org/mathjax/MathJax.js?config=TeX-AMS_HTML").then(function() {
+					loaded = script.get("lib/mathjax.org/mathjax/MathJax.js?config=TeX-AMS_HTML").then(function () {
 						console.log("MathJax library loaded");
 						callback();
-					}, function(error) {
+					}, function (error) {
 						console.error("MathJax library could not be loaded");
 					});
 				} else {
@@ -54,12 +54,12 @@ define(
 				}
 			},
 
-			parse: function(elementNode) {
+			parse: function (elementNode) {
 				if (!boxExpr.test(elementNode.innerHTML) && !inlineExpr.test(elementNode.innerHTML)) {
 					return;
 				}
 
-				self.onLoad(function() {
+				self.onLoad(function () {
 					MathJax.Hub.Queue(["Typeset", MathJax.Hub, elementNode]);
 				});
 			}

@@ -23,7 +23,7 @@ git submodule update --init
 # Write build version info into JavaScript file later used by Dojo and set build profile
 mkdir -p "$VERSION_FILE_PATH"
 if [ prod = "$BUILD_ENV" ]; then
-	VERSION_FILE_CONTENT="define([], function() { return { \
+	VERSION_FILE_CONTENT="define([], function () { return { \
 		version: \"$VERSION\", \
 		commitId: \"$(git log -n 1 --pretty=format:%h)\", \
 		buildTime: \"$DATE\", \
@@ -31,7 +31,7 @@ if [ prod = "$BUILD_ENV" ]; then
 		}; });"
 	DOJO_BUILD_PROFILE="presenter-application.prod"
 else
-	VERSION_FILE_CONTENT="define([], function() { return { \
+	VERSION_FILE_CONTENT="define([], function () { return { \
 		version: \"DEVELOPMENT\", \
 		commitId: \"\", \
 		buildTime: \"$DATE\", \
