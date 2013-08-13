@@ -135,12 +135,12 @@ define(
 							resizeLog = "Small window detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
 							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. Please increase the size of your browser's window or reduce the zoom factor (if zooming is active).";
 						}
-						domStyle.set(appContainer, "visibility", "hidden");
+						domStyle.set(appContainer.domNode, "visibility", "hidden");
 						domStyle.set(lowResNode, "visibility", "visible");
 					} else {
 						resizeLog = "Acceptable client size detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
 						domStyle.set(lowResNode, "visibility", "hidden");
-						domStyle.set(appContainer, "visibility", "visible");
+						domStyle.set(appContainer.domNode, "visibility", "visible");
 					}
 					if (resizeLogTimeout) {
 						clearTimeout(resizeLogTimeout);

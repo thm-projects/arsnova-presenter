@@ -470,7 +470,7 @@ define(
 							/* handle selected options for multiple choice questions */
 							var selectedOptions = answer.answerText.split(",");
 							for (var j = 0; j < selectedOptions.length; j++) {
-								if (1 === parseInt(selectedOptions[j])) {
+								if (1 === parseInt(selectedOptions[j], 10)) {
 									values[j] += answer.answerCount;
 								}
 							}

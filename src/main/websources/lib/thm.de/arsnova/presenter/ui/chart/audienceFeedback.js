@@ -20,6 +20,7 @@ define(
 	[
 		"dojo/dom",
 		"dojo/dom-construct",
+		"dojo/dom-style",
 		"dijit/registry",
 		"dojox/charting/Chart",
 		"dojox/charting/plot2d/Columns",
@@ -28,7 +29,7 @@ define(
 		"./theme",
 		"dojox/charting/axis2d/Default"
 	],
-	function (dom, domConstruct, registry, Chart, Columns, Grid, easing, theme) {
+	function (dom, domConstruct, domStyle, registry, Chart, Columns, Grid, easing, theme) {
 		"use strict";
 
 		var
@@ -93,7 +94,7 @@ define(
 						clearTimeout(resizeTimeout);
 					}
 					resizeTimeout = setTimeout(function () {
-						if ("hidden" === appContainer.style.visibility) {
+						if ("hidden" === domStyle.get(chartNode, "visibility")) {
 							return;
 						}
 						var panel = dom.byId("audienceFeedbackPaneContent");
