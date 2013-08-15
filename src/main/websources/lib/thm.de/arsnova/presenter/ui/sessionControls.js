@@ -138,11 +138,23 @@ define(
 			updateSelect: function (sessions) {
 				when(sessions, function (sessions) {
 					sessions.forEach(function (session) {
+						var keywordNode = document.createTextNode("(" + session.keyword + ")");
+						var shortNameNode = document.createElement("strong");
+						shortNameNode.appendChild(document.createTextNode(session.shortName));
+						var nameNode = document.createTextNode(session.name);
+
+						var labelNode = document.createElement("span");
+						labelNode.appendChild(shortNameNode);
+						labelNode.appendChild(document.createTextNode(" "));
+						labelNode.appendChild(keywordNode);
+						labelNode.appendChild(document.createElement("br"));
+						labelNode.appendChild(nameNode);
+
 						memory.put({
 							id: session.keyword,
 							shortName: session.shortName,
 							name: session.name,
-							label: "<strong>" + session.shortName + "</strong> (" + session.keyword + ")" + "<br>" + session.name
+							label: labelNode.innerHTML
 						});
 					});
 					console.log("UI: session list updated");
