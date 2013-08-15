@@ -43,7 +43,7 @@ define(
 					var head = document.getElementsByTagName("head")[0];
 					var scriptNode = domConstruct.create("script", {type: "text/x-mathjax-config"}, head);
 					scriptNode.text = "MathJax.Hub.Config(" + JSON.stringify(config) + ");";
-					loaded = script.get("lib/mathjax.org/mathjax/MathJax.js?config=TeX-AMS_HTML").then(function () {
+					loaded = script.get("lib/mathjax.org/mathjax/MathJax.js?config=TeX-AMS_HTML,Safe").then(function () {
 						console.log("MathJax library loaded");
 						callback();
 					}, function (error) {
