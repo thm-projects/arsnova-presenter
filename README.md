@@ -24,6 +24,7 @@ The following commands check out a maintenance branch, commit changes and merge 
 
 	$ git checkout x.y-stable
 	(do your code modifications)
+	$ git add file1 [file2] [...]
 	$ git commit -m "Your commit description"
 	$ git checkout master
 	$ git merge x.y-stable
@@ -33,21 +34,25 @@ The following commands check out a maintenance branch, commit changes and merge 
 For the release of a new version the following steps should be taken in the Git repository:
 
 	Remove the maven SNAPSHOT marker from the version number in pom.xml (x.y.z-SNAPSHOT => x.y.z) and commit:
-		$ git commit -m "Changed version for release: x.y.z"
+		$ git add pom.xml
+		$ git commit -m "Change version for release: x.y.z"
 	Create a tag:
-		$ git tag -a x.y.z -m "Tagging release x.y.z"
+		$ git tag -a x.y.z -m "Tag release x.y.z"
 	Create a maintenance branch, increase the patch level and commit (only major and minor releases):
 		$ git branch -b x.y-stable
 		(adjust pom.xml)
-		$ git commit -m "Changed version for development: x.y.1-SNAPSHOT"
+		$ git add pom.xml
+		$ git commit -m "Change version for development: x.y.1-SNAPSHOT"
 	Increase the minor part (y) or patch level (z) of the version number, readd the SNAPSHOT marker in pom.xml and commit the changes:
-		$ git commit -m "Changed version for development: x.y.z-SNAPSHOT"
+		$ git add pom.xml
+		$ git commit -m "Change version for development: x.y.z-SNAPSHOT"
 	Merge x.y-stable into master using "ours" strategy to prevent later merges of the maintenance branch to apply the version change commit to master:
 		$ git checkout master
-		$ git merge -s ours x.y-stable -m "Ignore commits concerning version changes for future merges."
+		$ git merge -s ours x.y-stable -m "Ignore version changes on stable branch when merging"
 	Increase the version number in master (only major and minor releases):
 		(adjust pom.xml)
-		$ git commit -m "Changed version for development: x.y.0-SNAPSHOT"
+		$ git add pom.xml
+		$ git commit -m "Change version for development: x.y.0-SNAPSHOT"
 
 ### Setting up the environment
 
