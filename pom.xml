@@ -135,6 +135,15 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<locales>en,de</locales>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>com.cj.jshintmojo</groupId>
 				<artifactId>jshint-maven-plugin</artifactId>
 				<version>0.0.10</version>
