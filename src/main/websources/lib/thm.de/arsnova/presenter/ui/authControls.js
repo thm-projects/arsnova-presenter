@@ -70,12 +70,12 @@ define(
 				for (var service in services) {
 					new Button({
 						label: services[service].title,
-						onClick: function (url) {
+						onClick: (function (url) {
 							/* a function has to be returned because of the closure */
 							return function () {
 								location.href = url + "&referer=" + encodeURIComponent(location.href);
 							};
-						}(services[service].url)
+						}(services[service].url))
 					}).placeAt(loginDialogContent);
 				}
 				domStyle.set(loginDialog.closeButtonNode, "display", "none");
