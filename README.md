@@ -53,7 +53,7 @@ For the release of a new version the following steps should be taken in the Git 
 
 If you want to make changes to Presenter, run the following command to set up a development environment with a running Java servlet container and all dependencies:
 
-	$ mvn -Parsnova-war clean process-resources && mvn -Denv=dev package jetty:run
+	$ mvn -Denv=dev -Prun-server clean jetty:run
 
 Afterwards, the application will be accessible under:
 

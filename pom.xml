@@ -97,7 +97,7 @@
 				<executions>
 					<execution>
 						<id>copy-vendor-resources</id>
-						<phase>prepare-package</phase>
+						<phase>process-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -208,7 +208,7 @@
 						<executions>
 							<execution>
 								<id>run-build-script</id>
-								<phase>prepare-package</phase>
+								<phase>generate-sources</phase>
 								<goals>
 									<goal>exec</goal>
 								</goals>
@@ -231,7 +231,7 @@
 						<executions>
 							<execution>
 								<id>create-lib-links</id>
-								<phase>prepare-package</phase>
+								<phase>process-resources</phase>
 								<goals>
 									<goal>run</goal>
 								</goals>
@@ -271,6 +271,7 @@
 										<resourceBases>
 											<resourceBase>${outputDir}</resourceBase>
 											<resourceBase>src/main/websources</resourceBase>
+											<resourceBase>src/main/webapp</resourceBase>
 										</resourceBases>
 									</webAppConfig>
 									<contextHandlers>
@@ -279,6 +280,7 @@
 											<war>${project.build.directory}/war/arsnova-war.war</war>
 										</contextHandler>
 									</contextHandlers>
+									<webXml>src/main/config/WEB-INF/web.dev.xml</webXml>
 								</configuration>
 							</execution>
 						</executions>
@@ -307,7 +309,7 @@
 						<executions>
 							<execution>
 								<id>run-build-script</id>
-								<phase>prepare-package</phase>
+								<phase>generate-sources</phase>
 								<goals>
 									<goal>exec</goal>
 								</goals>
@@ -331,7 +333,7 @@
 						<executions>
 							<execution>
 								<id>copy-index-file</id>
-								<phase>prepare-package</phase>
+								<phase>process-sources</phase>
 								<goals>
 									<goal>run</goal>
 								</goals>
@@ -367,7 +369,10 @@
 								<configuration>
 									<webAppConfig>
 										<contextPath>/presenter</contextPath>
-										<resourceBase>${outputDir}</resourceBase>
+										<resourceBases>
+											<resourceBase>${outputDir}</resourceBase>
+											<resourceBase>src/main/webapp</resourceBase>
+										</resourceBases>
 									</webAppConfig>
 									<contextHandlers>
 										<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
@@ -375,6 +380,7 @@
 											<war>${project.build.directory}/war/arsnova-war.war</war>
 										</contextHandler>
 									</contextHandlers>
+									<webXml>src/main/config/WEB-INF/web.prod.xml</webXml>
 								</configuration>
 							</execution>
 						</executions>
@@ -384,16 +390,7 @@
 		</profile>
 
 		<profile>
-			<id>arsnova-war</id>
-
-			<dependencies>
-				<dependency>
-					<groupId>de.thm.arsnova</groupId>
-					<artifactId>arsnova-war</artifactId>
-					<version>2.0.0-SNAPSHOT</version>
-					<type>war</type>
-				</dependency>
-			</dependencies>
+			<id>run-server</id>
 
 			<build>
 				<plugins>
