@@ -139,7 +139,9 @@ define(
 					var seriesNames = [];
 					var seriesName = null;
 					for (seriesName in series) {
-						seriesNames.push(seriesName);
+						if (series.hasOwnProperty(seriesName)) {
+							seriesNames.push(seriesName);
+						}
 					}
 					seriesNames.sort();
 

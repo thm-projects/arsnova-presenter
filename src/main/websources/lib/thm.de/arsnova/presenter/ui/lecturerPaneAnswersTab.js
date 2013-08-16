@@ -444,7 +444,9 @@ define(
 				var roundNames = [];
 				var round = null;
 				for (round in rounds) {
-					roundNames.push(round);
+					if (rounds.hasOwnProperty(round)) {
+						roundNames.push(round);
+					}
 				}
 				roundNames.sort();
 				var percentageValues = true; //roundNames.length > 1;

@@ -76,10 +76,12 @@ define(
 
 				var services = authService.getServices();
 				for (var service in services) {
-					new Button({
-						label: services[service].title,
-						onClick: serviceOnClickFunc(services[service].url)
-					}).placeAt(loginDialogContent);
+					if (services.hasOwnProperty(service)) {
+						new Button({
+							label: services[service].title,
+							onClick: serviceOnClickFunc(services[service].url)
+						}).placeAt(loginDialogContent);
+					}
 				}
 				domStyle.set(loginDialog.closeButtonNode, "display", "none");
 				loginDialog.show();

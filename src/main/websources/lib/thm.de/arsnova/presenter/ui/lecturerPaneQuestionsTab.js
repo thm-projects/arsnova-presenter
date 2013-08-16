@@ -86,10 +86,12 @@ define(
 					};
 
 					for (var category in categories) {
-						var categoryNode = domConstruct.create("div", {"class": "questionCategory"}, questionListNode);
-						var categoryHeaderNode = domConstruct.create("header", null, categoryNode);
-						categoryHeaderNode.appendChild(document.createTextNode(category));
-						categories[category].forEach(handleQuestion);
+						if (categories.hasOwnProperty(category)) {
+							var categoryNode = domConstruct.create("div", {"class": "questionCategory"}, questionListNode);
+							var categoryHeaderNode = domConstruct.create("header", null, categoryNode);
+							categoryHeaderNode.appendChild(document.createTextNode(category));
+							categories[category].forEach(handleQuestion);
+						}
 					}
 				});
 			}
