@@ -66,16 +66,19 @@ define(
 						console.debug("Cancel action is disabled");
 					}
 				});
+
+				var serviceOnClickFunc = function (url) {
+					/* a function has to be returned because of the closure */
+					return function () {
+						location.href = url + "&referer=" + encodeURIComponent(location.href);
+					};
+				};
+
 				var services = authService.getServices();
 				for (var service in services) {
 					new Button({
 						label: services[service].title,
-						onClick: (function (url) {
-							/* a function has to be returned because of the closure */
-							return function () {
-								location.href = url + "&referer=" + encodeURIComponent(location.href);
-							};
-						}(services[service].url))
+						onClick: serviceOnClickFunc(services[service].url)
 					}).placeAt(loginDialogContent);
 				}
 				domStyle.set(loginDialog.closeButtonNode, "display", "none");
