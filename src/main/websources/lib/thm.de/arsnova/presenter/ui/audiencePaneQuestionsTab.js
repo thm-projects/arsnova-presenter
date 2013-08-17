@@ -122,7 +122,7 @@ define(
 				if (!question.read) {
 					domClass.add(questionNode, "unread");
 				}
-				if (null !== question.text) {
+				if (null != question.text) {
 					domClass.add(questionNode, "loaded");
 					messageNode.appendChild(document.createTextNode(question.text));
 					mathJax.parse(messageNode);
