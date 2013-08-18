@@ -36,15 +36,20 @@ define(
 		"dojo/_base/fx",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/timer",
-		"arsnova-presenter/ui/infoDialog"
+		"arsnova-presenter/ui/infoDialog",
+		"dojo/i18n",
+		"dojo/i18n!./nls/common",
+		"dojo/i18n!./nls/main"
 	],
-	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Tooltip, fx, fullScreen, timer, infoDialog) {
+	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Tooltip, fx, fullScreen, timer, infoDialog, i18n) {
 		"use strict";
 
 		var
 			MIN_WIDTH = 980,
 			MIN_HEIGHT = 600,
 			self = null,
+			commonMessages = null,
+			messages = null,
 
 			/* declarations of private "methods" */
 			updateTime = null,
@@ -65,6 +70,9 @@ define(
 			/* public "methods" */
 			init: function () {
 				console.log("-- UI: main.init --");
+
+				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
+				messages = i18n.getLocalization("arsnova-presenter/ui", "main");
 
 				var appContainerNode = domConstruct.create("div", {id: "appContainer", style: "visibility: hidden"}, document.body);
 
@@ -116,7 +124,7 @@ define(
 				);
 				var lowResMessage = domConstruct.create("p", {id: "lowResolutionMessage"}, lowResContentWrapperNode);
 				(new Button({
-					label: "ARSnova mobile",
+					label: commonMessages.arsnova + " " + commonMessages.mobileProductNameValue,
 					onClick: function () {
 						location.href = config.arsnova.mobileUrl;
 					}
@@ -130,10 +138,10 @@ define(
 						/* iPad does not swap screen.availWidth with screen.availHeight in landscape orientation */
 						if ((screen.availWidth < MIN_WIDTH && screen.availHeight < MIN_WIDTH) || screen.availHeight < MIN_HEIGHT) {
 							resizeLog = "Small resolution detected: " + screen.availWidth + "x" + screen.availHeight;
-							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. ARSnova Presenter is optimized for notebook, tablet and desktop devices. If you are using a tablet and see this message, please try landscape orientation.";
+							lowResMessage.innerHTML = messages.lowResInfo;
 						} else {
 							resizeLog = "Small window detected: " + document.body.clientWidth + "x" + document.body.clientHeight;
-							lowResMessage.innerHTML = "This application cannot be run because the resolution requirements are not met. Please increase the size of your browser's window or reduce the zoom factor (if zooming is active).";
+							lowResMessage.innerHTML = messages.smallWindowInfo;
 						}
 						domStyle.set(appContainer.domNode, "visibility", "hidden");
 						domStyle.set(lowResNode, "visibility", "visible");
@@ -164,7 +172,7 @@ define(
 				var fullScreenMenu = new Menu({id: "fullScreenMenu", style: "display: none"});
 				/* Menu items are added in the specific UI modules */
 				(new ComboButton({
-					label: "Full screen",
+					label: messages.fullScreen,
 					onClick: self.toggleFullScreenMode,
 					dropDown: fullScreenMenu
 				}, domConstruct.create("button", {id: "fullScreenButton", type: "button"}, exitPanelNode))).startup();
@@ -177,38 +185,38 @@ define(
 					label: "Presentation"
 				}));
 				modeMenu.addChild(new MenuItem({
-					label: "Editing",
+					label: messages.editing,
 					disabled: true
 				}));
 				modeMenu.addChild(new MenuItem({
 					id: "mobileLecturersViewMenuItem",
-					label: "Mobile (lecturer's view)",
+					label: messages.mobileLecturer,
 					disabled: true
 				}));
 				modeMenu.addChild(new MenuItem({
 					id: "mobileStudentsViewMenuItem",
-					label: "Mobile (student's view)",
+					label: messages.mobileStudent,
 					disabled: true
 				}));
 				(new DropDownButton({
-					label: "Mode",
+					label: messages.mode,
 					dropDown: modeMenu
 				}, domConstruct.create("button", {id: "mobileButton", type: "button"}, exitPanelNode))).startup();
 
 				/* Add footer content */
 				var productInfoNode = domConstruct.create("span", {id: "productInfo"}, footerPane.domNode);
-				domConstruct.create("span", {id: "productLogo", title: "ARSnova"}, productInfoNode);
-				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: "Presenter"}, productInfoNode);
+				domConstruct.create("span", {id: "productLogo", title: commonMessages.arsnova}, productInfoNode);
+				domConstruct.create("span", {id: "productName", "class": "groupPanel", innerHTML: commonMessages.productNameValue}, productInfoNode);
 				var productMenu = new Menu({
 					targetNodeIds: ["productInfo"],
 					leftClickToOpen: true
 				});
 				productMenu.addChild(new MenuItem({
-					label: "About Presenter",
+					label: messages.info,
 					onClick: infoDialog.show
 				}));
 				productMenu.addChild(new MenuItem({
-					label: "ARSnova website",
+					label: messages.website,
 					onClick: function () {
 						window.open("http://blog.mni.thm.de/arsnova/arsnova-blog/", "_blank");
 					}

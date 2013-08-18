@@ -1,0 +1,5 @@
+define({
+	root: {
+		lecturer: "Lecturer"
+	}
+});

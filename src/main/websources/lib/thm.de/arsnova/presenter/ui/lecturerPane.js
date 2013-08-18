@@ -26,15 +26,18 @@ define(
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Select",
 		"arsnova-presenter/ui/lecturerPaneQuestionsTab",
-		"arsnova-presenter/ui/lecturerPaneAnswersTab"
+		"arsnova-presenter/ui/lecturerPaneAnswersTab",
+		"dojo/i18n",
+		"dojo/i18n!./nls/lecturer"
 	],
-	function (when, domConstruct, registry, BorderContainer, TabContainer, ContentPane, Select, questionsTab, answersTab) {
+	function (when, domConstruct, registry, BorderContainer, TabContainer, ContentPane, Select, questionsTab, answersTab, i18n) {
 		"use strict";
 
 		var
 			self = null,
 			sessionModel = null,
 			lecturerQuestionModel = null,
+			messages = null,
 
 			/* declarations of private "methods" */
 			onSessionKeyChange = null,
@@ -53,13 +56,15 @@ define(
 				sessionModel = _sessionModel;
 				lecturerQuestionModel = _lecturerQuestionModel;
 
+				messages = i18n.getLocalization("arsnova-presenter/ui", "lecturer");
+
 				container = new BorderContainer({
 					id: "lecturerContainer",
 					region: "center"
 				});
 				headerPane = new ContentPane({
 					region: "top",
-					content: domConstruct.create("header", {innerHTML: "Lecturer: "}),
+					content: domConstruct.create("header", {innerHTML: messages.lecturer + ": "}),
 					"class": "headerPane sidePanel"
 				});
 				tabs = new TabContainer({

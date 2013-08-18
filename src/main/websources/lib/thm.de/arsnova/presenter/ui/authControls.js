@@ -23,14 +23,19 @@ define(
 		"dijit/registry",
 		"dijit/form/Button",
 		"dijit/Dialog",
-		"version"
+		"version",
+		"dojo/i18n",
+		"dojo/i18n!./nls/common",
+		"dojo/i18n!./nls/auth"
 	],
-	function (domConstruct, domStyle, registry, Button, Dialog, version) {
+	function (domConstruct, domStyle, registry, Button, Dialog, version, i18n) {
 		"use strict";
 
 		var
 			self = null,
-			authService = null
+			authService = null,
+			commonMessages = null,
+			messages = null
 		;
 
 		self = {
@@ -39,11 +44,14 @@ define(
 				console.log("-- UI: authControls.init --");
 
 				authService = _authService;
+
+				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
+				messages = i18n.getLocalization("arsnova-presenter/ui", "auth");
 			},
 
 			startup: function () {
 				domConstruct.create("button", {id: "logoutButton", type: "button"}, "exitPanel");
-				(new Button({label: "Logout"}, "logoutButton")).startup();
+				(new Button({label: messages.logout}, "logoutButton")).startup();
 				registry.byId("logoutButton").onClick = authService.logout;
 			},
 
@@ -54,12 +62,12 @@ define(
 					versionString += " [" + version.commitId + "]";
 				}
 				var footerNode = domConstruct.create("div", {id: "loginFooter"}, document.body);
-				footerNode.appendChild(document.createTextNode("ARSnova Presenter " + versionString));
+				footerNode.appendChild(document.createTextNode(commonMessages.arsnova + " " + commonMessages.productNameValue + " " + versionString));
 
 				var loginDialogContent = domConstruct.create("div");
-				domConstruct.create("div", {innerHTML: "Please choose a service to login with:"}, loginDialogContent);
+				domConstruct.create("div", {innerHTML: messages.loginPromt}, loginDialogContent);
 				var loginDialog = new Dialog({
-					title: "Presenter Login",
+					title: commonMessages.productNameValue + " " + messages.login,
 					content: loginDialogContent,
 					draggable: false,
 					onCancel: function () {

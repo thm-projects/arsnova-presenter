@@ -24,14 +24,17 @@ define(
 		"dijit/a11yclick",
 		"dgerhardt/dijit/layout/ContentPane",
 		"arsnova-presenter/ui/mathJax",
-		"arsnova-presenter/ui/lecturerPaneAnswersTab"
+		"arsnova-presenter/ui/lecturerPaneAnswersTab",
+		"dojo/i18n",
+		"dojo/i18n!./nls/lecturerQuestions"
 	],
-	function (on, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab) {
+	function (on, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab, i18n) {
 		"use strict";
 
 		var
 			self = null,
 			model = null,
+			messages = null,
 
 			/* DOM */
 			questionListNode = null,
@@ -47,9 +50,11 @@ define(
 				tabContainer = _tabContainer;
 				model = lecturerQuestionModel;
 
+				messages = i18n.getLocalization("arsnova-presenter/ui", "lecturerQuestions");
+
 				questionsPane = new ContentPane({
 					id: "piQuestionsPane",
-					title: "Questions"
+					title: messages.questions
 				});
 				tabContainer.addChild(questionsPane);
 			},

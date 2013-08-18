@@ -39,14 +39,19 @@ define(
 		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/mathJax",
-		"arsnova-presenter/ui/chart/piAnswers"
+		"arsnova-presenter/ui/chart/piAnswers",
+		"dojo/i18n",
+		"dojo/i18n!./nls/common",
+		"dojo/i18n!./nls/lecturerAnswers"
 	],
-	function (on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart) {
+	function (on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart, i18n) {
 		"use strict";
 
 		var
 			self = null,
 			model = null,
+			commonMessages = null,
+			messages = null,
 			showAnswers = false,
 			unlockMenu = null,
 			fsControlsToggleHandlers = [],
@@ -95,9 +100,12 @@ define(
 				tabContainer = _tabContainer;
 				model = lecturerQuestionModel;
 
+				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
+				messages = i18n.getLocalization("arsnova-presenter/ui", "lecturerAnswers");
+
 				answersContainer = new BorderContainer({
 					id: "piAnswersContainer",
-					title: "Answers"
+					title: messages.answers
 				});
 				tabContainer.addChild(answersContainer);
 
@@ -129,7 +137,7 @@ define(
 
 				(firstButton = new Button({
 					id: "firstPiQuestionButton",
-					label: "First question",
+					label: messages.firstQuestion,
 					showLabel: false,
 					iconClass: "iconFirst",
 					onClick: function () {
@@ -138,7 +146,7 @@ define(
 				})).placeAt(answersNav).startup();
 				(prevButton = new Button({
 					id: "prevPiQuestionButton",
-					label: "Previous question",
+					label: messages.prevQuestion,
 					showLabel: false,
 					iconClass: "iconPrev",
 					onClick: function () {
@@ -148,7 +156,7 @@ define(
 				navigationStatusNode = domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
 				(nextButton = new Button({
 					id: "nextPiQuestionButton",
-					label: "Next question",
+					label: messages.nextQuestion,
 					showLabel: false,
 					iconClass: "iconNext",
 					onClick: function () {
@@ -157,7 +165,7 @@ define(
 				})).placeAt(answersNav).startup();
 				(lastButton = new Button({
 					id: "lastPiQuestionButton",
-					label: "Last question",
+					label: messages.lastQuestion,
 					showLabel: false,
 					iconClass: "iconLast",
 					onClick: function () {
@@ -167,7 +175,7 @@ define(
 
 				var showAnswersMenu = new Menu({style: "display: none"});
 				showAnswersMenu.addChild(showCorrectMenuItem = new CheckedMenuItem({
-					label: "Correct answers",
+					label: messages.correctAnswers,
 					onClick: function () {
 						if (showAnswers) {
 							self.updateAnswers();
@@ -175,20 +183,20 @@ define(
 					}
 				}));
 				showAnswersMenu.addChild(showPiRoundMenuItem[1] = new CheckedMenuItem({
-					label: "Before discussion (1st)",
+					label: messages.piBefore,
 					onClick: function () {
 						self.updateAnswers();
 					}
 				}));
 				showAnswersMenu.addChild(showPiRoundMenuItem[2] = new CheckedMenuItem({
-					label: "After discussion (2nd)",
+					label: messages.piAfter,
 					onClick: function () {
 						self.updateAnswers();
 					}
 				}));
 				(showButton = new ComboButton({
 					id: "piAnswersShowButton",
-					label: "Show",
+					label: messages.show,
 					dropDown: showAnswersMenu,
 					onClick: function () {
 						showAnswers = !showAnswers;
@@ -198,43 +206,43 @@ define(
 				(piRoundButton = new Button({
 					id: "piRoundButton",
 					onClick: function () {
-						confirmDialog.confirm("Peer Instruction", "Do you really want to start the next Peer Instruction round? Answers for the current round will be locked permanently.", {
-							"Proceed": function () {
-								model.startSecondPiRound().then(function () {
-									piRoundButton.set("label", "2nd");
-									piRoundButton.set("disabled", true);
-									showPiRoundMenuItem[2].set("disabled", false);
-								});
-							},
-							"Cancel": null
-						});
+						var buttons = {};
+						buttons[commonMessages.proceed] = function () {
+							model.startSecondPiRound().then(function () {
+								piRoundButton.set("label", "2nd");
+								piRoundButton.set("disabled", true);
+								showPiRoundMenuItem[2].set("disabled", false);
+							});
+						};
+						buttons[commonMessages.cancel] = null;
+						confirmDialog.confirm(messages.pi, messages.piNextRoundConfirm, buttons);
 					}
 				})).placeAt(answersSettings).startup();
 				domStyle.set(piRoundButton.domNode, "display", "none");
 				unlockMenu = new Menu({style: "display: none"});
 				unlockMenu.addChild(unlockQuestionMenuItem = new CheckedMenuItem({
-					label: "Question",
+					label: messages.question,
 					onClick: updateLocks
 				}));
 				unlockMenu.addChild(unlockAnswerStatsMenuItem = new CheckedMenuItem({
 					onClick: updateLocks
 				}));
 				unlockMenu.addChild(unlockCorrectAnswerMenuItem = new CheckedMenuItem({
-					label: "Correct answer",
+					label: messages.correctAnswers,
 					onClick: updateLocks
 				}));
 				unlockButton = new DropDownButton({
 					id: "piUnlockButton",
-					label: "Release",
+					label: messages.release,
 					dropDown: unlockMenu
 				});
 				unlockButton.placeAt(answersSettings).startup();
 
 				titlePaneContentNode = domConstruct.create("div", {id: "piAnswersTitlePaneContent"}, titlePane.domNode);
 				var questionNode = domConstruct.create("header", {id: "piAnswersQuestion"}, titlePaneContentNode);
-				questionSubjectNode = domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: "Question subject"}, questionNode);
+				questionSubjectNode = domConstruct.create("span", {id: "piAnswersQuestionSubject", innerHTML: messages.questionSubject}, questionNode);
 				questionTitleSeperatorNode = domConstruct.create("span", {id: "piAnswersQuestionTitleSeperator", innerHTML: ": "}, questionNode);
-				questionTextNode = domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: "No questions available"}, questionNode);
+				questionTextNode = domConstruct.create("span", {id: "piAnswersQuestionText", innerHTML: messages.noQuestions}, questionNode);
 				answerCountNode = domConstruct.create("span", {id: "piAnswersCount"}, titlePaneContentNode);
 				domConstruct.create("span", {"class": "answerCount", innerHTML: "-"}, answerCountNode);
 
@@ -244,7 +252,7 @@ define(
 
 				/* add full screen menu item */
 				registry.byId("fullScreenMenu").addChild(new MenuItem({
-					label: "Answers to Lecturer's questions",
+					label: messages.answersToLecturersQuestion,
 					onClick: self.toggleFullScreenMode
 				}));
 
@@ -307,8 +315,8 @@ define(
 
 				if (!question) {
 					navigationStatusNode.innerHTML = "0/0";
-					questionSubjectNode.innerHTML = "Question subject";
-					questionTextNode.innerHTML = "No questions available";
+					questionSubjectNode.innerHTML = messages.questionSubject;
+					questionTextNode.innerHTML = messages.noQuestions;
 					answersContainer.resize();
 					piAnswersChart.update([], []);
 					domStyle.set(piRoundButton, "display", "none");
@@ -390,7 +398,7 @@ define(
 					var answerNode = domConstruct.create("div", {"class": "answer", tabindex: 0});
 					var subjectNode = domConstruct.create("p", {"class": "subject"}, answerNode);
 					subjectNode.appendChild(document.createTextNode(answer.answerSubject));
-					var deleteNode = domConstruct.create("span", {"class": "delete", tabindex: 0, title: "Delete", innerHTML: "x"}, answerNode);
+					var deleteNode = domConstruct.create("span", {"class": "delete", tabindex: 0, title: commonMessages.del, innerHTML: "x"}, answerNode);
 					domConstruct.create("div", {"class": "clearFix"}, answerNode);
 					var messageNode = domConstruct.create("p", {"class": "message"}, answerNode);
 					messageNode.appendChild(document.createTextNode(answer.answerText));
@@ -402,13 +410,13 @@ define(
 						if (event.stopPropagation) { /* IE8 does not support stopPropagation */
 							event.stopPropagation();
 						}
-						confirmDialog.confirm("Delete answer", "Do you really want to delete this answer?", {
-							"Delete": function () {
-								model.removeAnswer(answer._id);
-								domConstruct.destroy(answerNode);
-							},
-							"Cancel": null
-						});
+						var buttons = {};
+						buttons[commonMessages.del] = function () {
+							model.removeAnswer(answer._id);
+							domConstruct.destroy(answerNode);
+						};
+						buttons[commonMessages.cancel] = null;
+						confirmDialog.confirm(messages.deleteAnswer, messages.deleteAnswerConfirm, buttons);
 					});
 					domConstruct.place(answerNode, freeTextAnswersNode);
 				});
@@ -566,7 +574,7 @@ define(
 						}
 						unlockCorrectAnswerMenuItem.set("disabled", true);
 						unlockCorrectAnswerMenuItem.set("checked", false);
-						unlockAnswerStatsMenuItem.set("label", "View of answers");
+						unlockAnswerStatsMenuItem.set("label", messages.viewOfAnswers);
 					} else {
 						var noCorrectAnswer = true;
 						question.possibleAnswers.forEach(function (answer) {
@@ -577,7 +585,7 @@ define(
 						showCorrectMenuItem.set("disabled", noCorrectAnswer);
 						unlockCorrectAnswerMenuItem.set("disabled", noCorrectAnswer);
 						unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);
-						unlockAnswerStatsMenuItem.set("label", "Answer statistics");
+						unlockAnswerStatsMenuItem.set("label", messages.answerStatistics);
 						for (i = 1; i < showPiRoundMenuItem.length; i++) {
 							if (i > question.piRound) {
 								showPiRoundMenuItem[i].set("disabled", true);

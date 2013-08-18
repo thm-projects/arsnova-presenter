@@ -32,15 +32,20 @@ define(
 		"dijit/form/FilteringSelect",
 		"dijit/Dialog",
 		"dijit/Tooltip",
-		"dgerhardt/common/modalOverlay"
+		"dgerhardt/common/modalOverlay",
+		"dojo/i18n",
+		"dojo/i18n!./nls/common",
+		"dojo/i18n!./nls/session"
 	],
-	function (config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip, modalOverlay) {
+	function (config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip, modalOverlay, i18n) {
 		"use strict";
 
 		var
 			self = null,
 			model = null,
 			memory = null,
+			commonMessages = null,
+			messages = null,
 
 			/* DOM */
 			infoNode = null,
@@ -62,15 +67,18 @@ define(
 
 				model = sessionModel;
 
+				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
+				messages = i18n.getLocalization("arsnova-presenter/ui", "session");
+
 				/* Session info */
 				infoNode = domConstruct.create("div", {id: "sessionInfo"}, "headerPane");
-				titleNode = domConstruct.create("header", {id: "sessionTitle", innerHTML: "ARSnova Presenter"}, infoNode);
+				titleNode = domConstruct.create("header", {id: "sessionTitle", innerHTML: commonMessages.arsnova + " " + commonMessages.productNameValue}, infoNode);
 				activeUserCountNode = domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, infoNode);
 				/* Session controls */
 				panelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
 				(select = new FilteringSelect({
 					id: "sessionSelect",
-					placeHolder: "Session",
+					placeHolder: messages.session,
 					store: memory = new Memory(),
 					labelAttr: "label",
 					labelType: "html",
@@ -87,14 +95,14 @@ define(
 				(new Tooltip({
 					connectId: [keyNode],
 					position: ["below-centered"],
-					label: "The session key you give to your audience"
+					label: messages.sessionKeyInfo
 				})).startup();
 
 				if (config.arsnova.mobileStudentSessionUrl) {
 					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr", tabindex: 0}, panelNode);
 					(new Tooltip({
 						connectId: [qrNode],
-						label: "Show QR Code for mobile ARSnova session",
+						label: messages.qrCodeInfo,
 						position: ["below-centered"]
 					})).startup();
 				}
@@ -180,7 +188,7 @@ define(
 			onKeyChange: function (name, oldValue, value) {
 				select.set("value", value);
 				when(model.getCurrent(), function (session) {
-					document.title = session.shortName + " - ARSnova Presenter";
+					document.title = session.shortName + " - " + commonMessages.arsnova + " " + commonMessages.productNameValue;
 					domConstruct.empty(titleNode);
 					titleNode.appendChild(document.createTextNode(session.name));
 					var keyword = session.keyword.substr(0, 2)

@@ -27,9 +27,11 @@ define(
 		"dijit/layout/TabContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"arsnova-presenter/ui/audiencePaneFeedbackTab",
-		"arsnova-presenter/ui/audiencePaneQuestionsTab"
+		"arsnova-presenter/ui/audiencePaneQuestionsTab",
+		"dojo/i18n",
+		"dojo/i18n!./nls/audience"
 	],
-	function (on, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, feedbackTab, questionsTab) {
+	function (on, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, feedbackTab, questionsTab, i18n) {
 		"use strict";
 
 		var
@@ -38,6 +40,7 @@ define(
 			sessionModel = null,
 			audienceQuestionModel = null,
 			feedbackModel = null,
+			messages = null,
 
 			/* declarations of private "methods" */
 			onSessionKeyChange = null,
@@ -57,6 +60,8 @@ define(
 				audienceQuestionModel = _audienceQuestionModel;
 				feedbackModel = _feedbackModel;
 
+				messages = i18n.getLocalization("arsnova-presenter/ui", "audience");
+
 				container = new BorderContainer({
 					id: "audienceContainer",
 					region: "right",
@@ -65,7 +70,7 @@ define(
 				});
 				headerPane = new ContentPane({
 					region: "top",
-					content: domConstruct.create("header", {innerHTML: "Audience"}),
+					content: domConstruct.create("header", {innerHTML: messages.audience}),
 					"class": "headerPane sidePanel"
 				});
 				tabs = new TabContainer({

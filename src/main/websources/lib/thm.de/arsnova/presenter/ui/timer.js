@@ -24,13 +24,18 @@ define(
 		"dijit/form/Button",
 		"dijit/form/ValidationTextBox",
 		"dijit/Dialog",
-		"dgerhardt/common/modalOverlay"
+		"dgerhardt/common/modalOverlay",
+		"dojo/i18n",
+		"dojo/i18n!./nls/common",
+		"dojo/i18n!./nls/timer"
 	],
-	function (string, domConstruct, domClass, Button, ValidationTextBox, Dialog, modalOverlay) {
+	function (string, domConstruct, domClass, Button, ValidationTextBox, Dialog, modalOverlay, i18n) {
 		"use strict";
 
 		var
 			self = null,
+			commonMessages = null,
+			messages = null,
 			interval = null,
 			warningThresholdSeconds = 0,
 			remainingSeconds = 0.0,
@@ -51,6 +56,9 @@ define(
 		self = {
 			showSettings: function (defaultInterval) {
 				if (!dialog) {
+					commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
+					messages = i18n.getLocalization("arsnova-presenter/ui", "timer");
+
 					var contentNode = domConstruct.create("div");
 					(intervalTextBox = new ValidationTextBox({
 						required: true,
@@ -61,7 +69,7 @@ define(
 						style: "width: 5em;"
 					})).placeAt(contentNode).startup();
 					(new Button({
-						label: "Start",
+						label: messages.start,
 						onClick: function () {
 							if (intervalTextBox.isValid()) {
 								var timeComponents = intervalTextBox.get("value").split(":");
@@ -81,13 +89,13 @@ define(
 						}
 					})).placeAt(contentNode).startup();
 					(new Button({
-						label: "Close",
+						label: commonMessages.close,
 						onClick: function () {
 							dialog.hide();
 						}
 					})).placeAt(contentNode).startup();
 					dialog = new Dialog({
-						title: "Timer",
+						title: messages.timer,
 						content: contentNode
 					});
 				}

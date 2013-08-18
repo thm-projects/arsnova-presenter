@@ -30,14 +30,19 @@ define(
 		"dijit/MenuItem",
 		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
-		"arsnova-presenter/ui/mathJax"
+		"arsnova-presenter/ui/mathJax",
+		"dojo/i18n",
+		"dojo/i18n!./nls/common",
+		"dojo/i18n!./nls/audienceQuestions"
 	],
-	function (on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax) {
+	function (on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax, i18n) {
 		"use strict";
 
 		var
 			self = null,
 			model = null,
+			commonMessages = null,
+			messages = null,
 			newQuestionsCount = 0,
 
 			/* DOM */
@@ -54,9 +59,12 @@ define(
 				tabContainer = _tabContainer;
 				model = audienceQuestionModel;
 
+				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
+				messages = i18n.getLocalization("arsnova-presenter/ui", "audienceQuestions");
+
 				pane = new ContentPane({
 					id: "audienceQuestionsPane",
-					title: "Questions"
+					title: messages.questions
 				});
 				tabContainer.addChild(pane);
 			},
@@ -70,7 +78,7 @@ define(
 						self.prependQuestionToList(question);
 						if (!pane.get("selected")) {
 							newQuestionsCount++;
-							var label = "Questions (+" + newQuestionsCount + ")";
+							var label = messages.questions + " (+" + newQuestionsCount + ")";
 							pane.set("title", label);
 							pane.controlButton.set("label", label);
 						}
@@ -81,15 +89,15 @@ define(
 				tabContainer.watch("selectedChildWidget", function (name, oldValue, value) {
 					if (value === pane) {
 						newQuestionsCount = 0;
-						pane.set("title", "Questions");
-						pane.controlButton.set("label", "Questions");
+						pane.set("title", messages.questions);
+						pane.controlButton.set("label", messages.questions);
 					}
 				});
 
 				/* add full screen menu items */
 				var fullScreenMenu = registry.byId("fullScreenMenu");
 				fullScreenMenu.addChild(new MenuItem({
-					label: "Audience questions",
+					label: messages.audienceQuestions,
 					onClick: self.toggleFullScreenMode
 				}));
 
@@ -116,7 +124,7 @@ define(
 				var questionNode = domConstruct.create("div", {"class": "question", tabindex: 0}, questionListNode, "first");
 				var subjectNode = domConstruct.create("p", {"class": "subject"}, questionNode);
 				subjectNode.appendChild(document.createTextNode(question.subject));
-				var deleteNode = domConstruct.create("span", {"class": "delete", tabindex: 0, title: "Delete", innerHTML: "x"}, questionNode);
+				var deleteNode = domConstruct.create("span", {"class": "delete", tabindex: 0, title: commonMessages.del, innerHTML: "x"}, questionNode);
 				domConstruct.create("div", {"class": "clearFix"}, questionNode);
 				var messageNode = domConstruct.create("p", {"class": "message"}, questionNode);
 				if (!question.read) {
@@ -139,13 +147,13 @@ define(
 					if (event.stopPropagation) { /* IE8 does not support stopPropagation */
 						event.stopPropagation();
 					}
-					confirmDialog.confirm("Delete question", "Do you really want to delete this question?", {
-						"Delete": function () {
-							model.remove(question._id);
-							domConstruct.destroy(questionNode);
-						},
-						"Cancel": null
-					});
+					var buttons = {};
+					buttons[globalMessages.del] = function () {
+						model.remove(question._id);
+						domConstruct.destroy(questionNode);
+					};
+					buttons[globalMessages.cancel] = null;
+					confirmDialog.confirm(messages.deleteQuestions, messages.deleteQuestionConfirm, buttons);
 				});
 			},
 
@@ -176,7 +184,7 @@ define(
 					fullScreen.exit();
 				} else {
 					fullScreen.request(dom.byId("fullScreenContainer"));
-					domConstruct.create("header", {id: "audienceQuestionsTitle", innerHTML: "Audience questions"}, "fullScreenHeader");
+					domConstruct.create("header", {id: "audienceQuestionsTitle", innerHTML: messages.audienceQuestions}, "fullScreenHeader");
 					domConstruct.place(questionListNode, "fullScreenContent");
 
 					registry.byId("fullScreenContainer").resize();

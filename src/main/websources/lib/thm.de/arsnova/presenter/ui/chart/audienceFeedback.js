@@ -27,13 +27,16 @@ define(
 		"dojox/charting/plot2d/Grid",
 		"dojo/fx/easing",
 		"./theme",
+		"dojo/i18n",
+		"dojo/i18n!../nls/audienceFeedback",
 		"dojox/charting/axis2d/Default"
 	],
-	function (dom, domConstruct, domStyle, registry, Chart, Columns, Grid, easing, theme) {
+	function (dom, domConstruct, domStyle, registry, Chart, Columns, Grid, easing, theme, i18n) {
 		"use strict";
 
 		var
 			self = null,
+			messages = null,
 
 			/* DOM */
 			chartNode = null,
@@ -46,6 +49,8 @@ define(
 			/* public "methods" */
 			init: function (parentNode) {
 				console.log("-- Chart: audienceFeedback.init --");
+
+				messages = i18n.getLocalization("arsnova-presenter/ui", "audienceFeedback");
 
 				chartNode = domConstruct.create("div", {id: "audienceFeedbackChart"}, parentNode);
 				chart = new Chart(chartNode);
@@ -67,10 +72,10 @@ define(
 				});
 
 				var labels = [
-					{value: 1, text: "I can follow you."},
-					{value: 2, text: "Faster, please!"},
-					{value: 3, text: "Too fast!"},
-					{value: 4, text: "You have lost me."}
+					{value: 1, text: messages.canFollow},
+					{value: 2, text: messages.faster},
+					{value: 3, text: messages.slower},
+					{value: 4, text: messages.cannotFollow}
 				];
 				var data = [0, 0, 0, 0];
 
