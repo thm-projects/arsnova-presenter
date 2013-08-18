@@ -6,5 +6,7 @@ define({
 		cannotFollow: "You have lost me.",
 		slower: "Too fast!",
 		faster: "Faster, please!"
-	}
+	},
+
+	de: true
 });

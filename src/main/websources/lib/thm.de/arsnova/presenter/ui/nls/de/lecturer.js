@@ -1,0 +1,3 @@
+define({
+	lecturer: "Dozent(in)"
+});

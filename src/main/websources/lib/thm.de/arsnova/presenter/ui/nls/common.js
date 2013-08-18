@@ -7,5 +7,7 @@ define({
 		cancel: "Cancel",
 		del: "Delete",
 		proceed: "Proceed"
-	}
+	},
+
+	de: true
 });

@@ -9,5 +9,7 @@ define({
 		mobileStudent: "Mobile (student's view)",
 		info: "Info",
 		website: "Website"
-	}
+	},
+
+	de: true
 });

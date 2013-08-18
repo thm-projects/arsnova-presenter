@@ -1,0 +1,3 @@
+define({
+	questions: "Fragen"
+});

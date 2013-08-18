@@ -67,7 +67,7 @@ define(
 				var loginDialogContent = domConstruct.create("div");
 				domConstruct.create("div", {innerHTML: messages.loginPromt}, loginDialogContent);
 				var loginDialog = new Dialog({
-					title: commonMessages.productNameValue + " " + messages.login,
+					title: commonMessages.productNameValue + messages.loginTitle,
 					content: loginDialogContent,
 					draggable: false,
 					onCancel: function () {

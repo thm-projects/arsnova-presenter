@@ -1,0 +1,22 @@
+define({
+	answers: "Antworten",
+	question: "Frage",
+	firstQuestion: "Erste Frage",
+	lastQuestion: "Letzte Frage",
+	nextQuestion: "Nächste Frage",
+	prevQuestion: "Vorherige Frage",
+	correctAnswers: "Korrekte Antworten",
+	piBefore: "Vor Diskussion (1st)",
+	piAfter: "Nach Diskussion (2nd)",
+	show: "Anzeigen",
+	pi: "Peer Instruction",
+	piNextRoundConfirm: "Möchten Sie wirklich die nächste Peer-Instruction-Runde starten? Fragen der aktiven Runde werden unwiderruflich gesperrt.",
+	release: "Freigeben",
+	questionSubject: "Fragenthema",
+	noQuestions: "Keine Fragen verfügbar",
+	answersToLecturersQuestion: "Antworten auf Dozentenfrage",
+	deleteAnswer: "Antwort löschen",
+	deleteAnswerConfirm: "Möchten Sie diese Antwort wirklich löschen?",
+	viewOfAnswers: "Anzeige der Antworten",
+	answerStatistics: "Antwortstatistik"
+});

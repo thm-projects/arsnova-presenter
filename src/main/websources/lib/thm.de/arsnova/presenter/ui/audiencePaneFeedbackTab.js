@@ -26,7 +26,6 @@ define(
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/audienceFeedback",
 		"dojo/i18n",
-		"dojo/i18n!./nls/audience",
 		"dojo/i18n!./nls/audienceFeedback"
 	],
 	function (dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart, i18n) {
@@ -36,7 +35,6 @@ define(
 			self = null,
 			model = null,
 			messages = null,
-			feedbackMessages = null,
 
 			/* Dijit */
 			pane = null
@@ -47,12 +45,11 @@ define(
 			init: function (tabContainer, feedbackModel) {
 				model = feedbackModel;
 
-				messages = i18n.getLocalization("arsnova-presenter/ui", "audience");
-				feedbackMessages = i18n.getLocalization("arsnova-presenter/ui", "audienceFeedback");
+				messages = i18n.getLocalization("arsnova-presenter/ui", "audienceFeedback");
 
 				pane = new ContentPane({
 					id: "audienceFeedbackPane",
-					title: feedbackMessages.liveFeedback
+					title: messages.liveFeedback
 				});
 				tabContainer.addChild(pane);
 			},
@@ -71,7 +68,7 @@ define(
 				/* add full screen menu items */
 				var fullScreenMenu = registry.byId("fullScreenMenu");
 				fullScreenMenu.addChild(new MenuItem({
-					label: feedbackMessages.audienceFeedback,
+					label: messages.audienceFeedback,
 					onClick: self.toggleFullScreenMode
 				}));
 
@@ -95,7 +92,7 @@ define(
 					fullScreen.exit();
 				} else {
 					fullScreen.request(dom.byId("fullScreenContainer"));
-					domConstruct.create("header", {id: "audienceFeedbackTitle", innerHTML: "Audience feedback"}, "fullScreenHeader");
+					domConstruct.create("header", {id: "audienceFeedbackTitle", innerHTML: messages.audienceFeedback}, "fullScreenHeader");
 					domConstruct.place(dom.byId("audienceFeedbackPaneContent"), "fullScreenContent");
 
 					registry.byId("fullScreenContainer").resize();
