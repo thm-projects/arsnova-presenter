@@ -10,7 +10,7 @@ define({
 	piAfter: "Nach Diskussion (2nd)",
 	show: "Anzeigen",
 	pi: "Peer Instruction",
-	piNextRoundConfirm: "Möchten Sie wirklich die nächste Peer-Instruction-Runde starten? Fragen der aktiven Runde werden unwiderruflich gesperrt.",
+	piNextRoundConfirm: "Möchten Sie wirklich die nächste Peer-Instruction-Runde starten? Antworten der aktiven Runde werden unwiderruflich gesperrt.",
 	release: "Freigeben",
 	questionSubject: "Fragenthema",
 	noQuestions: "Keine Fragen verfügbar",
