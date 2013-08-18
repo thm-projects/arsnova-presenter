@@ -305,7 +305,7 @@ define(
 			updateQuestion: function (question) {
 				var labels = [];
 
-				if (null == question) {
+				if (!question) {
 					navigationStatusNode.innerHTML = "0/0";
 					questionSubjectNode.innerHTML = "Question subject";
 					questionTextNode.innerHTML = "No questions available";
@@ -555,7 +555,7 @@ define(
 			var question = model.get();
 			when(question, function (question) {
 				self.updateQuestion(question);
-				if (null != question) {
+				if (question) {
 					unlockQuestionMenuItem.set("checked", question.active);
 					unlockAnswerStatsMenuItem.set("checked", question.showStatistic);
 					unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);

@@ -61,7 +61,7 @@ define(
 			update: function (questions) {
 				domConstruct.empty(questionListNode);
 
-				if (null == questions) {
+				if (!questions) {
 					return;
 				}
 

@@ -35,7 +35,7 @@ define(
 		self = {
 			/* public "methods" */
 			onLoad: function (callback) {
-				if (null == loaded && undefined === MathJax) {
+				if (!loaded && !MathJax) {
 					var config = {
 						skipStartupTypeset: true
 					};

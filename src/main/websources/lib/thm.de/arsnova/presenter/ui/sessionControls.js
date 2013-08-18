@@ -90,7 +90,7 @@ define(
 					label: "The session key you give to your audience"
 				});
 
-				if (null !=  config.arsnova.mobileStudentSessionUrl) {
+				if (config.arsnova.mobileStudentSessionUrl) {
 					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr", tabindex: 0}, panelNode);
 					new Tooltip({
 						connectId: [qrNode],
@@ -127,7 +127,7 @@ define(
 
 				on(qrNode, a11yclick, function () {
 					var sessionKey = model.getKey();
-					if (null == sessionKey) {
+					if (!sessionKey) {
 						return;
 					}
 					var url = string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionKey});
@@ -194,11 +194,11 @@ define(
 
 				/* enable mode menu items */
 				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
-				if (null != config.arsnova.mobileLecturerSessionUrl) {
+				if (config.arsnova.mobileLecturerSessionUrl) {
 					mobileLecturersViewMenuItem.set("disabled", false);
 				}
 				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
-				if (null != config.arsnova.mobileStudentSessionUrl) {
+				if (config.arsnova.mobileStudentSessionUrl) {
 					mobileStudentsViewMenuItem.set("disabled", false);
 				}
 			},
@@ -218,7 +218,7 @@ define(
 					width: 480,
 					height: 800
 				});
-				if (null == mobileDialog) {
+				if (!mobileDialog) {
 					mobileDialog = new Dialog({
 						id: "mobileDialog",
 						title: "ARSnova",
@@ -252,7 +252,7 @@ define(
 
 					modalOverlay.show(qrNode, true);
 				};
-				if (null == qrcode) {
+				if (!qrcode) {
 					script.get("lib/d-project.com/qrcode-generator/qrcode.js").then(function () {
 						console.log("QR Code generation library loaded");
 						showQrOverlay();

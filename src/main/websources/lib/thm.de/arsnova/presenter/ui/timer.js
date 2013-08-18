@@ -50,7 +50,7 @@ define(
 
 		self = {
 			showSettings: function (defaultInterval) {
-				if (null == dialog) {
+				if (!dialog) {
 					var contentNode = domConstruct.create("div");
 					(intervalTextBox = new ValidationTextBox({
 						required: true,
@@ -91,7 +91,7 @@ define(
 						content: contentNode
 					});
 				}
-				if (null == defaultInterval) {
+				if (!defaultInterval) {
 					defaultInterval = "10:00";
 				}
 				intervalTextBox.set("value", defaultInterval);
@@ -99,11 +99,11 @@ define(
 			},
 
 			start: function (intervalSeconds) {
-				if (null != interval) {
+				if (interval) {
 					clearInterval(interval);
 				}
 
-				if (null == timerNode) {
+				if (!timerNode) {
 					var timerWrapper = domConstruct.create("div", null);
 					remainingTimeNode = domConstruct.create("div", {id: "remainingTime"}, timerWrapper);
 					modalOverlay.show(timerWrapper, true, function () {
@@ -123,7 +123,7 @@ define(
 			},
 
 			stop: function () {
-				if (null != interval) {
+				if (interval) {
 					clearInterval(interval);
 				}
 				modalOverlay.hide();

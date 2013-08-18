@@ -132,7 +132,7 @@ define(
 				chart.removeSeries("PI round 2");
 
 				var seriesCount = 0;
-				if (null != series) {
+				if (series) {
 					var showCorrect = correctIndexes && correctIndexes.length > 0;
 
 					/* sort series object property name */
