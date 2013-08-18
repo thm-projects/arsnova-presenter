@@ -115,12 +115,12 @@ define(
 					)
 				);
 				var lowResMessage = domConstruct.create("p", {id: "lowResolutionMessage"}, lowResContentWrapperNode);
-				new Button({
+				(new Button({
 					label: "ARSnova mobile",
 					onClick: function () {
 						location.href = config.arsnova.mobileUrl;
 					}
-				}).placeAt(
+				})).placeAt(
 					domConstruct.create("p", null, lowResContentWrapperNode)
 				).startup();
 				var resizeLog = "";
@@ -163,11 +163,11 @@ define(
 
 				var fullScreenMenu = new Menu({id: "fullScreenMenu", style: "display: none"});
 				/* Menu items are added in the specific UI modules */
-				new ComboButton({
+				(new ComboButton({
 					label: "Full screen",
 					onClick: self.toggleFullScreenMode,
 					dropDown: fullScreenMenu
-				}, domConstruct.create("button", {id: "fullScreenButton", type: "button"}, exitPanelNode)).startup();
+				}, domConstruct.create("button", {id: "fullScreenButton", type: "button"}, exitPanelNode))).startup();
 
 				var modeMenu = new Menu({
 					id: "modeMenu",
@@ -190,10 +190,10 @@ define(
 					label: "Mobile (student's view)",
 					disabled: true
 				}));
-				new DropDownButton({
+				(new DropDownButton({
 					label: "Mode",
 					dropDown: modeMenu
-				}, domConstruct.create("button", {id: "mobileButton", type: "button"}, exitPanelNode)).startup();
+				}, domConstruct.create("button", {id: "mobileButton", type: "button"}, exitPanelNode))).startup();
 
 				/* Add footer content */
 				var productInfoNode = domConstruct.create("span", {id: "productInfo"}, footerPane.domNode);

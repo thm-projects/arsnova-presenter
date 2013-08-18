@@ -84,19 +84,19 @@ define(
 					}
 				})).placeAt(panelNode).startup();
 				keyNode = domConstruct.create("span", {id: "sessionKey", "class": "noSession", innerHTML: "00 00 00 00"}, panelNode);
-				new Tooltip({
+				(new Tooltip({
 					connectId: [keyNode],
 					position: ["below-centered"],
 					label: "The session key you give to your audience"
-				});
+				})).startup();
 
 				if (config.arsnova.mobileStudentSessionUrl) {
 					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr", tabindex: 0}, panelNode);
-					new Tooltip({
+					(new Tooltip({
 						connectId: [qrNode],
 						label: "Show QR Code for mobile ARSnova session",
 						position: ["below-centered"]
-					}).startup();
+					})).startup();
 				}
 
 				/* button is destroyed on creation since it is not needed

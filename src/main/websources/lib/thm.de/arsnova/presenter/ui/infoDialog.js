@@ -57,12 +57,12 @@ define(
 						id: "infoDialogFooter",
 						region: "bottom"
 					});
-					new Button({
+					(new Button({
 						label: "Close",
 						onClick: function () {
 							dialog.hide();
 						}
-					}).placeAt(footerPane);
+					})).placeAt(footerPane);
 					container.addChild(tabContainer);
 					container.addChild(footerPane);
 

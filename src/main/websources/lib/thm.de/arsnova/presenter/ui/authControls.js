@@ -43,7 +43,7 @@ define(
 
 			startup: function () {
 				domConstruct.create("button", {id: "logoutButton", type: "button"}, "exitPanel");
-				new Button({label: "Logout"}, "logoutButton").startup();
+				(new Button({label: "Logout"}, "logoutButton")).startup();
 				registry.byId("logoutButton").onClick = authService.logout;
 			},
 
@@ -77,10 +77,10 @@ define(
 				var services = authService.getServices();
 				for (var service in services) {
 					if (services.hasOwnProperty(service)) {
-						new Button({
+						(new Button({
 							label: services[service].title,
 							onClick: serviceOnClickFunc(services[service].url)
-						}).placeAt(loginDialogContent);
+						})).placeAt(loginDialogContent);
 					}
 				}
 				domStyle.set(loginDialog.closeButtonNode, "display", "none");

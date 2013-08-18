@@ -60,7 +60,7 @@ define(
 						placeHolder: "mm:ss",
 						style: "width: 5em;"
 					})).placeAt(contentNode).startup();
-					new Button({
+					(new Button({
 						label: "Start",
 						onClick: function () {
 							if (intervalTextBox.isValid()) {
@@ -79,13 +79,13 @@ define(
 								dialog.hide();
 							}
 						}
-					}).placeAt(contentNode).startup();
-					new Button({
+					})).placeAt(contentNode).startup();
+					(new Button({
 						label: "Close",
 						onClick: function () {
 							dialog.hide();
 						}
-					}).placeAt(contentNode).startup();
+					})).placeAt(contentNode).startup();
 					dialog = new Dialog({
 						title: "Timer",
 						content: contentNode
