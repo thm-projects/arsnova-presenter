@@ -148,11 +148,11 @@ define(
 						event.stopPropagation();
 					}
 					var buttons = {};
-					buttons[globalMessages.del] = function () {
+					buttons[commonMessages.del] = function () {
 						model.remove(question._id);
 						domConstruct.destroy(questionNode);
 					};
-					buttons[globalMessages.cancel] = null;
+					buttons[commonMessages.cancel] = null;
 					confirmDialog.confirm(messages.deleteQuestions, messages.deleteQuestionConfirm, buttons);
 				});
 			},
