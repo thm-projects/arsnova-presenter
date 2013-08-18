@@ -120,6 +120,7 @@
 									<targetPath>lib/mathjax.org/mathjax</targetPath>
 									<includes>
 										<include>MathJax.js</include>
+										<include>config/Safe.js</include>
 										<include>config/TeX-AMS_HTML.js</include>
 										<include>extensions/**</include>
 										<include>fonts/**</include>
