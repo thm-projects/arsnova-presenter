@@ -153,7 +153,7 @@ define(
 						domConstruct.destroy(questionNode);
 					};
 					buttons[commonMessages.cancel] = null;
-					confirmDialog.confirm(messages.deleteQuestions, messages.deleteQuestionConfirm, buttons);
+					confirmDialog.confirm(messages.deleteQuestion, messages.deleteQuestionConfirm, buttons);
 				});
 			},
 
