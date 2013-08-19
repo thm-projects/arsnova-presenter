@@ -1,3 +1,3 @@
 define({
-	lecturer: "Dozent(in)"
+	lecturer: "Dozent/in"
 });

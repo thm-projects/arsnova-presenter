@@ -4,6 +4,6 @@ define({
 	fullScreen: "Vollbild",
 	mode: "Modus",
 	editing: "Bearbeiten",
-	mobileLecturer: "Mobil (Dozent)",
-	mobileStudent: "Mobil (Student)"
+	mobileLecturer: "Mobil (Dozent/in)",
+	mobileStudent: "Mobil (Student/in)"
 });
