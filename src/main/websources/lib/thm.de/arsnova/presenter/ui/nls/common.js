@@ -1,8 +1,8 @@
 define({
 	root: {
 		arsnova: "ARSnova",
-		productNameValue: "presenter",
-		mobileProductNameValue: "mobile",
+		productNameValue: "Presenter",
+		mobileProductNameValue: "Mobile",
 		close: "Close",
 		cancel: "Cancel",
 		del: "Delete",
