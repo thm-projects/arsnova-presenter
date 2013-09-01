@@ -69,10 +69,8 @@ define(
 				var loginDialog = new Dialog({
 					title: commonMessages.productNameValue + messages.loginTitle,
 					content: loginDialogContent,
-					draggable: false,
-					onCancel: function () {
-						console.debug("Cancel action is disabled");
-					}
+					closable: false,
+					draggable: false
 				});
 
 				var serviceOnClickFunc = function (url) {
@@ -91,7 +89,6 @@ define(
 						})).placeAt(loginDialogContent);
 					}
 				}
-				domStyle.set(loginDialog.closeButtonNode, "display", "none");
 				loginDialog.show();
 			}
 		};
