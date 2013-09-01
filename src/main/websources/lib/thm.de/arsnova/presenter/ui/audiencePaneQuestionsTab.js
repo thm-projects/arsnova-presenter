@@ -31,11 +31,13 @@ define(
 		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/mathJax",
+		"arsnova-api/session",
+		"arsnova-api/audienceQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/audienceQuestions"
 	],
-	function (on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax, i18n) {
+	function (on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax, sessionModel, audienceQuestionModel, i18n) {
 		"use strict";
 
 		var
@@ -44,6 +46,9 @@ define(
 			commonMessages = null,
 			messages = null,
 			newQuestionsCount = 0,
+
+			/* declarations of private "methods" */
+			onSessionKeyChange = null,
 
 			/* DOM */
 			questionListNode = null,
@@ -55,7 +60,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function (_tabContainer, audienceQuestionModel) {
+			init: function (_tabContainer) {
 				tabContainer = _tabContainer;
 				model = audienceQuestionModel;
 
@@ -66,11 +71,14 @@ define(
 					id: "audienceQuestionsPane",
 					title: messages.questions
 				});
-				tabContainer.addChild(pane);
+
+				return pane;
 			},
 
 			startup: function () {
 				questionListNode = domConstruct.create("div", {id: "audienceQuestionList"}, pane.domNode);
+
+				sessionModel.watchKey(onSessionKeyChange);
 
 				model.onQuestionAvailable(function (questionId) {
 					var question = model.get(questionId);
@@ -195,6 +203,14 @@ define(
 				domConstruct.place(dom.byId("audienceQuestionList"), pane.domNode);
 				domConstruct.destroy("audienceQuestionsTitle");
 			}
+		};
+
+		/* private "methods" */
+		onSessionKeyChange = function (name, oldValue, value) {
+			var questions = audienceQuestionModel.getAll();
+			when(questions, function (questions) {
+				self.update(questions);
+			});
 		};
 
 		return self;

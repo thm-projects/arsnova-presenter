@@ -23,16 +23,12 @@ define(
 		"arsnova-presenter/ui/main",
 		"arsnova-presenter/ui/authControls",
 		"arsnova-presenter/ui/sessionControls",
-		"arsnova-presenter/ui/lecturerPane",
-		"arsnova-presenter/ui/audiencePane",
+		"arsnova-presenter/ui/tabController",
 		"arsnova-api/socket",
 		"arsnova-api/auth",
-		"arsnova-api/session",
-		"arsnova-api/lecturerQuestion",
-		"arsnova-api/audienceQuestion",
-		"arsnova-api/feedback"
+		"arsnova-api/session"
 	],
-	function (ready, router, mainUi, authControls, sessionControls, lecturerPane, audiencePane, socket, authService, sessionModel, lecturerQuestionModel, audienceQuestionModel, feedbackModel) {
+	function (ready, router, mainUi, authControls, sessionControls, tabController, socket, authService, sessionModel) {
 		"use strict";
 
 		var init = function () {
@@ -52,14 +48,12 @@ define(
 					socket.connect();
 
 					sessionControls.init(sessionModel);
-					lecturerPane.init(sessionModel, lecturerQuestionModel);
-					audiencePane.init(sessionModel, audienceQuestionModel, feedbackModel);
+					tabController.init();
 
 					mainUi.startup();
 					sessionControls.startup();
 					authControls.startup();
-					lecturerPane.startup();
-					audiencePane.startup();
+					tabController.startup();
 
 					/* register routes in form #!/12345678;paramName=paramValue */
 					router.register(/!\/([0-9]{8})((?:;[a-z0-9_-]+=[a-z0-9_-]*)*)/i, function (event) {

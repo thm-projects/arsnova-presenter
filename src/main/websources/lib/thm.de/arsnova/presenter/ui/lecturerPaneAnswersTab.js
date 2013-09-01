@@ -40,11 +40,12 @@ define(
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/chart/piAnswers",
+		"arsnova-api/lecturerQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/lecturerAnswers"
 	],
-	function (on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart, i18n) {
+	function (on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart, lecturerQuestionModel, i18n) {
 		"use strict";
 
 		var
@@ -96,7 +97,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function (_tabContainer, lecturerQuestionModel) {
+			init: function (_tabContainer) {
 				tabContainer = _tabContainer;
 				model = lecturerQuestionModel;
 
@@ -107,7 +108,6 @@ define(
 					id: "piAnswersContainer",
 					title: messages.answers
 				});
-				tabContainer.addChild(answersContainer);
 
 				controlPane = new ContentPane({
 					id: "piAnswersControlPane",
@@ -124,6 +124,8 @@ define(
 				answersContainer.addChild(controlPane);
 				answersContainer.addChild(titlePane);
 				answersContainer.addChild(mainPane);
+
+				return answersContainer;
 			},
 
 			startup: function () {

@@ -25,10 +25,11 @@ define(
 		"dijit/MenuItem",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/audienceFeedback",
+		"arsnova-api/feedback",
 		"dojo/i18n",
 		"dojo/i18n!./nls/audienceFeedback"
 	],
-	function (dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart, i18n) {
+	function (dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart, feedbackModel, i18n) {
 		"use strict";
 
 		var
@@ -42,7 +43,7 @@ define(
 
 		self = {
 			/* public "methods" */
-			init: function (tabContainer, feedbackModel) {
+			init: function () {
 				model = feedbackModel;
 
 				messages = i18n.getLocalization("arsnova-presenter/ui", "audienceFeedback");
@@ -51,7 +52,8 @@ define(
 					id: "audienceFeedbackPane",
 					title: messages.liveFeedback
 				});
-				tabContainer.addChild(pane);
+
+				return pane;
 			},
 
 			startup: function () {

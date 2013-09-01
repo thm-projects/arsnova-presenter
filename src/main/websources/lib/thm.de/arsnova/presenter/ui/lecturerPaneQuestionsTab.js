@@ -19,16 +19,19 @@
 define(
 	[
 		"dojo/on",
+		"dojo/topic",
 		"dojo/when",
 		"dojo/dom-construct",
 		"dijit/a11yclick",
 		"dgerhardt/dijit/layout/ContentPane",
 		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab",
+		"arsnova-api/session",
+		"arsnova-api/lecturerQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/lecturerQuestions"
 	],
-	function (on, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab, i18n) {
+	function (on, topic, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab, sessionModel, lecturerQuestionModel, i18n) {
 		"use strict";
 
 		var
@@ -36,31 +39,35 @@ define(
 			model = null,
 			messages = null,
 
+			/* declarations of private "methods" */
+			onSessionKeyChange = null,
+
 			/* DOM */
 			questionListNode = null,
 
 			/* Dijit */
-			tabContainer = null,
-			questionsPane = null
+			pane = null
 		;
 
 		self = {
 			/* public "methods" */
-			init: function (_tabContainer, lecturerQuestionModel) {
-				tabContainer = _tabContainer;
+			init: function () {
 				model = lecturerQuestionModel;
 
 				messages = i18n.getLocalization("arsnova-presenter/ui", "lecturerQuestions");
 
-				questionsPane = new ContentPane({
+				pane = new ContentPane({
 					id: "piQuestionsPane",
 					title: messages.questions
 				});
-				tabContainer.addChild(questionsPane);
+
+				return pane;
 			},
 
 			startup: function () {
-				questionListNode = domConstruct.create("div", {id: "piQuestionList"}, questionsPane.domNode);
+				questionListNode = domConstruct.create("div", {id: "piQuestionList"}, pane.domNode);
+
+				sessionModel.watchKey(onSessionKeyChange);
 			},
 
 			update: function (questions) {
@@ -100,6 +107,14 @@ define(
 					}
 				});
 			}
+		};
+
+		/* private "methods" */
+		onSessionKeyChange = function (name, oldValue, value) {
+			var questions = lecturerQuestionModel.getAll();
+			when(questions, function (questions) {
+				self.update(questions);
+			});
 		};
 
 		return self;
