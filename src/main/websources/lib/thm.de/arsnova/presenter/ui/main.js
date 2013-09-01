@@ -28,10 +28,12 @@ define(
 		"dijit/layout/BorderContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Button",
-		"dijit/form/ComboButton",
 		"dijit/form/DropDownButton",
 		"dijit/Menu",
+		"dijit/MenuSeparator",
 		"dijit/MenuItem",
+		"dijit/PopupMenuItem",
+		"dijit/RadioMenuItem",
 		"dijit/Tooltip",
 		"dojo/_base/fx",
 		"dgerhardt/common/fullscreen",
@@ -41,7 +43,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"
 	],
-	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, Tooltip, fx, fullScreen, timer, infoDialog, i18n) {
+	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, timer, infoDialog, i18n) {
 		"use strict";
 
 		var
@@ -170,33 +172,54 @@ define(
 				var exitPanelNode = domConstruct.create("div", {id: "exitPanel"}, headerPane.domNode);
 
 				var fullScreenMenu = new Menu({id: "fullScreenMenu", style: "display: none"});
-				/* Menu items are added in the specific UI modules */
-				(new ComboButton({
+				/* Additional menu items are added in the specific UI modules */
+				fullScreenMenu.addChild(new MenuItem({
+					label: messages.dashboard,
+					onClick: self.toggleFullScreenMode
+				}));
+
+				var viewMenu = new Menu({id: "viewMenu", style: "display: none"});
+				viewMenu.addChild(new PopupMenuItem({
 					label: messages.fullScreen,
-					onClick: self.toggleFullScreenMode,
-					dropDown: fullScreenMenu
-				}, domConstruct.create("button", {id: "fullScreenButton", type: "button"}, exitPanelNode))).startup();
+					popup: fullScreenMenu
+				}));
+				viewMenu.addChild(new MenuItem({
+					label: messages.timer,
+					onClick: function () {
+						timer.showSettings();
+					}
+				}));
+				viewMenu.addChild(new MenuSeparator());
+				viewMenu.addChild(new MenuItem({
+					id: "mobileLecturersViewMenuItem",
+					label: messages.mobileLecturer,
+					disabled: true
+				}));
+				viewMenu.addChild(new MenuItem({
+					id: "mobileStudentsViewMenuItem",
+					label: messages.mobileStudent,
+					disabled: true
+				}));
+				(new DropDownButton({
+					label: messages.view,
+					dropDown: viewMenu
+				}, domConstruct.create("button", {id: "viewButton", type: "button"}, exitPanelNode))).startup();
 
 				var modeMenu = new Menu({
 					id: "modeMenu",
 					style: "display: none"
 				});
-				modeMenu.addChild(new MenuItem({
-					label: "Presentation"
-				}));
-				modeMenu.addChild(new MenuItem({
+				modeMenu.addChild(new RadioMenuItem({
 					label: messages.editing,
-					disabled: true
+					group: "mode"
 				}));
-				modeMenu.addChild(new MenuItem({
-					id: "mobileLecturersViewMenuItem",
-					label: messages.mobileLecturer,
-					disabled: true
+				modeMenu.addChild(new RadioMenuItem({
+					label: messages.lecture,
+					group: "mode"
 				}));
-				modeMenu.addChild(new MenuItem({
-					id: "mobileStudentsViewMenuItem",
-					label: messages.mobileStudent,
-					disabled: true
+				modeMenu.addChild(new RadioMenuItem({
+					label: messages.assignments,
+					group: "mode"
 				}));
 				(new DropDownButton({
 					label: messages.mode,
