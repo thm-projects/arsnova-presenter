@@ -11,8 +11,9 @@ var profile = (function () {
 		action: "release",
 		mini: true,
 		//optimize: "shrinksafe", // causes problems
-		//layerOptimize: "closure", // causes problems
+		layerOptimize: "closure",
 		cssOptimize: "comments",
+		selectorEngine: "lite",
 
 		defaultConfig: {
 			async: true,
@@ -63,64 +64,10 @@ var profile = (function () {
 				boot: true,
 				include: [
 					"dojo/dojo", // Dojo loader
-					"dojo/selector/acme", // this module is always needed
-
-					"dojo/_base/config",
-					"dojo/_base/declare",
-					"dojo/ready",
-					"dojo/string",
-					"dojo/on",
-					"dojo/when",
-					"dojo/router",
-					"dojo/Stateful",
-					"dojo/dom",
-					"dojo/dom-construct",
-					"dojo/dom-class",
-					"dojo/dom-geometry",
-					"dojo/dom-style",
-					"dojo/store/JsonRest",
-					"dojo/store/Memory",
-					"dojo/store/Cache",
-					"dojo/parser",
-
-					"dijit/_base",
-					"dijit/registry",
-					"dijit/layout/BorderContainer",
-					"dijit/layout/TabContainer",
-					"dijit/layout/ContentPane",
-					"dijit/Dialog",
-					"dijit/TooltipDialog",
-					"dijit/form/Button",
-					"dijit/form/TextBox",
-					"dijit/form/Select",
-					"dijit/form/DropDownButton",
-
-					"dojox/charting/Chart",
-					"dojox/charting/themes/Claro",
-					"dojox/charting/plot2d/Columns",
-					"dojox/charting/axis2d/Default",
-
-					"dgerhardt/dijit/layout/ContentPane",
-					"dgerhardt/common/confirmDialog",
-					"dgerhardt/common/fullscreen",
+					"dojox/gfx/svg",
+					"dojox/gfx/path",
 
 					"arsnova-presenter/controller",
-					"arsnova-presenter/ui/main",
-					"arsnova-presenter/ui/authControls",
-					"arsnova-presenter/ui/sessionControls",
-					"arsnova-presenter/ui/lecturerPane",
-					"arsnova-presenter/ui/audiencePane",
-					"arsnova-presenter/ui/timer",
-					"arsnova-presenter/ui/infoDialog",
-					"arsnova-presenter/ui/mathJax",
-					"arsnova-presenter/ui/chart/theme",
-					"arsnova-presenter/ui/chart/piAnswers",
-					"arsnova-presenter/ui/chart/audienceFeedback",
-					"arsnova-api/auth",
-					"arsnova-api/session",
-					"arsnova-api/lecturerQuestion",
-					"arsnova-api/audienceQuestion",
-
 					"version"
 				]
 			}

@@ -10,7 +10,8 @@ var profile = (function () {
 		basePath: "../../..",
 		action: "release",
 		mini: true,
-		layerOptimize: "shrinksafe.keepLines",
+		layerOptimize: "closure",
+		selectorEngine: "lite",
 
 		defaultConfig: {
 			async: true,
@@ -66,30 +67,6 @@ var profile = (function () {
 				include: [
 					/* only include modules likely to be always used in presenter */
 					"dojo/dojo", // Dojo loader
-					"dojo/selector/acme", // this module is always needed
-
-					"dojo/_base/config",
-					"dojo/_base/declare",
-					"dojo/ready",
-					"dojo/string",
-					"dojo/on",
-					"dojo/when",
-					"dojo/router",
-					"dojo/Stateful",
-					"dojo/dom",
-					"dojo/dom-construct",
-					"dojo/store/JsonRest",
-					"dojo/store/Memory",
-					"dojo/store/Cache",
-
-					"dijit/_base",
-					"dijit/registry",
-					"dijit/layout/BorderContainer",
-					"dijit/layout/TabContainer",
-					"dijit/layout/ContentPane",
-
-					"dojox/charting/Chart",
-
 					"version"
 				]
 			}
