@@ -31,12 +31,11 @@ define(
 		"dojo/i18n!../nls/audienceFeedback",
 		"dojox/charting/axis2d/Default"
 	],
-	function (dom, domConstruct, domStyle, registry, Chart, Columns, Grid, easing, theme, i18n) {
+	function (dom, domConstruct, domStyle, registry, Chart, Columns, Grid, easing, theme, i18n, messages) {
 		"use strict";
 
 		var
 			self = null,
-			messages = null,
 
 			/* DOM */
 			chartNode = null,
@@ -49,8 +48,6 @@ define(
 			/* public "methods" */
 			init: function (parentNode) {
 				console.log("-- Chart: audienceFeedback.init --");
-
-				messages = i18n.getLocalization("arsnova-presenter/ui", "audienceFeedback");
 
 				chartNode = domConstruct.create("div", {id: "audienceFeedbackChart"}, parentNode);
 				chart = new Chart(chartNode);

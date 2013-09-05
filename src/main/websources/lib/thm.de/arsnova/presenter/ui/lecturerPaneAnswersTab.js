@@ -45,14 +45,12 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/lecturerAnswers"
 	],
-	function (on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart, lecturerQuestionModel, i18n) {
+	function (on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart, lecturerQuestionModel, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
 			self = null,
 			model = null,
-			commonMessages = null,
-			messages = null,
 			showAnswers = false,
 			unlockMenu = null,
 			fsControlsToggleHandlers = [],
@@ -100,9 +98,6 @@ define(
 			init: function (_tabContainer) {
 				tabContainer = _tabContainer;
 				model = lecturerQuestionModel;
-
-				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
-				messages = i18n.getLocalization("arsnova-presenter/ui", "lecturerAnswers");
 
 				answersContainer = new BorderContainer({
 					id: "piAnswersContainer",

@@ -28,14 +28,12 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/auth"
 	],
-	function (domConstruct, domStyle, registry, Button, Dialog, version, i18n) {
+	function (domConstruct, domStyle, registry, Button, Dialog, version, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
 			self = null,
-			authService = null,
-			commonMessages = null,
-			messages = null
+			authService = null
 		;
 
 		self = {
@@ -44,9 +42,6 @@ define(
 				console.log("-- UI: authControls.init --");
 
 				authService = _authService;
-
-				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
-				messages = i18n.getLocalization("arsnova-presenter/ui", "auth");
 			},
 
 			startup: function () {

@@ -37,14 +37,12 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/audienceQuestions"
 	],
-	function (on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax, sessionModel, audienceQuestionModel, i18n) {
+	function (on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax, sessionModel, audienceQuestionModel, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
 			self = null,
 			model = null,
-			commonMessages = null,
-			messages = null,
 			newQuestionsCount = 0,
 
 			/* declarations of private "methods" */
@@ -63,9 +61,6 @@ define(
 			init: function (_tabContainer) {
 				tabContainer = _tabContainer;
 				model = audienceQuestionModel;
-
-				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
-				messages = i18n.getLocalization("arsnova-presenter/ui", "audienceQuestions");
 
 				pane = new ContentPane({
 					id: "audienceQuestionsPane",

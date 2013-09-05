@@ -43,15 +43,13 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"
 	],
-	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, timer, infoDialog, i18n) {
+	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, timer, infoDialog, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
 			MIN_WIDTH = 980,
 			MIN_HEIGHT = 600,
 			self = null,
-			commonMessages = null,
-			messages = null,
 
 			/* declarations of private "methods" */
 			updateTime = null,
@@ -72,9 +70,6 @@ define(
 			/* public "methods" */
 			init: function () {
 				console.log("-- UI: main.init --");
-
-				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
-				messages = i18n.getLocalization("arsnova-presenter/ui", "main");
 
 				var appContainerNode = domConstruct.create("div", {id: "appContainer", style: "visibility: hidden"}, document.body);
 

@@ -29,13 +29,11 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/timer"
 	],
-	function (string, domConstruct, domClass, Button, ValidationTextBox, Dialog, modalOverlay, i18n) {
+	function (string, domConstruct, domClass, Button, ValidationTextBox, Dialog, modalOverlay, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
 			self = null,
-			commonMessages = null,
-			messages = null,
 			interval = null,
 			warningThresholdSeconds = 0,
 			remainingSeconds = 0.0,
@@ -56,9 +54,6 @@ define(
 		self = {
 			showSettings: function (defaultInterval) {
 				if (!dialog) {
-					commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
-					messages = i18n.getLocalization("arsnova-presenter/ui", "timer");
-
 					var contentNode = domConstruct.create("div");
 					(intervalTextBox = new ValidationTextBox({
 						required: true,

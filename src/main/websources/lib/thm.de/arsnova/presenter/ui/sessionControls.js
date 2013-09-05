@@ -37,15 +37,13 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/session"
 	],
-	function (config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip, modalOverlay, i18n) {
+	function (config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip, modalOverlay, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
 			self = null,
 			model = null,
 			memory = null,
-			commonMessages = null,
-			messages = null,
 
 			/* DOM */
 			infoNode = null,
@@ -66,9 +64,6 @@ define(
 				console.log("-- UI: sessionControls.init --");
 
 				model = sessionModel;
-
-				commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
-				messages = i18n.getLocalization("arsnova-presenter/ui", "session");
 
 				/* Session info */
 				infoNode = domConstruct.create("div", {id: "sessionInfo"}, "headerPane");

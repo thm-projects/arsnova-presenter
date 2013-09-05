@@ -14,6 +14,7 @@ var profile = (function () {
 		layerOptimize: "closure",
 		cssOptimize: "comments",
 		selectorEngine: "lite",
+		localeList: "en,de",
 
 		defaultConfig: {
 			async: true,

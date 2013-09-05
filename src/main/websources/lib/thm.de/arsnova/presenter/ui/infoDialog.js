@@ -29,13 +29,11 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/info"
 	],
-	function (domConstruct, BorderContainer, TabContainer, ContentPane, Button, Dialog, version, i18n) {
+	function (domConstruct, BorderContainer, TabContainer, ContentPane, Button, Dialog, version, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
 			self = null,
-			commonMessages = null,
-			messages = null,
 
 			/* Dijit */
 			dialog = null,
@@ -51,8 +49,6 @@ define(
 			/* public "methods" */
 			show: function () {
 				if (!dialog) {
-					commonMessages = i18n.getLocalization("arsnova-presenter/ui", "common");
-					messages = i18n.getLocalization("arsnova-presenter/ui", "info");
 					container = new BorderContainer({
 						style: "width: 25em; height: 27em;"
 					});

@@ -31,13 +31,12 @@ define(
 		"dojo/i18n",
 		"dojo/i18n!./nls/lecturerQuestions"
 	],
-	function (on, topic, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab, sessionModel, lecturerQuestionModel, i18n) {
+	function (on, topic, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab, sessionModel, lecturerQuestionModel, i18n, messages) {
 		"use strict";
 
 		var
 			self = null,
 			model = null,
-			messages = null,
 
 			/* declarations of private "methods" */
 			onSessionKeyChange = null,
@@ -53,8 +52,6 @@ define(
 			/* public "methods" */
 			init: function () {
 				model = lecturerQuestionModel;
-
-				messages = i18n.getLocalization("arsnova-presenter/ui", "lecturerQuestions");
 
 				pane = new ContentPane({
 					id: "piQuestionsPane",

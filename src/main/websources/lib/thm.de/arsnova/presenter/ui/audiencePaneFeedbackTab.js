@@ -29,13 +29,12 @@ define(
 		"dojo/i18n",
 		"dojo/i18n!./nls/audienceFeedback"
 	],
-	function (dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart, feedbackModel, i18n) {
+	function (dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart, feedbackModel, i18n, messages) {
 		"use strict";
 
 		var
 			self = null,
 			model = null,
-			messages = null,
 
 			/* Dijit */
 			pane = null
@@ -45,8 +44,6 @@ define(
 			/* public "methods" */
 			init: function () {
 				model = feedbackModel;
-
-				messages = i18n.getLocalization("arsnova-presenter/ui", "audienceFeedback");
 
 				pane = new ContentPane({
 					id: "audienceFeedbackPane",
