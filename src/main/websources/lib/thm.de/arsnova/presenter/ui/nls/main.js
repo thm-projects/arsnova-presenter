@@ -12,6 +12,7 @@ define({
 		assignments: "Assignments (JiTT)",
 		mobileLecturer: "Mobile (lecturer's view)",
 		mobileStudent: "Mobile (student's view)",
+		slideOverlay: "Overlay for slides",
 		info: "Info",
 		website: "Website"
 	},

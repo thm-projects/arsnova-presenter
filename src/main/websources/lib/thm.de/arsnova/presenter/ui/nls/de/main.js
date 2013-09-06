@@ -10,5 +10,6 @@ define({
 	lecture: "Vorlesung (PI)",
 	assignments: "Vorbereitung (JiTT)",
 	mobileLecturer: "Mobil (Dozent/in)",
-	mobileStudent: "Mobil (Student/in)"
+	mobileStudent: "Mobil (Student/in)",
+	slideOverlay: "Overlay für Folien"
 });

@@ -195,6 +195,13 @@ define(
 					label: messages.mobileStudent,
 					disabled: true
 				}));
+				viewMenu.addChild(new MenuItem({
+					id: "slideOverlayMenuItem",
+					label: messages.slideOverlay,
+					onClick: function () {
+						window.open(config.arsnova.overlayDownloadUrl);
+					}
+				}));
 				(new DropDownButton({
 					label: messages.view,
 					dropDown: viewMenu
