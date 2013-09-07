@@ -201,7 +201,7 @@ html, body {
 	margin-left: 0.5em;
 }
 
-#piQuestionList, #piFreeTextAnswers, #audienceQuestionList {
+.lecturerQuestionList, #piFreeTextAnswers, #audienceQuestionList {
 	height: 100%;
 	overflow: auto;
 }
@@ -342,4 +342,9 @@ html, body {
 #infoDialogProductInfoTab > .productLogo, #infoDialogProductInfoTab > .thmLogo {
 	margin-left: auto;
 	margin-right: auto;
+}
+
+form.question label {
+	display: inline-block;
+	width: 10em;
 }

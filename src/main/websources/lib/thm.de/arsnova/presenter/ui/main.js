@@ -37,13 +37,14 @@ define(
 		"dijit/Tooltip",
 		"dojo/_base/fx",
 		"dgerhardt/common/fullscreen",
+		"arsnova-presenter/ui/tabController",
 		"arsnova-presenter/ui/timer",
 		"arsnova-presenter/ui/infoDialog",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"
 	],
-	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, timer, infoDialog, i18n, commonMessages, messages) {
+	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, tabController, timer, infoDialog, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -213,15 +214,25 @@ define(
 				});
 				modeMenu.addChild(new RadioMenuItem({
 					label: messages.editing,
-					group: "mode"
+					group: "mode",
+					onClick: function () {
+						tabController.switchMode("EDITING");
+					}
 				}));
 				modeMenu.addChild(new RadioMenuItem({
 					label: messages.lecture,
-					group: "mode"
+					group: "mode",
+					checked: true,
+					onClick: function () {
+						tabController.switchMode("PI");
+					}
 				}));
 				modeMenu.addChild(new RadioMenuItem({
 					label: messages.assignments,
-					group: "mode"
+					group: "mode",
+					onClick: function () {
+						tabController.switchMode("JITT");
+					}
 				}));
 				(new DropDownButton({
 					label: messages.mode,

@@ -86,7 +86,7 @@ define(
 							return;
 						}
 						var panel = dom.byId("piAnswersMainPaneContent");
-						var height = panel.clientHeight;
+						var height = panel ? panel.clientHeight : 0;
 						if (height < 1 || "none" === domStyle.get(chartNode, "display")) {
 							/* return if piAnswersMainPaneContent is not visible */
 							return;

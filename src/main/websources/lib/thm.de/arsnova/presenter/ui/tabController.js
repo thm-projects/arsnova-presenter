@@ -18,6 +18,7 @@
  */
 define(
 	[
+		"dojo/_base/array",
 		"dojo/on",
 		"dojo/topic",
 		"dojo/when",
@@ -27,18 +28,21 @@ define(
 		"dijit/layout/BorderContainer",
 		"dijit/layout/TabContainer",
 		"dgerhardt/dijit/layout/ContentPane",
-		"arsnova-presenter/ui/lecturerPaneQuestionsTab",
+		"arsnova-presenter/ui/LecturerQuestionsTab",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab",
 		"arsnova-presenter/ui/audiencePaneFeedbackTab",
-		"arsnova-presenter/ui/audiencePaneQuestionsTab"
+		"arsnova-presenter/ui/audiencePaneQuestionsTab",
+		"arsnova-presenter/ui/EditQuestionTab"
 	],
-	function (on, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, lecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab) {
+	function (array, on, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, lecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, EditQuestionTab) {
 		"use strict";
 
 		var
 			MIN_WIDTH = 485,
 			self = null,
 			tabs = {},
+			appMode = {EDITING: 1, PI: 2, JITT: 3},
+			activeMode = null,
 
 			/* Dijit */
 			tabsLeft = null,
@@ -64,15 +68,13 @@ define(
 				registry.byId("mainContainer").addChild(tabsLeft);
 				registry.byId("mainContainer").addChild(tabsRight);
 
-				tabs.lecturerQuestions = lecturerQuestionsTab.init(tabsLeft);
+				tabs.lecturerPiQuestions = new LecturerQuestionsTab();
+				tabs.lecturerPiQuestions.init();
+				tabs.lecturerJittQuestions = new LecturerQuestionsTab();
+				tabs.lecturerJittQuestions.init();
 				tabs.answers = answersTab.init(tabsLeft);
 				tabs.feedback = feedbackTab.init(tabsRight);
 				tabs.audienceQuestions = audienceQuestionsTab.init(tabsRight);
-
-				tabsLeft.addChild(tabs.lecturerQuestions);
-				tabsLeft.addChild(tabs.answers);
-				tabsRight.addChild(tabs.feedback);
-				tabsRight.addChild(tabs.audienceQuestions);
 
 				var onWindowResize = function () {
 					var maxSize = document.body.clientWidth - MIN_WIDTH;
@@ -88,11 +90,68 @@ define(
 			},
 
 			startup: function () {
-				lecturerQuestionsTab.startup();
-				answersTab.startup();
+				self.switchMode(appMode.PI);
 
+				tabs.lecturerPiQuestions.startup();
+				tabs.lecturerJittQuestions.startup();
+				answersTab.startup();
 				feedbackTab.startup();
 				audienceQuestionsTab.startup();
+
+				topic.subscribe("arsnova/question/edit", function (questionId) {
+					console.log("Topic: ", questionId);
+					var eqt = new EditQuestionTab();
+					eqt.init();
+					tabsRight.addChild(eqt);
+					tabsRight.selectChild(eqt);
+				});
+			},
+
+			switchMode: function (mode) {
+				mode = isNaN(mode) ? appMode[mode] : mode;
+				if (mode == activeMode) {
+					return;
+				}
+
+				activeMode = null;
+				tabs.lecturerPiQuestions.enableEditing(false);
+				tabs.lecturerJittQuestions.enableEditing(false);
+
+				array.forEach(tabsLeft.getChildren(), function (tab) {
+					tabsLeft.removeChild(tab);
+				});
+				array.forEach(tabsRight.getChildren(), function (tab) {
+					tabsRight.removeChild(tab);
+				});
+
+				switch (mode) {
+				case appMode.EDITING:
+					tabs.lecturerPiQuestions.enableEditing(true);
+					tabs.lecturerJittQuestions.enableEditing(true);
+					tabsLeft.addChild(tabs.lecturerPiQuestions);
+					tabsLeft.addChild(tabs.lecturerJittQuestions);
+
+					break;
+				case appMode.PI:
+					tabsLeft.addChild(tabs.lecturerPiQuestions);
+					tabsLeft.addChild(tabs.answers);
+					tabsRight.addChild(tabs.feedback);
+					tabsRight.addChild(tabs.audienceQuestions);
+
+					break;
+				case appMode.JITT:
+					tabsLeft.addChild(tabs.lecturerJittQuestions);
+					tabsLeft.addChild(tabs.answers);
+					tabsRight.addChild(tabs.audienceQuestions);
+
+					break;
+				}
+
+				activeMode = mode;
+			},
+
+			isActiveMode: function (mode) {
+				return activeMode == appMode[mode];
 			}
 		};
 

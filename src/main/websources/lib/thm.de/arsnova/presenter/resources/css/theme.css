@@ -85,7 +85,7 @@ body {
 	color: #999;
 }
 
-#piQuestionList .question, #audienceQuestionList .question, #piFreeTextAnswers .answer {
+.lecturerQuestionList .question, #audienceQuestionList .question, #piFreeTextAnswers .answer {
 	background-color: rgb(226, 235, 242);
 	border-radius: 0.8em;
 	font-size: 1.2em;
