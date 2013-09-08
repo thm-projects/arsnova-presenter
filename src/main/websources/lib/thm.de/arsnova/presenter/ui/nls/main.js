@@ -14,7 +14,9 @@ define({
 		mobileStudent: "Mobile (student's view)",
 		slideOverlay: "Overlay for slides",
 		info: "Info",
-		website: "Website"
+		website: "Website",
+		modeChange: "Mode change",
+		leaveEditingConfirm: "You are leaving editing mode. Unsafed changes will be lost."
 	},
 
 	de: true

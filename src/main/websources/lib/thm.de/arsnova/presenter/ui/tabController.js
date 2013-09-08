@@ -18,6 +18,7 @@
  */
 define(
 	[
+		"dojo/_base/lang",
 		"dojo/_base/array",
 		"dojo/on",
 		"dojo/topic",
@@ -28,13 +29,17 @@ define(
 		"dijit/layout/BorderContainer",
 		"dijit/layout/TabContainer",
 		"dgerhardt/dijit/layout/ContentPane",
+		"dgerhardt/common/confirmDialog",
 		"arsnova-presenter/ui/LecturerQuestionsTab",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab",
 		"arsnova-presenter/ui/audiencePaneFeedbackTab",
 		"arsnova-presenter/ui/audiencePaneQuestionsTab",
-		"arsnova-presenter/ui/EditQuestionTab"
+		"arsnova-presenter/ui/EditQuestionTab",
+		"dojo/i18n",
+		"dojo/i18n!./nls/common",
+		"dojo/i18n!./nls/main"
 	],
-	function (array, on, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, lecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, EditQuestionTab) {
+	function (lang, array, on, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, lecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, EditQuestionTab, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -107,12 +112,27 @@ define(
 				});
 			},
 
-			switchMode: function (mode) {
+			selectMode: function (mode) {
 				mode = isNaN(mode) ? appMode[mode] : mode;
 				if (mode == activeMode) {
 					return;
 				}
 
+				if (appMode.EDITING == activeMode && tabsRight.getChildren().length > 0) {
+					var buttons = {};
+					buttons[commonMessages.proceed] = lang.hitch(this, function () {
+						this.switchMode(mode);
+					});
+					buttons[commonMessages.cancel] = function () {
+						registry.byId("editingModeMenuItem").set("checked", true);
+					};
+					confirmDialog.confirm(messages.modeChange, messages.leaveEditingConfirm, buttons, buttons[commonMessages.cancel]);
+				} else {
+					this.switchMode(mode);
+				}
+			},
+
+			switchMode: function (mode) {
 				activeMode = null;
 				tabs.lecturerPiQuestions.enableEditing(false);
 				tabs.lecturerJittQuestions.enableEditing(false);

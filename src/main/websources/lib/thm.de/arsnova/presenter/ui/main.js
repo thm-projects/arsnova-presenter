@@ -213,25 +213,28 @@ define(
 					style: "display: none"
 				});
 				modeMenu.addChild(new RadioMenuItem({
+					id: "editingModeMenuItem",
 					label: messages.editing,
 					group: "mode",
 					onClick: function () {
-						tabController.switchMode("EDITING");
+						tabController.selectMode("EDITING");
 					}
 				}));
 				modeMenu.addChild(new RadioMenuItem({
+					id: "piModeMenuItem",
 					label: messages.lecture,
 					group: "mode",
 					checked: true,
 					onClick: function () {
-						tabController.switchMode("PI");
+						tabController.selectMode("PI");
 					}
 				}));
 				modeMenu.addChild(new RadioMenuItem({
+					id: "jittModeMenuItem",
 					label: messages.assignments,
 					group: "mode",
 					onClick: function () {
-						tabController.switchMode("JITT");
+						tabController.selectMode("JITT");
 					}
 				}));
 				(new DropDownButton({

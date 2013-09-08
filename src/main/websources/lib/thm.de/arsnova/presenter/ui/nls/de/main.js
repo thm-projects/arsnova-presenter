@@ -11,5 +11,7 @@ define({
 	assignments: "Vorbereitung (JiTT)",
 	mobileLecturer: "Mobil (Dozent/in)",
 	mobileStudent: "Mobil (Student/in)",
-	slideOverlay: "Overlay für Folien"
+	slideOverlay: "Overlay für Folien",
+	modeChange: "Moduswechsel",
+	leaveEditingConfirm: "Sie verlassen den Bearbeitungsmodus. Ungespeicherte Änderungen werden verworfen."
 });
