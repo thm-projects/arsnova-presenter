@@ -67,7 +67,7 @@ define(
 							categories[question.subject].push(question);
 						});
 
-						var handleQuestion = function (question) {
+						var handleQuestion = lang.hitch(this, function (question) {
 							var questionNode = domConstruct.create("p", {"class": "question", tabindex: 0}, categoryNode);
 							questionNode.appendChild(document.createTextNode(question.text));
 							mathJax.parse(questionNode);
@@ -79,7 +79,7 @@ define(
 									answersTab.selectTab();
 								}
 							}));
-						};
+						});
 
 						for (var category in categories) {
 							if (categories.hasOwnProperty(category)) {
