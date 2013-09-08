@@ -67,29 +67,27 @@ define(
 							categories[question.subject].push(question);
 						});
 
+						var handleQuestion = function (question) {
+							var questionNode = domConstruct.create("p", {"class": "question", tabindex: 0}, categoryNode);
+							questionNode.appendChild(document.createTextNode(question.text));
+							mathJax.parse(questionNode);
+							on(questionNode, a11yclick, lang.hitch(this, function (event) {
+								lecturerQuestionModel.setId(question._id);
+								if (this.editing) {
+									topic.publish("arsnova/question/edit", question._id);
+								} else {
+									answersTab.selectTab();
+								}
+							}));
+						};
+
 						for (var category in categories) {
 							if (categories.hasOwnProperty(category)) {
 								var categoryNode = domConstruct.create("div", {"class": "questionCategory"}, this.questionListNode);
 								var categoryHeaderNode = domConstruct.create("header", null, categoryNode);
 								categoryHeaderNode.appendChild(document.createTextNode(category));
-								categories[category].forEach(function (question) {
-									this.handleQuestion(question, categoryNode);
-								}, this);
+								categories[category].forEach(handleQuestion);
 							}
-						}
-					}));
-				},
-
-				handleQuestion: function (question, categoryNode) {
-					var questionNode = domConstruct.create("p", {"class": "question", tabindex: 0}, categoryNode);
-					questionNode.appendChild(document.createTextNode(question.text));
-					mathJax.parse(questionNode);
-					on(questionNode, a11yclick, lang.hitch(this, function (event) {
-						lecturerQuestionModel.setId(question._id);
-						if (this.editing) {
-							topic.publish("arsnova/question/edit", question._id);
-						} else {
-							answersTab.selectTab();
 						}
 					}));
 				},

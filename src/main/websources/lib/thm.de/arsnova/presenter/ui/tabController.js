@@ -39,7 +39,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"
 	],
-	function (lang, array, on, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, lecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, EditQuestionTab, i18n, commonMessages, messages) {
+	function (lang, array, on, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, LecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, EditQuestionTab, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -114,11 +114,11 @@ define(
 
 			selectMode: function (mode) {
 				mode = isNaN(mode) ? appMode[mode] : mode;
-				if (mode == activeMode) {
+				if (mode === activeMode) {
 					return;
 				}
 
-				if (appMode.EDITING == activeMode && tabsRight.getChildren().length > 0) {
+				if (appMode.EDITING === activeMode && tabsRight.getChildren().length > 0) {
 					var buttons = {};
 					buttons[commonMessages.proceed] = lang.hitch(this, function () {
 						this.switchMode(mode);
@@ -171,7 +171,7 @@ define(
 			},
 
 			isActiveMode: function (mode) {
-				return activeMode == appMode[mode];
+				return activeMode === appMode[mode];
 			}
 		};
 
