@@ -34,7 +34,7 @@ define(
 			defaultFill = {type: "linear", space: "shape", x1: 0, y1: 0, x2: 0, y2: 100},
 			axisAndLabelColor = "#333",
 			fillColors = {
-				"answers": ["#1f59b3", "#43b3b3", "#b3b323", "#b327b3", "#b31d1d", "#b3591f", "#000"],
+				"answers": ["#1f59b3", "#43b3b3", "#b3b323", "#b327b3", "#b31d1d", "#b3591f", "#5900b3", "#08b345", "#000"],
 				"markCorrect": ["#43d943", "#000"],
 				"feedback": ["#43d943", "#f2f224", "#e64000", "#000"]
 			}
