@@ -46,7 +46,7 @@
 		<outputDir>${project.build.directory}/${project.build.finalName}</outputDir>
 		<submodule.libarsnova-js.path>vendor/thm.de/arsnova/libarsnova-js</submodule.libarsnova-js.path>
 		<submodule.dgerhardt-dojo.path>vendor/dgerhardt.net/dgerhardt-dojo</submodule.dgerhardt-dojo.path>
-		<jetty.version>9.0.6.v20130930</jetty.version>
+		<jetty.version>9.0.4.v20130625</jetty.version>
 		<jetty.scanInterval>10</jetty.scanInterval>
 		<sonar.language>js</sonar.language>
 	</properties>
