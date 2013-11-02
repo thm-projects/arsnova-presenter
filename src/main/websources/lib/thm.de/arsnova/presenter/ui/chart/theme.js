@@ -131,8 +131,8 @@ define(
 			for (var i = 0; i < values.length; i++) {
 				var colorIndex = highlightValues ? (array.indexOf(highlightValues, i) >= 0 ? 0 : 1) : i;
 
-				/* use last color of a theme if index of current value is in subtleValues */
-				if (subtleValues && array.indexOf(subtleValues, i) >= 0) {
+				/* use last color of a theme if index is in subtleValues or index is out of bounds */
+				if (subtleValues && array.indexOf(subtleValues, i) >= 0 || colorIndex >= colors.length) {
 					colorIndex = colors.length - 1;
 				}
 
