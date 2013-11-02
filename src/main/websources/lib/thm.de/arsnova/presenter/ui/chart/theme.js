@@ -41,7 +41,7 @@ define(
 			},
 			axisAndLabelColor = "#333",
 			fillColors = {
-				"answers": ["#1f59b3", "#43b3b3", "#b3b323", "#b327b3", "#b31d1d", "#b3591f", "#000"],
+				"answers": ["#1f59b3", "#43b3b3", "#b3b323", "#b327b3", "#b31d1d", "#b3591f", "#5900b3", "#08b345", "#000"],
 				"markCorrect": ["#43d943", "#000"],
 				"feedback": ["#43d943", "#f2f224", "#e64000", "#000"]
 			}
@@ -139,8 +139,8 @@ define(
 			for (var i = 0; i < values.length; i++) {
 				var colorIndex = highlightValues ? (array.indexOf(highlightValues, i) >= 0 ? 0 : 1) : i;
 
-				/* use last color of a theme if index of current value is in subtleValues */
-				if (subtleValues && array.indexOf(subtleValues, i) >= 0) {
+				/* use last color of a theme if index is in subtleValues or index is out of bounds */
+				if (subtleValues && array.indexOf(subtleValues, i) >= 0 || colorIndex >= colors.length) {
 					colorIndex = colors.length - 1;
 				}
 
