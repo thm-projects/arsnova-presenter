@@ -342,6 +342,9 @@ define(
 					question.possibleAnswers.forEach(function(possibleAnswer, i) {
 						labels.push({value: i + 1, text: possibleAnswer.text});
 					});
+					if (question.abstention) {
+						labels.push({value: labels.length + 1, text: "Abstentions"});
+					}
 					piAnswersChart.show();
 					piAnswersChart.update(labels);
 				}
@@ -427,6 +430,7 @@ define(
 				var labels = [];
 				var labelReverseMapping = {};
 				var correctIndexes = [];
+				var abstentionCount = 0;
 
 				question.possibleAnswers.forEach(function(possibleAnswer, i) {
 					/* transform the label and answer count data into arrays usable by dojox/charting */
@@ -438,6 +442,12 @@ define(
 					}
 					possibleAnswersCount++;
 				});
+
+				if (question.abstention) {
+					labels.push({value: labels.length + 1, text: "Abstentions"});
+					values.push(0);
+					possibleAnswersCount++;
+				}
 
 				/* sorting is needed since the order of the object's properties is not determined */
 				var roundNames = [];
@@ -466,11 +476,16 @@ define(
 						}
 
 						if ("mc" === question.questionType) {
-							/* handle selected options for multiple choice questions */
-							var selectedOptions = answer.answerText.split(",");
-							for (var j = 0; j < selectedOptions.length; j++) {
-								if (1 === parseInt(selectedOptions[j], 10)) {
-									values[j] += answer.answerCount;
+							if (!answer.answerText) {
+								/* handle abstentions */
+								abstentionCount = answer.abstentionCount;
+							} else {
+								/* handle selected options for multiple choice questions */
+								var selectedOptions = answer.answerText.split(",");
+								for (var j = 0; j < selectedOptions.length; j++) {
+									if (1 === parseInt(selectedOptions[j], 10)) {
+										values[j] += answer.answerCount;
+									}
 								}
 							}
 						} else {
@@ -478,6 +493,10 @@ define(
 							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
 						}
 					});
+
+					if (question.abstention) {
+						values[values.length - 1] = abstentionCount;
+					}
 
 					if (percentageValues) {
 						for (var j = 0; j < values.length; j++) {
