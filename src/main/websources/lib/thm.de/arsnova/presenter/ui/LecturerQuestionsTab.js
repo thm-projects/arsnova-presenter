@@ -36,73 +36,82 @@ define(
 	function (declare, lang, on, topic, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab, sessionModel, lecturerQuestionModel, i18n, messages) {
 		"use strict";
 
-		return declare("LecturerQuestionsTab", ContentPane, (function () {
-			return {
-				editing: false,
-				title: messages.questions,
-				questionListNode: null,
+		return declare("LecturerQuestionsTab", ContentPane, {
+			editing: false,
+			questionVariant: null,
+			title: messages.questions,
+			questionListNode: null,
 
-				init: function () {
-					this.questionListNode = domConstruct.create("div", {"class": "lecturerQuestionList"}, this.domNode);
+			init: function (editing, questionVariant) {
+				this.editing = editing;
+				this.questionVariant = questionVariant;
 
-					sessionModel.watchKey(lang.hitch(this, this.onSessionKeyChange));
-				},
+				this.questionListNode = domConstruct.create("div", {"class": "lecturerQuestionList"}, this.domNode);
 
-				startup: function () {},
+				sessionModel.watchKey(lang.hitch(this, this.onSessionKeyChange));
+			},
 
-				update: function (questions) {
-					domConstruct.empty(this.questionListNode);
+			startup: function () {},
 
-					if (!questions) {
-						return;
-					}
+			update: function (questions) {
+				domConstruct.empty(this.questionListNode);
 
-					when(questions, lang.hitch(this, function (questions) {
-						/* group questions by category */
-						var categories = {};
-						questions.forEach(function (question) {
-							if (!categories[question.subject]) {
-								categories[question.subject] = [];
-							}
-							categories[question.subject].push(question);
-						});
-
-						var handleQuestion = lang.hitch(this, function (question) {
-							var questionNode = domConstruct.create("p", {"class": "question", tabindex: 0}, categoryNode);
-							questionNode.appendChild(document.createTextNode(question.text));
-							mathJax.parse(questionNode);
-							on(questionNode, a11yclick, lang.hitch(this, function (event) {
-								lecturerQuestionModel.setId(question._id);
-								if (this.editing) {
-									topic.publish("arsnova/question/edit", question._id);
-								} else {
-									answersTab.selectTab();
-								}
-							}));
-						});
-
-						for (var category in categories) {
-							if (categories.hasOwnProperty(category)) {
-								var categoryNode = domConstruct.create("div", {"class": "questionCategory"}, this.questionListNode);
-								var categoryHeaderNode = domConstruct.create("header", null, categoryNode);
-								categoryHeaderNode.appendChild(document.createTextNode(category));
-								categories[category].forEach(handleQuestion);
-							}
-						}
-					}));
-				},
-
-				enableEditing: function (enable) {
-					this.editing = !!enable;
-				},
-
-				onSessionKeyChange: function (name, oldValue, value) {
-					var questions = lecturerQuestionModel.getAll();
-					when(questions, lang.hitch(this, function (questions) {
-						this.update(questions);
-					}));
+				if (!questions) {
+					return;
 				}
-			};
-		}()));
+
+				when(questions, lang.hitch(this, function (questions) {
+					/* group questions by category */
+					var categories = {};
+					questions.forEach(function (question) {
+						if (!categories[question.subject]) {
+							categories[question.subject] = [];
+						}
+						categories[question.subject].push(question);
+					});
+
+					var handleQuestion = lang.hitch(this, function (question) {
+						var questionNode = domConstruct.create("p", {"class": "question", tabindex: 0}, categoryNode);
+						questionNode.appendChild(document.createTextNode(question.text));
+						mathJax.parse(questionNode);
+						on(questionNode, a11yclick, lang.hitch(this, function (event) {
+							lecturerQuestionModel.setId(question._id);
+							if (this.editing) {
+								topic.publish("arsnova/question/edit", question._id);
+							} else {
+								answersTab.selectTab();
+							}
+						}));
+					});
+
+					for (var category in categories) {
+						if (categories.hasOwnProperty(category)) {
+							var categoryNode = domConstruct.create("div", {"class": "questionCategory"}, this.questionListNode);
+							var categoryHeaderNode = domConstruct.create("header", null, categoryNode);
+							categoryHeaderNode.appendChild(document.createTextNode(category));
+							categories[category].forEach(handleQuestion);
+						}
+					}
+				}));
+			},
+
+			enableEditing: function (enable) {
+				this.editing = !!enable;
+			},
+
+			onSessionKeyChange: function (name, oldValue, value) {
+				var questions = lecturerQuestionModel.getAll().filter(lang.hitch(this, function (question) {
+					console.log("lecture" === this.questionVariant);
+					if ("lecture" === this.questionVariant) {
+						return !question.questionVariant || "lecture" === question.questionVariant;
+					} else {
+						return question.questionVariant && this.questionVariant === question.questionVariant;
+					}
+				}));
+				when(questions, lang.hitch(this, function (questions) {
+					this.update(questions);
+				}));
+			}
+		});
 	}
 );
