@@ -2,6 +2,7 @@ define(
 	[
 		"dojo/_base/lang",
 		"dojo/_base/declare",
+		"dojo/on",
 		"dojo/dom-construct",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Form",
@@ -11,17 +12,23 @@ define(
 		"dijit/form/MultiSelect",
 		"dijit/form/ComboBox",
 		"dijit/form/CheckBox",
+		"dijit/form/RadioButton",
 		"dojox/form/CheckedMultiSelect",
 		"dojo/store/Memory",
 		"arsnova-api/lecturerQuestion"
 	],
-	function (lang, declare, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, CheckedMultiSelect, Memory, lecturerQuestion) {
+	function (lang, declare, on, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, Memory, lecturerQuestion) {
 		"use strict";
 
 		return declare("EditQuestionTab", ContentPane, {
 			closable: true,
 			questionId: null,
 			form: null,
+			subjectField: null,
+			descriptionField: null,
+			typeSelect: null,
+			abstentionCb: null,
+			releaseCb: null,
 
 			constructor: function (questionId) {
 				if (questionId) {
@@ -39,7 +46,7 @@ define(
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: "Subject"}, container);
-				(this.subject = new ComboBox({
+				(this.subjectField = new ComboBox({
 					name: "subject",
 					store: new Memory({
 						idProperty: "id",
@@ -52,13 +59,13 @@ define(
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: "Description"}, container);
-				(this.description = new TextBox({
+				(this.descriptionField = new TextBox({
 					name: "text"
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: "Question format"}, container);
-				(this.type = new Select({
+				(this.typeSelect = new Select({
 					name: "questionType",
 					options: [
 						{value: "abcd", label: "Single choice"},
@@ -68,19 +75,47 @@ define(
 						{value: "freetext", label: "Free text"}
 					]
 				})).placeAt(container).startup();
+				this.typeSelect.watch("value", lang.hitch(this, function (id, oldValue, value) {
+					this.addAnswerOptionField.set("disabled", false);
+					this.addAnswerButton.set("disabled", false);
+
+					switch (value) {
+					case "abcd":
+						domConstruct.empty(this.answerOptionsContainer);
+						break;
+					case "mc":
+						domConstruct.empty(this.answerOptionsContainer);
+						break;
+					case "yesno":
+						this.addAnswerOptionField.set("disabled", true);
+						this.addAnswerButton.set("disabled", true);
+						domConstruct.empty(this.answerOptionsContainer);
+						this.addAnswerOption("Yes");
+						this.addAnswerOption("No");
+						break;
+					case "ls":
+						domConstruct.empty(this.answerOptionsContainer);
+						break;
+					case "freetext":
+						this.addAnswerOptionField.set("disabled", true);
+						this.addAnswerButton.set("disabled", true);
+						domConstruct.empty(this.answerOptionsContainer);
+						break;
+					}
+				}));
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: "Answer option"}, container);
-				(this.addAnswerOption = new TextBox()).placeAt(container).startup();
+				(this.addAnswerOptionField = new TextBox()).placeAt(container).startup();
 				(this.addAnswerButton = new Button({
 					label: "Add",
 					onClick: lang.hitch(this, function () {
-						var optionContainer = domConstruct.create("div", null, this.answerOptionsContainer);
-						(this.release = new CheckBox({
-							name: "active",
-							checked: true
-						})).placeAt(optionContainer).startup();
-						domConstruct.create("label", {innerHTML: "XSS " + this.addAnswerOption.get("value")}, optionContainer);
+						var value = this.addAnswerOptionField.get("value");
+						if (!value) {
+							return;
+						}
+						this.addAnswerOption(value);
+						this.addAnswerOptionField.set("value", "");
 					})
 				})).placeAt(container).startup();
 
@@ -90,13 +125,13 @@ define(
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: "Allow abstantions"}, container);
-				(this.abstention = new CheckBox({
+				(this.abstentionCb = new CheckBox({
 					name: "abstention"
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: "Release question"}, container);
-				(this.release = new CheckBox({
+				(this.releaseCb = new CheckBox({
 					name: "active",
 					checked: true
 				})).placeAt(container).startup();
@@ -105,13 +140,37 @@ define(
 					label: "Save",
 					onClick: lang.hitch(this, this.createQuestion)
 				})).placeAt(this.form).startup();
+
+				if (this.questionId) {
+					this.fillForm(lecturerQuestion.get(this.questionId));
+				}
+			},
+
+			addAnswerOption: function (name) {
+				var optionContainer = domConstruct.create("div", null, this.answerOptionsContainer);
+				var Widget = "mc" === this.typeSelect.get("value") ? CheckBox : RadioButton;
+				(new Widget()).placeAt(optionContainer).startup();
+				domConstruct.create("label", {innerHTML: "XSS " + name}, optionContainer);
+				var delButton = domConstruct.create("button", {innerHTML: "X", type: "button"}, optionContainer);
+				on(delButton, "click", function (event) {
+					domConstruct.destroy(optionContainer);
+				});
+			},
+
+			fillForm: function (question) {
+				//this.form.set("value", question);
+				/* Form.set cannot be used since it does not handle CheckBox widgets correctly */
+				this.form.getChildren().forEach(function (widget) {
+					if (widget.name && question.hasOwnProperty(widget.name)) {
+						widget.set("value", question[widget.name]);
+					}
+				});
 			},
 
 			createQuestion: function () {
 				var question = this.form.get("value");
 				question.abstention = question.abstention.length > 0;
 				question.active = question.active.length > 0;
-				console.debug(question);
 				lecturerQuestion.create(question);
 			},
 
