@@ -101,7 +101,6 @@ define(
 
 			onSessionKeyChange: function (name, oldValue, value) {
 				var questions = lecturerQuestionModel.getAll().filter(lang.hitch(this, function (question) {
-					console.log("lecture" === this.questionVariant);
 					if ("lecture" === this.questionVariant) {
 						return !question.questionVariant || "lecture" === question.questionVariant;
 					} else {

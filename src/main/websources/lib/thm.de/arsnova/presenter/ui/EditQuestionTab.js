@@ -218,7 +218,9 @@ define(
 						});
 					}
 				});
-				lecturerQuestion.create(question);
+				lecturerQuestion.create(question).then(lang.hitch(this, function () {
+					this.getParent().removeChild(this);
+				}));
 			},
 
 			updateQuestion: function () {
@@ -233,7 +235,9 @@ define(
 				question.active = question.active.length > 0;
 				question.showStatistic = question.showStatistic.length > 0;
 				question.showAnswer = question.showAnswer.length > 0;
-				lecturerQuestion.update(question);
+				lecturerQuestion.update(question).then(lang.hitch(this, function () {
+					this.getParent().removeChild(this);
+				}));
 			}
 		});
 	}
