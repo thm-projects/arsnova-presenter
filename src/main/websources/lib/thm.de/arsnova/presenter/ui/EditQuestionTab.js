@@ -24,11 +24,14 @@ define(
 			closable: true,
 			questionId: null,
 			form: null,
+			optionsForm: null,
 			subjectField: null,
 			descriptionField: null,
 			typeSelect: null,
 			abstentionCb: null,
 			releaseCb: null,
+			releaseStatsCb: null,
+			releaseCorrectCb: null,
 
 			constructor: function (questionId) {
 				if (questionId) {
@@ -41,8 +44,21 @@ define(
 
 			init: function () {
 				var container;
-				this.form = new Form({"class": "question"});
+				this.form = new Form({
+					"class": "question",
+					doLayout: false
+				});
 				this.form.placeAt(this);
+
+				container = domConstruct.create("div", null, this.form.domNode);
+				domConstruct.create("label", {innerHTML: "Mode"}, container);
+				(this.typeSelect = new Select({
+					name: "questionVariant",
+					options: [
+						{value: "lecture", label: "Lecture"},
+						{value: "preparation", label: "Preparation"}
+					]
+				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: "Subject"}, container);
@@ -119,9 +135,10 @@ define(
 					})
 				})).placeAt(container).startup();
 
-				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Correct answers"}, container);
-				this.answerOptionsContainer = domConstruct.create("div", {style: "display: inline-block;"}, container);
+				this.optionsForm = new Form();
+				this.optionsForm.placeAt(this.form);
+				domConstruct.create("label", {innerHTML: "Correct answers"}, this.optionsForm.domNode);
+				this.answerOptionsContainer = domConstruct.create("div", {style: "display: inline-block;"}, this.optionsForm.domNode);
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: "Allow abstantions"}, container);
@@ -136,9 +153,23 @@ define(
 					checked: true
 				})).placeAt(container).startup();
 
+				container = domConstruct.create("div", null, this.form.domNode);
+				domConstruct.create("label", {innerHTML: "Release statistics"}, container);
+				(this.releaseStatsCb = new CheckBox({
+					name: "showStatistic",
+					checked: true
+				})).placeAt(container).startup();
+
+				container = domConstruct.create("div", null, this.form.domNode);
+				domConstruct.create("label", {innerHTML: "Release correct answer"}, container);
+				(this.releaseCorrectCb = new CheckBox({
+					name: "showAnswer",
+					checked: true
+				})).placeAt(container).startup();
+
 				(new Button({
 					label: "Save",
-					onClick: lang.hitch(this, this.createQuestion)
+					onClick: lang.hitch(this, this.questionId ? this.updateQuestion : this.createQuestion)
 				})).placeAt(this.form).startup();
 
 				if (this.questionId) {
@@ -149,12 +180,17 @@ define(
 			addAnswerOption: function (name) {
 				var optionContainer = domConstruct.create("div", null, this.answerOptionsContainer);
 				var Widget = "mc" === this.typeSelect.get("value") ? CheckBox : RadioButton;
-				(new Widget()).placeAt(optionContainer).startup();
+				(new Widget({
+					name: "answerOptions",
+					value: name
+				})).placeAt(optionContainer).startup();
 				domConstruct.create("label", {innerHTML: "XSS " + name}, optionContainer);
-				var delButton = domConstruct.create("button", {innerHTML: "X", type: "button"}, optionContainer);
-				on(delButton, "click", function (event) {
-					domConstruct.destroy(optionContainer);
-				});
+				(new Button({
+					label: "X",
+					onClick: function (event) {
+						domConstruct.destroy(optionContainer);
+					}
+				})).placeAt(optionContainer);
 			},
 
 			fillForm: function (question) {
@@ -171,10 +207,32 @@ define(
 				var question = this.form.get("value");
 				question.abstention = question.abstention.length > 0;
 				question.active = question.active.length > 0;
+				question.showStatistic = question.showStatistic.length > 0;
+				question.showAnswer = question.showAnswer.length > 0;
+				question.possibleAnswers = [];
+				this.optionsForm.getChildren().forEach(function (widget) {
+					if ("answerOptions" === widget.name) {
+						question.possibleAnswers.push({
+							text: widget.value,
+							correct: widget.checked
+						});
+					}
+				});
 				lecturerQuestion.create(question);
 			},
 
 			updateQuestion: function () {
+				var question = lecturerQuestion.get(this.questionId);
+				var newQuestion = this.form.get("value");
+				for (var attr in newQuestion) {
+					if (newQuestion.hasOwnProperty(attr)) {
+						question[attr] = newQuestion[attr];
+					}
+				}
+				question.abstention = question.abstention.length > 0;
+				question.active = question.active.length > 0;
+				question.showStatistic = question.showStatistic.length > 0;
+				question.showAnswer = question.showAnswer.length > 0;
 				lecturerQuestion.update(question);
 			}
 		});
