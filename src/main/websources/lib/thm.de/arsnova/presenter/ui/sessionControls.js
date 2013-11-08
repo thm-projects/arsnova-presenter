@@ -29,6 +29,9 @@ define(
 		"dojo/store/Memory",
 		"dijit/registry",
 		"dijit/a11yclick",
+		"dijit/form/Form",
+		"dijit/form/Button",
+		"dijit/form/ValidationTextBox",
 		"dijit/form/FilteringSelect",
 		"dijit/Dialog",
 		"dijit/Tooltip",
@@ -37,7 +40,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/session"
 	],
-	function (config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, FilteringSelect, Dialog, Tooltip, modalOverlay, i18n, commonMessages, messages) {
+	function (config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, Form, Button, TextBox, FilteringSelect, Dialog, Tooltip, modalOverlay, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -55,6 +58,8 @@ define(
 
 			/* Dijit */
 			select = null,
+			addButton = null,
+			newSessionDialog = null,
 			mobileDialog = null
 		;
 
@@ -86,6 +91,12 @@ define(
 						}
 					}
 				})).placeAt(panelNode).startup();
+				(addButton = new Button({
+					label: "+",
+					onClick: function () {
+						self.showNewSessionDialog();
+					}
+				})).placeAt(panelNode).startup();
 				keyNode = domConstruct.create("span", {id: "sessionKey", "class": "noSession", innerHTML: "00 00 00 00"}, panelNode);
 				(new Tooltip({
 					connectId: [keyNode],
@@ -101,14 +112,6 @@ define(
 						position: ["below-centered"]
 					})).startup();
 				}
-
-				/* button is destroyed on creation since it is not needed
-				 * until editing features are available */
-//				new DropDownButton({
-//					label: "New",
-//					dropDown: registry.byId("newSessionDialog")
-//				}, "newSessionButton");
-//				registry.byId("createSessionButton").onClick = this.submitCreateSessionForm;
 
 				self.updateSelect(model.getOwned());
 				model.watchKey(self.onKeyChange);
@@ -169,15 +172,39 @@ define(
 				});
 			},
 
-			submitCreateSessionForm: function () {
-				var
-					shortName = registry.byId("sessionNameField").value,
-					description = registry.byId("sessionDescField").value
-				;
-
-				if (model.createSession(shortName, description)) {
-					registry.byId("newSessionDialog").close();
+			showNewSessionDialog: function () {
+				if (!newSessionDialog) {
+					var form = new Form();
+					newSessionDialog = new Dialog({
+						title: "New session",
+						content: form
+					});
+					(new TextBox({
+						name: "name",
+						required: true
+					})).placeAt(form);
+					(new TextBox({
+						name: "shortName",
+						required: true
+					})).placeAt(form);
+					(new Button({
+						label: "Create",
+						onClick: function () {
+							model.create(form.get("value")).then(function () {
+								newSessionDialog.hide();
+							});
+						}
+					})).placeAt(form);
+					(new Button({
+						label: "Cancel",
+						onClick: function () {
+							newSessionDialog.hide();
+						}
+					})).placeAt(form);
+				} else {
+					newSessionDialog.content.reset();
 				}
+				newSessionDialog.show();
 			},
 
 			onKeyChange: function (name, oldValue, value) {
