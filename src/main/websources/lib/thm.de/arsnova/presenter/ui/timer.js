@@ -129,7 +129,6 @@ define(
 				if (interval) {
 					clearInterval(interval);
 				}
-				modalOverlay.hide();
 			}
 		};
 
