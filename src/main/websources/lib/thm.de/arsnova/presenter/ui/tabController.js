@@ -126,7 +126,6 @@ define(
 				sessionTab.startup();
 
 				topic.subscribe("arsnova/question/edit", lang.hitch(this, function (questionId) {
-					console.log("Topic: ", questionId);
 					this.addEditQuestionTab(questionId);
 				}));
 			},

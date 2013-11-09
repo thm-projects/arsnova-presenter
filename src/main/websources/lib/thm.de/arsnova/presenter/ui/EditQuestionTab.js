@@ -204,7 +204,6 @@ define(
 				}
 
 				this.form.watch("value", lang.hitch(this, function (name, oldValue, value) {
-					console.debug(value);
 					this.modified = true;
 				}));
 			},
