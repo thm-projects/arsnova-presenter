@@ -140,12 +140,22 @@ define(
 			},
 
 			selectMode: function (mode) {
+				var modified = false;
 				mode = isNaN(mode) ? appMode[mode] : mode;
 				if (mode === activeMode) {
 					return;
 				}
 
-				if (appMode.EDITING === activeMode && tabsRight.getChildren().length > 0) {
+				if (appMode.EDITING === activeMode) {
+					EditQuestionTab.getInstances().forEach(function (tab, i) {
+						if (tab[1].modified) {
+							console.debug("Question " + (tab[0] || "new[" + i + "]") + " has modifications");
+							modified = true;
+						}
+					});
+				}
+
+				if (appMode.EDITING === activeMode && modified) {
 					var buttons = {};
 					buttons[commonMessages.proceed] = lang.hitch(this, function () {
 						this.switchMode(mode);
@@ -166,9 +176,12 @@ define(
 
 				array.forEach(tabsLeft.getChildren(), function (tab) {
 					tabsLeft.removeChild(tab);
+					/* unfortunately tc.removeChild(...) does not fire an onClose event */
+					tab.onClose();
 				});
 				array.forEach(tabsRight.getChildren(), function (tab) {
 					tabsRight.removeChild(tab);
+					tab.onClose();
 				});
 
 				switch (mode) {

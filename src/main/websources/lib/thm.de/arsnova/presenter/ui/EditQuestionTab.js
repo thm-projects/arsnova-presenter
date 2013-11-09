@@ -38,8 +38,11 @@ define(
 	function (lang, declare, on, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, Memory, lecturerQuestion) {
 		"use strict";
 
-		return declare("EditQuestionTab", ContentPane, {
+		var self, tabs = [];
+
+		self = declare("EditQuestionTab", ContentPane, {
 			closable: true,
+			modified: false,
 			questionId: null,
 			form: null,
 			optionsForm: null,
@@ -58,6 +61,8 @@ define(
 				} else {
 					this.set("title", "New question");
 				}
+
+				tabs.push([questionId, this]);
 			},
 
 			init: function () {
@@ -193,6 +198,11 @@ define(
 				if (this.questionId) {
 					this.fillForm(lecturerQuestion.get(this.questionId));
 				}
+
+				this.form.watch("value", lang.hitch(this, function (name, oldValue, value) {
+					console.debug(value);
+					this.modified = true;
+				}));
 			},
 
 			addAnswerOption: function (name) {
@@ -255,7 +265,23 @@ define(
 				lecturerQuestion.update(question).then(lang.hitch(this, function () {
 					this.getParent().removeChild(this);
 				}));
+			},
+
+			onClose: function () {
+				tabs.forEach(lang.hitch(this, function (tab, i) {
+					if (tab[1] === this) {
+						delete tabs[i];
+					}
+				}));
+
+				return true;
 			}
 		});
+
+		self.getInstances = function () {
+			return tabs;
+		};
+
+		return self;
 	}
 );
