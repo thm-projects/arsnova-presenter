@@ -77,6 +77,7 @@ define(
 				activeUserCountNode = domConstruct.create("span", {id: "activeUserCount", innerHTML: "-"}, infoNode);
 				/* Session controls */
 				panelNode = domConstruct.create("div", {id: "sessionPanel"}, "headerPane");
+
 				(select = new FilteringSelect({
 					id: "sessionSelect",
 					placeHolder: messages.session,
@@ -92,18 +93,20 @@ define(
 						}
 					}
 				})).placeAt(panelNode).startup();
-				(addButton = new Button({
-					label: "+",
-					onClick: function () {
-						self.showNewSessionDialog();
-					}
-				})).placeAt(panelNode).startup();
+
 				keyNode = domConstruct.create("span", {id: "sessionKey", "class": "noSession", innerHTML: "00 00 00 00"}, panelNode);
 				(new Tooltip({
 					connectId: [keyNode],
 					position: ["below-centered"],
 					label: messages.sessionKeyInfo
 				})).startup();
+
+				(addButton = new Button({
+					label: "+",
+					onClick: function () {
+						self.showNewSessionDialog();
+					}
+				})).placeAt(panelNode).startup();
 
 				if (config.arsnova.mobileStudentSessionUrl) {
 					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr", tabindex: 0}, panelNode);
@@ -142,6 +145,23 @@ define(
 					}
 					var url = string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionKey});
 					self.showQr(self.getAbsoluteUrl(url));
+				});
+
+				topic.subscribe("arsnova/mode/switch", function (mode) {
+					switch (mode) {
+					case "editing":
+						domStyle.set(addButton.domNode, "display", "");
+						if (qrNode) {
+							domStyle.set(qrNode, "display", "none");
+						}
+						break;
+					default:
+						domStyle.set(addButton.domNode, "display", "none");
+						if (qrNode) {
+							domStyle.set(qrNode, "display", "");
+						}
+						break;
+					}
 				});
 			},
 

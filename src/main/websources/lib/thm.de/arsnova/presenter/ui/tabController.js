@@ -201,6 +201,7 @@ define(
 					tabsLeft.addChild(tabs.session);
 					this.addEditQuestionTab();
 					tabsRight.addChild(tabs.addQuestion);
+					topic.publish("arsnova/mode/switch", "editing");
 
 					break;
 				case appMode.PI:
@@ -208,12 +209,14 @@ define(
 					tabsLeft.addChild(tabs.answers);
 					tabsRight.addChild(tabs.feedback);
 					tabsRight.addChild(tabs.audienceQuestions);
+					topic.publish("arsnova/mode/switch", "pi");
 
 					break;
 				case appMode.JITT:
 					tabsLeft.addChild(tabs.lecturerJittQuestions);
 					tabsLeft.addChild(tabs.answers);
 					tabsRight.addChild(tabs.audienceQuestions);
+					topic.publish("arsnova/mode/switch", "jitt");
 
 					break;
 				}
