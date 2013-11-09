@@ -282,6 +282,17 @@ define(
 			return tabs;
 		};
 
+		self.getTab = function (questionId) {
+			var result = null;
+			tabs.forEach(function (tab) {
+				if (questionId === tab[0]) {
+					result = tab[1];
+				}
+			});
+
+			return result;
+		};
+
 		return self;
 	}
 );

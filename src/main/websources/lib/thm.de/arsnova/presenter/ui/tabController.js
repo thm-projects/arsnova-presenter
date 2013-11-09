@@ -131,11 +131,18 @@ define(
 			},
 
 			addEditQuestionTab: function (questionId) {
-				var eqt = new EditQuestionTab(questionId);
-				eqt.init();
-				eqt.startup();
-				var pos = tabsRight.getChildren().length - 1;
-				tabsRight.addChild(eqt, pos);
+				var eqt;
+
+				if (questionId) {
+					eqt = EditQuestionTab.getTab(questionId);
+				}
+				if (!eqt) {
+					eqt = new EditQuestionTab(questionId);
+					eqt.init();
+					eqt.startup();
+					var pos = tabsRight.getChildren().length - 1;
+					tabsRight.addChild(eqt, pos);
+				}
 				tabsRight.selectChild(eqt);
 			},
 
