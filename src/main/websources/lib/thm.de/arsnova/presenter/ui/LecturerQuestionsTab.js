@@ -79,10 +79,10 @@ define(
 						questionNode.appendChild(document.createTextNode(question.text));
 						mathJax.parse(questionNode);
 						on(questionNode, a11yclick, lang.hitch(this, function (event) {
-							lecturerQuestionModel.setId(question._id);
 							if (this.editing) {
 								topic.publish("arsnova/question/edit", question._id);
 							} else {
+								lecturerQuestionModel.setId(question._id);
 								answersTab.selectTab();
 							}
 						}));
