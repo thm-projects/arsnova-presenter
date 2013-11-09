@@ -148,19 +148,16 @@ define(
 				});
 
 				topic.subscribe("arsnova/mode/switch", function (mode) {
-					switch (mode) {
-					case "editing":
+					if ("editing" === mode) {
 						domStyle.set(addButton.domNode, "display", "");
 						if (qrNode) {
 							domStyle.set(qrNode, "display", "none");
 						}
-						break;
-					default:
+					} else {
 						domStyle.set(addButton.domNode, "display", "none");
 						if (qrNode) {
 							domStyle.set(qrNode, "display", "");
 						}
-						break;
 					}
 				});
 			},
