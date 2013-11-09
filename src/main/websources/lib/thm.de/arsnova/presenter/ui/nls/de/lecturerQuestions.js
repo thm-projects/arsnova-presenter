@@ -1,3 +1,24 @@
 define({
-	questions: "Fragen"
+	questions: "Fragen",
+	lectureQuestions: "Vorlesungsfragen",
+	preparationQuestions: "Vorbereitungsfragen",
+	newQuestion: "Neue Frage",
+	editQuestion: "Frage bearbeiten",
+	mode: "Modus",
+	lectureMode: "Vorlesung",
+	preparationMode: "Vorbereitung",
+	subject: "Thema",
+	description: "Beschreibung",
+	format: "Format",
+	answerOption: "Antwortoption",
+	correctAnswers: "Korrekte Antworten",
+	allowAbstentions: "Enthaltungen erlauben",
+	releaseQuestion: "Frage freischalten",
+	releaseStatistics: "Statistik einsehbar",
+	releaseCorrectAnswer: "Korrekte Antwort einsehbar",
+	singleChoice: "Einfachauswahl",
+	multipleChoice: "Mehrfachauswahl",
+	yesNo: "Ja/Nein",
+	likertScale: "(Likert-)Skala",
+	freeText: "Freitext"
 });

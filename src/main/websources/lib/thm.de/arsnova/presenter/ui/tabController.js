@@ -39,9 +39,10 @@ define(
 		"arsnova-presenter/ui/EditQuestionTab",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
-		"dojo/i18n!./nls/main"
+		"dojo/i18n!./nls/main",
+		"dojo/i18n!./nls/lecturerQuestions"
 	],
-	function (lang, array, on, aspect, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, LecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, sessionTab, EditQuestionTab, i18n, commonMessages, messages) {
+	function (lang, array, on, aspect, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, LecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, sessionTab, EditQuestionTab, i18n, commonMessages, messages, lecturerQuestionMessages) {
 		"use strict";
 
 		var
@@ -86,7 +87,7 @@ define(
 
 				var that = this;
 				tabs.addQuestion = new ContentPane({
-					title: "Add question",
+					title: lecturerQuestionMessages.addQuestion,
 					onShow: function () {
 						if (activeMode) {
 							/* do not create a new tab while switching modes */

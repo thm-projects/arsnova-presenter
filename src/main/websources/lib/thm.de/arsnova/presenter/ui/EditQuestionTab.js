@@ -33,9 +33,12 @@ define(
 		"dijit/form/RadioButton",
 		"dojox/form/CheckedMultiSelect",
 		"dojo/store/Memory",
-		"arsnova-api/lecturerQuestion"
+		"arsnova-api/lecturerQuestion",
+		"dojo/i18n",
+		"dojo/i18n!./nls/common",
+		"dojo/i18n!./nls/lecturerQuestions"
 	],
-	function (lang, declare, on, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, Memory, lecturerQuestion) {
+	function (lang, declare, on, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, Memory, lecturerQuestion, i18n, commonMessages, messages) {
 		"use strict";
 
 		var self, tabs = [];
@@ -57,9 +60,9 @@ define(
 			constructor: function (questionId) {
 				if (questionId) {
 					this.questionId = questionId;
-					this.set("title", "Edit question");
+					this.set("title", messages.editQuestion);
 				} else {
-					this.set("title", "New question");
+					this.set("title", messages.newQuestion);
 				}
 
 				tabs.push([questionId, this]);
@@ -74,17 +77,17 @@ define(
 				this.form.placeAt(this);
 
 				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Mode"}, container);
+				domConstruct.create("label", {innerHTML: messages.mode}, container);
 				(this.typeSelect = new Select({
 					name: "questionVariant",
 					options: [
-						{value: "lecture", label: "Lecture"},
-						{value: "preparation", label: "Preparation"}
+						{value: "lecture", label: messages.lectureMode},
+						{value: "preparation", label: messages.preparationMode}
 					]
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Subject"}, container);
+				domConstruct.create("label", {innerHTML: messages.subject}, container);
 				(this.subjectField = new ComboBox({
 					name: "subject",
 					store: new Memory({
@@ -97,21 +100,21 @@ define(
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Description"}, container);
+				domConstruct.create("label", {innerHTML: messages.description}, container);
 				(this.descriptionField = new TextBox({
 					name: "text"
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Question format"}, container);
+				domConstruct.create("label", {innerHTML: messages.format}, container);
 				(this.typeSelect = new Select({
 					name: "questionType",
 					options: [
-						{value: "abcd", label: "Single choice"},
-						{value: "mc", label: "Multiple choice"},
-						{value: "yesno", label: "Yes/No"},
-						{value: "ls", label: "(Likert) scale"},
-						{value: "freetext", label: "Free text"}
+						{value: "abcd", label: messages.singleChoice},
+						{value: "mc", label: messages.multipleChoice},
+						{value: "yesno", label: messages.yesNo},
+						{value: "ls", label: messages.likertScale},
+						{value: "freetext", label: messages.freeText}
 					]
 				})).placeAt(container).startup();
 				this.typeSelect.watch("value", lang.hitch(this, function (id, oldValue, value) {
@@ -144,10 +147,10 @@ define(
 				}));
 
 				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Answer option"}, container);
+				domConstruct.create("label", {innerHTML: messages.answerOption}, container);
 				(this.addAnswerOptionField = new TextBox()).placeAt(container).startup();
 				(this.addAnswerButton = new Button({
-					label: "Add",
+					label: commonMessages.add,
 					onClick: lang.hitch(this, function () {
 						var value = this.addAnswerOptionField.get("value");
 						if (!value) {
@@ -160,38 +163,38 @@ define(
 
 				this.optionsForm = new Form();
 				this.optionsForm.placeAt(this.form);
-				domConstruct.create("label", {innerHTML: "Correct answers"}, this.optionsForm.domNode);
+				domConstruct.create("label", {innerHTML: messages.correctAnswers}, this.optionsForm.domNode);
 				this.answerOptionsContainer = domConstruct.create("div", {style: "display: inline-block;"}, this.optionsForm.domNode);
 
 				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Allow abstantions"}, container);
+				domConstruct.create("label", {innerHTML: messages.allowAbstentions}, container);
 				(this.abstentionCb = new CheckBox({
 					name: "abstention"
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Release question"}, container);
+				domConstruct.create("label", {innerHTML: messages.releaseQuestion}, container);
 				(this.releaseCb = new CheckBox({
 					name: "active",
 					checked: true
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Release statistics"}, container);
+				domConstruct.create("label", {innerHTML: messages.releaseStatistics}, container);
 				(this.releaseStatsCb = new CheckBox({
 					name: "showStatistic",
 					checked: true
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: "Release correct answer"}, container);
+				domConstruct.create("label", {innerHTML: messages.releaseCorrectAnswer}, container);
 				(this.releaseCorrectCb = new CheckBox({
 					name: "showAnswer",
 					checked: true
 				})).placeAt(container).startup();
 
 				(new Button({
-					label: "Save",
+					label: this.questionId ? commonMessages.update : commonMessages.create,
 					onClick: lang.hitch(this, this.questionId ? this.updateQuestion : this.createQuestion)
 				})).placeAt(this.form).startup();
 

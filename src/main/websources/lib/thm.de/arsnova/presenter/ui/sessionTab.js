@@ -25,9 +25,10 @@ define(
 		"dijit/form/Button",
 		"dijit/form/TextBox",
 		"dijit/form/CheckBox",
-		"arsnova-api/session"
+		"arsnova-api/session",
+		"dojo/i18n!./nls/session"
 	],
-	function (dom, domConstruct, ContentPane, Form, Button, TextBox, CheckBox, model) {
+	function (dom, domConstruct, ContentPane, Form, Button, TextBox, CheckBox, model, messages) {
 		"use strict";
 
 		var
@@ -51,21 +52,21 @@ define(
 				})).placeAt(pane.content);
 
 				container = domConstruct.create("div", null, form.domNode);
-				domConstruct.create("label", {innerHTML: "Name"}, container);
+				domConstruct.create("label", {innerHTML: messages.name}, container);
 				(new TextBox({
 					name: "name",
 					readonly: true
 				})).placeAt(container);
 
 				container = domConstruct.create("div", null, form.domNode);
-				domConstruct.create("label", {innerHTML: "Short name"}, container);
+				domConstruct.create("label", {innerHTML: messages.shortName}, container);
 				(new TextBox({
 					name: "shortName",
 					readonly: true
 				})).placeAt(container);
 
 				container = domConstruct.create("div", null, form.domNode);
-				domConstruct.create("label", {innerHTML: "Suspend"}, container);
+				domConstruct.create("label", {innerHTML: messages.suspend}, container);
 				(new CheckBox({
 					name: "lock"
 				})).placeAt(container);

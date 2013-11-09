@@ -45,6 +45,7 @@ define(
 			init: function (editing, questionVariant) {
 				this.editing = editing;
 				this.questionVariant = questionVariant;
+				this.title = "lecture" === questionVariant ? messages.lectureQuestions : messages.preparationQuestions;
 
 				this.questionListNode = domConstruct.create("div", {"class": "lecturerQuestionList"}, this.domNode);
 

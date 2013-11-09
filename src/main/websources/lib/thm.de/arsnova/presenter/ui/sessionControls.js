@@ -177,7 +177,7 @@ define(
 					var form, container;
 
 					newSessionDialog = new Dialog({
-						title: "New session",
+						title: messages.newSession,
 						content: domConstruct.create("div")
 					});
 					(newSessionDialog.form = form = new Form({
@@ -185,21 +185,21 @@ define(
 					})).placeAt(newSessionDialog.content);
 
 					container = domConstruct.create("div", null, form.domNode);
-					domConstruct.create("label", {innerHTML: "Name"}, container);
+					domConstruct.create("label", {innerHTML: messages.name}, container);
 					(new TextBox({
 						name: "name",
 						required: true
 					})).placeAt(container);
 
 					container = domConstruct.create("div", null, form.domNode);
-					domConstruct.create("label", {innerHTML: "Short name"}, container);
+					domConstruct.create("label", {innerHTML: messages.shortName}, container);
 					(new TextBox({
 						name: "shortName",
 						required: true
 					})).placeAt(container);
 
 					(new Button({
-						label: "Create",
+						label: commonMessages.create,
 						onClick: function () {
 							model.create(form.get("value")).then(function () {
 								newSessionDialog.hide();
@@ -207,7 +207,7 @@ define(
 						}
 					})).placeAt(newSessionDialog.content);
 					(new Button({
-						label: "Cancel",
+						label: commonMessages.cancel,
 						onClick: function () {
 							newSessionDialog.hide();
 						}
