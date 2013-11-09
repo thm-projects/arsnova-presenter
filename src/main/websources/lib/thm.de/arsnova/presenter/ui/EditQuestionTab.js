@@ -249,7 +249,7 @@ define(
 					}
 				});
 				lecturerQuestion.create(question).then(lang.hitch(this, function () {
-					this.getParent().removeChild(this);
+					this.close();
 				}));
 			},
 
@@ -266,8 +266,14 @@ define(
 				question.showStatistic = question.showStatistic.length > 0;
 				question.showAnswer = question.showAnswer.length > 0;
 				lecturerQuestion.update(question).then(lang.hitch(this, function () {
-					this.getParent().removeChild(this);
+					this.close();
 				}));
+			},
+
+			close: function () {
+				this.getParent().removeChild(this);
+				/* unfortunately tc.removeChild(...) does not fire an onClose event */
+				this.onClose();
 			},
 
 			onClose: function () {
