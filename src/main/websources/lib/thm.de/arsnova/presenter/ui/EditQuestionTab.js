@@ -21,6 +21,7 @@ define(
 		"dojo/_base/lang",
 		"dojo/_base/declare",
 		"dojo/on",
+		"dojo/topic",
 		"dojo/dom-construct",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Form",
@@ -38,7 +39,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/lecturerQuestions"
 	],
-	function (lang, declare, on, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, Memory, lecturerQuestion, i18n, commonMessages, messages) {
+	function (lang, declare, on, topic, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, Memory, lecturerQuestion, i18n, commonMessages, messages) {
 		"use strict";
 
 		var self, tabs = [];
@@ -250,6 +251,7 @@ define(
 				});
 				lecturerQuestion.create(question).then(lang.hitch(this, function () {
 					this.close();
+					topic.publish("arsnova/question/update");
 				}));
 			},
 
@@ -267,6 +269,7 @@ define(
 				question.showAnswer = question.showAnswer.length > 0;
 				lecturerQuestion.update(question).then(lang.hitch(this, function () {
 					this.close();
+					topic.publish("arsnova/question/update");
 				}));
 			},
 

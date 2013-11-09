@@ -50,6 +50,9 @@ define(
 				this.questionListNode = domConstruct.create("div", {"class": "lecturerQuestionList"}, this.domNode);
 
 				sessionModel.watchKey(lang.hitch(this, this.onSessionKeyChange));
+				topic.subscribe("arsnova/question/update", lang.hitch(this, function () {
+					this.load();
+				}));
 			},
 
 			startup: function () {},
@@ -96,11 +99,7 @@ define(
 				}));
 			},
 
-			enableEditing: function (enable) {
-				this.editing = !!enable;
-			},
-
-			onSessionKeyChange: function (name, oldValue, value) {
+			load: function () {
 				var questions = lecturerQuestionModel.getAll().filter(lang.hitch(this, function (question) {
 					if ("lecture" === this.questionVariant) {
 						return !question.questionVariant || "lecture" === question.questionVariant;
@@ -111,6 +110,14 @@ define(
 				when(questions, lang.hitch(this, function (questions) {
 					this.update(questions);
 				}));
+			},
+
+			enableEditing: function (enable) {
+				this.editing = !!enable;
+			},
+
+			onSessionKeyChange: function (name, oldValue, value) {
+				this.load();
 			}
 		});
 	}
