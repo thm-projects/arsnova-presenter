@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-define([
+define(
+	[
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dijit/layout/ContentPane",
@@ -25,69 +26,70 @@ define([
 		"dijit/form/TextBox",
 		"dijit/form/CheckBox",
 		"arsnova-api/session"
-],
-function (dom, domConstruct, ContentPane, Form, Button, TextBox, CheckBox, model) {
-	"use strict";
+	],
+	function (dom, domConstruct, ContentPane, Form, Button, TextBox, CheckBox, model) {
+		"use strict";
 
-	var
-		self = null,
+		var
+			self = null,
 
-		/* Dijit */
-		pane = null,
-		form = null
-	;
+			/* Dijit */
+			pane = null,
+			form = null
+		;
 
-	self = {
-		init: function () {
-			var container;
+		self = {
+			init: function () {
+				var container;
 
-			pane = new ContentPane({
-				title: "Session",
-				content: domConstruct.create("div")
-			});
-			(form = new Form({
-				"class": "labeled"
-			})).placeAt(pane.content);
+				pane = new ContentPane({
+					title: "Session",
+					content: domConstruct.create("div")
+				});
+				(form = new Form({
+					"class": "labeled"
+				})).placeAt(pane.content);
 
-			container = domConstruct.create("div", null, form.domNode);
-			domConstruct.create("label", {innerHTML: "Name"}, container);
-			(new TextBox({
-				name: "name",
-				readonly: true
-			})).placeAt(container);
+				container = domConstruct.create("div", null, form.domNode);
+				domConstruct.create("label", {innerHTML: "Name"}, container);
+				(new TextBox({
+					name: "name",
+					readonly: true
+				})).placeAt(container);
 
-			container = domConstruct.create("div", null, form.domNode);
-			domConstruct.create("label", {innerHTML: "Short name"}, container);
-			(new TextBox({
-				name: "shortName",
-				readonly: true
-			})).placeAt(container);
+				container = domConstruct.create("div", null, form.domNode);
+				domConstruct.create("label", {innerHTML: "Short name"}, container);
+				(new TextBox({
+					name: "shortName",
+					readonly: true
+				})).placeAt(container);
 
-			container = domConstruct.create("div", null, form.domNode);
-			domConstruct.create("label", {innerHTML: "Suspend"}, container);
-			(new CheckBox({
-				name: "lock"
-			})).placeAt(container);
+				container = domConstruct.create("div", null, form.domNode);
+				domConstruct.create("label", {innerHTML: "Suspend"}, container);
+				(new CheckBox({
+					name: "lock"
+				})).placeAt(container);
 
-			return pane;
-		},
+				return pane;
+			},
 
-		startup: function () {
-			pane.startup();
-			model.watchKey(function (name, oldValue, value) {
-				self.fillForm(model.getCurrent());
-			});
-		},
+			startup: function () {
+				pane.startup();
+				model.watchKey(function (name, oldValue, value) {
+					self.fillForm(model.getCurrent());
+				});
+			},
 
-		fillForm: function (session) {
-			/* Form.set("value", ...) cannot be used since it does not handle CheckBox widgets correctly */
-			form.getChildren().forEach(function (widget) {
-				if (widget.name && session.hasOwnProperty(widget.name)) {
-					widget.set("value", session[widget.name]);
-				}
-			});
-		}
-	};
+			fillForm: function (session) {
+				/* Form.set("value", ...) cannot be used since it does not handle CheckBox widgets correctly */
+				form.getChildren().forEach(function (widget) {
+					if (widget.name && session.hasOwnProperty(widget.name)) {
+						widget.set("value", session[widget.name]);
+					}
+				});
+			}
+		};
 
-	return self;
-});
+		return self;
+	}
+);
