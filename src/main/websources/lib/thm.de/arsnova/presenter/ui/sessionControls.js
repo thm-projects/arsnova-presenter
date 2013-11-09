@@ -21,6 +21,7 @@ define(
 		"dojo/_base/config",
 		"dojo/string",
 		"dojo/on",
+		"dojo/topic",
 		"dojo/when",
 		"dojo/dom-construct",
 		"dojo/dom-class",
@@ -40,7 +41,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/session"
 	],
-	function (config, string, on, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, Form, Button, TextBox, FilteringSelect, Dialog, Tooltip, modalOverlay, i18n, commonMessages, messages) {
+	function (config, string, on, topic, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, Form, Button, TextBox, FilteringSelect, Dialog, Tooltip, modalOverlay, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -114,6 +115,9 @@ define(
 				}
 
 				self.updateSelect(model.getOwned());
+				topic.subscribe("arsnova/session/update", function () {
+					self.updateSelect(model.getOwned());
+				});
 				model.watchKey(self.onKeyChange);
 				model.watchActiveUserCount(function (name, oldValue, value) {
 					activeUserCountNode.innerHTML = value;
@@ -201,8 +205,10 @@ define(
 					(new Button({
 						label: commonMessages.create,
 						onClick: function () {
-							model.create(form.get("value")).then(function () {
+							model.create(form.get("value")).then(function (session) {
 								newSessionDialog.hide();
+								topic.publish("arsnova/session/update");
+								model.setKey(session.keyword);
 							});
 						}
 					})).placeAt(newSessionDialog.content);
@@ -218,8 +224,8 @@ define(
 				newSessionDialog.show();
 			},
 
-			onKeyChange: function (name, oldValue, value) {
-				select.set("value", value);
+			selectSession: function (sessionKey) {
+				select.set("value", sessionKey);
 				when(model.getCurrent(), function (session) {
 					document.title = session.shortName + " - " + commonMessages.arsnova + " " + commonMessages.productNameValue;
 					domConstruct.empty(titleNode);
@@ -242,6 +248,10 @@ define(
 				if (config.arsnova.mobileStudentSessionUrl) {
 					mobileStudentsViewMenuItem.set("disabled", false);
 				}
+			},
+
+			onKeyChange: function (name, oldValue, value) {
+				self.selectSession(value);
 			},
 
 			openMobileSession: function (url) {
