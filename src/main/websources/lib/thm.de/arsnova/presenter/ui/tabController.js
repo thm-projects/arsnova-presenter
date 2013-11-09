@@ -35,12 +35,13 @@ define(
 		"arsnova-presenter/ui/lecturerPaneAnswersTab",
 		"arsnova-presenter/ui/audiencePaneFeedbackTab",
 		"arsnova-presenter/ui/audiencePaneQuestionsTab",
+		"arsnova-presenter/ui/sessionTab",
 		"arsnova-presenter/ui/EditQuestionTab",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"
 	],
-	function (lang, array, on, aspect, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, LecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, EditQuestionTab, i18n, commonMessages, messages) {
+	function (lang, array, on, aspect, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, LecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, sessionTab, EditQuestionTab, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -81,6 +82,7 @@ define(
 				tabs.answers = answersTab.init(tabsLeft);
 				tabs.feedback = feedbackTab.init(tabsRight);
 				tabs.audienceQuestions = audienceQuestionsTab.init(tabsRight);
+				tabs.session = sessionTab.init();
 
 				var that = this;
 				tabs.addQuestion = new ContentPane({
@@ -120,6 +122,7 @@ define(
 				answersTab.startup();
 				feedbackTab.startup();
 				audienceQuestionsTab.startup();
+				sessionTab.startup();
 
 				topic.subscribe("arsnova/question/edit", lang.hitch(this, function (questionId) {
 					console.log("Topic: ", questionId);
@@ -174,6 +177,7 @@ define(
 					tabs.lecturerJittQuestions.enableEditing(true);
 					tabsLeft.addChild(tabs.lecturerPiQuestions);
 					tabsLeft.addChild(tabs.lecturerJittQuestions);
+					tabsLeft.addChild(tabs.session);
 					this.addEditQuestionTab();
 					tabsRight.addChild(tabs.addQuestion);
 

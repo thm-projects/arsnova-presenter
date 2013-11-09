@@ -63,7 +63,7 @@ define(
 			init: function () {
 				var container;
 				this.form = new Form({
-					"class": "question",
+					"class": "labeled",
 					doLayout: false
 				});
 				this.form.placeAt(this);
@@ -212,8 +212,7 @@ define(
 			},
 
 			fillForm: function (question) {
-				//this.form.set("value", question);
-				/* Form.set cannot be used since it does not handle CheckBox widgets correctly */
+				/* Form.set("value", ...) cannot be used since it does not handle CheckBox widgets correctly */
 				this.form.getChildren().forEach(function (widget) {
 					if (widget.name && question.hasOwnProperty(widget.name)) {
 						widget.set("value", question[widget.name]);

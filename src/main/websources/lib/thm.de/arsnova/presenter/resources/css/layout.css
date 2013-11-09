@@ -344,7 +344,7 @@ html, body {
 	margin-right: auto;
 }
 
-form.question label {
+form.labeled label {
 	display: inline-block;
 	width: 10em;
 }
