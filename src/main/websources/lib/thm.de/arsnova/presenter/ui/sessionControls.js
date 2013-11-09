@@ -174,19 +174,30 @@ define(
 
 			showNewSessionDialog: function () {
 				if (!newSessionDialog) {
-					var form = new Form();
+					var form, container;
+
 					newSessionDialog = new Dialog({
 						title: "New session",
-						content: form
+						content: domConstruct.create("div")
 					});
+					(newSessionDialog.form = form = new Form({
+						"class": "labeled"
+					})).placeAt(newSessionDialog.content);
+
+					container = domConstruct.create("div", null, form.domNode);
+					domConstruct.create("label", {innerHTML: "Name"}, container);
 					(new TextBox({
 						name: "name",
 						required: true
-					})).placeAt(form);
+					})).placeAt(container);
+
+					container = domConstruct.create("div", null, form.domNode);
+					domConstruct.create("label", {innerHTML: "Short name"}, container);
 					(new TextBox({
 						name: "shortName",
 						required: true
-					})).placeAt(form);
+					})).placeAt(container);
+
 					(new Button({
 						label: "Create",
 						onClick: function () {
@@ -194,15 +205,15 @@ define(
 								newSessionDialog.hide();
 							});
 						}
-					})).placeAt(form);
+					})).placeAt(newSessionDialog.content);
 					(new Button({
 						label: "Cancel",
 						onClick: function () {
 							newSessionDialog.hide();
 						}
-					})).placeAt(form);
+					})).placeAt(newSessionDialog.content);
 				} else {
-					newSessionDialog.content.reset();
+					newSessionDialog.form.reset();
 				}
 				newSessionDialog.show();
 			},
