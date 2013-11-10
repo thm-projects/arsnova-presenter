@@ -94,7 +94,7 @@ define(
 					store: new MemoryStore({
 						data: lecturerQuestion.getSubjects().map(function (subject) {
 							return {id: subject, name: subject};
-						}),
+						})
 					})
 				})).placeAt(container).startup();
 
