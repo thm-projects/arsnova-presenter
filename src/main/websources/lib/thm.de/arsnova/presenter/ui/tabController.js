@@ -88,6 +88,7 @@ define(
 				var that = this;
 				tabs.addQuestion = new ContentPane({
 					title: lecturerQuestionMessages.addQuestion,
+					disabled: true,
 					onShow: function () {
 						if (activeMode) {
 							/* do not create a new tab while switching modes */
@@ -128,6 +129,10 @@ define(
 				topic.subscribe("arsnova/question/edit", lang.hitch(this, function (questionId) {
 					this.addEditQuestionTab(questionId);
 				}));
+				topic.subscribe("arsnova/session/select", function (sessionKey) {
+					tabs.addQuestion.set("disabled", !sessionKey);
+					tabs.addQuestion.controlButton.set("disabled", !sessionKey);
+				});
 			},
 
 			addEditQuestionTab: function (questionId) {

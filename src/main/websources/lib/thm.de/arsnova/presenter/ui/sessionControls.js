@@ -254,6 +254,7 @@ define(
 					;
 					keyNode.innerHTML = keyword;
 					domClass.remove(keyNode, "noSession");
+					topic.publish("arsnova/session/select", sessionKey);
 				});
 
 				/* enable mode menu items */
