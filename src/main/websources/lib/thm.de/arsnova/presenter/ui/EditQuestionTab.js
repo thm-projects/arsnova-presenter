@@ -39,7 +39,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/lecturerQuestions"
 	],
-	function (lang, declare, on, topic, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, Memory, lecturerQuestion, i18n, commonMessages, messages) {
+	function (lang, declare, on, topic, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, MemoryStore, lecturerQuestion, i18n, commonMessages, messages) {
 		"use strict";
 
 		var self, tabs = [];
@@ -91,12 +91,10 @@ define(
 				domConstruct.create("label", {innerHTML: messages.subject}, container);
 				(this.subjectField = new ComboBox({
 					name: "subject",
-					store: new Memory({
-						idProperty: "id",
-						data: [
-							{id: 1, name: "MyCategory"}
-						],
-						searchAttr: "name"
+					store: new MemoryStore({
+						data: lecturerQuestion.getSubjects().map(function (subject) {
+							return {id: subject, name: subject};
+						}),
 					})
 				})).placeAt(container).startup();
 
