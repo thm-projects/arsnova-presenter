@@ -131,8 +131,9 @@ define(
 						this.addAnswerOptionField.set("disabled", true);
 						this.addAnswerButton.set("disabled", true);
 						domConstruct.empty(this.answerOptionsContainer);
-						this.addAnswerOption("Yes");
-						this.addAnswerOption("No");
+						this.addAnswerOption(commonMessages.yes);
+						this.addAnswerOption(commonMessages.no);
+						this.addAnswerOption(null, true);
 						break;
 					case "ls":
 						domConstruct.empty(this.answerOptionsContainer);
@@ -206,20 +207,23 @@ define(
 				}));
 			},
 
-			addAnswerOption: function (name) {
+			addAnswerOption: function (name, checked) {
 				var optionContainer = domConstruct.create("div", null, this.answerOptionsContainer);
 				var Widget = "mc" === this.typeSelect.get("value") ? CheckBox : RadioButton;
 				(new Widget({
 					name: "answerOptions",
-					value: name
+					value: name ? name : null,
+					checked: !!checked
 				})).placeAt(optionContainer).startup();
-				domConstruct.create("label", {innerHTML: "XSS " + name}, optionContainer);
-				(new Button({
-					label: "X",
-					onClick: function (event) {
-						domConstruct.destroy(optionContainer);
-					}
-				})).placeAt(optionContainer);
+				domConstruct.create("label", {innerHTML: "XSS " + (name ? name : "(" + commonMessages.notApplicable + ")")}, optionContainer);
+				if ("yesno" != this.typeSelect.get("value")) {
+					(new Button({
+						label: "X",
+						onClick: function (event) {
+							domConstruct.destroy(optionContainer);
+						}
+					})).placeAt(optionContainer);
+				}
 			},
 
 			fillForm: function (question) {
@@ -239,7 +243,7 @@ define(
 				question.showAnswer = question.showAnswer.length > 0;
 				question.possibleAnswers = [];
 				this.optionsForm.getChildren().forEach(function (widget) {
-					if ("answerOptions" === widget.name) {
+					if ("answerOptions" === widget.name && widget.value) {
 						question.possibleAnswers.push({
 							text: widget.value,
 							correct: widget.checked

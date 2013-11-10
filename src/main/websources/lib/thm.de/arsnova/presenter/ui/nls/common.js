@@ -9,7 +9,10 @@ define({
 		create: "Create",
 		update: "Update",
 		del: "Delete",
-		proceed: "Proceed"
+		proceed: "Proceed",
+		yes: "Yes",
+		no: "no",
+		notApplicable: "n/a"
 	},
 
 	de: true
