@@ -215,7 +215,9 @@ define(
 					value: name ? name : null,
 					checked: !!checked
 				})).placeAt(optionContainer).startup();
-				domConstruct.create("label", {innerHTML: "XSS " + (name ? name : "(" + commonMessages.notApplicable + ")")}, optionContainer);
+				var labelTextNode = document.createTextNode(name ? name : "(" + commonMessages.notApplicable + ")");
+				var labelNode = domConstruct.create("label", null, optionContainer);
+				labelNode.appendChild(labelTextNode);
 				if ("yesno" != this.typeSelect.get("value")) {
 					(new Button({
 						label: "X",
