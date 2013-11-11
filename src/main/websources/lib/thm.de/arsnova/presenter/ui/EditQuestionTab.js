@@ -23,6 +23,7 @@ define(
 		"dojo/on",
 		"dojo/topic",
 		"dojo/dom-construct",
+		"dojo/dom-style",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Form",
 		"dijit/form/Button",
@@ -37,9 +38,10 @@ define(
 		"arsnova-api/lecturerQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
-		"dojo/i18n!./nls/lecturerQuestions"
+		"dojo/i18n!./nls/lecturerQuestions",
+		"dojo/i18n!./nls/answerOptions"
 	],
-	function (lang, declare, on, topic, domConstruct, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, MemoryStore, lecturerQuestion, i18n, commonMessages, messages) {
+	function (lang, declare, on, topic, domConstruct, domStyle, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, MemoryStore, lecturerQuestion, i18n, commonMessages, messages, answerOptions) {
 		"use strict";
 
 		var self, tabs = [];
@@ -119,6 +121,7 @@ define(
 				this.typeSelect.watch("value", lang.hitch(this, function (id, oldValue, value) {
 					this.addAnswerOptionField.set("disabled", false);
 					this.addAnswerButton.set("disabled", false);
+					domStyle.set(this.templateSelect.domNode, "display", "none");
 
 					switch (value) {
 					case "abcd":
@@ -131,12 +134,13 @@ define(
 						this.addAnswerOptionField.set("disabled", true);
 						this.addAnswerButton.set("disabled", true);
 						domConstruct.empty(this.answerOptionsContainer);
-						this.addAnswerOption(commonMessages.yes);
-						this.addAnswerOption(commonMessages.no);
-						this.addAnswerOption(null, true);
+						this.addAnswerOption(commonMessages.yes, "sc");
+						this.addAnswerOption(commonMessages.no, "sc");
+						this.addAnswerOption(null, "sc", false, true);
 						break;
 					case "ls":
 						domConstruct.empty(this.answerOptionsContainer);
+						domStyle.set(this.templateSelect.domNode, "display", "");
 						break;
 					case "freetext":
 						this.addAnswerOptionField.set("disabled", true);
@@ -146,17 +150,54 @@ define(
 					}
 				}));
 
+				(this.templateSelect = new Select({
+					options: [
+						{value: "", label: answerOptions.custom},
+						{value: "agreement", label: answerOptions.agreement},
+						{value: "intensity", label: answerOptions.intensity},
+						{value: "frequency", label: answerOptions.frequency},
+						{value: "quality", label: answerOptions.quality},
+						{value: "importance", label: answerOptions.importance},
+						{value: "rating5", label: answerOptions.rating5},
+						{value: "grades", label: answerOptions.grades}
+					]
+				})).placeAt(container).startup();
+				domStyle.set(this.templateSelect.domNode, "display", "none");
+
+				this.templateSelect.watch("value", lang.hitch(this, function (name, oldValue, value) {
+					domConstruct.empty(this.answerOptionsContainer);
+					if (value) {
+						this.addAnswerOptionField.set("disabled", true);
+						this.addAnswerButton.set("disabled", true);
+						var options = this.getTemplateOptions(value);
+						options.forEach(lang.hitch(this, function (name) {
+							this.addAnswerOption(name, "hidden");
+						}));
+					} else {
+						this.addAnswerOptionField.set("disabled", false);
+						this.addAnswerButton.set("disabled", false);
+					}
+				}));
+
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.answerOption}, container);
 				(this.addAnswerOptionField = new TextBox()).placeAt(container).startup();
 				(this.addAnswerButton = new Button({
 					label: commonMessages.add,
 					onClick: lang.hitch(this, function () {
+						var type;
 						var value = this.addAnswerOptionField.get("value");
 						if (!value) {
 							return;
 						}
-						this.addAnswerOption(value);
+						if ("abcd" === this.typeSelect.get("value")) {
+							type = "sc";
+						} else if ("ls" === this.typeSelect.get("value")) {
+							type = "hidden";
+						} else {
+							type = "mc";
+						}
+						this.addAnswerOption(value, type, true);
 						this.addAnswerOptionField.set("value", "");
 					})
 				})).placeAt(container).startup();
@@ -207,18 +248,42 @@ define(
 				}));
 			},
 
-			addAnswerOption: function (name, checked) {
+			getTemplateOptions: function (template) {
+				var options = [], templates, i;
+
+				templates = {
+					agreement: 5,
+					intensity: 5,
+					frequency: 5,
+					quality: 5,
+					importance: 5,
+					grades: 6
+				};
+
+				if (templates.hasOwnProperty(template)) {
+					for (i = 1; i <= templates[template]; i++) {
+						options.push(answerOptions[template + i]);
+					}
+				} else if ("rating5" === template) {
+					options = [5, 4, 3, 2, 1];
+				}
+
+				return options;
+			},
+
+			addAnswerOption: function (name, type, removable, checked) {
 				var optionContainer = domConstruct.create("div", null, this.answerOptionsContainer);
-				var Widget = "mc" === this.typeSelect.get("value") ? CheckBox : RadioButton;
+				var Widget = "mc" === type ? CheckBox : RadioButton;
 				(new Widget({
 					name: "answerOptions",
 					value: name ? name : null,
-					checked: !!checked
+					checked: !!checked,
+					style: "hidden" === type ? "display: none;" : null
 				})).placeAt(optionContainer).startup();
 				var labelTextNode = document.createTextNode(name ? name : "(" + commonMessages.notApplicable + ")");
 				var labelNode = domConstruct.create("label", null, optionContainer);
 				labelNode.appendChild(labelTextNode);
-				if ("yesno" !== this.typeSelect.get("value")) {
+				if (removable) {
 					(new Button({
 						label: "X",
 						onClick: function (event) {
