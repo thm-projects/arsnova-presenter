@@ -131,7 +131,9 @@ define(
 				}));
 				topic.subscribe("arsnova/session/select", function (sessionKey) {
 					tabs.addQuestion.set("disabled", !sessionKey);
-					tabs.addQuestion.controlButton.set("disabled", !sessionKey);
+					if (tabs.addQuestion.controlButton) {
+						tabs.addQuestion.controlButton.set("disabled", !sessionKey);
+					}
 				});
 			},
 
