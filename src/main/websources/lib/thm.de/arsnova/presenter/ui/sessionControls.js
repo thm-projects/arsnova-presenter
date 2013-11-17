@@ -209,24 +209,30 @@ define(
 					domConstruct.create("label", {innerHTML: messages.name}, container);
 					(new TextBox({
 						name: "name",
-						required: true
+						required: true,
+						trim: true
 					})).placeAt(container);
 
 					container = domConstruct.create("div", null, form.domNode);
 					domConstruct.create("label", {innerHTML: messages.shortName}, container);
 					(new TextBox({
 						name: "shortName",
-						required: true
+						required: true,
+						trim: true
 					})).placeAt(container);
 
 					(new Button({
 						label: commonMessages.create,
 						onClick: function () {
-							model.create(form.get("value")).then(function (session) {
-								newSessionDialog.hide();
-								topic.publish("arsnova/session/update");
-								model.setKey(session.keyword);
-							});
+							if (form.validate()) {
+								model.create(form.get("value")).then(function (session) {
+									newSessionDialog.hide();
+									topic.publish("arsnova/session/update");
+									model.setKey(session.keyword);
+								}, function () {
+									console.error("Could not create session");
+								});
+							}
 						}
 					})).placeAt(newSessionDialog.content);
 					(new Button({

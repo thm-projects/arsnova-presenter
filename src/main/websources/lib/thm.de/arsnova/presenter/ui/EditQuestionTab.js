@@ -27,7 +27,7 @@ define(
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Form",
 		"dijit/form/Button",
-		"dijit/form/TextBox",
+		"dijit/form/ValidationTextBox",
 		"dijit/form/Select",
 		"dijit/form/MultiSelect",
 		"dijit/form/ComboBox",
@@ -97,13 +97,17 @@ define(
 						data: lecturerQuestion.getSubjects().map(function (subject) {
 							return {id: subject, name: subject};
 						})
-					})
+					}),
+					required: true,
+					trim: true
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.description}, container);
 				(this.descriptionField = new TextBox({
-					name: "text"
+					name: "text",
+					required: true,
+					trim: true
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
@@ -181,7 +185,9 @@ define(
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.answerOption}, container);
-				(this.addAnswerOptionField = new TextBox()).placeAt(container).startup();
+				(this.addAnswerOptionField = new TextBox({
+					trim: true
+				})).placeAt(container).startup();
 				(this.addAnswerButton = new Button({
 					label: commonMessages.add,
 					onClick: lang.hitch(this, function () {
@@ -303,6 +309,10 @@ define(
 			},
 
 			createQuestion: function () {
+				if (!this.form.validate()) {
+					return;
+				}
+
 				var question = this.form.get("value");
 				question.abstention = question.abstention.length > 0;
 				question.active = question.active.length > 0;
@@ -320,10 +330,16 @@ define(
 				lecturerQuestion.create(question).then(lang.hitch(this, function () {
 					this.close();
 					topic.publish("arsnova/question/update");
-				}));
+				}), function (error) {
+					console.error("Could not create question");
+				});
 			},
 
 			updateQuestion: function () {
+				if (!this.form.validate()) {
+					return;
+				}
+
 				var question = lecturerQuestion.get(this.questionId);
 				var newQuestion = this.form.get("value");
 				for (var attr in newQuestion) {
@@ -338,7 +354,9 @@ define(
 				lecturerQuestion.update(question).then(lang.hitch(this, function () {
 					this.close();
 					topic.publish("arsnova/question/update");
-				}));
+				}), function (error) {
+					console.error("Could not update question");
+				});
 			},
 
 			close: function () {
