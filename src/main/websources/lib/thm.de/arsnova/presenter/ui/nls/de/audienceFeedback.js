@@ -1,6 +1,6 @@
 define({
 	liveFeedback: "Live-Feedback",
-	audienceFeedback: "Feedback vom Publikum",
+	audienceFeedback: "Feedback des Publikums",
 	canFollow: "Ich kann folgen.",
 	cannotFollow: "Abgehängt",
 	slower: "Zu schnell!",

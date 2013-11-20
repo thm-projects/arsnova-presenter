@@ -64,7 +64,7 @@ define(
 
 				pane = new ContentPane({
 					id: "audienceQuestionsPane",
-					title: messages.questions
+					title: messages.audienceQuestions
 				});
 
 				return pane;
@@ -81,7 +81,7 @@ define(
 						self.prependQuestionToList(question);
 						if (!pane.get("selected")) {
 							newQuestionsCount++;
-							var label = messages.questions + " (+" + newQuestionsCount + ")";
+							var label = messages.audienceQuestions + " (+" + newQuestionsCount + ")";
 							pane.set("title", label);
 							pane.controlButton.set("label", label);
 						}
@@ -92,8 +92,8 @@ define(
 				tabContainer.watch("selectedChildWidget", function (name, oldValue, value) {
 					if (value === pane) {
 						newQuestionsCount = 0;
-						pane.set("title", messages.questions);
-						pane.controlButton.set("label", messages.questions);
+						pane.set("title", messages.audienceQuestions);
+						pane.controlButton.set("label", messages.audienceQuestions);
 					}
 				});
 

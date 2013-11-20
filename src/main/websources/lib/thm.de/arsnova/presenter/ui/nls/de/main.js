@@ -7,7 +7,7 @@ define({
 	timer: "Countdown-Timer",
 	mode: "Modus",
 	editing: "Bearbeitung",
-	lecture: "Vorlesung (PI)",
+	lecture: "Hörsaal (PI)",
 	assignments: "Vorbereitung (JiTT)",
 	mobileLecturer: "Mobil (Dozent/in)",
 	mobileStudent: "Mobil (Student/in)",

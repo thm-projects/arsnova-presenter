@@ -1,7 +1,7 @@
 define({
 	root: {
 		questions: "Questions",
-		audienceQuestions: "Audience questions",
+		audienceQuestions: "Questions by audience",
 		deleteQuestion: "Delete question",
 		deleteQuestionConfirm: "Do you really want to delete this question?"
 	},

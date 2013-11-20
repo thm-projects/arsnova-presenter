@@ -1,6 +1,6 @@
 define({
 	questions: "Fragen",
-	audienceQuestions: "Publikumsfragen",
+	audienceQuestions: "Fragen des Publikums",
 	deleteQuestion: "Frage löschen",
 	deleteQuestionConfirm: "Möchten Sie diese Frage wirklich löschen?"
 });
