@@ -18,5 +18,6 @@ define({
 	deleteAnswer: "Antwort löschen",
 	deleteAnswerConfirm: "Möchten Sie diese Antwort wirklich löschen?",
 	viewOfAnswers: "Anzeige der Antworten",
-	answerStatistics: "Antwortstatistik"
+	answerStatistics: "Antwortstatistik",
+	abstentions: "Enthaltungen"
 });

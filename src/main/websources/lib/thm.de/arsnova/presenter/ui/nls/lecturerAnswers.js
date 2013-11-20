@@ -19,7 +19,8 @@ define({
 		deleteAnswer: "Delete answer",
 		deleteAnswerConfirm: "Do you really want to delete this answer?",
 		viewOfAnswers: "View of answers",
-		answerStatistics: "Answer statistics"
+		answerStatistics: "Answer statistics",
+		abstentions: "Abstentions"
 	},
 
 	de: true

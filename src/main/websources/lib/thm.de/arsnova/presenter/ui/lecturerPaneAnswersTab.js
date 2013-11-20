@@ -349,7 +349,7 @@ define(
 						labels.push({value: i + 1, text: possibleAnswer.text});
 					});
 					if (question.abstention) {
-						labels.push({value: labels.length + 1, text: "Abstentions"});
+						labels.push({value: labels.length + 1, text: messages.abstentions});
 					}
 					piAnswersChart.show();
 					piAnswersChart.update(labels);
@@ -450,7 +450,7 @@ define(
 				});
 
 				if (question.abstention) {
-					labels.push({value: labels.length + 1, text: "Abstentions"});
+					labels.push({value: labels.length + 1, text: messages.abstentions});
 					values.push(0);
 					possibleAnswersCount++;
 				}
