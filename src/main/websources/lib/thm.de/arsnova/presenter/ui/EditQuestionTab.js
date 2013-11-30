@@ -191,22 +191,18 @@ define(
 				(this.addAnswerButton = new Button({
 					label: commonMessages.add,
 					onClick: lang.hitch(this, function () {
-						var type;
+						var type = this.getAnswerOptionType();
 						var value = this.addAnswerOptionField.get("value");
 						if (!value) {
 							return;
-						}
-						if ("abcd" === this.typeSelect.get("value")) {
-							type = "sc";
-						} else if ("ls" === this.typeSelect.get("value")) {
-							type = "hidden";
-						} else {
-							type = "mc";
 						}
 						this.addAnswerOption(value, type, true);
 						this.addAnswerOptionField.set("value", "");
 					})
 				})).placeAt(container).startup();
+				if (this.questionId) {
+					domStyle.set(container, "display", "none");
+				}
 
 				this.optionsForm = new Form();
 				this.optionsForm.placeAt(this.form);
@@ -277,6 +273,19 @@ define(
 				return options;
 			},
 
+			getAnswerOptionType: function () {
+				var type;
+				if ("abcd" === this.typeSelect.get("value")) {
+					type = "sc";
+				} else if ("ls" === this.typeSelect.get("value")) {
+					type = "hidden";
+				} else {
+					type = "mc";
+				}
+
+				return type;
+			},
+
 			addAnswerOption: function (name, type, removable, checked) {
 				var optionContainer = domConstruct.create("div", null, this.answerOptionsContainer);
 				var Widget = "mc" === type ? CheckBox : RadioButton;
@@ -306,6 +315,11 @@ define(
 						widget.set("value", question[widget.name]);
 					}
 				});
+
+				var type = this.getAnswerOptionType();
+				question.possibleAnswers.forEach(lang.hitch(this, function (answer) {
+					this.addAnswerOption(answer.text, type, false, !!answer.correct);
+				}));
 			},
 
 			createQuestion: function () {
@@ -351,6 +365,11 @@ define(
 				question.active = question.active.length > 0;
 				question.showStatistic = question.showStatistic.length > 0;
 				question.showAnswer = question.showAnswer.length > 0;
+
+				this.optionsForm.getChildren().forEach(function (widget, i) {
+					question.possibleAnswers[i].correct = widget.checked;
+				});
+
 				lecturerQuestion.update(question).then(lang.hitch(this, function () {
 					this.close();
 					topic.publish("arsnova/question/update");
