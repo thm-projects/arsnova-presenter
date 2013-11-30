@@ -28,6 +28,7 @@ define(
 		"dijit/form/Form",
 		"dijit/form/Button",
 		"dijit/form/ValidationTextBox",
+		"dijit/form/Textarea",
 		"dijit/form/Select",
 		"dijit/form/MultiSelect",
 		"dijit/form/ComboBox",
@@ -41,7 +42,7 @@ define(
 		"dojo/i18n!./nls/lecturerQuestions",
 		"dojo/i18n!./nls/answerOptions"
 	],
-	function (lang, declare, on, topic, domConstruct, domStyle, ContentPane, Form, Button, TextBox, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, MemoryStore, lecturerQuestion, i18n, commonMessages, messages, answerOptions) {
+	function (lang, declare, on, topic, domConstruct, domStyle, ContentPane, Form, Button, TextBox, TextArea, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, MemoryStore, lecturerQuestion, i18n, commonMessages, messages, answerOptions) {
 		"use strict";
 
 		var self, tabs = [];
@@ -104,10 +105,10 @@ define(
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.description}, container);
-				(this.descriptionField = new TextBox({
+				(this.descriptionField = new TextArea({
 					name: "text",
-					required: true,
-					trim: true
+					trim: true,
+					style: "width: 242px; font-family: sans-serif;"
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
