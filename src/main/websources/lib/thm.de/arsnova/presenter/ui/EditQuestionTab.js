@@ -170,18 +170,7 @@ define(
 				domStyle.set(this.templateSelect.domNode, "display", "none");
 
 				this.templateSelect.watch("value", lang.hitch(this, function (name, oldValue, value) {
-					domConstruct.empty(this.answerOptionsContainer);
-					if (value) {
-						this.addAnswerOptionField.set("disabled", true);
-						this.addAnswerButton.set("disabled", true);
-						var options = this.getTemplateOptions(value);
-						options.forEach(lang.hitch(this, function (name) {
-							this.addAnswerOption(name, "hidden");
-						}));
-					} else {
-						this.addAnswerOptionField.set("disabled", false);
-						this.addAnswerButton.set("disabled", false);
-					}
+					this.changeQuestionFormat(value);
 				}));
 
 				container = domConstruct.create("div", null, this.form.domNode);
@@ -249,6 +238,21 @@ define(
 				this.form.watch("value", lang.hitch(this, function (name, oldValue, value) {
 					this.modified = true;
 				}));
+			},
+
+			changeQuestionFormat: function (format) {
+				domConstruct.empty(this.answerOptionsContainer);
+				if (format) {
+					this.addAnswerOptionField.set("disabled", true);
+					this.addAnswerButton.set("disabled", true);
+					var options = this.getTemplateOptions(format);
+					options.forEach(lang.hitch(this, function (name) {
+						this.addAnswerOption(name, "hidden");
+					}));
+				} else {
+					this.addAnswerOptionField.set("disabled", false);
+					this.addAnswerButton.set("disabled", false);
+				}
 			},
 
 			getTemplateOptions: function (template) {
@@ -321,6 +325,12 @@ define(
 				question.possibleAnswers.forEach(lang.hitch(this, function (answer) {
 					this.addAnswerOption(answer.text, type, false, !!answer.correct);
 				}));
+			},
+
+			setupFieldStatus: function (enabled) {
+				this.form.getChildren().forEach(function (widget) {
+					widget.set("disabled", !enabled);
+				});
 			},
 
 			createQuestion: function () {

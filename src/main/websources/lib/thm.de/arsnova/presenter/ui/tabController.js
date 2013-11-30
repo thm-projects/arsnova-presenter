@@ -51,6 +51,7 @@ define(
 			tabs = {},
 			appMode = {EDITING: 1, PI: 2, JITT: 3},
 			activeMode = null,
+			inSession = false,
 
 			/* Dijit */
 			tabsLeft = null,
@@ -129,12 +130,17 @@ define(
 				topic.subscribe("arsnova/question/edit", lang.hitch(this, function (questionId) {
 					this.addEditQuestionTab(questionId);
 				}));
-				topic.subscribe("arsnova/session/select", function (sessionKey) {
-					tabs.addQuestion.set("disabled", !sessionKey);
+				topic.subscribe("arsnova/session/select", lang.hitch(this, function (sessionKey) {
+					inSession = !!sessionKey;
+					tabs.addQuestion.set("disabled", !inSession);
 					if (tabs.addQuestion.controlButton) {
-						tabs.addQuestion.controlButton.set("disabled", !sessionKey);
+						tabs.addQuestion.controlButton.set("disabled", !inSession);
 					}
-				});
+
+					if (appMode.EDITING === activeMode) {
+						this.switchMode(appMode.EDITING);
+					}
+				}));
 			},
 
 			addEditQuestionTab: function (questionId) {
@@ -147,6 +153,7 @@ define(
 					eqt = new EditQuestionTab(questionId);
 					eqt.init();
 					eqt.startup();
+					eqt.setupFieldStatus(inSession);
 					var pos = tabsRight.getChildren().length - 1;
 					tabsRight.addChild(eqt, pos);
 				}
