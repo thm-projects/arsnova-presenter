@@ -53,9 +53,10 @@ define(
 			questionId: null,
 			form: null,
 			optionsForm: null,
+			typeSelect: null,
 			subjectField: null,
 			descriptionField: null,
-			typeSelect: null,
+			formatSelect: null,
 			abstentionCb: null,
 			releaseCb: null,
 			releaseStatsCb: null,
@@ -113,7 +114,7 @@ define(
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.format}, container);
-				(this.typeSelect = new Select({
+				(this.formatSelect = new Select({
 					name: "questionType",
 					options: [
 						{value: "abcd", label: messages.singleChoice},
@@ -123,7 +124,7 @@ define(
 						{value: "freetext", label: messages.freeText}
 					]
 				})).placeAt(container).startup();
-				this.typeSelect.watch("value", lang.hitch(this, function (id, oldValue, value) {
+				this.formatSelect.watch("value", lang.hitch(this, function (id, oldValue, value) {
 					this.addAnswerOptionField.set("disabled", false);
 					this.addAnswerButton.set("disabled", false);
 					domStyle.set(this.templateSelect.domNode, "display", "none");
@@ -280,9 +281,9 @@ define(
 
 			getAnswerOptionType: function () {
 				var type;
-				if ("abcd" === this.typeSelect.get("value")) {
+				if ("abcd" === this.formatSelect.get("value")) {
 					type = "sc";
-				} else if ("ls" === this.typeSelect.get("value")) {
+				} else if ("ls" === this.formatSelect.get("value")) {
 					type = "hidden";
 				} else {
 					type = "mc";
@@ -331,6 +332,11 @@ define(
 				this.form.getChildren().forEach(function (widget) {
 					widget.set("disabled", !enabled);
 				});
+				if (enabled && this.questionId) {
+					this.typeSelect.set("disabled", true);
+					this.formatSelect.set("disabled", true);
+					this.templateSelect.set("disabled", true);
+				}
 			},
 
 			showModalMessage: function (message, messageClass) {
