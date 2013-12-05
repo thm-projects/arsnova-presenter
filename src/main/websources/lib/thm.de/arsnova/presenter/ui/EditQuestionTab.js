@@ -76,7 +76,7 @@ define(
 			init: function () {
 				var container;
 				this.form = new Form({
-					"class": "labeled",
+					"class": "labeled questionForm",
 					doLayout: false
 				});
 				this.form.placeAt(this);
@@ -125,40 +125,14 @@ define(
 					]
 				})).placeAt(container).startup();
 				this.formatSelect.watch("value", lang.hitch(this, function (id, oldValue, value) {
-					this.addAnswerOptionField.set("disabled", false);
-					this.addAnswerButton.set("disabled", false);
-					domStyle.set(this.templateSelect.domNode, "display", "none");
-
-					switch (value) {
-					case "abcd":
-						domConstruct.empty(this.answerOptionsContainer);
-						break;
-					case "mc":
-						domConstruct.empty(this.answerOptionsContainer);
-						break;
-					case "yesno":
-						this.addAnswerOptionField.set("disabled", true);
-						this.addAnswerButton.set("disabled", true);
-						domConstruct.empty(this.answerOptionsContainer);
-						this.addAnswerOption(commonMessages.yes, "sc");
-						this.addAnswerOption(commonMessages.no, "sc");
-						this.addAnswerOption(null, "sc", false, true);
-						break;
-					case "ls":
-						domConstruct.empty(this.answerOptionsContainer);
-						domStyle.set(this.templateSelect.domNode, "display", "");
-						break;
-					case "freetext":
-						this.addAnswerOptionField.set("disabled", true);
-						this.addAnswerButton.set("disabled", true);
-						domConstruct.empty(this.answerOptionsContainer);
-						break;
-					}
+					this.changeQuestionFormat(value);
 				}));
+
+				container.appendChild(document.createTextNode(" "));
 
 				(this.templateSelect = new Select({
 					options: [
-						{value: "", label: answerOptions.custom},
+						{value: "custom", label: answerOptions.custom},
 						{value: "agreement", label: answerOptions.agreement},
 						{value: "intensity", label: answerOptions.intensity},
 						{value: "frequency", label: answerOptions.frequency},
@@ -171,14 +145,14 @@ define(
 				domStyle.set(this.templateSelect.domNode, "display", "none");
 
 				this.templateSelect.watch("value", lang.hitch(this, function (name, oldValue, value) {
-					this.changeQuestionFormat(value);
+					this.changeQuestionTemplate(value);
 				}));
 
-				container = domConstruct.create("div", null, this.form.domNode);
-				domConstruct.create("label", {innerHTML: messages.answerOption}, container);
+				this.addAnswerContainer = domConstruct.create("div", null, this.form.domNode);
+				domConstruct.create("label", {innerHTML: messages.answerOption}, this.addAnswerContainer);
 				(this.addAnswerOptionField = new TextBox({
 					trim: true
-				})).placeAt(container).startup();
+				})).placeAt(this.addAnswerContainer).startup();
 				(this.addAnswerButton = new Button({
 					label: commonMessages.add,
 					onClick: lang.hitch(this, function () {
@@ -190,15 +164,25 @@ define(
 						this.addAnswerOption(value, type, true);
 						this.addAnswerOptionField.set("value", "");
 					})
-				})).placeAt(container).startup();
+				})).placeAt(this.addAnswerContainer).startup();
 				if (this.questionId) {
-					domStyle.set(container, "display", "none");
+					domStyle.set(this.addAnswerContainer, "display", "none");
 				}
 
 				this.optionsForm = new Form();
 				this.optionsForm.placeAt(this.form);
 				domConstruct.create("label", {innerHTML: messages.correctAnswers}, this.optionsForm.domNode);
 				this.answerOptionsContainer = domConstruct.create("div", {style: "display: inline-block;"}, this.optionsForm.domNode);
+				this.noCorrectOptionContainer = domConstruct.create("div", null, this.optionsForm.domNode);
+				domConstruct.create("label", null, this.noCorrectOptionContainer);
+				(this.noCorrectOptionButton = new RadioButton({
+					name: "answerOptions",
+					value: "",
+					checked: true
+				})).placeAt(this.noCorrectOptionContainer).startup();
+				var labelTextNode = document.createTextNode("(" + commonMessages.notApplicable + ")");
+				var labelNode = domConstruct.create("label", null, this.noCorrectOptionContainer);
+				labelNode.appendChild(labelTextNode);
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.allowAbstentions}, container);
@@ -242,17 +226,49 @@ define(
 			},
 
 			changeQuestionFormat: function (format) {
+				if (!this.questionId) {
+					domStyle.set(this.addAnswerContainer, "display", "");
+				}
 				domConstruct.empty(this.answerOptionsContainer);
-				if (format) {
-					this.addAnswerOptionField.set("disabled", true);
-					this.addAnswerButton.set("disabled", true);
-					var options = this.getTemplateOptions(format);
+				domStyle.set(this.templateSelect.domNode, "display", "none");
+				domStyle.set(this.optionsForm.domNode, "display", "");
+				domStyle.set(this.noCorrectOptionContainer, "display", "none");
+
+				switch (format) {
+				case "abcd":
+					domStyle.set(this.noCorrectOptionContainer, "display", "");
+					this.noCorrectOptionButton.set("checked", true);
+					break;
+				case "mc":
+					break;
+				case "yesno":
+					domStyle.set(this.addAnswerContainer, "display", "none");
+					this.addAnswerOption(commonMessages.yes, "sc");
+					this.addAnswerOption(commonMessages.no, "sc");
+					domStyle.set(this.noCorrectOptionContainer, "display", "");
+					this.noCorrectOptionButton.set("checked", true);
+					break;
+				case "ls":
+					this.templateSelect.set("value", "");
+					domStyle.set(this.templateSelect.domNode, "display", "");
+					break;
+				case "freetext":
+					domStyle.set(this.addAnswerContainer, "display", "none");
+					domStyle.set(this.optionsForm.domNode, "display", "none");
+					break;
+				}
+			},
+
+			changeQuestionTemplate: function (template) {
+				domConstruct.empty(this.answerOptionsContainer);
+				if ("custom" !== template) {
+					domStyle.set(this.addAnswerContainer, "display", "none");
+					var options = this.getTemplateOptions(template);
 					options.forEach(lang.hitch(this, function (name) {
 						this.addAnswerOption(name, "hidden");
 					}));
 				} else {
-					this.addAnswerOptionField.set("disabled", false);
-					this.addAnswerButton.set("disabled", false);
+					domStyle.set(this.addAnswerContainer, "display", "");
 				}
 			},
 
@@ -281,7 +297,7 @@ define(
 
 			getAnswerOptionType: function () {
 				var type;
-				if ("abcd" === this.formatSelect.get("value")) {
+				if ("abcd" === this.formatSelect.get("value") || "yesno" === this.formatSelect.get("value")) {
 					type = "sc";
 				} else if ("ls" === this.formatSelect.get("value")) {
 					type = "hidden";
@@ -293,15 +309,16 @@ define(
 			},
 
 			addAnswerOption: function (name, type, removable, checked) {
+				var widget;
 				var optionContainer = domConstruct.create("div", null, this.answerOptionsContainer);
-				var Widget = "mc" === type ? CheckBox : RadioButton;
-				(new Widget({
+				var WidgetType = "mc" === type ? CheckBox : RadioButton;
+				(widget = new WidgetType({
 					name: "answerOptions",
-					value: name ? name : null,
+					value: name,
 					checked: !!checked,
 					style: "hidden" === type ? "display: none;" : null
 				})).placeAt(optionContainer).startup();
-				var labelTextNode = document.createTextNode(name ? name : "(" + commonMessages.notApplicable + ")");
+				var labelTextNode = document.createTextNode(name);
 				var labelNode = domConstruct.create("label", null, optionContainer);
 				labelNode.appendChild(labelTextNode);
 				if (removable) {
@@ -312,6 +329,8 @@ define(
 						}
 					})).placeAt(optionContainer);
 				}
+
+				return widget;
 			},
 
 			fillForm: function (question) {
@@ -323,13 +342,18 @@ define(
 				});
 
 				var type = this.getAnswerOptionType();
+				domConstruct.empty(this.answerOptionsContainer);
 				question.possibleAnswers.forEach(lang.hitch(this, function (answer) {
-					this.addAnswerOption(answer.text, type, false, !!answer.correct);
+					var widget = this.addAnswerOption(answer.text, type, false, !!answer.correct);
+					widget.set("checked", !!answer.correct);
 				}));
 			},
 
 			setupFieldStatus: function (enabled) {
 				this.form.getChildren().forEach(function (widget) {
+					widget.set("disabled", !enabled);
+				});
+				this.optionsForm.getChildren().forEach(function (widget) {
 					widget.set("disabled", !enabled);
 				});
 				if (enabled && this.questionId) {
@@ -400,8 +424,11 @@ define(
 				question.showStatistic = question.showStatistic.length > 0;
 				question.showAnswer = question.showAnswer.length > 0;
 
+				var correctAnswerOptions = {};
 				this.optionsForm.getChildren().forEach(function (widget, i) {
-					question.possibleAnswers[i].correct = widget.checked;
+					if ("answerOptions" === widget.name && widget.value) {
+						question.possibleAnswers[i].correct = widget.checked;
+					}
 				});
 
 				lecturerQuestion.update(question).then(lang.hitch(this, function () {

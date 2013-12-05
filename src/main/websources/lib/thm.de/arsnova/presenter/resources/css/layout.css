@@ -347,6 +347,16 @@ html, body {
 form.labeled label {
 	display: inline-block;
 	width: 10em;
+	vertical-align: top;
+	margin-top: 0.1em;
+}
+
+form.labeled > * {
+	margin-bottom: 0.2em;
+}
+
+.questionForm {
+	overflow-y: auto;
 }
 
 .claro .dijitTabContainerTop-tabs .dijitTab {
