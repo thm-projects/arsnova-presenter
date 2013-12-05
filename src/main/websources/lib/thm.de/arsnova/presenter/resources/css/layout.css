@@ -171,6 +171,7 @@ html, body {
 #piAnswersTitlePane {
 	padding-top: 0;
 	padding-bottom: 0;
+	overflow: hidden;
 }
 
 #piAnswersMainPane {
@@ -204,6 +205,11 @@ html, body {
 .lecturerQuestionList, #piFreeTextAnswers, #audienceQuestionList {
 	height: 100%;
 	overflow: auto;
+	overflow-x: hidden;
+}
+
+.lecturerQuestionList .question, #audienceQuestionList .question, #piFreeTextAnswers .answer {
+	overflow: hidden;
 }
 
 #piFreeTextAnswers .answer .subject, #audienceQuestionList .question .subject {
