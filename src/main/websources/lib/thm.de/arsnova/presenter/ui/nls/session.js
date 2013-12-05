@@ -6,7 +6,8 @@ define({
 		newSession: "New session",
 		name: "Name",
 		shortName: "Short name",
-		suspend: "Suspend"
+		suspend: "Suspend",
+		noSession: "No session selected"
 	},
 
 	de: true

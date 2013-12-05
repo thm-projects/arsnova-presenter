@@ -4,5 +4,6 @@ define({
 	qrCodeInfo: "QR Code für den Direkteinstieg in eine mobile ARSnova-Session anzeigen",
 	newSession: "Neue Session",
 	shortName: "Kürzel",
-	suspend: "Sperren"
+	suspend: "Sperren",
+	noSession: "Keine Session ausgewählt"
 });

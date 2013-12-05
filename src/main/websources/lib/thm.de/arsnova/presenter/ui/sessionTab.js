@@ -20,7 +20,7 @@ define(
 	[
 		"dojo/dom",
 		"dojo/dom-construct",
-		"dijit/layout/ContentPane",
+		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Form",
 		"dijit/form/Button",
 		"dijit/form/TextBox",
@@ -76,7 +76,9 @@ define(
 
 			startup: function () {
 				pane.startup();
+				pane.showModalMessage(messages.noSession, "disabled");
 				model.watchKey(function (name, oldValue, value) {
+					pane.hideModalMessage();
 					self.fillForm(model.getCurrent());
 				});
 			},

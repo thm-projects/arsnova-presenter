@@ -31,9 +31,10 @@ define(
 		"arsnova-api/session",
 		"arsnova-api/lecturerQuestion",
 		"dojo/i18n",
-		"dojo/i18n!./nls/lecturerQuestions"
+		"dojo/i18n!./nls/lecturerQuestions",
+		"dojo/i18n!./nls/session"
 	],
-	function (declare, lang, on, topic, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab, sessionModel, lecturerQuestionModel, i18n, messages) {
+	function (declare, lang, on, topic, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab, sessionModel, lecturerQuestionModel, i18n, messages, sessionMessages) {
 		"use strict";
 
 		return declare("LecturerQuestionsTab", ContentPane, {
@@ -55,7 +56,10 @@ define(
 				}));
 			},
 
-			startup: function () {},
+			startup: function () {
+				ContentPane.prototype.startup.call(this);
+				this.showModalMessage(sessionMessages.noSession, "gray");
+			},
 
 			update: function (questions) {
 				domConstruct.empty(this.questionListNode);
@@ -65,6 +69,14 @@ define(
 				}
 
 				when(questions, lang.hitch(this, function (questions) {
+					if (0 === questions.length) {
+						this.showModalMessage(messages.noQuestions, "disabled");
+
+						return;
+					} else {
+						this.hideModalMessage();
+					}
+
 					/* group questions by category */
 					var categories = {};
 					questions.forEach(function (question) {
@@ -100,6 +112,7 @@ define(
 			},
 
 			load: function () {
+				this.showModalMessage(messages.loadingQuestions + "...", "info");
 				var questions = lecturerQuestionModel.getAll().filter(lang.hitch(this, function (question) {
 					if ("lecture" === this.questionVariant) {
 						return !question.questionVariant || "lecture" === question.questionVariant;
@@ -117,6 +130,7 @@ define(
 			},
 
 			onSessionKeyChange: function (name, oldValue, value) {
+				domConstruct.empty(this.questionListNode);
 				this.load();
 			}
 		});

@@ -333,12 +333,24 @@ define(
 				});
 			},
 
+			showModalMessage: function (message, messageClass) {
+				this.setupFieldStatus(false);
+				ContentPane.prototype.showModalMessage.call(this, message, messageClass);
+			},
+
+			hideModalMessage: function () {
+				this.setupFieldStatus(true);
+				ContentPane.prototype.hideModalMessage.call(this);
+			},
+
 			createQuestion: function () {
 				if (!this.form.validate()) {
 					return;
 				}
 
 				var question = this.form.get("value");
+				this.showModalMessage(messages.creatingQuestion + "...", "info");
+
 				question.abstention = question.abstention.length > 0;
 				question.active = question.active.length > 0;
 				question.showStatistic = question.showStatistic.length > 0;
@@ -353,11 +365,14 @@ define(
 					}
 				});
 				lecturerQuestion.create(question).then(lang.hitch(this, function () {
-					this.close();
+					this.showModalMessage(messages.questionSaved, "success");
+					setTimeout(lang.hitch(this, this.close), 1500);
 					topic.publish("arsnova/question/update");
-				}), function (error) {
-					console.error("Could not create question");
-				});
+				}), lang.hitch(this, function (error) {
+					console.error("Could not update question");
+					this.showModalMessage(messages.questionNotSaved, "error");
+					setTimeout(lang.hitch(this, this.hideModalMessage), 3000);
+				}));
 			},
 
 			updateQuestion: function () {
@@ -365,8 +380,10 @@ define(
 					return;
 				}
 
-				var question = lecturerQuestion.get(this.questionId);
 				var newQuestion = this.form.get("value");
+				this.showModalMessage(messages.updatingQuestion + "...", "info");
+
+				var question = lecturerQuestion.get(this.questionId);
 				for (var attr in newQuestion) {
 					if (newQuestion.hasOwnProperty(attr)) {
 						question[attr] = newQuestion[attr];
@@ -382,11 +399,14 @@ define(
 				});
 
 				lecturerQuestion.update(question).then(lang.hitch(this, function () {
-					this.close();
+					this.showModalMessage(messages.questionSaved, "success");
+					setTimeout(lang.hitch(this, this.close), 1500);
 					topic.publish("arsnova/question/update");
-				}), function (error) {
+				}), lang.hitch(this, function (error) {
 					console.error("Could not update question");
-				});
+					this.showModalMessage(messages.questionNotSaved, "error");
+					setTimeout(lang.hitch(this, this.hideModalMessage), 3000);
+				}));
 			},
 
 			close: function () {

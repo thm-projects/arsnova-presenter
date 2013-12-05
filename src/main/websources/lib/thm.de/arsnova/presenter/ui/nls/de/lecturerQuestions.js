@@ -20,5 +20,11 @@ define({
 	multipleChoice: "Mehrfachauswahl",
 	yesNo: "Ja/Nein",
 	likertScale: "(Likert-)Skala",
-	freeText: "Freitext"
+	freeText: "Freitext",
+	noQuestions: "Keine Fragen verfügbar",
+	loadingQuestions: "Lade Fragen",
+	creatingQuestion: "Erstelle Frage",
+	updatingQuestion: "Speichere Frage",
+	questionSaved: "Frage gespeichert",
+	questionNotSaved: "Frage konnte nicht gespeichert werden"
 });

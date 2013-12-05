@@ -40,9 +40,10 @@ define(
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main",
-		"dojo/i18n!./nls/lecturerQuestions"
+		"dojo/i18n!./nls/lecturerQuestions",
+		"dojo/i18n!./nls/session"
 	],
-	function (lang, array, on, aspect, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, LecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, sessionTab, EditQuestionTab, i18n, commonMessages, messages, lecturerQuestionMessages) {
+	function (lang, array, on, aspect, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, LecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, sessionTab, EditQuestionTab, i18n, commonMessages, messages, lecturerQuestionMessages, sessionMessages) {
 		"use strict";
 
 		var
@@ -153,7 +154,11 @@ define(
 					eqt = new EditQuestionTab(questionId);
 					eqt.init();
 					eqt.startup();
-					eqt.setupFieldStatus(inSession);
+					if (inSession) {
+						eqt.hideModalMessage();
+					} else {
+						eqt.showModalMessage(sessionMessages.noSession, "disabled");
+					}
 					var pos = tabsRight.getChildren().length - 1;
 					tabsRight.addChild(eqt, pos);
 				}

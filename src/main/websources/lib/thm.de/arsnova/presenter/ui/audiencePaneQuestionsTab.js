@@ -35,9 +35,10 @@ define(
 		"arsnova-api/audienceQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
-		"dojo/i18n!./nls/audienceQuestions"
+		"dojo/i18n!./nls/audienceQuestions",
+		"dojo/i18n!./nls/session"
 	],
-	function (on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax, sessionModel, audienceQuestionModel, i18n, commonMessages, messages) {
+	function (on, when, dom, domConstruct, domClass, dateLocale, registry, a11yclick, ContentPane, MenuItem, confirmDialog, fullScreen, mathJax, sessionModel, audienceQuestionModel, i18n, commonMessages, messages, sessionMessages) {
 		"use strict";
 
 		var
@@ -71,6 +72,7 @@ define(
 			},
 
 			startup: function () {
+				pane.showModalMessage(sessionMessages.noSession, "gray");
 				questionListNode = domConstruct.create("div", {id: "audienceQuestionList"}, pane.domNode);
 
 				sessionModel.watchKey(onSessionKeyChange);
@@ -120,6 +122,12 @@ define(
 					questions.forEach(function (question) {
 						self.prependQuestionToList(question);
 					});
+
+					if (0 === questions.length) {
+						pane.showModalMessage(messages.noQuestions, "gray");
+					} else {
+						pane.hideModalMessage();
+					}
 				});
 			},
 
@@ -202,6 +210,9 @@ define(
 
 		/* private "methods" */
 		onSessionKeyChange = function (name, oldValue, value) {
+			domConstruct.empty(questionListNode);
+			pane.showModalMessage(messages.loadingQuestions + "...", "info");
+
 			var questions = audienceQuestionModel.getAll();
 			when(questions, function (questions) {
 				self.update(questions);

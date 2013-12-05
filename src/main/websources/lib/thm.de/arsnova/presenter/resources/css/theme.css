@@ -240,3 +240,26 @@ body {
 	color: #7cbb2b;
 	font-weight: bold;
 }
+
+.paneMessageOverlay > div {
+	background: white;
+	border: 5px solid;
+	border-radius: 5px;
+	font: bold 1.3em sans-serif;
+}
+
+.paneMessageOverlay > div, .paneMessageOverlay > div.disabled {
+	color: #666666;
+}
+
+.paneMessageOverlay > div.info {
+	color: #3333aa;
+}
+
+.paneMessageOverlay > div.success {
+	color: #00bb00;
+}
+
+.paneMessageOverlay > div.error {
+	color: #cc0000;
+}

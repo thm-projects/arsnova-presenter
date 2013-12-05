@@ -22,7 +22,13 @@ define({
 		multipleChoice: "Multiple choice",
 		yesNo: "Yes/No",
 		likertScale: "(Likert) scale",
-		freeText: "Free text"
+		freeText: "Free text",
+		noQuestions: "No questions available",
+		loadingQuestions: "Loading questions",
+		creatingQuestion: "Creating question",
+		updatingQuestion: "Updating question",
+		questionSaved: "Question saved",
+		questionNotSaved: "Question could not be saved"
 	},
 
 	de: true
