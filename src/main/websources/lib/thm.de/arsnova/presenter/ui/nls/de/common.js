@@ -5,6 +5,7 @@ define({
 	create: "Erstellen",
 	update: "Speichern",
 	del: "Löschen",
+	reset: "Zurücksetzen",
 	proceed: "Fortfahren",
 	yes: "Ja",
 	no: "Nein",

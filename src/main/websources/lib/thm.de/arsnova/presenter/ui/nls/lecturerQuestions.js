@@ -24,11 +24,21 @@ define({
 		likertScale: "(Likert) scale",
 		freeText: "Free text",
 		noQuestions: "No questions available",
+		deleteQuestion: "Delete question",
+		deleteQuestionConfirm: "Do you really want to delete this question?",
+		resetQuestion: "Reset question",
+		resetQuestionConfirm: "Do you really want to reset this question? All answers will be deleted.",
 		loadingQuestions: "Loading questions",
 		creatingQuestion: "Creating question",
 		updatingQuestion: "Updating question",
+		deletingQuestion: "Deleting question",
+		resettingQuestion: "Resetting question",
 		questionSaved: "Question saved",
-		questionNotSaved: "Question could not be saved"
+		questionNotSaved: "Question could not be saved",
+		questionDeleted: "Question deleted",
+		questionNotDeleted: "Question could not be deleted",
+		questionReset: "Question reset",
+		questionNotReset: "Question could not be reset"
 	},
 
 	de: true

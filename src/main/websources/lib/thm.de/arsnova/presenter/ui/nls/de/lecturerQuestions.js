@@ -22,9 +22,19 @@ define({
 	likertScale: "(Likert-)Skala",
 	freeText: "Freitext",
 	noQuestions: "Keine Fragen verfügbar",
+	deleteQuestion: "Frage löschen",
+	deleteQuestionConfirm: "Möchten Sie diese Frage wirklich löschen?",
+	resetQuestion: "Frage zurücksetzen",
+	resetQuestionConfirm: "Möchten Sie diese Frage wirklich zurücksetzen? Alle Antworten werden gelöscht.",
 	loadingQuestions: "Lade Fragen",
 	creatingQuestion: "Erstelle Frage",
 	updatingQuestion: "Speichere Frage",
+	deletingQuestion: "Lösche Frage",
+	resettingQuestion: "Setze Frage zurück",
 	questionSaved: "Frage gespeichert",
-	questionNotSaved: "Frage konnte nicht gespeichert werden"
+	questionNotSaved: "Frage konnte nicht gespeichert werden",
+	questionDeleted: "Frage gelöscht",
+	questionNotDeleted: "Frage konnte nicht gelöscht werden",
+	questionReset: "Frage zurückgesetzt",
+	questionNotReset: "Frage konnte nicht zurückgesetzt werden"
 });

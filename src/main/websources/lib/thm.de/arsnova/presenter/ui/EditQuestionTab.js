@@ -36,13 +36,14 @@ define(
 		"dijit/form/RadioButton",
 		"dojox/form/CheckedMultiSelect",
 		"dojo/store/Memory",
+		"dgerhardt/common/confirmDialog",
 		"arsnova-api/lecturerQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/lecturerQuestions",
 		"dojo/i18n!./nls/answerOptions"
 	],
-	function (lang, declare, on, topic, domConstruct, domStyle, ContentPane, Form, Button, TextBox, TextArea, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, MemoryStore, lecturerQuestion, i18n, commonMessages, messages, answerOptions) {
+	function (lang, declare, on, topic, domConstruct, domStyle, ContentPane, Form, Button, TextBox, TextArea, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, MemoryStore, confirmDialog, lecturerQuestion, i18n, commonMessages, messages, answerOptions) {
 		"use strict";
 
 		var self, tabs = [];
@@ -215,6 +216,28 @@ define(
 					label: this.questionId ? commonMessages.update : commonMessages.create,
 					onClick: lang.hitch(this, this.questionId ? this.updateQuestion : this.createQuestion)
 				})).placeAt(this.form).startup();
+
+				if (this.questionId) {
+					(new Button({
+						label: commonMessages.del,
+						onClick: lang.hitch(this, function () {
+							var buttons = {};
+							buttons[commonMessages.del] = lang.hitch(this, this.deleteQuestion);
+							buttons[commonMessages.cancel] = null;
+							confirmDialog.confirm(messages.deleteQuestion, messages.deleteQuestionConfirm, buttons);
+						})
+					})).placeAt(this.form).startup();
+
+					(new Button({
+						label: commonMessages.reset,
+						onClick: lang.hitch(this, function () {
+							var buttons = {};
+							buttons[commonMessages.reset] = lang.hitch(this, this.resetQuestion);
+							buttons[commonMessages.cancel] = null;
+							confirmDialog.confirm(messages.resetQuestion, messages.resetQuestionConfirm, buttons);
+						})
+					})).placeAt(this.form).startup();
+				}
 
 				if (this.questionId) {
 					this.fillForm(lecturerQuestion.get(this.questionId));
@@ -438,6 +461,31 @@ define(
 				}), lang.hitch(this, function (error) {
 					console.error("Could not update question");
 					this.showModalMessage(messages.questionNotSaved, "error");
+					setTimeout(lang.hitch(this, this.hideModalMessage), 3000);
+				}));
+			},
+
+			deleteQuestion: function () {
+				this.showModalMessage(messages.deletingQuestion + "...", "info");
+				lecturerQuestion.remove(this.questionId).then(lang.hitch(this, function () {
+					this.showModalMessage(messages.questionDeleted, "success");
+					setTimeout(lang.hitch(this, this.close), 1500);
+					topic.publish("arsnova/question/update");
+				}), lang.hitch(this, function (error) {
+					console.error("Could not delete question");
+					this.showModalMessage(messages.questionNotDeleted, "error");
+					setTimeout(lang.hitch(this, this.hideModalMessage), 3000);
+				}));
+			},
+
+			resetQuestion: function () {
+				this.showModalMessage(messages.resettingQuestion + "...", "info");
+				lecturerQuestion.removeAllAnswers().then(lang.hitch(this, function () {
+					this.showModalMessage(messages.questionReset, "success");
+					setTimeout(lang.hitch(this, this.hideModalMessage), 1500);
+				}), lang.hitch(this, function (error) {
+					console.error("Could not reset question");
+					this.showModalMessage(messages.questionNotReset, "error");
 					setTimeout(lang.hitch(this, this.hideModalMessage), 3000);
 				}));
 			},
