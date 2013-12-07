@@ -131,7 +131,11 @@ define(
 
 			onSessionKeyChange: function (name, oldValue, value) {
 				domConstruct.empty(this.questionListNode);
-				this.load();
+				if (value) {
+					this.load();
+				} else {
+					this.showModalMessage(sessionMessages.noSession, "gray");
+				}
 			}
 		});
 	}

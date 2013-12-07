@@ -18,6 +18,7 @@
  */
 define(
 	[
+		"dojo/topic",
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dgerhardt/dijit/layout/ContentPane",
@@ -25,10 +26,12 @@ define(
 		"dijit/form/Button",
 		"dijit/form/TextBox",
 		"dijit/form/CheckBox",
+		"dgerhardt/common/confirmDialog",
 		"arsnova-api/session",
+		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/session"
 	],
-	function (dom, domConstruct, ContentPane, Form, Button, TextBox, CheckBox, model, messages) {
+	function (topic, dom, domConstruct, ContentPane, Form, Button, TextBox, CheckBox, confirmDialog, model, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -36,7 +39,8 @@ define(
 
 			/* Dijit */
 			pane = null,
-			form = null
+			form = null,
+			suspendCb = null
 		;
 
 		self = {
@@ -54,22 +58,35 @@ define(
 				container = domConstruct.create("div", null, form.domNode);
 				domConstruct.create("label", {innerHTML: messages.name}, container);
 				(new TextBox({
-					name: "name",
-					readonly: true
+					name: "name"
 				})).placeAt(container);
 
 				container = domConstruct.create("div", null, form.domNode);
 				domConstruct.create("label", {innerHTML: messages.shortName}, container);
 				(new TextBox({
-					name: "shortName",
-					readonly: true
+					name: "shortName"
 				})).placeAt(container);
 
 				container = domConstruct.create("div", null, form.domNode);
 				domConstruct.create("label", {innerHTML: messages.suspend}, container);
-				(new CheckBox({
-					name: "lock"
+				(suspendCb = new CheckBox({
+					name: "suspend"
 				})).placeAt(container);
+
+				(new Button({
+					label: commonMessages.update,
+					onClick: self.updateSession
+				})).placeAt(form).startup();
+
+				(new Button({
+					label: commonMessages.del,
+					onClick: function () {
+						var buttons = {};
+						buttons[commonMessages.del] = self.deleteSession;
+						buttons[commonMessages.cancel] = null;
+						confirmDialog.confirm(messages.deleteSession, messages.deleteSessionConfirm, buttons);
+					}
+				})).placeAt(form).startup();
 
 				return pane;
 			},
@@ -78,8 +95,13 @@ define(
 				pane.startup();
 				pane.showModalMessage(messages.noSession, "disabled");
 				model.watchKey(function (name, oldValue, value) {
-					pane.hideModalMessage();
-					self.fillForm(model.getCurrent());
+					if (value) {
+						pane.hideModalMessage();
+						self.fillForm(model.getCurrent());
+					} else {
+						pane.showModalMessage(messages.noSession, "gray");
+						form.reset();
+					}
 				});
 			},
 
@@ -89,6 +111,53 @@ define(
 					if (widget.name && session.hasOwnProperty(widget.name)) {
 						widget.set("value", session[widget.name]);
 					}
+				});
+				suspendCb.set("checked", !session.active);
+			},
+
+			updateSession: function () {
+				if (!form.validate()) {
+					return;
+				}
+
+				var newSession = form.get("value");
+				pane.showModalMessage(messages.updatingSession + "...", "info");
+
+				var session = model.getCurrent();
+				for (var attr in newSession) {
+					if (newSession.hasOwnProperty(attr)) {
+						session[attr] = newSession[attr];
+					}
+				}
+				session.active = session.suspend.length === 0;
+				delete session.suspend;
+
+				model.update(session).then(function () {
+					pane.showModalMessage(messages.sessionSaved, "success");
+					setTimeout(function () {
+						pane.hideModalMessage();
+						topic.publish("arsnova/session/update");
+					}, 1500);
+				}, function (error) {
+					console.error("Could not save session");
+					pane.showModalMessage(messages.sessionNotSaved, "error");
+					setTimeout(pane.hideModalMessage, 3000);
+				});
+			},
+
+			deleteSession: function () {
+				pane.showModalMessage(messages.deletingSession + "...", "info");
+				model.remove(model.getKey()).then(function () {
+					pane.showModalMessage(messages.sessionDeleted, "success");
+					setTimeout(function () {
+						pane.hideModalMessage();
+						topic.publish("arsnova/session/update");
+						model.setKey(null);
+					}, 1500);
+				}, function (error) {
+					console.error("Could not delete session");
+					pane.showModalMessage(messages.sessionNotDeleted, "error");
+					setTimeout(pane.hideModalMessage, 3000);
 				});
 			}
 		};

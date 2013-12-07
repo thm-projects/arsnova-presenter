@@ -211,12 +211,15 @@ define(
 		/* private "methods" */
 		onSessionKeyChange = function (name, oldValue, value) {
 			domConstruct.empty(questionListNode);
-			pane.showModalMessage(messages.loadingQuestions + "...", "info");
-
-			var questions = audienceQuestionModel.getAll();
-			when(questions, function (questions) {
-				self.update(questions);
-			});
+			if (value) {
+				pane.showModalMessage(messages.loadingQuestions + "...", "info");
+				var questions = audienceQuestionModel.getAll();
+				when(questions, function (questions) {
+					self.update(questions);
+				});
+			} else {
+				pane.showModalMessage(sessionMessages.noSession, "gray");
+			}
 		};
 
 		return self;

@@ -7,7 +7,14 @@ define({
 		name: "Name",
 		shortName: "Short name",
 		suspend: "Suspend",
-		noSession: "No session selected"
+		noSession: "No session selected",
+		deleteSession: "Delete session",
+		deleteSessionConfirm: "Do you really want to delete this session?",
+		updatingSession: "Updating session",
+		sessionSaved: "Session saved",
+		sessionNotSaved: "Session could not be saved",
+		sessionDeleted: "Session deleted",
+		sessionNotDeleted: "Session could not be deleted"
 	},
 
 	de: true

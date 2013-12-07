@@ -91,6 +91,7 @@ define(
 						if (value) {
 							model.setKey(value);
 						}
+						topic.publish("arsnova/session/select", value);
 					}
 				})).placeAt(panelNode).startup();
 
@@ -120,6 +121,7 @@ define(
 				self.updateSelect(model.getOwned());
 				topic.subscribe("arsnova/session/update", function () {
 					self.updateSelect(model.getOwned());
+					self.selectSession(model.getKey());
 				});
 				model.watchKey(self.onKeyChange);
 				model.watchActiveUserCount(function (name, oldValue, value) {
@@ -164,6 +166,7 @@ define(
 
 			updateSelect: function (sessions) {
 				when(sessions, function (sessions) {
+					memory.setData([]);
 					sessions.forEach(function (session) {
 						var keywordNode = document.createTextNode("(" + session.keyword + ")");
 						var shortNameNode = document.createElement("strong");
@@ -248,29 +251,37 @@ define(
 			},
 
 			selectSession: function (sessionKey) {
-				select.set("value", sessionKey);
-				when(model.getCurrent(), function (session) {
-					document.title = session.shortName + " - " + commonMessages.arsnova + " " + commonMessages.productNameValue;
-					domConstruct.empty(titleNode);
-					titleNode.appendChild(document.createTextNode(session.name));
-					var keyword = session.keyword.substr(0, 2)
-						+ " " + session.keyword.substr(2, 2)
-						+ " " + session.keyword.substr(4, 2)
-						+ " " + session.keyword.substr(6, 2)
-					;
-					keyNode.innerHTML = keyword;
-					domClass.remove(keyNode, "noSession");
-					topic.publish("arsnova/session/select", sessionKey);
-				});
+				if (sessionKey) {
+					select.set("value", sessionKey);
+					when(model.getCurrent(), function (session) {
+						document.title = session.shortName + " - " + commonMessages.arsnova + " " + commonMessages.productNameValue;
+						domConstruct.empty(titleNode);
+						titleNode.appendChild(document.createTextNode(session.name));
+						var keyword = session.keyword.substr(0, 2)
+							+ " " + session.keyword.substr(2, 2)
+							+ " " + session.keyword.substr(4, 2)
+							+ " " + session.keyword.substr(6, 2)
+						;
+						keyNode.innerHTML = keyword;
+						domClass.remove(keyNode, "noSession");
+					});
 
-				/* enable mode menu items */
-				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
-				if (config.arsnova.mobileLecturerSessionUrl) {
-					mobileLecturersViewMenuItem.set("disabled", false);
-				}
-				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
-				if (config.arsnova.mobileStudentSessionUrl) {
-					mobileStudentsViewMenuItem.set("disabled", false);
+					/* enable mode menu items */
+					var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
+					if (config.arsnova.mobileLecturerSessionUrl) {
+						mobileLecturersViewMenuItem.set("disabled", false);
+					}
+					var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
+					if (config.arsnova.mobileStudentSessionUrl) {
+						mobileStudentsViewMenuItem.set("disabled", false);
+					}
+				} else {
+					select.reset();
+					document.title = commonMessages.arsnova + " " + commonMessages.productNameValue;
+					titleNode.textContent = commonMessages.arsnova + " " + commonMessages.productNameValue;
+					keyNode.textContent = "00 00 00 00";
+					domClass.add(keyNode, "noSession");
+					activeUserCountNode.textContent = "-";
 				}
 			},
 
