@@ -18,6 +18,7 @@
  */
 define(
 	[
+		"dojo/topic",
 		"dojo/dom",
 		"dojo/dom-construct",
 		"dijit/registry",
@@ -29,7 +30,7 @@ define(
 		"dojo/i18n",
 		"dojo/i18n!./nls/audienceFeedback"
 	],
-	function (dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart, feedbackModel, i18n, messages) {
+	function (topic, dom, domConstruct, registry, ContentPane, MenuItem, fullScreen, audienceFeedbackChart, feedbackModel, i18n, messages) {
 		"use strict";
 
 		var
@@ -37,7 +38,8 @@ define(
 			model = null,
 
 			/* Dijit */
-			pane = null
+			pane = null,
+			fsAudienceFeedbackMenuItem = null
 		;
 
 		self = {
@@ -66,7 +68,7 @@ define(
 
 				/* add full screen menu items */
 				var fullScreenMenu = registry.byId("fullScreenMenu");
-				fullScreenMenu.addChild(new MenuItem({
+				fullScreenMenu.addChild(fsAudienceFeedbackMenuItem = new MenuItem({
 					label: messages.audienceFeedback,
 					onClick: self.toggleFullScreenMode
 				}));
@@ -78,6 +80,10 @@ define(
 
 						pane.resize();
 					}
+				});
+
+				topic.subscribe("arsnova/mode/switch", function (mode) {
+					fsAudienceFeedbackMenuItem.set("disabled", "pi" !== mode);
 				});
 			},
 

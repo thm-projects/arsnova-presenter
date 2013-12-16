@@ -20,6 +20,7 @@ define(
 	[
 		"dojo/_base/config",
 		"dojo/on",
+		"dojo/topic",
 		"dojo/dom-construct",
 		"dojo/dom-geometry",
 		"dojo/dom-style",
@@ -44,7 +45,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"
 	],
-	function (config, on, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, tabController, timer, infoDialog, i18n, commonMessages, messages) {
+	function (config, on, topic, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, tabController, timer, infoDialog, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -64,7 +65,8 @@ define(
 			headerPane = null,
 			footerPane = null,
 			fullScreenContainer = null,
-			timeTooltip = null
+			timeTooltip = null,
+			fullScreenMenuItem = null
 		;
 
 		self = {
@@ -175,7 +177,7 @@ define(
 				}));
 
 				var viewMenu = new Menu({id: "viewMenu", style: "display: none"});
-				viewMenu.addChild(new PopupMenuItem({
+				viewMenu.addChild(fullScreenMenuItem = new PopupMenuItem({
 					label: messages.fullScreen,
 					popup: fullScreenMenu
 				}));
@@ -319,6 +321,15 @@ define(
 					} else {
 						console.log("Full screen mode disabled");
 						domStyle.set(fullScreenContainer.domNode, "display", "none");
+					}
+				});
+
+				topic.subscribe("arsnova/mode/switch", function (mode) {
+					fullScreen.exit();
+					if ("editing" === mode) {
+						fullScreenMenuItem.set("disabled", true);
+					} else {
+						fullScreenMenuItem.set("disabled", false);
 					}
 				});
 
