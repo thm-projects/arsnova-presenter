@@ -215,6 +215,9 @@ define(
 				pane.showModalMessage(messages.loadingQuestions + "...", "info");
 				var questions = audienceQuestionModel.getAll();
 				when(questions, function (questions) {
+					questions.sort(function (obj1, obj2) {
+						return obj1.timestamp - obj2.timestamp;
+					});
 					self.update(questions);
 				});
 			} else {

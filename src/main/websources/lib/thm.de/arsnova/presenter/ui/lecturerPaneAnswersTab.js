@@ -383,6 +383,9 @@ define(
 				var totalAnswerCount = 0;
 				var abstentionCount = 0;
 				domConstruct.empty(freeTextAnswersNode);
+				answers.sort(function (obj1, obj2) {
+					return obj2.timestamp - obj1.timestamp;
+				});
 				answers.forEach(function (answer) {
 					totalAnswerCount += answer.answerCount;
 
