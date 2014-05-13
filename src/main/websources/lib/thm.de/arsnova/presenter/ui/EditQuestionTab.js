@@ -121,7 +121,7 @@ define(
 						{value: "abcd", label: messages.singleChoice},
 						{value: "mc", label: messages.multipleChoice},
 						{value: "yesno", label: messages.yesNo},
-						{value: "ls", label: messages.likertScale},
+						{value: "vote", label: messages.likertScale},
 						{value: "freetext", label: messages.freeText}
 					]
 				})).placeAt(container).startup();
@@ -271,7 +271,7 @@ define(
 					domStyle.set(this.noCorrectOptionContainer, "display", "");
 					this.noCorrectOptionButton.set("checked", true);
 					break;
-				case "ls":
+				case "vote":
 					this.templateSelect.set("value", "");
 					domStyle.set(this.templateSelect.domNode, "display", "");
 					break;
@@ -322,7 +322,7 @@ define(
 				var type;
 				if ("abcd" === this.formatSelect.get("value") || "yesno" === this.formatSelect.get("value")) {
 					type = "sc";
-				} else if ("ls" === this.formatSelect.get("value")) {
+				} else if ("vote" === this.formatSelect.get("value")) {
 					type = "hidden";
 				} else {
 					type = "mc";
