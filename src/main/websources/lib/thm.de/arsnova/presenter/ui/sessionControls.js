@@ -37,11 +37,12 @@ define(
 		"dijit/Dialog",
 		"dijit/Tooltip",
 		"dgerhardt/common/modalOverlay",
+		"arsnova-api/globalConfig",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/session"
 	],
-	function (config, string, on, topic, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, Form, Button, TextBox, FilteringSelect, Dialog, Tooltip, modalOverlay, i18n, commonMessages, messages) {
+	function (config, string, on, topic, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, Form, Button, TextBox, FilteringSelect, Dialog, Tooltip, modalOverlay, globalConfig, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -109,7 +110,7 @@ define(
 					}
 				})).placeAt(panelNode).startup();
 
-				if (config.arsnova.mobileStudentSessionUrl) {
+				if (globalConfig.mobilePath && config.arsnova.mobileStudentSessionUrl) {
 					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr", tabindex: 0}, panelNode);
 					(new Tooltip({
 						connectId: [qrNode],
@@ -133,21 +134,23 @@ define(
 				/* update mode menu item click events */
 				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
 				on(mobileLecturersViewMenuItem, "click", function () {
-					self.openMobileSession(config.arsnova.mobileLecturerSessionUrl);
+					self.openMobileSession(globalConfig.mobilePath + config.arsnova.mobileLecturerSessionUrl);
 				});
 				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
 				on(mobileStudentsViewMenuItem, "click", function () {
-					self.openMobileSession(config.arsnova.mobileStudentSessionUrl);
+					self.openMobileSession(globalConfig.mobilePath + config.arsnova.mobileStudentSessionUrl);
 				});
 
-				on(qrNode, a11yclick, function () {
-					var sessionKey = model.getKey();
-					if (!sessionKey) {
-						return;
-					}
-					var url = string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionKey});
-					self.showQr(self.getAbsoluteUrl(url));
-				});
+				if (qrNode) {
+					on(qrNode, a11yclick, function () {
+						var sessionKey = model.getKey();
+						if (!sessionKey) {
+							return;
+						}
+						var url = string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionKey});
+						self.showQr(self.getAbsoluteUrl(url));
+					});
+				}
 
 				topic.subscribe("arsnova/mode/switch", function (mode) {
 					if ("editing" === mode) {
@@ -268,11 +271,11 @@ define(
 
 					/* enable mode menu items */
 					var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
-					if (config.arsnova.mobileLecturerSessionUrl) {
+					if (globalConfig.get().mobilePath && config.arsnova.mobileLecturerSessionUrl) {
 						mobileLecturersViewMenuItem.set("disabled", false);
 					}
 					var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
-					if (config.arsnova.mobileStudentSessionUrl) {
+					if (globalConfig.get().mobilePath && config.arsnova.mobileStudentSessionUrl) {
 						mobileStudentsViewMenuItem.set("disabled", false);
 					}
 				} else {

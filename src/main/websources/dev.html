@@ -53,20 +53,17 @@ var langFallback = "en";
 var lang = navigator.language || navigator.userLanguage || langFallback;
 var dojoConfig = {
 	arsnova: {
-		mobileUrl: "/",
 		mobileStudentSessionUrl: "/#id/${sessionKey}",
 		mobileLecturerSessionUrl: "/#id/${sessionKey}/lecturer",
-		overlayDownloadUrl: "/overlay/",
 		organization: {
 			label: "A <span id='footerOrganizationName'>THM</span> product",
 			links: [
 				{label: "THM website", url: "http://www.thm.de"},
-				{label: "Imprint", url: "http://blog.mni.thm.de/arsnova/impressum/"}
 			]
 		}
 	},
 	arsnovaApi: {
-		root: "/"
+		configPath: "/configuration/"
 	}
 };
 lang = lang.replace(/-.*/, "");

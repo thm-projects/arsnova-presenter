@@ -41,11 +41,12 @@ define(
 		"arsnova-presenter/ui/tabController",
 		"arsnova-presenter/ui/timer",
 		"arsnova-presenter/ui/infoDialog",
+		"arsnova-api/globalConfig",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"
 	],
-	function (config, on, topic, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, tabController, timer, infoDialog, i18n, commonMessages, messages) {
+	function (config, on, topic, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, tabController, timer, infoDialog, globalConfig, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -123,14 +124,16 @@ define(
 					)
 				);
 				var lowResMessage = domConstruct.create("p", {id: "lowResolutionMessage"}, lowResContentWrapperNode);
-				(new Button({
-					label: commonMessages.arsnova + " " + commonMessages.mobileProductNameValue,
-					onClick: function () {
-						location.href = config.arsnova.mobileUrl;
-					}
-				})).placeAt(
-					domConstruct.create("p", null, lowResContentWrapperNode)
-				).startup();
+				if (globalConfig.mobilePath) {
+					(new Button({
+						label: commonMessages.arsnova + " " + commonMessages.mobileProductNameValue,
+						onClick: function () {
+							location.href = globalConfig.mobilePath;
+						}
+					})).placeAt(
+						domConstruct.create("p", null, lowResContentWrapperNode)
+					).startup();
+				}
 				var resizeLog = "";
 				var resizeLogTimeout = null;
 				var windowOnResize = function (event) {
@@ -198,13 +201,15 @@ define(
 					label: messages.mobileStudent,
 					disabled: true
 				}));
-				viewMenu.addChild(new MenuItem({
-					id: "slideOverlayMenuItem",
-					label: messages.slideOverlay,
-					onClick: function () {
-						window.open(config.arsnova.overlayDownloadUrl);
-					}
-				}));
+				if (globalConfig.overlayUrl) {
+					viewMenu.addChild(new MenuItem({
+						id: "slideOverlayMenuItem",
+						label: messages.slideOverlay,
+						onClick: function () {
+							window.open(globalConfig.overlayUrl);
+						}
+					}));
+				}
 				(new DropDownButton({
 					label: messages.view,
 					dropDown: viewMenu
@@ -268,11 +273,12 @@ define(
 					var org = config.arsnova.organization;
 					domConstruct.create("span", {id: "footerOrganizationInfo", innerHTML: org.label}, footerPane.domNode);
 
+					var organizationMenu = new Menu({
+						targetNodeIds: ["footerOrganizationInfo"],
+						leftClickToOpen: true
+					});
+
 					if (org.links) {
-						var organizationMenu = new Menu({
-							targetNodeIds: ["footerOrganizationInfo"],
-							leftClickToOpen: true
-						});
 						org.links.forEach(function (link) {
 							organizationMenu.addChild(new MenuItem({
 								label: link.label,
@@ -281,6 +287,25 @@ define(
 								}
 							}));
 						});
+					}
+
+					if (globalConfig.get().imprintUrl) {
+						var imprintUrl = /^https?:/.test(globalConfig.get().imprintUrl) ? globalConfig.get().imprintUrl : globalConfig.get().customizationPath + "/" + globalConfig.get().imprintUrl;
+						organizationMenu.addChild(new MenuItem({
+							label: messages.imprint,
+							onClick: function () {
+								window.open(imprintUrl, "_blank");
+							}
+						}));
+					}
+					if (globalConfig.get().privacyPolicyUrl) {
+						var privacyPolicyUrl = /^https?:/.test(globalConfig.get().privacyPolicyUrl) ? globalConfig.get().privacyPolicyUrl : globalConfig.get().customizationPath + "/" + globalConfig.get().privacyPolicyUrl;
+						organizationMenu.addChild(new MenuItem({
+							label: messages.privacyPolicy,
+							onClick: function () {
+								window.open(privacyPolicyUrl, "_blank");
+							}
+						}));
 					}
 				}
 

@@ -13,5 +13,7 @@ define({
 	mobileStudent: "Mobil (Student/in)",
 	slideOverlay: "Overlay für Folien",
 	modeChange: "Moduswechsel",
-	leaveEditingConfirm: "Sie verlassen den Bearbeitungsmodus. Ungespeicherte Änderungen werden verworfen."
+	leaveEditingConfirm: "Sie verlassen den Bearbeitungsmodus. Ungespeicherte Änderungen werden verworfen.",
+	imprint: "Impressum",
+	privacyPolicy: "Datenschutz"
 });

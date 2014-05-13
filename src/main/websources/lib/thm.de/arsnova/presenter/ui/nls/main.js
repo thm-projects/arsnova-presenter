@@ -16,7 +16,9 @@ define({
 		info: "Info",
 		website: "Website",
 		modeChange: "Mode change",
-		leaveEditingConfirm: "You are leaving editing mode. Unsafed changes will be lost."
+		leaveEditingConfirm: "You are leaving editing mode. Unsafed changes will be lost.",
+		imprint: "Imprint",
+		privacyPolicy: "Privacy"
 	},
 
 	de: true
