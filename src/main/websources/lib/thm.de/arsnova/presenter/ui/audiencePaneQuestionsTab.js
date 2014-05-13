@@ -125,13 +125,12 @@ define(
 
 					if (0 === questions.length) {
 						pane.showModalMessage(messages.noQuestions, "gray");
-					} else {
-						pane.hideModalMessage();
 					}
 				});
 			},
 
 			prependQuestionToList: function (question) {
+				pane.hideModalMessage();
 				var questionNode = domConstruct.create("div", {"class": "question", tabindex: 0}, questionListNode, "first");
 				var subjectNode = domConstruct.create("p", {"class": "subject"}, questionNode);
 				subjectNode.appendChild(document.createTextNode(question.subject));
@@ -162,6 +161,9 @@ define(
 					buttons[commonMessages.del] = function () {
 						model.remove(question._id);
 						domConstruct.destroy(questionNode);
+						if (0 === questionListNode.children.length) {
+							pane.showModalMessage(messages.noQuestions, "gray");
+						}
 					};
 					buttons[commonMessages.cancel] = null;
 					confirmDialog.confirm(messages.deleteQuestion, messages.deleteQuestionConfirm, buttons);
