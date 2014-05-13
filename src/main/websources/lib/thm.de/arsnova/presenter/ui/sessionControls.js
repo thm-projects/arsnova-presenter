@@ -110,7 +110,7 @@ define(
 					}
 				})).placeAt(panelNode).startup();
 
-				if (globalConfig.mobilePath && config.arsnova.mobileStudentSessionUrl) {
+				if (globalConfig.get().mobilePath && config.arsnova.mobileStudentSessionUrl) {
 					qrNode = domConstruct.create("div", {id: "sessionQr", "class": "iconQr", tabindex: 0}, panelNode);
 					(new Tooltip({
 						connectId: [qrNode],
@@ -134,11 +134,11 @@ define(
 				/* update mode menu item click events */
 				var mobileLecturersViewMenuItem = registry.byId("mobileLecturersViewMenuItem");
 				on(mobileLecturersViewMenuItem, "click", function () {
-					self.openMobileSession(globalConfig.mobilePath + config.arsnova.mobileLecturerSessionUrl);
+					self.openMobileSession(globalConfig.get().mobilePath + config.arsnova.mobileLecturerSessionUrl);
 				});
 				var mobileStudentsViewMenuItem = registry.byId("mobileStudentsViewMenuItem");
 				on(mobileStudentsViewMenuItem, "click", function () {
-					self.openMobileSession(globalConfig.mobilePath + config.arsnova.mobileStudentSessionUrl);
+					self.openMobileSession(globalConfig.get().mobilePath + config.arsnova.mobileStudentSessionUrl);
 				});
 
 				if (qrNode) {

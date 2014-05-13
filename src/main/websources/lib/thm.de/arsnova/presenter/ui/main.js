@@ -124,11 +124,11 @@ define(
 					)
 				);
 				var lowResMessage = domConstruct.create("p", {id: "lowResolutionMessage"}, lowResContentWrapperNode);
-				if (globalConfig.mobilePath) {
+				if (globalConfig.get().mobilePath) {
 					(new Button({
 						label: commonMessages.arsnova + " " + commonMessages.mobileProductNameValue,
 						onClick: function () {
-							location.href = globalConfig.mobilePath;
+							location.href = globalConfig.get().mobilePath;
 						}
 					})).placeAt(
 						domConstruct.create("p", null, lowResContentWrapperNode)
@@ -201,12 +201,12 @@ define(
 					label: messages.mobileStudent,
 					disabled: true
 				}));
-				if (globalConfig.overlayUrl) {
+				if (globalConfig.get().overlayUrl) {
 					viewMenu.addChild(new MenuItem({
 						id: "slideOverlayMenuItem",
 						label: messages.slideOverlay,
 						onClick: function () {
-							window.open(globalConfig.overlayUrl);
+							window.open(globalConfig.get().overlayUrl);
 						}
 					}));
 				}
