@@ -71,20 +71,24 @@ define(
 				var serviceOnClickFunc = function (url) {
 					/* a function has to be returned because of the closure */
 					return function () {
-						location.href = url + "&referer=" + encodeURIComponent(location.href);
+						location.href = url; // + "&referer=" + encodeURIComponent(location.href);
 					};
 				};
 
 				var services = authService.getServices();
-				for (var service in services) {
-					if (services.hasOwnProperty(service)) {
+				services.then(function (services) {
+					services.forEach(function (service) {
+						if ("guest" === service.id) {
+							return;
+						}
 						(new Button({
-							label: services[service].title,
-							onClick: serviceOnClickFunc(services[service].url)
+							label: service.name,
+							onClick: serviceOnClickFunc(service.dialogUrl)
 						})).placeAt(loginDialogContent);
-					}
-				}
-				loginDialog.show();
+					});
+
+					loginDialog.show();
+				});
 			}
 		};
 
