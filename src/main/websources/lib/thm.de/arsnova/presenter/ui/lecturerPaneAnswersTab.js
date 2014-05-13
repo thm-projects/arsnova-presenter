@@ -476,11 +476,11 @@ define(
 						return;
 					}
 
-					if ("mc" === question.questionType) {
-						if (!answer.answerText) {
-							/* handle abstentions */
-							abstentionCount = answer.abstentionCount;
-						} else {
+					if (!answer.answerText) {
+						/* handle abstentions */
+						abstentionCount = answer.abstentionCount;
+					} else {
+						if ("mc" === question.questionType) {
 							/* handle selected options for multiple choice questions */
 							var selectedOptions = answer.answerText.split(",");
 							for (var j = 0; j < selectedOptions.length; j++) {
@@ -488,10 +488,10 @@ define(
 									values[j] += answer.answerCount;
 								}
 							}
+						} else {
+							/* handle single answer option */
+							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
 						}
-					} else {
-						/* handle single answer option */
-						values[labelReverseMapping[answer.answerText]] = answer.answerCount;
 					}
 				};
 
