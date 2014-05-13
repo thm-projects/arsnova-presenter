@@ -18,6 +18,7 @@
  */
 define(
 	[
+		"dojo/_base/lang",
 		"dojo/dom-construct",
 		"dojo/dom-style",
 		"dijit/registry",
@@ -28,7 +29,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/auth"
 	],
-	function (domConstruct, domStyle, registry, Button, Dialog, version, i18n, commonMessages, messages) {
+	function (lang, domConstruct, domStyle, registry, Button, Dialog, version, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -71,7 +72,7 @@ define(
 				var serviceOnClickFunc = function (url) {
 					/* a function has to be returned because of the closure */
 					return function () {
-						location.href = url; // + "&referer=" + encodeURIComponent(location.href);
+						location.href = url;
 					};
 				};
 
@@ -83,7 +84,7 @@ define(
 						}
 						(new Button({
 							label: service.name,
-							onClick: serviceOnClickFunc(service.dialogUrl)
+							onClick: serviceOnClickFunc(lang.replace(service.dialogUrl, [encodeURIComponent(location.pathname)]))
 						})).placeAt(loginDialogContent);
 					});
 
