@@ -147,7 +147,7 @@ define(
 						if (!sessionKey) {
 							return;
 						}
-						var url = string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionKey});
+						var url = globalConfig.get().mobilePath + string.substitute(config.arsnova.mobileStudentSessionUrl, {sessionKey: sessionKey});
 						self.showQr(self.getAbsoluteUrl(url));
 					});
 				}
