@@ -46,7 +46,7 @@
 		<outputDir>${project.build.directory}/${project.build.finalName}</outputDir>
 		<submodule.libarsnova-js.path>vendor/thm.de/arsnova/libarsnova-js</submodule.libarsnova-js.path>
 		<submodule.dgerhardt-dojo.path>vendor/dgerhardt.net/dgerhardt-dojo</submodule.dgerhardt-dojo.path>
-		<jetty.version>9.1.5.v20140505</jetty.version>
+		<jetty.version>9.2.1.v20140609</jetty.version>
 		<jetty.scanInterval>10</jetty.scanInterval>
 		<sonar.language>js</sonar.language>
 	</properties>
@@ -248,30 +248,21 @@
 						<version>${jetty.version}</version>
 						<configuration>
 							<scanIntervalSeconds>${jetty.scanInterval}</scanIntervalSeconds>
+							<webApp>
+								<contextPath>/presenter</contextPath>
+								<baseResource implementation="org.eclipse.jetty.util.resource.ResourceCollection">
+									<resourcesAsCSV>${outputDir},${basedir}/src/main/websources,${basedir}/src/main/webapp</resourcesAsCSV>
+								</baseResource>
+								<descriptor>src/main/config/WEB-INF/web.dev.xml</descriptor>
+								<aliasCheck implementation="org.eclipse.jetty.server.handler.AllowSymLinkAliasChecker" />
+							</webApp>
+							<contextHandlers>
+								<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+									<contextPath>/</contextPath>
+									<war>${project.build.directory}/war/arsnova-war.war</war>
+								</contextHandler>
+							</contextHandlers>
 						</configuration>
-						<executions>
-							<execution>
-								<id>default-cli</id>
-								<configuration>
-									<webAppConfig>
-										<contextPath>/presenter</contextPath>
-										<resourceBases>
-											<resourceBase>${outputDir}</resourceBase>
-											<resourceBase>src/main/websources</resourceBase>
-											<resourceBase>src/main/webapp</resourceBase>
-										</resourceBases>
-									</webAppConfig>
-									<contextHandlers>
-										<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-											<contextPath>/</contextPath>
-											<war>${project.build.directory}/war/arsnova-war.war</war>
-										</contextHandler>
-									</contextHandlers>
-									<webXml>src/main/config/WEB-INF/web.dev.xml</webXml>
-									<contextXml>src/main/config/jetty.dev.xml</contextXml>
-								</configuration>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>
@@ -351,28 +342,21 @@
 						<version>${jetty.version}</version>
 						<configuration>
 							<scanIntervalSeconds>${jetty.scanInterval}</scanIntervalSeconds>
+							<webApp>
+								<contextPath>/presenter</contextPath>
+								<baseResource implementation="org.eclipse.jetty.util.resource.ResourceCollection">
+									<resourcesAsCSV>${outputDir},${basedir}/src/main/websources,${basedir}/src/main/webapp</resourcesAsCSV>
+								</baseResource>
+								<descriptor>${basedir}/src/main/config/WEB-INF/web.prod.xml</descriptor>
+								<aliasCheck implementation="org.eclipse.jetty.server.handler.AllowSymLinkAliasChecker" />
+							</webApp>
+							<contextHandlers>
+								<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+									<contextPath>/</contextPath>
+									<war>${project.build.directory}/war/arsnova-war.war</war>
+								</contextHandler>
+							</contextHandlers>
 						</configuration>
-						<executions>
-							<execution>
-								<id>default-cli</id>
-								<configuration>
-									<webAppConfig>
-										<contextPath>/presenter</contextPath>
-										<resourceBases>
-											<resourceBase>${outputDir}</resourceBase>
-											<resourceBase>src/main/webapp</resourceBase>
-										</resourceBases>
-									</webAppConfig>
-									<contextHandlers>
-										<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-											<contextPath>/</contextPath>
-											<war>${project.build.directory}/war/arsnova-war.war</war>
-										</contextHandler>
-									</contextHandlers>
-									<webXml>src/main/config/WEB-INF/web.prod.xml</webXml>
-								</configuration>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>
