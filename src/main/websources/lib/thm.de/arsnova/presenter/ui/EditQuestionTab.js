@@ -209,7 +209,7 @@ define(
 				domConstruct.create("label", {innerHTML: messages.releaseCorrectAnswer}, container);
 				(this.releaseCorrectCb = new CheckBox({
 					name: "showAnswer",
-					checked: true
+					checked: false
 				})).placeAt(container).startup();
 
 				(new Button({
