@@ -438,7 +438,7 @@ define(
 						}
 						var buttons = {};
 						buttons[commonMessages.del] = function () {
-							model.removeAnswer(answer._id);
+							model.removeAnswer(answer.questionId, answer._id);
 							domConstruct.destroy(answerNode);
 						};
 						buttons[commonMessages.cancel] = null;
