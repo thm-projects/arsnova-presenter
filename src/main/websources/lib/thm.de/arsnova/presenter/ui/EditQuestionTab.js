@@ -480,7 +480,7 @@ define(
 
 			resetQuestion: function () {
 				this.showModalMessage(messages.resettingQuestion + "...", "info");
-				lecturerQuestion.removeAllAnswers().then(lang.hitch(this, function () {
+				lecturerQuestion.removeAllAnswers(this.questionId).then(lang.hitch(this, function () {
 					this.showModalMessage(messages.questionReset, "success");
 					setTimeout(lang.hitch(this, this.hideModalMessage), 1500);
 				}), lang.hitch(this, function (error) {

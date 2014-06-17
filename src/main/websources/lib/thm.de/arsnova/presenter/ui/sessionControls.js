@@ -37,12 +37,14 @@ define(
 		"dijit/Dialog",
 		"dijit/Tooltip",
 		"dgerhardt/common/modalOverlay",
+		"arsnova-presenter/appState",
 		"arsnova-api/globalConfig",
+		"arsnova-api/lecturerQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/session"
 	],
-	function (config, string, on, topic, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, Form, Button, TextBox, FilteringSelect, Dialog, Tooltip, modalOverlay, globalConfig, i18n, commonMessages, messages) {
+	function (config, string, on, topic, when, domConstruct, domClass, domStyle, script, Memory, registry, a11yclick, Form, Button, TextBox, FilteringSelect, Dialog, Tooltip, modalOverlay, appState, globalConfig, lecturerQuestionModel, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -90,7 +92,9 @@ define(
 					style: "width: 140px;",
 					onChange: function (value) {
 						if (value) {
+							/* TODO: remove model.setKey when completely replaced */
 							model.setKey(value);
+							appState.set("sessionId", value);
 						}
 						topic.publish("arsnova/session/select", value);
 					}
@@ -124,7 +128,9 @@ define(
 					self.updateSelect(model.getOwned());
 					self.selectSession(model.getKey());
 				});
+				/* TODO: remove model.watchKey when completely replaced */
 				model.watchKey(self.onKeyChange);
+				appState.watch("sessionId", self.onKeyChange);
 				model.watchActiveUserCount(function (name, oldValue, value) {
 					activeUserCountNode.innerHTML = value;
 				});
@@ -234,7 +240,9 @@ define(
 								model.create(form.get("value")).then(function (session) {
 									newSessionDialog.hide();
 									topic.publish("arsnova/session/update");
+									/* TODO: remove model.setKey when completely replaced */
 									model.setKey(session.keyword);
+									appState.set("sessionId", session.keyword);
 								}, function () {
 									console.error("Could not create session");
 								});
@@ -290,6 +298,12 @@ define(
 
 			onKeyChange: function (name, oldValue, value) {
 				self.selectSession(value);
+				lecturerQuestionModel.getAll().then(function () {
+					appState.set(
+						"questionId",
+						lecturerQuestionModel.firstId(appState.get("mode"))
+					);
+				});
 			},
 
 			openMobileSession: function (url) {

@@ -20,6 +20,7 @@ define(
 	[
 		"dojo/ready",
 		"dojo/router",
+		"arsnova-presenter/appState",
 		"arsnova-presenter/ui/main",
 		"arsnova-presenter/ui/authControls",
 		"arsnova-presenter/ui/sessionControls",
@@ -28,7 +29,7 @@ define(
 		"arsnova-api/auth",
 		"arsnova-api/session"
 	],
-	function (ready, router, mainUi, authControls, sessionControls, tabController, socket, authService, sessionModel) {
+	function (ready, router, appState, mainUi, authControls, sessionControls, tabController, socket, authService, sessionModel) {
 		"use strict";
 
 		var init = function () {
@@ -67,7 +68,9 @@ define(
 						params.sessionKey = event.params[0];
 
 						console.log("Router: loading session " + params.sessionKey);
+						/* TODO: remove model.setKey when completely replaced */
 						sessionModel.setKey(params.sessionKey);
+						appState.set("sessionId", params.sessionKey);
 
 						location.hash = "";
 					});

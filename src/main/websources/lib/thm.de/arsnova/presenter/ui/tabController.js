@@ -31,6 +31,7 @@ define(
 		"dijit/layout/TabContainer",
 		"dgerhardt/dijit/layout/ContentPane",
 		"dgerhardt/common/confirmDialog",
+		"arsnova-presenter/appState",
 		"arsnova-presenter/ui/LecturerQuestionsTab",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab",
 		"arsnova-presenter/ui/audiencePaneFeedbackTab",
@@ -43,7 +44,7 @@ define(
 		"dojo/i18n!./nls/lecturerQuestions",
 		"dojo/i18n!./nls/session"
 	],
-	function (lang, array, on, aspect, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, LecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, sessionTab, EditQuestionTab, i18n, commonMessages, messages, lecturerQuestionMessages, sessionMessages) {
+	function (lang, array, on, aspect, topic, when, domConstruct, domStyle, registry, BorderContainer, TabContainer, ContentPane, confirmDialog, appState, LecturerQuestionsTab, answersTab, feedbackTab, audienceQuestionsTab, sessionTab, EditQuestionTab, i18n, commonMessages, messages, lecturerQuestionMessages, sessionMessages) {
 		"use strict";
 
 		var
@@ -219,6 +220,7 @@ define(
 					tabsLeft.addChild(tabs.session);
 					this.addEditQuestionTab();
 					tabsRight.addChild(tabs.addQuestion);
+					appState.set("mode", "editing");
 					topic.publish("arsnova/mode/switch", "editing");
 
 					break;
@@ -227,6 +229,7 @@ define(
 					tabsLeft.addChild(tabs.answers);
 					tabsRight.addChild(tabs.feedback);
 					tabsRight.addChild(tabs.audienceQuestions);
+					appState.set("mode", "pi");
 					topic.publish("arsnova/mode/switch", "pi");
 
 					break;
@@ -234,6 +237,7 @@ define(
 					tabsLeft.addChild(tabs.lecturerJittQuestions);
 					tabsLeft.addChild(tabs.answers);
 					tabsRight.addChild(tabs.audienceQuestions);
+					appState.set("mode", "jitt");
 					topic.publish("arsnova/mode/switch", "jitt");
 
 					break;

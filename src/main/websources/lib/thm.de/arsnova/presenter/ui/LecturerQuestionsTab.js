@@ -26,6 +26,7 @@ define(
 		"dojo/dom-construct",
 		"dijit/a11yclick",
 		"dgerhardt/dijit/layout/ContentPane",
+		"arsnova-presenter/appState",
 		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab",
 		"arsnova-api/session",
@@ -34,7 +35,7 @@ define(
 		"dojo/i18n!./nls/lecturerQuestions",
 		"dojo/i18n!./nls/session"
 	],
-	function (declare, lang, on, topic, when, domConstruct, a11yclick, ContentPane, mathJax, answersTab, sessionModel, lecturerQuestionModel, i18n, messages, sessionMessages) {
+	function (declare, lang, on, topic, when, domConstruct, a11yclick, ContentPane, appState, mathJax, answersTab, sessionModel, lecturerQuestionModel, i18n, messages, sessionMessages) {
 		"use strict";
 
 		return declare("LecturerQuestionsTab", ContentPane, {
@@ -50,7 +51,9 @@ define(
 
 				this.questionListNode = domConstruct.create("div", {"class": "lecturerQuestionList"}, this.domNode);
 
-				sessionModel.watchKey(lang.hitch(this, this.onSessionKeyChange));
+				/* TODO: remove model.watchKey when completely replaced */
+				//sessionModel.watchKey(lang.hitch(this, this.onSessionKeyChange));
+				appState.watch("sessionId", lang.hitch(this, this.onSessionKeyChange));
 				topic.subscribe("arsnova/question/update", lang.hitch(this, function () {
 					this.load();
 				}));
@@ -94,7 +97,9 @@ define(
 							if (this.editing) {
 								topic.publish("arsnova/question/edit", question._id);
 							} else {
-								lecturerQuestionModel.setId(question._id);
+								/* TODO: remove model.setId when completely replaced */
+								//lecturerQuestionModel.setId(question._id);
+								appState.set("questionId", question._id);
 								answersTab.selectTab();
 							}
 						}));

@@ -38,6 +38,7 @@ define(
 		"dojo/fx",
 		"dgerhardt/common/confirmDialog",
 		"dgerhardt/common/fullscreen",
+		"arsnova-presenter/appState",
 		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/chart/piAnswers",
 		"arsnova-api/lecturerQuestion",
@@ -45,7 +46,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/lecturerAnswers"
 	],
-	function (on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, mathJax, piAnswersChart, lecturerQuestionModel, i18n, commonMessages, messages) {
+	function (on, when, promiseAll, dom, domConstruct, domClass, domStyle, registry, a11yclick, BorderContainer, ContentPane, Button, ComboButton, DropDownButton, Menu, MenuItem, CheckedMenuItem, fx, confirmDialog, fullScreen, appState, mathJax, piAnswersChart, lecturerQuestionModel, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -138,7 +139,8 @@ define(
 					showLabel: false,
 					iconClass: "iconFirst",
 					onClick: function () {
-						model.first();
+						var firstId = model.firstId(appState.get("mode"));
+						appState.set("questionId", firstId);
 					}
 				})).placeAt(answersNav).startup();
 				(prevButton = new Button({
@@ -147,7 +149,8 @@ define(
 					showLabel: false,
 					iconClass: "iconPrev",
 					onClick: function () {
-						model.prev();
+						var prevId = model.prevId(appState.get("questionId"), appState.get("mode"));
+						appState.set("questionId", prevId);
 					}
 				})).placeAt(answersNav).startup();
 				navigationStatusNode = domConstruct.create("span", {id: "piNavigationStatus", innerHTML: "0/0"}, answersNav);
@@ -157,7 +160,8 @@ define(
 					showLabel: false,
 					iconClass: "iconNext",
 					onClick: function () {
-						model.next();
+						var nextId = model.nextId(appState.get("questionId"), appState.get("mode"));
+						appState.set("questionId", nextId);
 					}
 				})).placeAt(answersNav).startup();
 				(lastButton = new Button({
@@ -166,7 +170,8 @@ define(
 					showLabel: false,
 					iconClass: "iconLast",
 					onClick: function () {
-						model.last();
+						var lastId = model.lastId(appState.get("mode"));
+						appState.set("questionId", lastId);
 					}
 				})).placeAt(answersNav).startup();
 
@@ -293,14 +298,21 @@ define(
 					}
 				});
 
-				model.watchId(onLecturerQuestionIdChange);
+				/* TODO: remove model.watchId when completely replaced */
+				//model.watchId(onLecturerQuestionIdChange);
+				appState.watch("questionId", onLecturerQuestionIdChange);
+				appState.watch("mode", function (name, oldValue, value) {
+					if (["pi", "jitt"].indexOf(value) !== -1) {
+						appState.set("questionId", lecturerQuestionModel.firstId(value));
+					}
+				});
 				model.onAnswersAvailable(function (questionId) {
-					if (model.getId() !== questionId) {
+					if (appState.get("questionId") !== questionId) {
 						return;
 					}
-					var question = model.get();
+					var question = model.get(questionId);
 					when(question, function (question) {
-						when(model.getAnswers(question.piRound, true), function () {
+						when(model.getAnswers(questionId, question.piRound, true), function () {
 							self.updateAnswers();
 						});
 					});
@@ -321,7 +333,8 @@ define(
 					return;
 				}
 
-				navigationStatusNode.innerHTML = (model.getPosition() + 1) + "/" + model.getCount();
+				navigationStatusNode.innerHTML = (model.position(appState.get("questionId"), appState.get("mode")) + 1)
+					+ "/" + model.count(appState.get("mode"));
 				domConstruct.empty(questionSubjectNode);
 				questionSubjectNode.appendChild(document.createTextNode(question.subject));
 				domConstruct.empty(questionTextNode);
@@ -360,9 +373,9 @@ define(
 				/* hide answer count until answers have been loaded */
 				domStyle.set(answerCountNode, "visibility", "hidden");
 
-				when(model.get(), function (question) {
+				when(model.get(appState.get("questionId")), function (question) {
 					if ("freetext" === question.questionType) {
-						when(model.getAnswers(), function (answers) {
+						when(model.getAnswers(question._id), function (answers) {
 							self.updateFreeText(answers);
 						});
 					} else {
@@ -371,7 +384,7 @@ define(
 							if (!showPiRoundMenuItem[i].get("checked")) {
 								continue;
 							}
-							rounds["PI round " + i] = model.getAnswers(i);
+							rounds["PI round " + i] = model.getAnswers(question._id, i);
 						}
 						/* update UI when data for answer rounds are ready */
 						promiseAll(rounds).then(self.updateAnswerStatistics);
@@ -431,7 +444,7 @@ define(
 			},
 
 			updateAnswerStatistics: function (rounds) {
-				var question = model.get();
+				var question = model.get(appState.get("questionId"));
 				var answerCountPerRound = [];
 				var possibleAnswersCount = 0;
 				var valueSeries = {};
@@ -579,7 +592,7 @@ define(
 				showPiRoundMenuItem[i].set("checked", false);
 			}
 			showAnswers = false;
-			var question = model.get();
+			var question = value ? model.get(value) : null;
 			when(question, function (question) {
 				self.updateQuestion(question);
 				if (question) {
@@ -632,7 +645,7 @@ define(
 
 		updateLocks = function () {
 			model.updateLocks(
-				null,
+				appState.get("questionId"),
 				!unlockQuestionMenuItem.get("checked"),
 				!unlockAnswerStatsMenuItem.get("checked"),
 				!unlockCorrectAnswerMenuItem.get("checked")
