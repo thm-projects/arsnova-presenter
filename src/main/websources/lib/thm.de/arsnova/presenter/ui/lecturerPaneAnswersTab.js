@@ -87,6 +87,7 @@ define(
 			showButton = null,
 			piRoundButton = null,
 			unlockButton = null,
+			alwaysShowAnswersMenuItem = null,
 			showCorrectMenuItem = null,
 			showPiRoundMenuItem = [],
 			unlockQuestionMenuItem = null,
@@ -176,6 +177,15 @@ define(
 				})).placeAt(answersNav).startup();
 
 				var showAnswersMenu = new Menu({style: "display: none"});
+				showAnswersMenu.addChild(alwaysShowAnswersMenuItem = new CheckedMenuItem({
+					label: messages.alwaysShowAnswers,
+					onClick: function () {
+						if (!showAnswers) {
+							self.updateAnswers();
+						}
+						showAnswers = true;
+					}
+				}));
 				showAnswersMenu.addChild(showCorrectMenuItem = new CheckedMenuItem({
 					label: messages.correctAnswers,
 					onClick: function () {
@@ -591,7 +601,7 @@ define(
 			for (i = 1; i < showPiRoundMenuItem.length; i++) {
 				showPiRoundMenuItem[i].set("checked", false);
 			}
-			showAnswers = false;
+			showAnswers = alwaysShowAnswersMenuItem.get("checked");
 			var question = value ? model.get(value) : null;
 			when(question, function (question) {
 				self.updateQuestion(question);

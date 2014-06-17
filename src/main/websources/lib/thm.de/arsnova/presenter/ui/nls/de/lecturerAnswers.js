@@ -5,6 +5,7 @@ define({
 	lastQuestion: "Letzte Frage",
 	nextQuestion: "Nächste Frage",
 	prevQuestion: "Vorherige Frage",
+	alwaysShowAnswers: "Antworten immer anzeigen",
 	correctAnswers: "Korrekte Antworten",
 	piBefore: "Vor Diskussion (1st)",
 	piAfter: "Nach Diskussion (2nd)",
