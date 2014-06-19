@@ -27,11 +27,12 @@ define(
 		"dijit/form/TextBox",
 		"dijit/form/CheckBox",
 		"dgerhardt/common/confirmDialog",
+		"arsnova-presenter/exporter",
 		"arsnova-api/session",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/session"
 	],
-	function (topic, dom, domConstruct, ContentPane, Form, Button, TextBox, CheckBox, confirmDialog, model, commonMessages, messages) {
+	function (topic, dom, domConstruct, ContentPane, Form, Button, TextBox, CheckBox, confirmDialog, exporter, model, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -85,6 +86,13 @@ define(
 						buttons[commonMessages.del] = self.deleteSession;
 						buttons[commonMessages.cancel] = null;
 						confirmDialog.confirm(messages.deleteSession, messages.deleteSessionConfirm, buttons);
+					}
+				})).placeAt(form).startup();
+
+				(new Button({
+					label: messages.export1,
+					onClick: function () {
+						exporter.exportSession();
 					}
 				})).placeAt(form).startup();
 

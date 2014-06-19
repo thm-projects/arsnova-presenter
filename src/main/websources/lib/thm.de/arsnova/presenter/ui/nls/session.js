@@ -14,7 +14,8 @@ define({
 		sessionSaved: "Session saved",
 		sessionNotSaved: "Session could not be saved",
 		sessionDeleted: "Session deleted",
-		sessionNotDeleted: "Session could not be deleted"
+		sessionNotDeleted: "Session could not be deleted",
+		export1: "Export"
 	},
 
 	de: true

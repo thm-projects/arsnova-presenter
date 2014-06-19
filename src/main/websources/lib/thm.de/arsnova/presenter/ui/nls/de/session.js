@@ -12,5 +12,6 @@ define({
 	sessionSaved: "Session gespeichert",
 	sessionNotSaved: "Session konnte nicht gespeichert werden",
 	sessionDeleted: "Session gelöscht",
-	sessionNotDeleted: "Session konnte nicht gelöscht werden"
+	sessionNotDeleted: "Session konnte nicht gelöscht werden",
+	export1: "Exportieren"
 });
