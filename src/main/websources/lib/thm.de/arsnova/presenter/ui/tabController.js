@@ -182,7 +182,7 @@ define(
 					});
 				}
 
-				if (appMode.EDITING === activeMode && modified) {
+				if (appMode.EDITING === activeMode && modified && inSession) {
 					var buttons = {};
 					buttons[commonMessages.proceed] = lang.hitch(this, function () {
 						this.switchMode(mode);
