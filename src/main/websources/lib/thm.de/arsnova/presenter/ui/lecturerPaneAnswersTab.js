@@ -220,7 +220,7 @@ define(
 					onClick: function () {
 						var buttons = {};
 						buttons[commonMessages.proceed] = function () {
-							model.startSecondPiRound().then(function () {
+							model.startSecondPiRound(appState.get("questionId")).then(function () {
 								piRoundButton.set("label", "2nd");
 								piRoundButton.set("disabled", true);
 								showPiRoundMenuItem[2].set("disabled", false);
