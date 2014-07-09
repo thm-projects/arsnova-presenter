@@ -44,10 +44,10 @@ define(
 			title: messages.questions,
 			questionListNode: null,
 
-			init: function (editing, questionVariant) {
+			init: function (editing, type) {
 				this.editing = editing;
-				this.questionVariant = questionVariant;
-				this.title = "lecture" === questionVariant ? messages.lectureQuestions : messages.preparationQuestions;
+				this.type = type;
+				this.title = "lecture" === type ? messages.lectureQuestions : messages.preparationQuestions;
 
 				this.questionListNode = domConstruct.create("div", {"class": "lecturerQuestionList"}, this.domNode);
 
@@ -91,15 +91,15 @@ define(
 
 					var handleQuestion = lang.hitch(this, function (question) {
 						var questionNode = domConstruct.create("p", {"class": "question", tabindex: 0}, categoryNode);
-						questionNode.appendChild(document.createTextNode(question.text));
+						questionNode.appendChild(document.createTextNode(question.body));
 						mathJax.parse(questionNode);
 						on(questionNode, a11yclick, lang.hitch(this, function (event) {
 							if (this.editing) {
-								topic.publish("arsnova/question/edit", question._id);
+								topic.publish("arsnova/question/edit", question.id);
 							} else {
 								/* TODO: remove model.setId when completely replaced */
-								//lecturerQuestionModel.setId(question._id);
-								appState.set("questionId", question._id);
+								//lecturerQuestionModel.setId(question.id);
+								appState.set("questionId", question.id);
 								answersTab.selectTab();
 							}
 						}));
@@ -118,14 +118,15 @@ define(
 
 			load: function () {
 				this.showModalMessage(messages.loadingQuestions + "...", "info");
-				var questions = lecturerQuestionModel.getAll().filter(lang.hitch(this, function (question) {
-					if ("lecture" === this.questionVariant) {
-						return !question.questionVariant || "lecture" === question.questionVariant;
-					} else {
-						return question.questionVariant && this.questionVariant === question.questionVariant;
-					}
-				}));
-				when(questions, lang.hitch(this, function (questions) {
+				var self = this;
+				when(lecturerQuestionModel.getAll(), lang.hitch(this, function (cache) {
+					var questions = cache.filter(lang.hitch(this, function (question) {
+						if ("lecture" === this.type) {
+							return !question.type || "lecture" === question.type;
+						} else {
+							return question.type && this.type === question.type;
+						}
+					}));
 					this.update(questions);
 				}));
 			},

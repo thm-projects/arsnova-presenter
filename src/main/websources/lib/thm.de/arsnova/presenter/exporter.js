@@ -18,6 +18,7 @@
  */
 define(
 	[
+		"dojo/_base/lang",
 		"dojo/dom-construct",
 		"dojo/dom-style",
 		"dojo/promise/all",
@@ -26,7 +27,7 @@ define(
 		"arsnova-api/lecturerQuestion",
 		"arsnova-api/audienceQuestion"
 	],
-	function (domConstruct, domStyle, all, when, sessionModel, lecturerQuestionModel, audienceQuestionModel) {
+	function (lang, domConstruct, domStyle, all, when, sessionModel, lecturerQuestionModel, audienceQuestionModel) {
 		"use strict";
 
 		var
@@ -38,29 +39,40 @@ define(
 		self = {
 			exportSession: function () {
 				var
-					session = sessionModel.getCurrent(),
+					session = lang.clone(sessionModel.getCurrent()),
 					promises = []
 				;
 
+				delete session._hidden;
+				delete session._scenario;
+				session.questions = [];
 				lecturerQuestionModel.getAll().then(function (lecturerQuestions) {
 					lecturerQuestions.forEach(function (question) {
+						question = lang.clone(question);
+						delete question._hidden;
+						delete question._scenario;
+						session.questions.push(question);
 						question.answers = [];
-						if (!question.piRound || question.piRound < 1) {
-							question.piRound = 1;
+						if (!question.round || question.round < 1) {
+							question.round = 1;
 						}
 						var promise;
 						var promiseFunc = function (answers) {
-							question.answers.push(answers);
+							answers.forEach(function (answer) {
+								answer = lang.clone(answer);
+								delete answer._hidden;
+								delete answer._scenario;
+								delete answer._id;
+								question.answers.push(answer);
+							});
 						};
-						for (var i = 1; i <= question.piRound; i++) {
-							promises.push(promise = lecturerQuestionModel.getAnswers(question._id, i));
-							console.debug(promise);
+						for (var i = 1; i <= question.round; i++) {
+							promises.push(promise = lecturerQuestionModel.getAnswers(question.id, i));
 							when(promise).then(promiseFunc);
 						}
 					});
-					session.questions = lecturerQuestions;
 					all(promises).then(function (answers) {
-						self.saveJson(session, session.keyword);
+						self.saveJson(session, session.id);
 					});
 				});
 			},

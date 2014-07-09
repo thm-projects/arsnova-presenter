@@ -322,7 +322,7 @@ define(
 					}
 					var question = model.get(questionId);
 					when(question, function (question) {
-						when(model.getAnswers(questionId, question.piRound, true), function () {
+						when(model.getAnswers(questionId, question.round, true), function () {
 							self.updateAnswers();
 						});
 					});
@@ -348,19 +348,19 @@ define(
 				domConstruct.empty(questionSubjectNode);
 				questionSubjectNode.appendChild(document.createTextNode(question.subject));
 				domConstruct.empty(questionTextNode);
-				questionTextNode.appendChild(document.createTextNode(question.text));
+				questionTextNode.appendChild(document.createTextNode(question.body));
 				mathJax.parse(questionTextNode);
 				answersContainer.resize();
 				registry.byId("fullScreenContainer").resize();
 
-				if ("freetext" === question.questionType) {
+				if ("freetext" === question.format) {
 					piAnswersChart.hide();
 					domConstruct.empty(freeTextAnswersNode);
 					domStyle.set(freeTextAnswersNode, "display", "block");
 					domStyle.set(piRoundButton.domNode, "display", "none");
 				} else {
 					domStyle.set(freeTextAnswersNode, "display", "none");
-					if (2 === question.piRound) {
+					if (2 === question.round) {
 						piRoundButton.set("label", "2nd");
 						piRoundButton.set("disabled", true);
 					} else {
@@ -368,10 +368,10 @@ define(
 						piRoundButton.set("disabled", false);
 					}
 					domStyle.set(piRoundButton.domNode, "display", "");
-					question.possibleAnswers.forEach(function (possibleAnswer, i) {
+					question.answerOptions.forEach(function (possibleAnswer, i) {
 						labels.push({value: i + 1, text: possibleAnswer.text});
 					});
-					if (question.abstention) {
+					if (question.allowAbstentions) {
 						labels.push({value: labels.length + 1, text: messages.abstentions});
 					}
 					piAnswersChart.show();
@@ -384,8 +384,8 @@ define(
 				domStyle.set(answerCountNode, "visibility", "hidden");
 
 				when(model.get(appState.get("questionId")), function (question) {
-					if ("freetext" === question.questionType) {
-						when(model.getAnswers(question._id), function (answers) {
+					if ("freetext" === question.format) {
+						when(model.getAnswers(question.id), function (answers) {
 							self.updateFreeText(answers);
 						});
 					} else {
@@ -394,7 +394,7 @@ define(
 							if (!showPiRoundMenuItem[i].get("checked")) {
 								continue;
 							}
-							rounds["PI round " + i] = model.getAnswers(question._id, i);
+							rounds["PI round " + i] = model.getAnswers(question.id, i);
 						}
 						/* update UI when data for answer rounds are ready */
 						promiseAll(rounds).then(self.updateAnswerStatistics);
@@ -407,10 +407,10 @@ define(
 				var abstentionCount = 0;
 				domConstruct.empty(freeTextAnswersNode);
 				answers.sort(function (obj1, obj2) {
-					return obj2.timestamp - obj1.timestamp;
+					return obj2.creation - obj1.creation;
 				});
 				answers.forEach(function (answer) {
-					totalAnswerCount += answer.answerCount;
+					totalAnswerCount++;
 
 					if (!showAnswers) {
 						return;
@@ -423,11 +423,11 @@ define(
 
 					var answerNode = domConstruct.create("div", {"class": "answer", tabindex: 0});
 					var subjectNode = domConstruct.create("p", {"class": "subject"}, answerNode);
-					subjectNode.appendChild(document.createTextNode(answer.answerSubject));
+					subjectNode.appendChild(document.createTextNode(answer.subject));
 					var deleteNode = domConstruct.create("span", {"class": "delete", tabindex: 0, title: commonMessages.del, innerHTML: "x"}, answerNode);
 					domConstruct.create("div", {"class": "clearFix"}, answerNode);
 					var messageNode = domConstruct.create("p", {"class": "message"}, answerNode);
-					messageNode.appendChild(document.createTextNode(answer.answerText));
+					messageNode.appendChild(document.createTextNode(answer.body));
 					mathJax.parse(messageNode);
 					on(answerNode, a11yclick, function () {
 						domClass.toggle(this, "opened");
@@ -438,7 +438,7 @@ define(
 						}
 						var buttons = {};
 						buttons[commonMessages.del] = function () {
-							model.removeAnswer(answer.questionId, answer._id);
+							model.removeAnswer(answer.questionId, answer.id);
 							domConstruct.destroy(answerNode);
 						};
 						buttons[commonMessages.cancel] = null;
@@ -464,7 +464,7 @@ define(
 				var correctIndexes = [];
 				var abstentionCount = 0;
 
-				question.possibleAnswers.forEach(function (possibleAnswer, i) {
+				question.answerOptions.forEach(function (possibleAnswer, i) {
 					/* transform the label and answer count data into arrays usable by dojox/charting */
 					labelReverseMapping[possibleAnswer.text] = i;
 					labels.push({value: i + 1, text: possibleAnswer.text});
@@ -475,7 +475,7 @@ define(
 					possibleAnswersCount++;
 				});
 
-				if (question.abstention) {
+				if (question.allowAbstentions) {
 					labels.push({value: labels.length + 1, text: messages.abstentions});
 					values.push(0);
 					possibleAnswersCount++;
@@ -493,27 +493,27 @@ define(
 				var percentageValues = true; //roundNames.length > 1;
 
 				var handleAnswer = function (answer) {
-					answerCountPerRound[round] += answer.answerCount;
+					answerCountPerRound[round] += answer.count;
 
 					if (!showAnswers) {
 						return;
 					}
 
-					if (!answer.answerText) {
+					if (!answer.choices) {
 						/* handle abstentions */
 						abstentionCount = answer.abstentionCount;
 					} else {
-						if ("mc" === question.questionType) {
+						if ("mc" === question.format) {
 							/* handle selected options for multiple choice questions */
-							var selectedOptions = answer.answerText.split(",");
+							var selectedOptions = answer.choices.split(",");
 							for (var j = 0; j < selectedOptions.length; j++) {
 								if (1 === parseInt(selectedOptions[j], 10)) {
-									values[j] += answer.answerCount;
+									values[j] += answer.count;
 								}
 							}
 						} else {
 							/* handle single answer option */
-							values[labelReverseMapping[answer.answerText]] = answer.answerCount;
+							values[labelReverseMapping[answer.choices]] = answer.count;
 						}
 					}
 				};
@@ -529,7 +529,7 @@ define(
 					answerCountPerRound[round] = 0;
 					answers.forEach(handleAnswer);
 
-					if (question.abstention) {
+					if (question.allowAbstentions) {
 						values[values.length - 1] = abstentionCount;
 					}
 
@@ -542,7 +542,7 @@ define(
 
 					var countNode = null;
 					/* only display PI round label if PI has been started */
-					if (question.piRound > 1) {
+					if (question.round > 1) {
 						var piRoundNode = domConstruct.create("span", {"class": "piRound"}, answerCountNode);
 						var roundString = "PI round 2" === round ? "2nd" : ("PI round 1" === round ? "1st" : "");
 						piRoundNode.appendChild(document.createTextNode(roundString));
@@ -553,7 +553,7 @@ define(
 					countNode.appendChild(document.createTextNode(answerCountPerRound[round]));
 					domStyle.set(answerCountNode, "visibility", "visible");
 				}
-				piAnswersChart.update(labels, correctIndexes, valueSeries, percentageValues, question.abstention);
+				piAnswersChart.update(labels, correctIndexes, valueSeries, percentageValues, question.allowAbstentions);
 			},
 
 			toggleFullScreenMode: function () {
@@ -607,9 +607,9 @@ define(
 				self.updateQuestion(question);
 				if (question) {
 					unlockQuestionMenuItem.set("checked", question.active);
-					unlockAnswerStatsMenuItem.set("checked", question.showStatistic);
-					unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);
-					if ("freetext" === question.questionType) {
+					unlockAnswerStatsMenuItem.set("checked", question.publishResults);
+					unlockCorrectAnswerMenuItem.set("checked", question.publishCorrectAnswer);
+					if ("freetext" === question.format) {
 						showCorrectMenuItem.set("disabled", true);
 						for (i = 1; i < showPiRoundMenuItem.length; i++) {
 							showPiRoundMenuItem[i].set("disabled", true);
@@ -619,23 +619,23 @@ define(
 						unlockAnswerStatsMenuItem.set("label", messages.viewOfAnswers);
 					} else {
 						var noCorrectAnswer = true;
-						question.possibleAnswers.forEach(function (answer) {
+						question.answerOptions.forEach(function (answer) {
 							if (answer.correct) {
 								noCorrectAnswer = false;
 							}
 						});
 						showCorrectMenuItem.set("disabled", noCorrectAnswer);
 						unlockCorrectAnswerMenuItem.set("disabled", noCorrectAnswer);
-						unlockCorrectAnswerMenuItem.set("checked", question.showAnswer);
+						unlockCorrectAnswerMenuItem.set("checked", question.publishCorrectAnswer);
 						unlockAnswerStatsMenuItem.set("label", messages.answerStatistics);
 						for (i = 1; i < showPiRoundMenuItem.length; i++) {
-							if (i > question.piRound) {
+							if (i > question.round) {
 								showPiRoundMenuItem[i].set("disabled", true);
 							} else {
 								showPiRoundMenuItem[i].set("disabled", false);
 							}
 						}
-						showPiRoundMenuItem[question.piRound].set("checked", true);
+						showPiRoundMenuItem[question.round].set("checked", true);
 					}
 					self.updateAnswers();
 					self.enableControls(true);

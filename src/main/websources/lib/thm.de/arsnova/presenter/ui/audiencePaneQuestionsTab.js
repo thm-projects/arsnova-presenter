@@ -140,18 +140,18 @@ define(
 				if (!question.read) {
 					domClass.add(questionNode, "unread");
 				}
-				if (question.text) {
+				if (question.body) {
 					domClass.add(questionNode, "loaded");
-					messageNode.appendChild(document.createTextNode(question.text));
+					messageNode.appendChild(document.createTextNode(question.body));
 					mathJax.parse(messageNode);
 				}
-				var date = new Date(question.timestamp);
+				var date = new Date(question.creation);
 				var dateTime = dateLocale.format(date, {selector: "date", formatLength: "long"})
 					+ " " + dateLocale.format(date, {selector: "time", formatLength: "short"})
 				;
 				domConstruct.create("footer", {"class": "creationTime", innerHTML: dateTime}, questionNode);
 				on(questionNode, a11yclick, function (event) {
-					self.openQuestion(question._id, questionNode, messageNode);
+					self.openQuestion(question.id, questionNode, messageNode);
 				});
 				on(deleteNode, a11yclick, function (event) {
 					if (event.stopPropagation) { /* IE8 does not support stopPropagation */
@@ -159,7 +159,7 @@ define(
 					}
 					var buttons = {};
 					buttons[commonMessages.del] = function () {
-						model.remove(question._id);
+						model.remove(question.id);
 						domConstruct.destroy(questionNode);
 						if (0 === questionListNode.children.length) {
 							pane.showModalMessage(messages.noQuestions, "gray");
@@ -186,7 +186,7 @@ define(
 					domClass.remove(questionNode, "unread");
 					domClass.add(questionNode, "opened");
 					domClass.add(questionNode, "loaded");
-					messageNode.appendChild(document.createTextNode(question.text));
+					messageNode.appendChild(document.createTextNode(question.body));
 					mathJax.parse(messageNode);
 				});
 			},
@@ -218,7 +218,7 @@ define(
 				var questions = audienceQuestionModel.getAll();
 				when(questions, function (questions) {
 					questions.sort(function (obj1, obj2) {
-						return obj1.timestamp - obj2.timestamp;
+						return obj1.creation - obj2.creation;
 					});
 					self.update(questions);
 				});

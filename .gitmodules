@@ -25,3 +25,6 @@
 [submodule "vendor/mathjax.org/mathjax"]
 	path = vendor/mathjax.org/mathjax
 	url = git://github.com/mathjax/MathJax.git
+[submodule "vendor/sitepen.com/dstore"]
+	path = vendor/sitepen.com/dstore
+	url = https://github.com/SitePen/dstore.git
