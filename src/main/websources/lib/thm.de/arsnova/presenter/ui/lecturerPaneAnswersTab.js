@@ -415,7 +415,7 @@ define(
 					if (!showAnswers) {
 						return;
 					}
-					if (answer.abstention) {
+					if (!answer.subject && !answer.body) {
 						abstentionCount++;
 
 						return;
@@ -501,7 +501,7 @@ define(
 
 					if (!answer.choices) {
 						/* handle abstentions */
-						abstentionCount = answer.abstentionCount;
+						abstentionCount = answer.count;
 					} else {
 						if ("mc" === question.format) {
 							/* handle selected options for multiple choice questions */
