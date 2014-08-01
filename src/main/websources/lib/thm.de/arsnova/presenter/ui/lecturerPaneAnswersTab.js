@@ -503,12 +503,16 @@ define(
 						/* handle abstentions */
 						abstentionCount = answer.abstentionCount;
 					} else {
-						if ("mc" === question.questionType) {
+						if ("mc" === question.questionType || "grid" === question.questionType) {
 							/* handle selected options for multiple choice questions */
 							var selectedOptions = answer.answerText.split(",");
 							for (var j = 0; j < selectedOptions.length; j++) {
-								if (1 === parseInt(selectedOptions[j], 10)) {
-									values[j] += answer.answerCount;
+								if ("mc" === question.questionType) {
+									if (1 === parseInt(selectedOptions[j], 10)) {
+										values[j] += answer.answerCount;
+									}
+								} else {
+									values[labelReverseMapping[selectedOptions[j]]] += 1;
 								}
 							}
 						} else {
