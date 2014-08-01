@@ -264,7 +264,7 @@ define(
 				productMenu.addChild(new MenuItem({
 					label: messages.website,
 					onClick: function () {
-						window.open("http://blog.mni.thm.de/arsnova/arsnova-blog/", "_blank");
+						window.open("http://link.audience-response.org/presenter-website", "_blank");
 					}
 				}));
 				productMenu.startup();
@@ -287,6 +287,15 @@ define(
 								}
 							}));
 						});
+					}
+
+					if (globalConfig.get().organizationUrl) {
+						organizationMenu.addChild(new MenuItem({
+							label: messages.website,
+							onClick: function () {
+								window.open(globalConfig.get().organizationUrl, "_blank");
+							}
+						}));
 					}
 
 					if (globalConfig.get().imprintUrl) {
