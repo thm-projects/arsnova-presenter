@@ -46,7 +46,7 @@
 		<outputDir>${project.build.directory}/${project.build.finalName}</outputDir>
 		<submodule.libarsnova-js.path>${basedir}/vendor/thm.de/arsnova/libarsnova-js</submodule.libarsnova-js.path>
 		<submodule.dgerhardt-dojo.path>${basedir}/vendor/dgerhardt.net/dgerhardt-dojo</submodule.dgerhardt-dojo.path>
-		<jetty.version>9.2.1.v20140609</jetty.version>
+		<jetty.version>9.2.2.v20140723</jetty.version>
 		<jetty.scanInterval>10</jetty.scanInterval>
 		<sonar.language>js</sonar.language>
 	</properties>
@@ -124,7 +124,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.4</version>
 				<configuration>
 					<locales>en,de</locales>
 				</configuration>
@@ -191,7 +191,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.2.1</version>
+						<version>1.3.2</version>
 						<executions>
 							<execution>
 								<id>run-build-script</id>
@@ -284,7 +284,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.2.1</version>
+						<version>1.3.2</version>
 						<executions>
 							<execution>
 								<id>run-build-script</id>
