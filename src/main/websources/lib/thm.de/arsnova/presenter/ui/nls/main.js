@@ -18,7 +18,9 @@ define({
 		modeChange: "Mode change",
 		leaveEditingConfirm: "You are leaving editing mode. Unsafed changes will be lost.",
 		imprint: "Imprint",
-		privacyPolicy: "Privacy"
+		privacyPolicy: "Privacy",
+		slowConnection: "Slow connection",
+		insufficientConnection: "Insufficient connection"
 	},
 
 	de: true

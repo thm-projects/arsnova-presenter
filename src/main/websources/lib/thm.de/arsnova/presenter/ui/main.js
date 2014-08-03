@@ -22,6 +22,7 @@ define(
 		"dojo/on",
 		"dojo/topic",
 		"dojo/dom-construct",
+		"dojo/dom-class",
 		"dojo/dom-geometry",
 		"dojo/dom-style",
 		"dojo/date/locale",
@@ -42,11 +43,12 @@ define(
 		"arsnova-presenter/ui/timer",
 		"arsnova-presenter/ui/infoDialog",
 		"arsnova-api/globalConfig",
+		"arsnova-api/socket",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"
 	],
-	function (config, on, topic, domConstruct, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, tabController, timer, infoDialog, globalConfig, i18n, commonMessages, messages) {
+	function (config, on, topic, domConstruct, domClass, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, tabController, timer, infoDialog, globalConfig, socket, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -67,6 +69,7 @@ define(
 			footerPane = null,
 			fullScreenContainer = null,
 			timeTooltip = null,
+			latencyTooltip = null,
 			fullScreenMenuItem = null
 		;
 
@@ -268,6 +271,29 @@ define(
 					}
 				}));
 				productMenu.startup();
+
+				var latencyInfoNode = domConstruct.create("span", {id: "latencyInfo"}, footerPane.domNode);
+				latencyInfoNode.textContent = "(!)";
+				domClass.add(latencyInfoNode, "low");
+
+				(latencyTooltip = new Tooltip({
+					connectId: [latencyInfoNode],
+					position: ["above-centered"]
+				})).startup();
+
+				socket.onLatencyUpdate(function (latency) {
+					domClass.remove(latencyInfoNode);
+					if (latency < 0) {
+						domClass.add(latencyInfoNode, "high");
+						latencyTooltip.set("label", messages.insufficientConnection);
+					} else if (latency >= 1000) {
+						domClass.add(latencyInfoNode, "medium");
+						latencyTooltip.set("label", messages.slowConnection);
+					} else {
+						domClass.add(latencyInfoNode, "low");
+						latencyTooltip.set("label", "");
+					}
+				});
 
 				if (config.arsnova.organization) {
 					var org = config.arsnova.organization;
