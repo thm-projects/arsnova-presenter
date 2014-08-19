@@ -15,5 +15,7 @@ define({
 	modeChange: "Moduswechsel",
 	leaveEditingConfirm: "Sie verlassen den Bearbeitungsmodus. Ungespeicherte Änderungen werden verworfen.",
 	imprint: "Impressum",
-	privacyPolicy: "Datenschutz"
+	privacyPolicy: "Datenschutz",
+	slowConnection: "Langsame Verbindung",
+	insufficientConnection: "Unzureichende Verbindungsqualität"
 });

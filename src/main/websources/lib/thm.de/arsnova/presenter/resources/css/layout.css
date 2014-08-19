@@ -345,6 +345,24 @@ html, body {
 	cursor: pointer;
 }
 
+#latencyInfo {
+	float: left;
+	padding-left: 0.25em;
+	font-weight: bold;
+}
+
+#latencyInfo.low {
+	display: none;
+}
+
+#latencyInfo.medium {
+	color: #c90;
+}
+
+#latencyInfo.high {
+	color: #c00;
+}
+
 #infoDialogProductInfoTab > .productLogo, #infoDialogProductInfoTab > .thmLogo {
 	margin-left: auto;
 	margin-right: auto;
