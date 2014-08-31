@@ -10,7 +10,7 @@ define({
 		lectureMode: "Lecture",
 		preparationMode: "Preparation",
 		subject: "Subject",
-		description: "Text",
+		description: "Question",
 		format: "Format",
 		answerOption: "Answer option",
 		correctAnswers: "Correct answers",

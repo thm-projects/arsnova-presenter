@@ -8,7 +8,7 @@ define({
 	lectureMode: "Hörsaal",
 	preparationMode: "Vorbereitung",
 	subject: "Thema",
-	description: "Text",
+	description: "Frage",
 	format: "Format",
 	answerOption: "Antwortoption",
 	correctAnswers: "Korrekte Antworten",
