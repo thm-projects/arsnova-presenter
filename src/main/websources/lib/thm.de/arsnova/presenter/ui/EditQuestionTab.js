@@ -22,6 +22,7 @@ define(
 		"dojo/_base/declare",
 		"dojo/on",
 		"dojo/topic",
+		"dojo/keys",
 		"dojo/dom-construct",
 		"dojo/dom-style",
 		"dgerhardt/dijit/layout/ContentPane",
@@ -43,7 +44,7 @@ define(
 		"dojo/i18n!./nls/lecturerQuestions",
 		"dojo/i18n!./nls/answerOptions"
 	],
-	function (lang, declare, on, topic, domConstruct, domStyle, ContentPane, Form, Button, TextBox, TextArea, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, MemoryStore, confirmDialog, lecturerQuestion, i18n, commonMessages, messages, answerOptions) {
+	function (lang, declare, on, topic, keys, domConstruct, domStyle, ContentPane, Form, Button, TextBox, TextArea, Select, MultiSelect, ComboBox, CheckBox, RadioButton, CheckedMultiSelect, MemoryStore, confirmDialog, lecturerQuestion, i18n, commonMessages, messages, answerOptions) {
 		"use strict";
 
 		var self, tabs = [];
@@ -151,20 +152,26 @@ define(
 
 				this.addAnswerContainer = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.answerOption}, this.addAnswerContainer);
+				var addAnswerOption = lang.hitch(this, function () {
+					var type = this.getAnswerOptionType();
+					var value = this.addAnswerOptionField.get("value");
+					if (!value) {
+						return;
+					}
+					this.addAnswerOption(value, type, true);
+					this.addAnswerOptionField.set("value", "");
+				});
 				(this.addAnswerOptionField = new TextBox({
-					trim: true
+					trim: true,
+					onKeyPress: function (e) {
+						if (keys.ENTER === e.charOrCode) {
+							addAnswerOption();
+						}
+					}
 				})).placeAt(this.addAnswerContainer).startup();
 				(this.addAnswerButton = new Button({
 					label: commonMessages.add,
-					onClick: lang.hitch(this, function () {
-						var type = this.getAnswerOptionType();
-						var value = this.addAnswerOptionField.get("value");
-						if (!value) {
-							return;
-						}
-						this.addAnswerOption(value, type, true);
-						this.addAnswerOptionField.set("value", "");
-					})
+					onClick: addAnswerOption
 				})).placeAt(this.addAnswerContainer).startup();
 				if (this.questionId) {
 					domStyle.set(this.addAnswerContainer, "display", "none");
