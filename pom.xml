@@ -260,7 +260,7 @@
 							<contextHandlers>
 								<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
 									<contextPath>/</contextPath>
-									<war>${project.build.directory}/war/arsnova-war.war</war>
+									<war>${project.build.directory}/war/arsnova-backend.war</war>
 								</contextHandler>
 							</contextHandlers>
 						</configuration>
@@ -354,7 +354,7 @@
 							<contextHandlers>
 								<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
 									<contextPath>/</contextPath>
-									<war>${project.build.directory}/war/arsnova-war.war</war>
+									<war>${project.build.directory}/war/arsnova-backend.war</war>
 								</contextHandler>
 							</contextHandlers>
 						</configuration>
@@ -383,11 +383,11 @@
 									<artifactItems>
 										<artifactItem>
 											<groupId>de.thm.arsnova</groupId>
-											<artifactId>arsnova-war</artifactId>
+											<artifactId>arsnova-backend</artifactId>
 											<version>2.0.0-SNAPSHOT</version>
 											<type>war</type>
 											<overWrite>true</overWrite>
-											<destFileName>arsnova-war.war</destFileName>
+											<destFileName>arsnova-backend.war</destFileName>
 										</artifactItem>
 									</artifactItems>
 									<outputDirectory>${project.build.directory}/war</outputDirectory>

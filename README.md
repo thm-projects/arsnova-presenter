@@ -9,15 +9,15 @@ Presenter is a rich internet application for lecturers intended to be used for p
 * Git
 * Java JDK 7 or OpenJDK 7
 * Maven 3
-* (CouchDB set up for ARSnova, see arsnova-war documentation and setuptool)
+* (CouchDB set up for ARSnova, see arsnova-backend documentation and arsnova-setuptool)
 
 ### Obtaining the source code
 
 Create a clone of the Presenter repository:
 
-	$ git clone git://scm.thm.de/arsnova/arsnova-presenter.git presenter
+	$ git clone https://github.com/thm-projects/arsnova-presenter.git presenter
 	$ cd presenter
-	
+
 New features for the next release are developed on the master branch. Each minor release has its own maintenance branch which is called x.y-stable. Bugs affecting the stable version and the master should be fixed in the maintenance branch which is merged into master afterwards. Doing it the other way around would cause new features from master to be merged into the maintenance branch.
 
 The following commands check out a maintenance branch, commit changes and merge them into master.
@@ -77,7 +77,7 @@ While ARSnova Presenter runs on any platform supported by Java servlet container
 
 ### Adjusting settings for a production environment
 
-If the ARSnova RESTful API (provided by arsnova-war) is not deployed in the ROOT context (/) of the servlet container, you need to make the adjustments to the file src/main/websources/prod.html. Look for the following section:
+If the ARSnova RESTful API (provided by arsnova-backend) is not deployed in the ROOT context (/) of the servlet container, you need to make the adjustments to the file src/main/websources/prod.html. Look for the following section:
 
 	var dojoConfig = {
 		arsnova: {
@@ -88,7 +88,7 @@ If the ARSnova RESTful API (provided by arsnova-war) is not deployed in the ROOT
 		}
 	};
 
-Prepend the context path of arsnova-war to the URLs set with "mobileStudentSessionUrl" and "root". If you are planning to run Presenter under another (sub)domain you have to make sure that arsnova-war is configured correctly to allow Cross Origin Requests (CORS) form that host. Otherwise browsers will block the requests sent by Presenter.
+Prepend the context path of arsnova-backend to the URLs set with "mobileStudentSessionUrl" and "root". If you are planning to run Presenter under another (sub)domain you have to make sure that arsnova-backend is configured correctly to allow Cross Origin Requests (CORS) form that host. Otherwise browsers will block the requests sent by Presenter.
 
 ### Building a package for a production environment
 
@@ -100,10 +100,10 @@ To create a WAR archive ready for deployment in a Java servlet container run the
 
 ### Requirements
 
-* a Java servlet container already running arsnova-war
+* a Java servlet container already running arsnova-backend
 * the Presenter application in form of a webarchive (.war file)
 
-Presenter is a front end application running on top of arsnova-war. See installation instructions provided by arsnova-war if it is not installed yet. If you want to adjust the default settings of Presenter and/or do not want to use a provided .war archive, start with the "Build" section.
+Presenter is a front end application running on top of arsnova-backend. See installation instructions provided by arsnova-backend if it is not installed yet. If you want to adjust the default settings of Presenter and/or do not want to use a provided .war archive, start with the "Build" section.
 
 ### Deployment in a Java servlet container
 
