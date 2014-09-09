@@ -37,7 +37,8 @@ define({
 		imprint: "Imprint",
 		privacyPolicy: "Privacy",
 		slowConnection: "Slow connection",
-		insufficientConnection: "Insufficient connection"
+		insufficientConnection: "Insufficient connection",
+		manual: "Manual"
 	},
 
 	de: true

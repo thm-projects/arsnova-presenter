@@ -264,6 +264,16 @@ define(
 					onClick: infoDialog.show
 				}));
 				productMenu.addChild(new MenuItem({
+					label: messages.manual,
+					onClick: function () {
+						var manualUrl = globalConfig.get().presenterDocumentationUrl ||
+							globalConfig.get().documentationUrl ||
+							"http://link.audience-response.org/presenter-manual"
+						;
+						window.open(manualUrl, "_blank");
+					}
+				}));
+				productMenu.addChild(new MenuItem({
 					label: messages.website,
 					onClick: function () {
 						window.open("http://link.audience-response.org/presenter-website", "_blank");

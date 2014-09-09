@@ -34,5 +34,6 @@ define({
 	imprint: "Impressum",
 	privacyPolicy: "Datenschutz",
 	slowConnection: "Langsame Verbindung",
-	insufficientConnection: "Unzureichende Verbindungsqualität"
+	insufficientConnection: "Unzureichende Verbindungsqualität",
+	manual: "Handbuch"
 });
