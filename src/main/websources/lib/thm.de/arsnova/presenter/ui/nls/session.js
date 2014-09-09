@@ -15,7 +15,10 @@ define({
 		sessionNotSaved: "Session could not be saved",
 		sessionDeleted: "Session deleted",
 		sessionNotDeleted: "Session could not be deleted",
-		export1: "Export"
+		export1: "Export",
+		createSession: "Create session",
+		noSessions: "No sessions",
+		startWithNewSession: "You have not yet created any sessions. Do you want to switch to editing mode and create a new session?"
 	},
 
 	de: true

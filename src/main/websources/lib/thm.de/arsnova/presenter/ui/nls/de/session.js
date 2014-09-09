@@ -13,5 +13,8 @@ define({
 	sessionNotSaved: "Session konnte nicht gespeichert werden",
 	sessionDeleted: "Session gelöscht",
 	sessionNotDeleted: "Session konnte nicht gelöscht werden",
-	export1: "Exportieren"
+	export1: "Exportieren",
+	createSession: "Session erstellen",
+	noSessions: "Keine Sessions",
+	startWithNewSession: "Sie haben bisher noch keine Sessions angelegt. Möchsten Sie in den Bearbeitungsmodus wechseln und eine neue Session erstellen?"
 });

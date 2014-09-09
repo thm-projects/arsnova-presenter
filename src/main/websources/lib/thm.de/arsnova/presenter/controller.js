@@ -20,6 +20,7 @@ define(
 	[
 		"dojo/ready",
 		"dojo/router",
+		"dgerhardt/common/confirmDialog",
 		"arsnova-presenter/appState",
 		"arsnova-presenter/ui/main",
 		"arsnova-presenter/ui/authControls",
@@ -27,9 +28,12 @@ define(
 		"arsnova-presenter/ui/tabController",
 		"arsnova-api/socket",
 		"arsnova-api/auth",
-		"arsnova-api/session"
+		"arsnova-api/session",
+		"dojo/i18n",
+		"dojo/i18n!./ui/nls/common",
+		"dojo/i18n!./ui/nls/session"
 	],
-	function (ready, router, appState, mainUi, authControls, sessionControls, tabController, socket, authService, sessionModel) {
+	function (ready, router, confirmDialog, appState, mainUi, authControls, sessionControls, tabController, socket, authService, sessionModel, i18n, commonMessages, sessionMessages) {
 		"use strict";
 
 		var init = function () {
@@ -55,6 +59,21 @@ define(
 					sessionControls.startup();
 					authControls.startup();
 					tabController.startup();
+					if (0 === sessionModel.getOwned().length) {
+						var buttons = {};
+						buttons[sessionMessages.createSession] = function () {
+							/* TODO: use constant, see tabController, PI = 1 */
+							tabController.selectMode(1);
+							sessionControls.showNewSessionDialog();
+						};
+						buttons[commonMessages.cancel] = null;
+						confirmDialog.confirm(
+							sessionMessages.noSessions,
+							sessionMessages.startWithNewSession,
+							buttons,
+							buttons[commonMessages.cancel]
+						);
+					}
 
 					/* register routes in form #!/12345678;paramName=paramValue */
 					router.register(/!\/([0-9]{8})((?:;[a-z0-9_-]+=[a-z0-9_-]*)*)/i, function (event) {
