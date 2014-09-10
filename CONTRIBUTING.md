@@ -82,7 +82,7 @@ followed for patch releases.
 
 		(adjust pom.xml, => 1.0.1-SNAPSHOT)
 		$ git add pom.xml
-		$ git commit -m "Start next minor release cycle"
+		$ git commit -m "Start next patch release cycle"
 
 4. Merge 1.0 into master using "ours" strategy to prevent later merges of the
 maintenance branch to apply the version change commit to master:
