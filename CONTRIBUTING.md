@@ -24,7 +24,7 @@ Before you make changes to Presenter, run the following command to set up a
 development environment with a running Java servlet container and all
 dependencies:
 
-$ mvn clean jetty:run -Denv=dev -Prun-server
+	$ mvn clean jetty:run -Denv=dev -Prun-server
 
 Afterwards, the application will be accessible at:
 
@@ -67,29 +67,29 @@ in the Git repository (example for version 1.0.0). Only step 2 and 3 need to be
 followed for patch releases.
 
 1. Create a branch for release and maintenance of version 1.0:
-	$ git checkout -b 1.0
-	$ git add pom.xml
+		$ git checkout -b 1.0
+		$ git add pom.xml
 
 2. Release version 1.0.0:
-	(adjust pom.xml, remove the SNAPSHOT marker from the version number: 1.0.0-SNAPSHOT => 1.0.0)
-	$ git add pom.xml
-	$ git commit -m "Release version 1.0.0"
-	$ git tag v1.0.0
+		(adjust pom.xml, remove the SNAPSHOT marker from the version number: 1.0.0-SNAPSHOT => 1.0.0)
+		$ git add pom.xml
+		$ git commit -m "Release version 1.0.0"
+		$ git tag v1.0.0
 
 3. Prepare development of the next patch release:
-	(adjust pom.xml, => 1.0.1-SNAPSHOT)
-	$ git add pom.xml
-	$ git commit -m "Start next minor release cycle"
+		(adjust pom.xml, => 1.0.1-SNAPSHOT)
+		$ git add pom.xml
+		$ git commit -m "Start next minor release cycle"
 
 4. Merge 1.0 into master using "ours" strategy to prevent later merges of the
 maintenance branch to apply the version change commit to master:
-	$ git checkout master
-	$ git merge -s ours 1.0 -m "Ignore version changes from release branch when merging"
+		$ git checkout master
+		$ git merge -s ours 1.0 -m "Ignore version changes from release branch when merging"
 
 5. Prepare development of the next major/minor release on master:
 	(adjust pom.xml, => 1.1.0-SNAPSHOT)
-	$ git add pom.xml
-	$ git commit -m "Start next release cycle"
+		$ git add pom.xml
+		$ git commit -m "Start next release cycle"
 
 ## Building for production
 

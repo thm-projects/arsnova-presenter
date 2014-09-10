@@ -35,4 +35,4 @@ cross-origin resource sharing (CORS).
 
 ## License
 
-GPLv3 or later, see COPYING file
+GPLv3 or later, see [COPYING](COPYING) file
