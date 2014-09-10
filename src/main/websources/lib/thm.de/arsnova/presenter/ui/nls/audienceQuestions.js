@@ -18,7 +18,7 @@
 define({
 	root: {
 		questions: "Questions",
-		audienceQuestions: "Questions by audience",
+		audienceQuestions: "Questions by students",
 		deleteQuestion: "Delete question",
 		deleteQuestionConfirm: "Do you really want to delete this question?",
 		noQuestions: "No questions available",

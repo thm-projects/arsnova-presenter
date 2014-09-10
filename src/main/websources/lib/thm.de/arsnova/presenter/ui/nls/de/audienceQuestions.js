@@ -17,7 +17,7 @@
  */
 define({
 	questions: "Fragen",
-	audienceQuestions: "Fragen des Publikums",
+	audienceQuestions: "Fragen der Studierenden",
 	deleteQuestion: "Frage löschen",
 	deleteQuestionConfirm: "Möchten Sie diese Frage wirklich löschen?",
 	noQuestions: "Keine Fragen verfügbar",
