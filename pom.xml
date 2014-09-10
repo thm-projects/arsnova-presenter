@@ -8,7 +8,7 @@
 	<packaging>war</packaging>
 	<name>ARSnova Presenter</name>
 	<description>ARSnova Presenter is a rich internet application for lecturers intended to be used to present questions and their answer statistics as well as questions and feedback by students. It targets notebooks, tablets and desktop computers and runs with all current webbrowsers.</description>
-	<url>http://blog.mni.thm.de/arsnova/arsnova-blog/</url>
+	<url>http://link.audience-response.org/presenter-website</url>
 	<inceptionYear>2013</inceptionYear>
 
 	<developers>
@@ -30,7 +30,7 @@
 				<role>developer</role>
 			</roles>
 			<url>http://www.dgerhardt.net</url>
-			<email>anp-dev@z.dgerhardt.net</email>
+			<email>code@dgerhardt.net</email>
 		</developer>
 	</developers>
 
@@ -65,8 +65,8 @@
 	</repositories>
 
 	<scm>
-		<url>https://scm.thm.de/arsnova/arsnova-presenter</url>
-		<connection>scm:git://scm.thm.de/arsnova/arsnova-presenter.git</connection>
+		<url>https://github.com/thm-projects/arsnova-presenter</url>
+		<connection>https://github.com/thm-projects/arsnova-presenter.git</connection>
 		<developerConnection>scm:ssh://gitorious@scm.thm.de:arsnova/arsnova-presenter.git</developerConnection>
 	</scm>
 
@@ -129,6 +129,18 @@
 				<configuration>
 					<locales>en,de</locales>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>2.4</version>
 			</plugin>
 
 			<plugin>
