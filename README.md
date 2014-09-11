@@ -11,10 +11,10 @@ concepts, especially Peer Instruction. But it can still be used for quick and
 simple surveys.
 
 In contrast to [ARSnova Mobile](https://github.com/thm-projects/arsnova-mobile),
-Presenter targets desktop browsers. It is designed to be totally compatible with
+Presenter targets desktop browsers. It is designed to be fully compatible with
 the mobile frontend.
 
-Presenter is [Open Source](COPYING) software. If you are a developer, interested
+Presenter is [open source](COPYING) software. If you are a developer, interested
 in didactics and want to help us making it even better, you might also want to
 take a look at the [information for contributors](CONTRIBUTING.md).
 
@@ -23,11 +23,12 @@ take a look at the [information for contributors](CONTRIBUTING.md).
 Presenter is provided packaged as a web archive file (.war) which can be
 deployed on a Java servlet container. You can download it from the
 [releases page](https://github.com/thm-projects/arsnova-presenter/releases) or
-[build it your](CONTRIBUTING.md) self with Maven (`mvn clean package`). Usually
-it is enough to copy this file to the webapps directory of the container. Since
-Presenter does not contain any code that has to be run on the server side, it is
-also possible to use it with a standard web server. In this case extract the
-contents of the .war file with an archiving tool of your choice.
+[build it yourself](CONTRIBUTING.md) with Maven (`mvn clean package
+-Denv=prod`). Usually it is enough to copy this file to the webapps directory of
+the container. Since Presenter does not contain any code that has to be run on
+the server side, it is also possible to use it with a standard web server. In
+this case extract the contents of the .war file with an archiving tool of your
+choice.
 
 Presenter depends on the ARSnova API which is provided by
 [ARSnova Backend](https://github.com/thm-projects/arsnova-backend). Refer to its
