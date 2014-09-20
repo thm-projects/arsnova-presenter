@@ -26,6 +26,7 @@ define({
 		suspend: "Suspend",
 		noSession: "No session selected",
 		deleteSession: "Delete session",
+		deletingSession: "Deleting session",
 		deleteSessionConfirm: "Do you really want to delete this session?",
 		updatingSession: "Updating session",
 		sessionSaved: "Session saved",

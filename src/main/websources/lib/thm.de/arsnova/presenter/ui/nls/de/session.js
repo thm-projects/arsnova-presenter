@@ -24,6 +24,7 @@ define({
 	suspend: "Sperren",
 	noSession: "Keine Session ausgewählt",
 	deleteSession: "Session löschen",
+	deletingSession: "Lösche Session",
 	deleteSessionConfirm: "Möchten Sie diese Session wirklich löschen?",
 	updatingSession: "Speichere Session",
 	sessionSaved: "Session gespeichert",
