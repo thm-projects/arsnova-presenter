@@ -22,7 +22,8 @@ var profile = (function () {
 			paths: {
 				"dojo": "../lib/dojotoolkit.org/dojo",
 				"dijit": "../lib/dojotoolkit.org/dijit",
-				"dojox": "../lib/dojotoolkit.org/dojox"
+				"dojox": "../lib/dojotoolkit.org/dojox",
+				"dstore": "../lib/sitepen.com/dstore"
 			},
 			gfxRenderer: "svg,silverlight,vml"
 		},
@@ -39,6 +40,10 @@ var profile = (function () {
 			{
 				name: "dojox",
 				location: dojoPath + "dojox"
+			},
+			{
+				name: "dstore",
+				location: "vendor/sitepen.com/dstore"
 			},
 			{
 				name: "arsnova-presenter",

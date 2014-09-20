@@ -176,7 +176,7 @@ define(
 				when(sessions, function (sessions) {
 					memory.setData([]);
 					sessions.forEach(function (session) {
-						var keywordNode = document.createTextNode("(" + session.keyword + ")");
+						var keywordNode = document.createTextNode("(" + session.id + ")");
 						var shortNameNode = document.createElement("strong");
 						shortNameNode.appendChild(document.createTextNode(session.shortName));
 						var nameNode = document.createTextNode(session.name);
@@ -189,7 +189,7 @@ define(
 						labelNode.appendChild(nameNode);
 
 						memory.put({
-							id: session.keyword,
+							id: session.id,
 							shortName: session.shortName,
 							name: session.name,
 							label: labelNode.innerHTML
@@ -240,8 +240,8 @@ define(
 									newSessionDialog.hide();
 									topic.publish("arsnova/session/update");
 									/* TODO: remove model.setKey when completely replaced */
-									model.setKey(session.keyword);
-									appState.set("sessionId", session.keyword);
+									model.setKey(session.id);
+									appState.set("sessionId", session.id);
 								}, function () {
 									console.error("Could not create session");
 								});
@@ -267,10 +267,10 @@ define(
 						document.title = session.shortName + " - " + commonMessages.arsnova + " " + commonMessages.productNameValue;
 						domConstruct.empty(titleNode);
 						titleNode.appendChild(document.createTextNode(session.name));
-						var keyword = session.keyword.substr(0, 2)
-							+ " " + session.keyword.substr(2, 2)
-							+ " " + session.keyword.substr(4, 2)
-							+ " " + session.keyword.substr(6, 2)
+						var keyword = session.id.substr(0, 2)
+							+ " " + session.id.substr(2, 2)
+							+ " " + session.id.substr(4, 2)
+							+ " " + session.id.substr(6, 2)
 						;
 						keyNode.innerHTML = keyword;
 						domClass.remove(keyNode, "noSession");

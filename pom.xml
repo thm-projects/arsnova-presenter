@@ -116,6 +116,7 @@
 								<symlink link="${outputDir}/lib/mathjax.org/mathjax/jax" resource="${basedir}/vendor/mathjax.org/mathjax/jax" overwrite="true" />
 								<symlink link="${outputDir}/lib/mathjax.org/mathjax/localization" resource="${basedir}/vendor/mathjax.org/mathjax/localization" overwrite="true" />
 								<symlink link="${outputDir}/lib/socket.io/socket.io.js" resource="${basedir}/vendor/socket.io/socket.io-client/socket.io.js" overwrite="true" />
+								<symlink link="${outputDir}/lib/sitepen.com" resource="${basedir}/vendor/sitepen.com" overwrite="true" />
 							</target>
 						</configuration>
 					</execution>

@@ -85,7 +85,7 @@ define(
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.mode}, container);
 				(this.typeSelect = new Select({
-					name: "questionVariant",
+					name: "type",
 					options: [
 						{value: "lecture", label: messages.lectureMode},
 						{value: "preparation", label: messages.preparationMode}
@@ -108,7 +108,7 @@ define(
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.description}, container);
 				(this.descriptionField = new TextArea({
-					name: "text",
+					name: "body",
 					trim: true,
 					style: "width: 242px; font-family: sans-serif;"
 				})).placeAt(container).startup();
@@ -116,7 +116,7 @@ define(
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.format}, container);
 				(this.formatSelect = new Select({
-					name: "questionType",
+					name: "format",
 					options: [
 						{value: "abcd", label: messages.singleChoice},
 						{value: "mc", label: messages.multipleChoice},
@@ -194,7 +194,7 @@ define(
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.allowAbstentions}, container);
 				(this.abstentionCb = new CheckBox({
-					name: "abstention"
+					name: "allowAbstentions"
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
@@ -207,14 +207,14 @@ define(
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.releaseStatistics}, container);
 				(this.releaseStatsCb = new CheckBox({
-					name: "showStatistic",
+					name: "publishResults",
 					checked: true
 				})).placeAt(container).startup();
 
 				container = domConstruct.create("div", null, this.form.domNode);
 				domConstruct.create("label", {innerHTML: messages.releaseCorrectAnswer}, container);
 				(this.releaseCorrectCb = new CheckBox({
-					name: "showAnswer",
+					name: "publishCorrectAnswer",
 					checked: false
 				})).placeAt(container).startup();
 
@@ -372,7 +372,7 @@ define(
 
 				var type = this.getAnswerOptionType();
 				domConstruct.empty(this.answerOptionsContainer);
-				question.possibleAnswers.forEach(lang.hitch(this, function (answer) {
+				question.answerOptions.forEach(lang.hitch(this, function (answer) {
 					var widget = this.addAnswerOption(answer.text, type, false, !!answer.correct);
 					widget.set("checked", !!answer.correct);
 				}));
@@ -410,14 +410,14 @@ define(
 				var question = this.form.get("value");
 				this.showModalMessage(messages.creatingQuestion + "...", "info");
 
-				question.abstention = question.abstention.length > 0;
+				question.allowAbstentions = question.allowAbstentions.length > 0;
 				question.active = question.active.length > 0;
-				question.showStatistic = question.showStatistic.length > 0;
-				question.showAnswer = question.showAnswer.length > 0;
-				question.possibleAnswers = [];
+				question.publishResults = question.publishResults.length > 0;
+				question.publishCorrectAnswer = question.publishCorrectAnswer.length > 0;
+				question.answerOptions = [];
 				this.optionsForm.getChildren().forEach(function (widget) {
 					if ("answerOptions" === widget.name && widget.value) {
-						question.possibleAnswers.push({
+						question.answerOptions.push({
 							text: widget.value,
 							correct: widget.checked
 						});
@@ -448,15 +448,15 @@ define(
 						question[attr] = newQuestion[attr];
 					}
 				}
-				question.abstention = question.abstention.length > 0;
+				question.allowAbstentions = question.allowAbstentions.length > 0;
 				question.active = question.active.length > 0;
-				question.showStatistic = question.showStatistic.length > 0;
-				question.showAnswer = question.showAnswer.length > 0;
+				question.publishResults = question.publishResults.length > 0;
+				question.publishCorrectAnswer = question.publishCorrectAnswer.length > 0;
 
 				var correctAnswerOptions = {};
 				this.optionsForm.getChildren().forEach(function (widget, i) {
 					if ("answerOptions" === widget.name && widget.value) {
-						question.possibleAnswers[i].correct = widget.checked;
+						question.answerOptions[i].correct = widget.checked;
 					}
 				});
 

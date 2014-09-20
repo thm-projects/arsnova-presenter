@@ -21,6 +21,7 @@ var profile = (function () {
 				"dojo": "../lib/dojotoolkit.org/dojo",
 				"dijit": "../lib/dojotoolkit.org/dijit",
 				"dojox": "../lib/dojotoolkit.org/dojox",
+				"dstore": "../lib/sitepen.com/dstore",
 				"dgerhardt": "../lib/dgerhardt.net",
 				"arsnova-api": "../lib/thm.de/arsnova/api",
 				"arsnova-presenter": "../lib/thm.de/arsnova/presenter"
@@ -40,6 +41,10 @@ var profile = (function () {
 			{
 				name: "dojox",
 				location: dojoPath + "dojox"
+			},
+			{
+				name: "dstore",
+				location: "vendor/sitepen.com/dstore"
 			},
 			{
 				name: "arsnova-presenter",
