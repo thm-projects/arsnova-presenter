@@ -23,7 +23,7 @@ define(
 		"dgerhardt/dijit/layout/ContentPane",
 		"dijit/form/Form",
 		"dijit/form/Button",
-		"dijit/form/TextBox",
+		"dijit/form/ValidationTextBox",
 		"dijit/form/CheckBox",
 		"dgerhardt/common/confirmDialog",
 		"arsnova-presenter/exporter",
@@ -58,13 +58,17 @@ define(
 				container = domConstruct.create("div", null, form.domNode);
 				domConstruct.create("label", {innerHTML: messages.name}, container);
 				(new TextBox({
-					name: "name"
+					name: "name",
+					required: true,
+					trim: true
 				})).placeAt(container);
 
 				container = domConstruct.create("div", null, form.domNode);
 				domConstruct.create("label", {innerHTML: messages.shortName}, container);
 				(new TextBox({
-					name: "shortName"
+					name: "shortName",
+					required: true,
+					trim: true
 				})).placeAt(container);
 
 				container = domConstruct.create("div", null, form.domNode);
@@ -148,7 +152,9 @@ define(
 				}, function (error) {
 					console.error("Could not save session");
 					pane.showModalMessage(messages.sessionNotSaved, "error");
-					setTimeout(pane.hideModalMessage, 3000);
+					setTimeout(function () {
+						pane.hideModalMessage();
+					}, 3000);
 				});
 			},
 
@@ -164,7 +170,9 @@ define(
 				}, function (error) {
 					console.error("Could not delete session");
 					pane.showModalMessage(messages.sessionNotDeleted, "error");
-					setTimeout(pane.hideModalMessage, 3000);
+					setTimeout(function () {
+						pane.hideModalMessage();
+					}, 3000);
 				});
 			}
 		};
