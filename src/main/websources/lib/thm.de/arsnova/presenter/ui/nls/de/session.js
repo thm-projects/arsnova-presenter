@@ -34,5 +34,5 @@ define({
 	export1: "Exportieren",
 	createSession: "Session erstellen",
 	noSessions: "Keine Sessions",
-	startWithNewSession: "Sie haben bisher noch keine Sessions angelegt. Möchsten Sie in den Bearbeitungsmodus wechseln und eine neue Session erstellen?"
+	startWithNewSession: "Sie haben bisher noch keine Sessions angelegt. Möchsten Sie in den Bearbeitungsmodus wechseln und eine neue erstellen?"
 });

@@ -36,7 +36,7 @@ define({
 		export1: "Export",
 		createSession: "Create session",
 		noSessions: "No sessions",
-		startWithNewSession: "You have not yet created any sessions. Do you want to switch to editing mode and create a new session?"
+		startWithNewSession: "You have not yet created any sessions. Do you want to switch to editing mode and create a new one?"
 	},
 
 	de: true
