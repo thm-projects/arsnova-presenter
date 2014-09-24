@@ -38,6 +38,7 @@ define(
 		"dijit/Tooltip",
 		"dojo/_base/fx",
 		"dgerhardt/common/fullscreen",
+		"arsnova-presenter/appState",
 		"arsnova-presenter/ui/tabController",
 		"arsnova-presenter/ui/timer",
 		"arsnova-presenter/ui/infoDialog",
@@ -47,7 +48,7 @@ define(
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"
 	],
-	function (config, on, topic, domConstruct, domClass, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, tabController, timer, infoDialog, globalConfig, socket, i18n, commonMessages, messages) {
+	function (config, on, topic, domConstruct, domClass, domGeometry, domStyle, dateLocale, a11yclick, BorderContainer, ContentPane, Button, DropDownButton, Menu, MenuSeparator, MenuItem, PopupMenuItem, RadioMenuItem, Tooltip, fx, fullScreen, appState, tabController, timer, infoDialog, globalConfig, socket, i18n, commonMessages, messages) {
 		"use strict";
 
 		var
@@ -69,7 +70,10 @@ define(
 			fullScreenContainer = null,
 			timeTooltip = null,
 			latencyTooltip = null,
-			fullScreenMenuItem = null
+			fullScreenMenuItem = null,
+			editingModeMenuItem = null,
+			piModeMenuItem = null,
+			jittModeMenuItem = null
 		;
 
 		self = {
@@ -221,7 +225,7 @@ define(
 					id: "modeMenu",
 					style: "display: none"
 				});
-				modeMenu.addChild(new RadioMenuItem({
+				modeMenu.addChild(editingModeMenuItem = new RadioMenuItem({
 					id: "editingModeMenuItem",
 					label: messages.editing,
 					group: "mode",
@@ -229,7 +233,7 @@ define(
 						tabController.selectMode("EDITING");
 					}
 				}));
-				modeMenu.addChild(new RadioMenuItem({
+				modeMenu.addChild(piModeMenuItem = new RadioMenuItem({
 					id: "piModeMenuItem",
 					label: messages.lecture,
 					group: "mode",
@@ -238,7 +242,7 @@ define(
 						tabController.selectMode("PI");
 					}
 				}));
-				modeMenu.addChild(new RadioMenuItem({
+				modeMenu.addChild(jittModeMenuItem = new RadioMenuItem({
 					id: "jittModeMenuItem",
 					label: messages.assignments,
 					group: "mode",
@@ -250,6 +254,23 @@ define(
 					label: messages.mode,
 					dropDown: modeMenu
 				}, domConstruct.create("button", {id: "mobileButton", type: "button"}, exitPanelNode))).startup();
+
+				appState.watch("mode", function (name, oldValue, value) {
+					switch (value) {
+					case "editing":
+						editingModeMenuItem.set("checked", true);
+
+						break;
+					case "pi":
+						piModeMenuItem.set("checked", true);
+
+						break;
+					case "jitt":
+						jittModeMenuItem.set("checked", true);
+
+						break;
+					}
+				});
 
 				/* Add footer content */
 				var productInfoNode = domConstruct.create("span", {id: "productInfo"}, footerPane.domNode);
