@@ -1,6 +1,12 @@
 # Changelog
 
-## 1.1
+## 1.1.1
+This release introduces the following changes:
+* Fixes error handling and validation for session updates
+* Fixes session creation proposal dialog
+* Improves localization and adds missing strings
+
+## 1.1.0
 This version introduces editing support. You can now create, update and delete
 sessions and questions in ARSnova Presenter. Furthermore, support for
 Just-in-Time-Teaching has been implemented which allows you to define questions
