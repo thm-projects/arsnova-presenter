@@ -2,23 +2,21 @@
 var profile = (function () {
 	"use strict";
 
-	var libPath = "src/main/websources/lib/";
-	var dojoPath = "vendor/dojotoolkit.org/";
+	var depPath = "bower_components/";
 	var versionFilePath = "target/tmp/dojo/version/";
 
 	return {
-		basePath: "../../..",
+		basePath: "./",
 		action: "release",
 		mini: true,
-		//optimize: "shrinksafe", // causes problems
-		layerOptimize: "closure",
+		layerOptimize: false,
 		cssOptimize: "comments",
 		selectorEngine: "lite",
 		localeList: "en,de",
 
 		defaultConfig: {
 			async: true,
-			baseUrl: "app/",
+			baseUrl: "src",
 			paths: {
 				"dojo": "../lib/dojotoolkit.org/dojo",
 				"dijit": "../lib/dojotoolkit.org/dijit",
@@ -31,31 +29,27 @@ var profile = (function () {
 		packages: [
 			{
 				name: "dojo",
-				location: dojoPath + "dojo"
+				location: depPath + "dojo"
 			},
 			{
 				name: "dijit",
-				location: dojoPath + "dijit"
+				location: depPath + "dijit"
 			},
 			{
 				name: "dojox",
-				location: dojoPath + "dojox"
+				location: depPath + "dojox"
 			},
 			{
 				name: "dstore",
-				location: "vendor/sitepen.com/dstore"
-			},
-			{
-				name: "arsnova-presenter",
-				location: libPath + "thm.de/arsnova/presenter"
+				location: depPath + "dstore"
 			},
 			{
 				name: "arsnova-api",
-				location: "vendor/thm.de/arsnova/libarsnova-js/src/main/websources/lib/thm.de/arsnova/api"
+				location: depPath + "libarsnova-js/src"
 			},
 			{
 				name: "dgerhardt",
-				location: "vendor/dgerhardt.net/dgerhardt-dojo"
+				location: depPath + "dgerhardt-dojo"
 			},
 			{
 				name: "version",
@@ -65,7 +59,7 @@ var profile = (function () {
 		],
 
 		layers: {
-			"app/presenter": {
+			"arsnova-presenter/presenter": {
 				customBase: true, // do not add dojo/main automatically
 				boot: true,
 				include: [
