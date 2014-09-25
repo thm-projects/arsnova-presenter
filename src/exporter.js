@@ -22,9 +22,9 @@ define(
 		"dojo/dom-style",
 		"dojo/promise/all",
 		"dojo/when",
-		"arsnova-api/session",
-		"arsnova-api/lecturerQuestion",
-		"arsnova-api/audienceQuestion"
+		"libarsnova/session",
+		"libarsnova/lecturerQuestion",
+		"libarsnova/audienceQuestion"
 	],
 	function (lang, domConstruct, domStyle, all, when, sessionModel, lecturerQuestionModel, audienceQuestionModel) {
 		"use strict";

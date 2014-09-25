@@ -37,8 +37,8 @@ define(
 		"dijit/Tooltip",
 		"dgerhardt/common/modalOverlay",
 		"arsnova-presenter/appState",
-		"arsnova-api/globalConfig",
-		"arsnova-api/lecturerQuestion",
+		"libarsnova/globalConfig",
+		"libarsnova/lecturerQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/session"

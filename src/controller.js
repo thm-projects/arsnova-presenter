@@ -26,9 +26,9 @@ define(
 		"arsnova-presenter/ui/authControls",
 		"arsnova-presenter/ui/sessionControls",
 		"arsnova-presenter/ui/tabController",
-		"arsnova-api/socket",
-		"arsnova-api/auth",
-		"arsnova-api/session",
+		"libarsnova/socket",
+		"libarsnova/auth",
+		"libarsnova/session",
 		"dojo/i18n",
 		"dojo/i18n!./ui/nls/common",
 		"dojo/i18n!./ui/nls/session"

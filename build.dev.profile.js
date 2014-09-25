@@ -23,7 +23,7 @@ var profile = (function () {
 				"dojox": "../lib/dojotoolkit.org/dojox",
 				"dstore": "../lib/sitepen.com/dstore",
 				"dgerhardt": "../lib/dgerhardt.net",
-				"arsnova-api": "../lib/thm.de/arsnova/api",
+				"libarsnova": "../lib/thm.de/arsnova/api",
 				"arsnova-presenter": "../lib/thm.de/arsnova/presenter"
 			},
 			gfxRenderer: "svg,silverlight,vml"
@@ -47,7 +47,7 @@ var profile = (function () {
 				location: depPath + "dstore"
 			},
 			{
-				name: "arsnova-api",
+				name: "libarsnova",
 				location: depPath + "libarsnova-js/src"
 			},
 			{

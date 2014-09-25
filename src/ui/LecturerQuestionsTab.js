@@ -28,8 +28,8 @@ define(
 		"arsnova-presenter/appState",
 		"arsnova-presenter/ui/mathJax",
 		"arsnova-presenter/ui/lecturerPaneAnswersTab",
-		"arsnova-api/session",
-		"arsnova-api/lecturerQuestion",
+		"libarsnova/session",
+		"libarsnova/lecturerQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/lecturerQuestions",
 		"dojo/i18n!./nls/session"

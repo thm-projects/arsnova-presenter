@@ -42,8 +42,8 @@ define(
 		"arsnova-presenter/ui/tabController",
 		"arsnova-presenter/ui/timer",
 		"arsnova-presenter/ui/infoDialog",
-		"arsnova-api/globalConfig",
-		"arsnova-api/socket",
+		"libarsnova/globalConfig",
+		"libarsnova/socket",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/main"

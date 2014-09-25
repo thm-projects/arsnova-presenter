@@ -37,7 +37,7 @@ define(
 		"dojox/form/CheckedMultiSelect",
 		"dojo/store/Memory",
 		"dgerhardt/common/confirmDialog",
-		"arsnova-api/lecturerQuestion",
+		"libarsnova/lecturerQuestion",
 		"dojo/i18n",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/lecturerQuestions",

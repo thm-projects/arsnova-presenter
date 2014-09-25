@@ -25,7 +25,7 @@ define(
 		"dijit/MenuItem",
 		"dgerhardt/common/fullscreen",
 		"arsnova-presenter/ui/chart/audienceFeedback",
-		"arsnova-api/feedback",
+		"libarsnova/feedback",
 		"dojo/i18n",
 		"dojo/i18n!./nls/audienceFeedback"
 	],

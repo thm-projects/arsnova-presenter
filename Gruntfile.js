@@ -53,7 +53,7 @@ module.exports = function (grunt) {
 					location: "bower_components/dstore"
 				},
 				{
-					name: "arsnova-api",
+					name: "libarsnova",
 					location: "bower_components/libarsnova-js/src"
 				},
 				{

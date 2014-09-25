@@ -27,7 +27,7 @@ define(
 		"dijit/form/CheckBox",
 		"dgerhardt/common/confirmDialog",
 		"arsnova-presenter/exporter",
-		"arsnova-api/session",
+		"libarsnova/session",
 		"dojo/i18n!./nls/common",
 		"dojo/i18n!./nls/session"
 	],

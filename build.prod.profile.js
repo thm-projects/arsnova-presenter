@@ -44,7 +44,7 @@ var profile = (function () {
 				location: depPath + "dstore"
 			},
 			{
-				name: "arsnova-api",
+				name: "libarsnova",
 				location: depPath + "libarsnova-js/src"
 			},
 			{
