@@ -264,6 +264,16 @@ module.exports = function (grunt) {
 					dest: outdir
 				}]
 			}
+		},
+
+		connect: {
+			server: {
+				options: {
+					base: outdir,
+					port: 8081,
+					useAvailablePort: true
+				}
+			}
 		}
 	});
 
@@ -311,6 +321,7 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks("grunt-amd-build");
 	grunt.loadNpmTasks("grunt-contrib-clean");
+	grunt.loadNpmTasks("grunt-contrib-connect");
 	grunt.loadNpmTasks("grunt-contrib-copy");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-symlink");
@@ -322,5 +333,6 @@ module.exports = function (grunt) {
 	grunt.registerTask("build:amd", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
 	grunt.registerTask("build:requirejs", ["includerequirejs", "build:amd"]);
 	grunt.registerTask("build:dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "genversionfile", "dojo:dist", "uglify:dojo", "copy:dojoreport", "copy:resources", "uglify:lib", "symlink:lib", "clean:tmp"]);
+	grunt.registerTask("run", ["connect:server:keepalive"]);
 	grunt.registerTask("default", ["build:dojo"]);
 };
