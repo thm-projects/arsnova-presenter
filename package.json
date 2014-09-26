@@ -44,6 +44,7 @@
 		"grunt-contrib-symlink": "0.3",
 		"grunt-contrib-uglify": "0.6",
 		"grunt-shell": "0.7",
+		"grunt-war": "~0.3.3",
 		"intern": "2.1"
 	},
 	"dojoBuild": "src/presenter.profile.js"

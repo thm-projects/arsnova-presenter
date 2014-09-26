@@ -246,6 +246,24 @@ module.exports = function (grunt) {
 					"bower update"
 				].join(";")
 			}
+		},
+
+		war: {
+			dist: {
+				/* jshint ignore: start */
+				options: {
+					war_dist_folder: outdir,
+					war_name: "arsnova-presenter",
+					webxml_display_name: "ARSnova Presenter"
+				},
+				/* jshint ignore: end */
+				files: [{
+					expand: true,
+					cwd: outdir,
+					src: ["**", "!**/*.map", "!build-report.txt", "!tmp/**"],
+					dest: outdir
+				}]
+			}
 		}
 	});
 
@@ -299,6 +317,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-dojo");
 	grunt.loadNpmTasks("grunt-shell");
+	grunt.loadNpmTasks("grunt-war");
 
 	grunt.registerTask("build:amd", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
 	grunt.registerTask("build:requirejs", ["includerequirejs", "build:amd"]);
