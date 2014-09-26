@@ -4,7 +4,7 @@ var profile = (function () {
 
 	var libPath = "src/main/websources/lib/";
 	var depPath = "bower_components/";
-	var versionFilePath = "target/tmp/dojo/version/";
+	var versionFilePath = "build/tmp/version/";
 
 	return {
 		basePath: "./",

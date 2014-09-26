@@ -3,7 +3,7 @@ var profile = (function () {
 	"use strict";
 
 	var depPath = "bower_components/";
-	var versionFilePath = "target/tmp/dojo/version/";
+	var versionFilePath = "build/tmp/version/";
 
 	return {
 		basePath: "./",

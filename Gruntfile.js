@@ -3,6 +3,9 @@
 
 module.exports = function (grunt) {
 	var
+		/* The NPM package file is used for version info */
+		pkg = require("./package.json"),
+
 		/* The final output directory. */
 		outdir = "build/",
 
@@ -15,8 +18,11 @@ module.exports = function (grunt) {
 		outprop = "amdoutput",
 
 		/* The requirejs baseUrl. */
-		baseUrl =  "./"
+		baseUrl =  "./",
+
+		versionFilePath = tmpdir + "version/"
 	;
+
 
 	grunt.initConfig({
 		/* The loader config should go here. */
@@ -59,6 +65,11 @@ module.exports = function (grunt) {
 				{
 					name: "dgerhardt",
 					location: "bower_components/dgerhardt-dojo"
+				},
+				{
+					name: "version",
+					location: versionFilePath,
+					main: "version"
 				}
 			]
 		},
@@ -227,6 +238,21 @@ module.exports = function (grunt) {
 		grunt.log.writeln("* build:amd          This build includes no loader");
 	});
 
+	grunt.registerTask("genversionfile", function () {
+		grunt.util.spawn({
+			cmd: "git",
+			args: ["log", "-n", "1", "--pretty=format:%h"]
+		}, function (error, result, code) {
+			var version = {
+				version: pkg.version,
+				commitId: result.stdout,
+				buildTime: (new Date()).toISOString(),
+				buildNumber: 0
+			};
+			grunt.file.write(versionFilePath + "version.js", "define(" + JSON.stringify(version) + ");\n");
+		});
+	});
+
 	grunt.loadNpmTasks("grunt-amd-build");
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-contrib-copy");
@@ -238,6 +264,6 @@ module.exports = function (grunt) {
 
 	grunt.registerTask("build:amd", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
 	grunt.registerTask("build:requirejs", ["includerequirejs", "build:amd"]);
-	grunt.registerTask("build:dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "dojo:dist", "uglify:dojo", "copy:dojoreport", "clean:tmp"]);
+	grunt.registerTask("build:dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "genversionfile", "dojo:dist", "uglify:dojo", "copy:dojoreport", "clean:tmp"]);
 	grunt.registerTask("default", ["build:dojo"]);
 };
