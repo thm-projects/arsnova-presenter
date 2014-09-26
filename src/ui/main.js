@@ -124,7 +124,7 @@ define(
 				var lowResNode = domConstruct.create("div", {id: "lowResolution"}, document.body);
 				domStyle.set(lowResNode, "visibility", "hidden");
 				var lowResContentWrapperNode = domConstruct.create("div", null, lowResNode);
-				domConstruct.create("img", {src: "images/arsnova.png", alt: "ARSnova"},
+				domConstruct.create("img", {src: "resources/images/arsnova.png", alt: "ARSnova"},
 					domConstruct.create("h1", null,
 						domConstruct.create("header", null, lowResContentWrapperNode)
 					)
@@ -393,7 +393,7 @@ define(
 
 				/* Full screen mode */
 				fullScreenContainer.startup();
-				var fullScreenLogo = domConstruct.create("img", {id: "fullScreenLogo", src: "images/arsnova.png"}, fullScreenContainer.domNode);
+				var fullScreenLogo = domConstruct.create("img", {id: "fullScreenLogo", src: "resources/images/arsnova.png"}, fullScreenContainer.domNode);
 				fullScreen.onChange(function (event, isActive) {
 					if (isActive) {
 						console.log("Full screen mode enabled");

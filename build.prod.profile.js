@@ -16,12 +16,11 @@ var profile = (function () {
 
 		defaultConfig: {
 			async: true,
-			baseUrl: "src",
+			baseUrl: "./",
 			paths: {
-				"dojo": "../lib/dojotoolkit.org/dojo",
-				"dijit": "../lib/dojotoolkit.org/dijit",
-				"dojox": "../lib/dojotoolkit.org/dojox",
-				"dstore": "../lib/sitepen.com/dstore"
+				"arsnova-presenter": ".",
+				"dojo": "lib/dojo",
+				"dijit": "lib/dijit"
 			},
 			gfxRenderer: "svg,silverlight,vml"
 		},

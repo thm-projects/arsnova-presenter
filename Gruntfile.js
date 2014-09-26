@@ -146,6 +146,27 @@ module.exports = function (grunt) {
 				cwd: tmpdir,
 				src: "build-report.txt",
 				dest: outdir
+			},
+			resources: {
+				files: [{
+					expand: true,
+					cwd: tmpdir + "arsnova-presenter",
+					src: ["nls/**", "resources/**"],
+					dest: outdir
+				}, {
+					src: tmpdir + "arsnova-presenter/index.prod.html",
+					dest: outdir + "index.html"
+				}, {
+					expand: true,
+					cwd: tmpdir,
+					src: "dojo/resources/**",
+					dest: outdir + "lib"
+				}, {
+					expand: true,
+					cwd: tmpdir,
+					src: "dijit/themes/claro/**/*.{css,png}",
+					dest: outdir + "lib"
+				}]
 			}
 		},
 
@@ -161,6 +182,14 @@ module.exports = function (grunt) {
 						dest: tmpdir + "builddeps/util"
 					}
 				]
+			},
+			lib: {
+				files: [{
+					expand: true,
+					cwd: "bower_components/MathJax",
+					src: ["MathJax.js", "config/Safe.js", "config/TeX-AMS_HTML.js", "extensions", "fonts/HTML-CSS/TeX/*", "!fonts/HTML-CSS/TeX/png", "images", "jax/element", "jax/input/TeX", "jax/output/HTML-CSS", "jax/output/NativeMML", "jax/output/SVG/*", "!jax/output/SVG/fonts", "jax/output/SVG/fonts/TeX", "localization/de", "localization/en"],
+					dest: outdir + "lib/mathjax"
+				}]
 			}
 		},
 
@@ -187,6 +216,15 @@ module.exports = function (grunt) {
 			dojo: {
 				src: tmpdir + "arsnova-presenter/presenter.js",
 				dest: outdir + "presenter.js"
+			},
+			lib: {
+				files: [{
+					src: "bower_components/socket.io-client/socket.io.js",
+					dest: outdir + "lib/socket.io-client/socket.io.js"
+				}, {
+					src: "bower_components/qrcode-generator/js/qrcode.js",
+					dest: outdir + "lib/qrcode-generator/qrcode.js"
+				}]
 			}
 		},
 
@@ -264,6 +302,6 @@ module.exports = function (grunt) {
 
 	grunt.registerTask("build:amd", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
 	grunt.registerTask("build:requirejs", ["includerequirejs", "build:amd"]);
-	grunt.registerTask("build:dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "genversionfile", "dojo:dist", "uglify:dojo", "copy:dojoreport", "clean:tmp"]);
+	grunt.registerTask("build:dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "genversionfile", "dojo:dist", "uglify:dojo", "copy:dojoreport", "copy:resources", "uglify:lib", "symlink:lib", "clean:tmp"]);
 	grunt.registerTask("default", ["build:dojo"]);
 };

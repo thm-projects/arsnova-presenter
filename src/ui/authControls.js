@@ -51,7 +51,7 @@ define(
 			},
 
 			showLoginDialog: function () {
-				domConstruct.create("img", {id: "loginLogo", src: "images/arsnova.png"}, document.body);
+				domConstruct.create("img", {id: "loginLogo", src: "resources/images/arsnova.png"}, document.body);
 				var versionString = version.version;
 				if (version.commitId) {
 					versionString += " [" + version.commitId + "]";

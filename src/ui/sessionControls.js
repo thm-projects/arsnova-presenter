@@ -355,7 +355,7 @@ define(
 					modalOverlay.show(qrNode, true);
 				};
 				if (!qrcode) {
-					script.get("lib/d-project.com/qrcode-generator/qrcode.js").then(function () {
+					script.get("lib/qrcode-generator/qrcode.js").then(function () {
 						console.log("QR Code generation library loaded");
 						showQrOverlay();
 					}, function (error) {

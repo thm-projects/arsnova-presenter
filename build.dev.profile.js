@@ -16,15 +16,15 @@ var profile = (function () {
 		defaultConfig: {
 			async: true,
 			isDebug: true,
-			baseUrl: "app/",
+			baseUrl: "./",
 			paths: {
-				"dojo": "../lib/dojotoolkit.org/dojo",
-				"dijit": "../lib/dojotoolkit.org/dijit",
-				"dojox": "../lib/dojotoolkit.org/dojox",
-				"dstore": "../lib/sitepen.com/dstore",
-				"dgerhardt": "../lib/dgerhardt.net",
-				"libarsnova": "../lib/thm.de/arsnova/api",
-				"arsnova-presenter": "../lib/thm.de/arsnova/presenter"
+				"dojo": "lib/dojo",
+				"dijit": "lib/dijit",
+				"dojox": "lib/dojox",
+				"dstore": "lib/dstore",
+				"dgerhardt": "lib/dgerhardt-dojo",
+				"libarsnova": "lib/libarsnova-js/src",
+				"arsnova-presenter": "lib/arsnova-presenter"
 			},
 			gfxRenderer: "svg,silverlight,vml"
 		},

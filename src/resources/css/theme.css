@@ -145,7 +145,7 @@ body {
 }
 
 #productLogo {
-	background: url(../../../../../../images/arsnova-84x16.png) no-repeat center center;
+	background: url(../images/arsnova-84x16.png) no-repeat center center;
 	width: 84px;
 	height: 16px;
 	margin-top: -1px;
@@ -181,7 +181,7 @@ body {
 }
 
 #loginLogo {
-	background: url(../../../../../../images/arsnova.png) no-repeat center center;
+	background: url(../images/arsnova.png) no-repeat center center;
 	width: 288px;
 	height: 55px;
 	margin-left: -144px;
@@ -189,13 +189,13 @@ body {
 }
 
 .productLogo {
-	background: url(../../../../../../images/arsnova.png) no-repeat center center;
+	background: url(../images/arsnova.png) no-repeat center center;
 	width: 288px;
 	height: 55px;
 }
 
 .thmLogo {
-	background: url(../../../../../../images/thm.png) no-repeat center center;
+	background: url(../images/thm.png) no-repeat center center;
 	width: 200px;
 	height: 67px;
 }
