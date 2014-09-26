@@ -44,10 +44,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<outputDir>${project.build.directory}/${project.build.finalName}</outputDir>
-		<submodule.libarsnova-js.path>${basedir}/vendor/thm.de/arsnova/libarsnova-js</submodule.libarsnova-js.path>
-		<submodule.dgerhardt-dojo.path>${basedir}/vendor/dgerhardt.net/dgerhardt-dojo</submodule.dgerhardt-dojo.path>
-		<jetty.version>9.2.3.v20140905</jetty.version>
-		<jetty.scanInterval>10</jetty.scanInterval>
 		<sonar.language>js</sonar.language>
 	</properties>
 
@@ -81,46 +77,13 @@
 	</ciManagement>
 
 	<build>
-		<sourceDirectory>${basedir}/src/main/websources</sourceDirectory>
+		<sourceDirectory>${basedir}/src</sourceDirectory>
 
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.5</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<id>create-lib-links</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<mkdir dir="${outputDir}/lib/d-project.com/qrcode-generator" />
-								<mkdir dir="${outputDir}/lib/mathjax.org/mathjax/config" />
-								<mkdir dir="${outputDir}/lib/socket.io" />
-								<symlink link="${outputDir}/lib/d-project.com/qrcode-generator/qrcode.js" resource="${basedir}/vendor/d-project.com/qrcode-generator-js/qrcode.js" overwrite="true" />
-								<symlink link="${outputDir}/lib/mathjax.org/mathjax/MathJax.js" resource="${basedir}/vendor/mathjax.org/mathjax/MathJax.js" overwrite="true" />
-								<symlink link="${outputDir}/lib/mathjax.org/mathjax/config/Safe.js" resource="${basedir}/vendor/mathjax.org/mathjax/config/Safe.js" overwrite="true" />
-								<symlink link="${outputDir}/lib/mathjax.org/mathjax/config/TeX-AMS_HTML.js" resource="${basedir}/vendor/mathjax.org/mathjax/config/TeX-AMS_HTML.js" overwrite="true" />
-								<symlink link="${outputDir}/lib/mathjax.org/mathjax/extensions" resource="${basedir}/vendor/mathjax.org/mathjax/extensions" overwrite="true" />
-								<symlink link="${outputDir}/lib/mathjax.org/mathjax/fonts" resource="${basedir}/vendor/mathjax.org/mathjax/fonts" overwrite="true" />
-								<symlink link="${outputDir}/lib/mathjax.org/mathjax/images" resource="${basedir}/vendor/mathjax.org/mathjax/images" overwrite="true" />
-								<symlink link="${outputDir}/lib/mathjax.org/mathjax/jax" resource="${basedir}/vendor/mathjax.org/mathjax/jax" overwrite="true" />
-								<symlink link="${outputDir}/lib/mathjax.org/mathjax/localization" resource="${basedir}/vendor/mathjax.org/mathjax/localization" overwrite="true" />
-								<symlink link="${outputDir}/lib/socket.io/socket.io.js" resource="${basedir}/vendor/socket.io/socket.io-client/socket.io.js" overwrite="true" />
-								<symlink link="${outputDir}/lib/sitepen.com" resource="${basedir}/vendor/sitepen.com" overwrite="true" />
-							</target>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 
 			<plugin>
@@ -159,31 +122,10 @@
 				</executions>
 				<configuration>
 					<failOnError>true</failOnError>
-					<configFile>src/main/config/jshint.conf.json</configFile>
+					<configFile>.jshintrc</configFile>
 					<directories>
-						<directory>src/main</directory>
+						<directory>src</directory>
 					</directories>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>com.googlecode.jslint4java</groupId>
-				<artifactId>jslint4java-maven-plugin</artifactId>
-				<version>2.0.5</version>
-				<configuration>
-					<failOnError>true</failOnError>
-					<options>
-						<browser>true</browser>
-						<devel>true</devel>
-						<white>true</white>
-						<predef>require, define</predef>
-					</options>
-					<includes>
-						<include>**/*.js</include>
-					</includes>
-					<sourceFolders>
-						<sourceFolder>${basedir}/src/main</sourceFolder>
-					</sourceFolders>
 				</configuration>
 			</plugin>
 
@@ -202,83 +144,17 @@
 
 	<profiles>
 		<profile>
-			<id>env-dev</id>
-
-			<activation>
-				<property>
-					<name>env</name>
-					<value>dev</value>
-				</property>
-			</activation>
-
+			<id>server</id>
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.3.2</version>
-						<executions>
-							<execution>
-								<id>run-build-script</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<executable>${basedir}/src/main/scripts/build.sh</executable>
-							<workingDirectory>${basedir}</workingDirectory>
-							<arguments>
-								<argument>dev</argument>
-								<argument>${outputDir}</argument>
-							</arguments>
-						</configuration>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.7</version>
-						<executions>
-							<execution>
-								<id>create-lib-links-dev</id>
-								<phase>process-resources</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<target>
-										<mkdir dir="${outputDir}/lib/thm.de/arsnova" />
-										<symlink link="${outputDir}/lib/thm.de/arsnova/api" resource="${submodule.libarsnova-js.path}/src/main/websources/lib/thm.de/arsnova/api" overwrite="true" />
-										<symlink link="${outputDir}/lib/dgerhardt.net" resource="${submodule.dgerhardt-dojo.path}" overwrite="true" />
-									</target>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.4</version>
-						<configuration>
-							<webXml>${basedir}/src/main/config/WEB-INF/web.dev.xml</webXml>
-						</configuration>
-					</plugin>
-
-					<plugin>
 						<groupId>org.eclipse.jetty</groupId>
 						<artifactId>jetty-maven-plugin</artifactId>
-						<version>${jetty.version}</version>
+						<version>9.2.3.v20140905</version>
 						<configuration>
-							<scanIntervalSeconds>${jetty.scanInterval}</scanIntervalSeconds>
 							<webApp>
 								<contextPath>/presenter</contextPath>
-								<baseResource implementation="org.eclipse.jetty.util.resource.ResourceCollection">
-									<resourcesAsCSV>${outputDir},${basedir}/src/main/websources,${basedir}/src/main/webapp</resourcesAsCSV>
-								</baseResource>
-								<descriptor>${basedir}/src/main/config/WEB-INF/web.dev.xml</descriptor>
+								<resourceBase>build</resourceBase>
 								<aliasCheck implementation="org.eclipse.jetty.server.handler.AllowSymLinkAliasChecker" />
 							</webApp>
 							<contextHandlers>
@@ -289,109 +165,7 @@
 							</contextHandlers>
 						</configuration>
 					</plugin>
-				</plugins>
-			</build>
-		</profile>
 
-		<profile>
-			<id>env-prod</id>
-
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>env</name>
-					<value>prod</value>
-				</property>
-			</activation>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.3.2</version>
-						<executions>
-							<execution>
-								<id>run-build-script</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<executable>${basedir}/src/main/scripts/build.sh</executable>
-							<workingDirectory>${basedir}</workingDirectory>
-							<arguments>
-								<argument>prod</argument>
-								<argument>${outputDir}</argument>
-								<argument>${project.version}</argument>
-							</arguments>
-						</configuration>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.7</version>
-						<executions>
-							<execution>
-								<id>create-lib-links-prod</id>
-								<phase>process-resources</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<target>
-										<mkdir dir="${outputDir}/lib/thm.de/arsnova/presenter/resources/css" />
-										<symlink link="${outputDir}/index.html" resource="${basedir}/src/main/websources/prod.html" overwrite="true" />
-										<symlink link="${outputDir}/lib/thm.de/arsnova/presenter/resources/css/presenter.css" resource="${project.build.directory}/tmp/dojo/dojo/arsnova-presenter/resources/css/presenter.css" overwrite="true" />
-									</target>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.4</version>
-						<configuration>
-							<webXml>${basedir}/src/main/config/WEB-INF/web.prod.xml</webXml>
-						</configuration>
-					</plugin>
-
-					<plugin>
-						<groupId>org.eclipse.jetty</groupId>
-						<artifactId>jetty-maven-plugin</artifactId>
-						<version>${jetty.version}</version>
-						<configuration>
-							<scanIntervalSeconds>${jetty.scanInterval}</scanIntervalSeconds>
-							<webApp>
-								<contextPath>/presenter</contextPath>
-								<baseResource implementation="org.eclipse.jetty.util.resource.ResourceCollection">
-									<resourcesAsCSV>${outputDir},${basedir}/src/main/websources,${basedir}/src/main/webapp</resourcesAsCSV>
-								</baseResource>
-								<descriptor>${basedir}/src/main/config/WEB-INF/web.prod.xml</descriptor>
-								<aliasCheck implementation="org.eclipse.jetty.server.handler.AllowSymLinkAliasChecker" />
-							</webApp>
-							<contextHandlers>
-								<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-									<contextPath>/</contextPath>
-									<war>${project.build.directory}/war/arsnova-backend.war</war>
-								</contextHandler>
-							</contextHandlers>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>run-server</id>
-
-			<build>
-				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-dependency-plugin</artifactId>
@@ -408,7 +182,7 @@
 										<artifactItem>
 											<groupId>de.thm.arsnova</groupId>
 											<artifactId>arsnova-backend</artifactId>
-											<version>2.0.0-SNAPSHOT</version>
+											<version>2.0.1</version>
 											<type>war</type>
 											<overWrite>true</overWrite>
 											<destFileName>arsnova-backend.war</destFileName>
@@ -416,41 +190,13 @@
 									</artifactItems>
 									<outputDirectory>${project.build.directory}/war</outputDirectory>
 									<overWriteReleases>true</overWriteReleases>
-									<overwriteSnapshots>true</overwriteSnapshots>
+									<overWriteSnapshots>true</overWriteSnapshots>
 								</configuration>
 							</execution>
 						</executions>
 					</plugin>
 				</plugins>
 			</build>
-		</profile>
-
-		<profile>
-			<id>libarsnova-js-exists</id>
-
-			<activation>
-				<file>
-					<exists>${basedir}/../libarsnova-js</exists>
-				</file>
-			</activation>
-
-			<properties>
-				<submodule.libarsnova-js.path>${basedir}/../libarsnova-js</submodule.libarsnova-js.path>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>dgerhardt-dojo-exists</id>
-
-			<activation>
-				<file>
-					<exists>${basedir}/../dgerhardt-dojo</exists>
-				</file>
-			</activation>
-
-			<properties>
-				<submodule.dgerhardt-dojo.path>${basedir}/../dgerhardt-dojo</submodule.dgerhardt-dojo.path>
-			</properties>
 		</profile>
 	</profiles>
 </project>
