@@ -154,9 +154,6 @@ module.exports = function (grunt) {
 					src: ["nls/**", "resources/**"],
 					dest: outdir
 				}, {
-					src: tmpdir + "arsnova-presenter/index.prod.html",
-					dest: outdir + "index.html"
-				}, {
 					expand: true,
 					cwd: tmpdir,
 					src: "dojo/resources/**",
@@ -225,6 +222,29 @@ module.exports = function (grunt) {
 					src: "bower_components/qrcode-generator/js/qrcode.js",
 					dest: outdir + "lib/qrcode-generator/qrcode.js"
 				}]
+			}
+		},
+
+		less: {
+			dist: {
+				options: {
+					paths: ["src/less"],
+					cleancss: true
+				},
+				files: [{
+					src: "src/less/loader.less",
+					dest: tmpdir + "arsnova-presenter/resources/css/loader.css"
+				}]
+			}
+		},
+
+		inline: {
+			options: {
+				inlineTagAttributes: "data-inline"
+			},
+			dist: {
+				src: tmpdir + "arsnova-presenter/index.html",
+				dest: outdir + "index.html"
 			}
 		},
 
@@ -324,15 +344,17 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-connect");
 	grunt.loadNpmTasks("grunt-contrib-copy");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
+	grunt.loadNpmTasks("grunt-contrib-less");
 	grunt.loadNpmTasks("grunt-contrib-symlink");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-dojo");
+	grunt.loadNpmTasks("grunt-inline");
 	grunt.loadNpmTasks("grunt-shell");
 	grunt.loadNpmTasks("grunt-war");
 
 	grunt.registerTask("build:amd", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
 	grunt.registerTask("build:requirejs", ["includerequirejs", "build:amd"]);
-	grunt.registerTask("build:dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "genversionfile", "dojo:dist", "uglify:dojo", "copy:dojoreport", "copy:resources", "uglify:lib", "symlink:lib", "clean:tmp"]);
+	grunt.registerTask("build:dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "genversionfile", "dojo:dist", "uglify:dojo", "less:dist", "inline", "copy:dojoreport", "copy:resources", "uglify:lib", "symlink:lib", "clean:tmp"]);
 	grunt.registerTask("run", ["connect:server:keepalive"]);
 	grunt.registerTask("default", ["build:dojo"]);
 };

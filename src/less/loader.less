@@ -1,0 +1,24 @@
+#splash-bg, #splash-content {
+	position: fixed;
+	left: 0;
+	top: 0;
+	display: table;
+	width: 100%;
+	height: 100%;
+	z-index: 950;
+}
+
+#splash-bg > *, #splash-content > * {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+#splash-bg {
+	background: data-uri("../resources/images/launch-bg.png");
+	background-size: 100% 100%;
+}
+
+#splash-content * {
+	padding: .25em;
+}
