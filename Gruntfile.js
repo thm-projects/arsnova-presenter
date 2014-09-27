@@ -298,11 +298,11 @@ module.exports = function (grunt) {
 	});
 
 
-	grunt.registerTask("amdbuild", function (amdloader) {
+	grunt.registerTask("amdbuild", function (amdloader, includeLoader) {
 		var
 			name = this.name,
 			layers = grunt.config(name).layers,
-			uglifyTask = grunt.config("amdbuild").includeLoader ? "requirejs" : "amd"
+			uglifyTask = "includeloader" === includeLoader ? "requirejs" : "amd"
 		;
 
 		layers.forEach(function (layer) {
@@ -313,15 +313,36 @@ module.exports = function (grunt) {
 		});
 	});
 
-	grunt.registerTask("includerequirejs", function () {
-		grunt.config("amdbuild.includeLoader", true);
-	});
+	grunt.registerTask("build", function (target) {
+		if (!target) {
+			target = "dojo";
+		}
 
-	grunt.registerTask("build", function () {
-		grunt.log.writeln("Please use one of the following tasks to build ARSnova Presenter:");
-		grunt.log.writeln("* build:dojo         This build includes the Dojo loader [default]");
-		grunt.log.writeln("* build:requirejs    This build includes the RequireJS loader");
-		grunt.log.writeln("* build:amd          This build includes no loader");
+		var taskList;
+		switch (target) {
+		case "amd":
+			taskList = ["amdbuild:amdloader", "amdreportjson:amdbuild"];
+
+			break;
+		case "requirejs":
+			taskList = ["amdbuild:amdloader:includeloader", "amdreportjson:amdbuild"];
+
+			break;
+		case "dojo":
+			taskList = ["symlink:dojo", "dojo:dist", "uglify:dojo", "less:dist", "inline", "copy:dojoreport", "copy:resources", "uglify:lib", "symlink:lib"];
+
+			break;
+		default:
+			grunt.log.writeln("Please use one of the following tasks to build ARSnova Presenter:");
+			grunt.log.writeln("* build:dojo         This build includes the Dojo loader [default]");
+			grunt.log.writeln("* build:requirejs    This build includes the RequireJS loader");
+			grunt.log.writeln("* build:amd          This build includes no loader");
+
+			return;
+		}
+		grunt.task.run(["clean", "jshint", "shell:bowerdeps", "genversionfile"]);
+		grunt.task.run(taskList);
+		grunt.task.run("clean:tmp");
 	});
 
 	grunt.registerTask("genversionfile", function () {
@@ -352,9 +373,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-shell");
 	grunt.loadNpmTasks("grunt-war");
 
-	grunt.registerTask("build:amd", ["clean", "jshint", "shell:bowerdeps", "amdbuild:amdloader", "amdreportjson:amdbuild", "clean:tmp"]);
-	grunt.registerTask("build:requirejs", ["includerequirejs", "build:amd"]);
-	grunt.registerTask("build:dojo", ["clean", "jshint", "shell:bowerdeps", "symlink:dojo", "genversionfile", "dojo:dist", "uglify:dojo", "less:dist", "inline", "copy:dojoreport", "copy:resources", "uglify:lib", "symlink:lib", "clean:tmp"]);
+	grunt.registerTask("default", ["build"]);
 	grunt.registerTask("run", ["connect:server:keepalive"]);
-	grunt.registerTask("default", ["build:dojo"]);
 };
