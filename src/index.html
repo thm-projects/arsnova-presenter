@@ -22,42 +22,18 @@
 </head>
 
 <body class="claro">
-<div id="splash"><div id="splash-bg"><div><img src="resources/images/launch-flash.png?__inline=true" width="500" height="300" /></div></div><div id="splash-flash"></div><div id="splash-content"><div><img src="resources/images/arsnova.png" alt="ARSnova" /><h1>Loading...</h1></div></div></div>
-<noscript><div id="noJs"><div><header><h1><img src="resources/images/arsnova.png" alt="ARSnova" /></h1></header><p>This application needs JavaScript to be enabled in your browser.</p></div></div></noscript>
-<script>
-var io, MathJax, qrcode;
-var langSupport = {en: true, de: true};
-var langFallback = "en";
-var lang = navigator.language || navigator.userLanguage || langFallback;
-var dojoConfig = {
-	arsnova: {
-		mobileStudentSessionUrl: "/#id/${sessionKey}",
-		mobileLecturerSessionUrl: "/#id/${sessionKey}/lecturer",
-		organization: {
-			label: "A <span id='footerOrganizationName'>THM</span> product",
-			links: [
-				{label: "THM website", url: "http://www.thm.de"},
-			]
-		}
-	},
-	arsnovaApi: {
-		configPath: "/arsnova-config"
-	}
-};
-lang = lang.replace(/-.*/, "");
-dojoConfig.locale = langSupport[lang] ? lang : langFallback;
-</script>
+<div id="splash">
+	<div id="splash-bg"><div><img src="resources/images/launch-flash.png?__inline=true" width="500" height="300" /></div></div>
+	<div id="splash-flash"></div>
+	<div id="splash-content"><div><img src="resources/images/arsnova.png" alt="ARSnova" /><h1>Loading...</h1></div></div>
+</div>
+<noscript>
+	<div id="noJs"><div>
+		<header><h1><img src="resources/images/arsnova.png" alt="ARSnova" /></h1></header>
+		<p>This application needs JavaScript to be enabled in your browser.</p>
+	</div></div>
+</noscript>
 <script src="lib/socket.io-client/socket.io.js"></script>
 <script src="presenter.js"></script>
-<script>
-require(
-	[
-		"arsnova-presenter/controller"
-	],
-	function (app) {
-		app.startup();
-	}
-);
-</script>
 </body>
 </html>

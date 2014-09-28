@@ -231,18 +231,18 @@ module.exports = function (grunt) {
 				options: {
 					banner: "<%= " + outprop + ".header%>"
 				},
-				src: "<%= " + outprop + ".modules.abs %>",
+				src: ["src/config.js", "<%= " + outprop + ".modules.abs %>", "src/bootstrap.js"],
 				dest: outdir + "presenter.js"
 			},
 			requirejs: {
 				options: {
 					banner: "<%= " + outprop + ".header%>"
 				},
-				src: ["bower_components/requirejs/require.js", "<%= " + outprop + ".modules.abs %>"],
+				src: ["bower_components/requirejs/require.js", "src/config.js", "<%= " + outprop + ".modules.abs %>", "src/bootstrap.js"],
 				dest: outdir + "presenter.js"
 			},
 			dojo: {
-				src: tmpdir + "arsnova-presenter/presenter.js",
+				src: [tmpdir + "arsnova-presenter/config.js", tmpdir + "arsnova-presenter/presenter.js", tmpdir + "arsnova-presenter/bootstrap.js"],
 				dest: outdir + "presenter.js"
 			},
 			lib: {
