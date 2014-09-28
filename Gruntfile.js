@@ -116,12 +116,19 @@ module.exports = function (grunt) {
 		},
 
 		dojo: {
-			dist: {
+			options: {
+				dojo: tmpdir + "builddeps/dojo/dojo.js",
+				package: ".",
+				releaseDir: tmpdir
+			},
+			prod: {
 				options: {
-					dojo: tmpdir + "builddeps/dojo/dojo.js",
-					profile: "build.prod.profile.js",
-					package: ".",
-					releaseDir: tmpdir
+					profile: "build.prod.profile.js"
+				}
+			},
+			dev: {
+				options: {
+					profile: "build.dev.profile.js"
 				}
 			}
 		},
@@ -151,7 +158,15 @@ module.exports = function (grunt) {
 				files: [{
 					expand: true,
 					cwd: tmpdir + "arsnova-presenter",
-					src: ["nls/**", "resources/**"],
+					src: ["resources/**"],
+					dest: outdir
+				}]
+			},
+			prodresources: {
+				files: [{
+					expand: true,
+					cwd: tmpdir + "arsnova-presenter",
+					src: ["nls/**"],
 					dest: outdir
 				}, {
 					expand: true,
@@ -187,12 +202,28 @@ module.exports = function (grunt) {
 					src: ["MathJax.js", "config/Safe.js", "config/TeX-AMS_HTML.js", "extensions", "fonts/HTML-CSS/TeX/*", "!fonts/HTML-CSS/TeX/png", "images", "jax/element", "jax/input/TeX", "jax/output/HTML-CSS", "jax/output/NativeMML", "jax/output/SVG/*", "!jax/output/SVG/fonts", "jax/output/SVG/fonts/TeX", "localization/de", "localization/en"],
 					dest: outdir + "lib/mathjax"
 				}]
+			},
+			devlib: {
+				files: [{
+					expand: true,
+					cwd: "bower_components",
+					src: ["*", "!MathJax", "!qrcode-generator", "!socket.io-client"],
+					dest: outdir + "lib"
+				}, {
+					src: "src",
+					dest: outdir + "lib/arsnova-presenter"
+				}]
 			}
 		},
 
 		/* Config to allow uglify to generate the layer. */
 		uglify: {
 			options: {
+				/* jshint ignore: start */
+				compress: {
+					drop_console: true
+				},
+				/* jshint ignore: end */
 				sourceMap: true,
 				sourceMapIncludeSources: true
 			},
@@ -313,9 +344,12 @@ module.exports = function (grunt) {
 		});
 	});
 
-	grunt.registerTask("build", function (target) {
+	grunt.registerTask("build", function (target, env) {
 		if (!target) {
 			target = "dojo";
+		}
+		if (-1 === ["prod", "dev"].indexOf(env)) {
+			env = "prod";
 		}
 
 		var taskList;
@@ -329,7 +363,12 @@ module.exports = function (grunt) {
 
 			break;
 		case "dojo":
-			taskList = ["symlink:dojo", "dojo:dist", "uglify:dojo", "less:dist", "inline", "copy:dojoreport", "copy:resources", "uglify:lib", "symlink:lib"];
+			taskList = ["symlink:dojo", "dojo:" + env, "uglify:dojo", "less:dist", "inline", "copy:dojoreport", "copy:resources", "uglify:lib", "symlink:lib"];
+			if ("dev" === env) {
+				taskList.push("symlink:devlib");
+			} else {
+				taskList.push("copy:prodresources");
+			}
 
 			break;
 		default:
@@ -374,5 +413,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-war");
 
 	grunt.registerTask("default", ["build"]);
+	grunt.registerTask("dev", ["build:dojo:dev"]);
 	grunt.registerTask("run", ["connect:server:keepalive"]);
 };
