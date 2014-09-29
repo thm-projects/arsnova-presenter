@@ -385,17 +385,38 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerTask("genversionfile", function () {
+		var
+			done = this.async(),
+			generate = function (dirty) {
+				grunt.util.spawn({
+					cmd: "git",
+					args: ["log", "-n", "1", "--pretty=format:%h"]
+				}, function (error, result, code) {
+					var version = {
+						version: pkg.version,
+						commitId: result.stdout,
+						dirty: dirty,
+						buildTime: (new Date()).toISOString(),
+						buildNumber: 0
+					};
+					grunt.file.write(versionFilePath + "version.js", "define(" + JSON.stringify(version) + ");\n");
+					done(true);
+				});
+			}
+		;
 		grunt.util.spawn({
 			cmd: "git",
-			args: ["log", "-n", "1", "--pretty=format:%h"]
+			args: ["status", "--porcelain"]
 		}, function (error, result, code) {
-			var version = {
-				version: pkg.version,
-				commitId: result.stdout,
-				buildTime: (new Date()).toISOString(),
-				buildNumber: 0
-			};
-			grunt.file.write(versionFilePath + "version.js", "define(" + JSON.stringify(version) + ");\n");
+			var dirty = false;
+			result.stdout.split("\n").forEach(function (line) {
+				if (!/^\?\?/.test(line)) {
+					dirty = true;
+
+					return;
+				}
+			});
+			generate(dirty);
 		});
 	});
 
