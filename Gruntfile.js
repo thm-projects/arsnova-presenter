@@ -13,6 +13,9 @@ module.exports = function (grunt) {
 		 * modules. */
 		tmpdir = outdir + "tmp/",
 
+		/* Client library dir */
+		depdir = "bower_components/",
+
 		/* The grunt.config property populated by amdserialize, containing the
 		 * list of files to include in the layer. */
 		outprop = "amdoutput",
@@ -44,27 +47,27 @@ module.exports = function (grunt) {
 				},
 				{
 					name: "dijit",
-					location: "bower_components/dijit"
+					location: depdir + "dijit"
 				},
 				{
 					name: "dojo",
-					location: "bower_components/dojo"
+					location: depdir + "dojo"
 				},
 				{
 					name: "dojox",
-					location: "bower_components/dojox"
+					location: depdir + "dojox"
 				},
 				{
 					name: "dstore",
-					location: "bower_components/dstore"
+					location: depdir + "dstore"
 				},
 				{
 					name: "libarsnova",
-					location: "bower_components/libarsnova-js/src"
+					location: depdir + "libarsnova-js/src"
 				},
 				{
 					name: "dgerhardt",
-					location: "bower_components/dgerhardt-dojo"
+					location: depdir + "dgerhardt-dojo"
 				},
 				{
 					name: "version",
@@ -155,30 +158,16 @@ module.exports = function (grunt) {
 				dest: outdir
 			},
 			resources: {
-				files: [{
-					expand: true,
-					cwd: tmpdir + "arsnova-presenter",
-					src: ["resources/**"],
-					dest: outdir
-				}]
+				expand: true,
+				cwd: tmpdir + "arsnova-presenter",
+				src: ["resources/images/**"],
+				dest: outdir
 			},
-			prodresources: {
-				files: [{
-					expand: true,
-					cwd: tmpdir + "arsnova-presenter",
-					src: ["nls/**"],
-					dest: outdir
-				}, {
-					expand: true,
-					cwd: tmpdir,
-					src: "dojo/resources/**",
-					dest: outdir + "lib"
-				}, {
-					expand: true,
-					cwd: tmpdir,
-					src: "dijit/themes/claro/**/*.{css,png}",
-					dest: outdir + "lib"
-				}]
+			builtnls: {
+				expand: true,
+				cwd: tmpdir + "arsnova-presenter",
+				src: ["nls/**"],
+				dest: outdir
 			}
 		},
 
@@ -186,7 +175,7 @@ module.exports = function (grunt) {
 			dojo: {
 				files: [
 					{
-						src: "bower_components/dojo",
+						src: depdir + "dojo",
 						dest: tmpdir + "builddeps/dojo"
 					},
 					{
@@ -196,23 +185,38 @@ module.exports = function (grunt) {
 				]
 			},
 			lib: {
+				expand: true,
+				cwd: depdir + "MathJax",
+				src: ["MathJax.js", "config/Safe.js", "config/TeX-AMS_HTML.js", "extensions", "fonts/HTML-CSS/TeX/*", "!fonts/HTML-CSS/TeX/png", "images", "jax/element", "jax/input/TeX", "jax/output/HTML-CSS", "jax/output/NativeMML", "jax/output/SVG/*", "!jax/output/SVG/fonts", "jax/output/SVG/fonts/TeX", "localization/de", "localization/en"],
+				dest: outdir + "lib/mathjax"
+			},
+			prodlib: {
 				files: [{
+					src: depdir + "dojo/resources",
+					dest: outdir + "lib/dojo/resources"
+				}, {
 					expand: true,
-					cwd: "bower_components/MathJax",
-					src: ["MathJax.js", "config/Safe.js", "config/TeX-AMS_HTML.js", "extensions", "fonts/HTML-CSS/TeX/*", "!fonts/HTML-CSS/TeX/png", "images", "jax/element", "jax/input/TeX", "jax/output/HTML-CSS", "jax/output/NativeMML", "jax/output/SVG/*", "!jax/output/SVG/fonts", "jax/output/SVG/fonts/TeX", "localization/de", "localization/en"],
-					dest: outdir + "lib/mathjax"
+					cwd: depdir,
+					src: "dijit/themes/claro/**/*.png",
+					dest: outdir + "lib"
 				}]
 			},
 			devlib: {
 				files: [{
 					expand: true,
-					cwd: "bower_components",
+					cwd: depdir,
 					src: ["*", "!MathJax", "!qrcode-generator", "!socket.io-client"],
 					dest: outdir + "lib"
 				}, {
 					src: "src",
 					dest: outdir + "lib/arsnova-presenter"
 				}]
+			},
+			page: {
+				expand: true,
+				cwd: "src",
+				src: ["index.html", "resources/images"],
+				dest: tmpdir + "arsnova-presenter"
 			}
 		},
 
@@ -238,7 +242,7 @@ module.exports = function (grunt) {
 				options: {
 					banner: "<%= " + outprop + ".header%>"
 				},
-				src: ["bower_components/requirejs/require.js", "src/config.js", "<%= " + outprop + ".modules.abs %>", "src/bootstrap.js"],
+				src: [depdir + "requirejs/require.js", "src/requirejs.config.js", "src/config.js", "<%= " + outprop + ".modules.abs %>", "src/bootstrap.js"],
 				dest: outdir + "presenter.js"
 			},
 			dojo: {
@@ -247,10 +251,10 @@ module.exports = function (grunt) {
 			},
 			lib: {
 				files: [{
-					src: "bower_components/socket.io-client/socket.io.js",
+					src: depdir + "socket.io-client/socket.io.js",
 					dest: outdir + "lib/socket.io-client/socket.io.js"
 				}, {
-					src: "bower_components/qrcode-generator/js/qrcode.js",
+					src: depdir + "qrcode-generator/js/qrcode.js",
 					dest: outdir + "lib/qrcode-generator/qrcode.js"
 				}]
 			}
@@ -259,13 +263,38 @@ module.exports = function (grunt) {
 		less: {
 			dist: {
 				options: {
-					paths: ["src/less"],
 					cleancss: true
 				},
-				files: [{
-					src: "src/less/loader.less",
-					dest: tmpdir + "arsnova-presenter/resources/css/loader.css"
-				}]
+				src: "src/less/loader.less",
+				dest: tmpdir + "arsnova-presenter/resources/css/loader.css"
+			},
+			dijittheme: {
+				options: {
+					rootpath: "../../lib/dijit/themes/claro/"
+				},
+				src: [depdir + "dijit/themes/claro/{Common,Dialog,Menu}.less"],
+				dest: tmpdir + "arsnova-presenter/resources/css/claro.css"
+			},
+			dijitthemeform: {
+				options: {
+					rootpath: "../../lib/dijit/themes/claro/form/"
+				},
+				src: [depdir + "dijit/themes/claro/form/{Common,Button,Checkbox,RadioButton,Select}.less"],
+				dest: tmpdir + "arsnova-presenter/resources/css/claro-form.css"
+			},
+			dijitthemelayout: {
+				options: {
+					rootpath: "../../lib/dijit/themes/claro/layout/"
+				},
+				src: [depdir + "dijit/themes/claro/layout/{TabContainer,ContentPane,BorderContainer}.less"],
+				dest: tmpdir + "arsnova-presenter/resources/css/claro-layout.css"
+			}
+		},
+
+		cssmin: {
+			dist: {
+				src: [depdir + "dijit/themes/dijit.css", tmpdir + "arsnova-presenter/resources/css/{claro,claro-form,claro-layout,presenter}.css"],
+				dest: outdir + "resources/css/presenter.css"
 			}
 		},
 
@@ -308,12 +337,10 @@ module.exports = function (grunt) {
 					webxml_display_name: "ARSnova Presenter"
 				},
 				/* jshint ignore: end */
-				files: [{
-					expand: true,
-					cwd: outdir,
-					src: ["**", "!**/*.map", "!build-report.txt", "!tmp/**"],
-					dest: outdir
-				}]
+				expand: true,
+				cwd: outdir,
+				src: ["**", "!**/*.map", "!build-report.txt", "!tmp/**"],
+				dest: outdir
 			}
 		},
 
@@ -355,19 +382,19 @@ module.exports = function (grunt) {
 		var taskList;
 		switch (target) {
 		case "amd":
-			taskList = ["amdbuild:amdloader", "amdreportjson:amdbuild"];
+			taskList = ["amdbuild:amdloader", "amdreportjson:amdbuild", "symlink:page"];
 
 			break;
 		case "requirejs":
-			taskList = ["amdbuild:amdloader:includeloader", "amdreportjson:amdbuild"];
+			taskList = ["amdbuild:amdloader:includeloader", "amdreportjson:amdbuild", "symlink:page"];
 
 			break;
 		case "dojo":
-			taskList = ["symlink:dojo", "dojo:" + env, "uglify:dojo", "less:dist", "inline", "copy:dojoreport", "copy:resources", "uglify:lib", "symlink:lib"];
+			taskList = ["symlink:dojo", "dojo:" + env, "uglify:dojo", "copy:dojoreport", "copy:resources"];
 			if ("dev" === env) {
 				taskList.push("symlink:devlib");
 			} else {
-				taskList.push("copy:prodresources");
+				taskList.push("symlink:prodlib", "copy:builtnls");
 			}
 
 			break;
@@ -379,9 +406,9 @@ module.exports = function (grunt) {
 
 			return;
 		}
-		grunt.task.run(["clean", "jshint", "shell:bowerdeps", "genversionfile"]);
+		grunt.task.run(["clean", "jshint", "shell:bowerdeps", "genversionfile", "uglify:lib", "symlink:lib"]);
 		grunt.task.run(taskList);
-		grunt.task.run("clean:tmp");
+		grunt.task.run("less", "cssmin", "inline", "clean:tmp");
 	});
 
 	grunt.registerTask("genversionfile", function () {
@@ -424,6 +451,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-contrib-connect");
 	grunt.loadNpmTasks("grunt-contrib-copy");
+	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-less");
 	grunt.loadNpmTasks("grunt-contrib-symlink");
