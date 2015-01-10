@@ -37,6 +37,6 @@
 		"libarsnova-js": "59bc3d17ef5395d8363f853e5a512ad64ca7a93f",
 		"MathJax": "2.4",
 		"qrcode-generator": "kazuhikoarase/qrcode-generator#v20140808",
-		"socket.io-client": "Automattic/socket.io-client#v1.1.0"
+		"socket.io-client": "Automattic/socket.io-client#v1.2.1"
 	}
 }
