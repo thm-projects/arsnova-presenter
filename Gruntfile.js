@@ -16,108 +16,11 @@ module.exports = function (grunt) {
 		/* Client library dir */
 		depdir = "bower_components/",
 
-		/* The grunt.config property populated by amdserialize, containing the
-		 * list of files to include in the layer. */
-		outprop = "amdoutput",
-
-		/* The requirejs baseUrl. */
-		baseUrl =  "./",
-
 		versionFilePath = tmpdir + "version/"
 	;
 
 
 	grunt.initConfig({
-		/* The loader config should go here. */
-		amdloader: {
-			baseUrl: baseUrl,
-
-			/* Enable build of requirejs-text/text */
-			inlineText: true,
-
-			/* Here goes the config for the amd plugins build process (has,
-			 * i18n, ecma402...). */
-			config: {
-			},
-
-			packages: [
-				{
-					name: "arsnova-presenter",
-					location: "src"
-				},
-				{
-					name: "dijit",
-					location: depdir + "dijit"
-				},
-				{
-					name: "dojo",
-					location: depdir + "dojo"
-				},
-				{
-					name: "dojox",
-					location: depdir + "dojox"
-				},
-				{
-					name: "dstore",
-					location: depdir + "dstore"
-				},
-				{
-					name: "libarsnova",
-					location: depdir + "libarsnova-js/src"
-				},
-				{
-					name: "dgerhardt",
-					location: depdir + "dgerhardt-dojo"
-				},
-				{
-					name: "version",
-					location: versionFilePath,
-					main: "version"
-				}
-			]
-		},
-
-		/* The common build config */
-		amdbuild: {
-			/* dir is the output directory. */
-			dir: tmpdir,
-
-			/* List of plugins that the build should not try to resolve at build
-			 * time. */
-			runtimePlugins: ["dojox/gfx/renderer"],
-
-			/* List of layers to build. */
-			layers: [{
-				name: "arsnova-presenter",
-				include: [
-					"dojo/_base/window",
-					"dojo/request/xhr",
-					"dojo/selector/_loader",
-					"dojo/selector/lite",
-					"dojox/gfx/path",
-					"dojox/gfx/svg",
-
-					"arsnova-presenter/controller"
-				],
-				includeShallow: [
-					/* Only the modules listed here (ie. NOT their dependencies)
-					 * will be added to the layer. */
-				],
-				exclude: [
-					/* Modules and layers listed here, and their dependencies,
-					 * will NOT be in the layer. */
-				],
-				excludeShallow: [
-					/* Only the modules listed here (ie. NOT their dependencies)
-					 * will NOT be in the layer. */
-				]
-			}]
-		},
-
-		amdreportjson: {
-			dir: outdir
-		},
-
 		dojo: {
 			options: {
 				dojo: tmpdir + "builddeps/dojo/dojo.js",
@@ -136,21 +39,12 @@ module.exports = function (grunt) {
 			}
 		},
 
-		/* Erase previous build. */
 		clean: {
 			build: [outdir],
 			tmp: [tmpdir]
 		},
 
-		/* Copy the plugin files to the real output directory. */
 		copy: {
-			plugins: {
-				expand: true,
-				cwd: tmpdir,
-				src: "<%= " + outprop + ".plugins.rel %>",
-				dest: outdir,
-				dot: true
-			},
 			dojoreport: {
 				expand: true,
 				cwd: tmpdir,
@@ -230,20 +124,6 @@ module.exports = function (grunt) {
 				/* jshint ignore: end */
 				sourceMap: true,
 				sourceMapIncludeSources: true
-			},
-			amd: {
-				options: {
-					banner: "<%= " + outprop + ".header%>"
-				},
-				src: ["src/config.js", "<%= " + outprop + ".modules.abs %>", "src/bootstrap.js"],
-				dest: outdir + "presenter.js"
-			},
-			requirejs: {
-				options: {
-					banner: "<%= " + outprop + ".header%>"
-				},
-				src: [depdir + "requirejs/require.js", "src/requirejs.config.js", "src/config.js", "<%= " + outprop + ".modules.abs %>", "src/bootstrap.js"],
-				dest: outdir + "presenter.js"
 			},
 			dojo: {
 				src: [tmpdir + "arsnova-presenter/config.js", tmpdir + "arsnova-presenter/presenter.js", tmpdir + "arsnova-presenter/bootstrap.js"],
@@ -355,22 +235,6 @@ module.exports = function (grunt) {
 		}
 	});
 
-
-	grunt.registerTask("amdbuild", function (amdloader, includeLoader) {
-		var
-			name = this.name,
-			layers = grunt.config(name).layers,
-			uglifyTask = "includeloader" === includeLoader ? "requirejs" : "amd"
-		;
-
-		layers.forEach(function (layer) {
-			grunt.task.run("amddepsscan:" + layer.name + ":" + name + ":" + amdloader);
-			grunt.task.run("amdserialize:" + layer.name + ":" + name + ":" + amdloader + ":" + outprop);
-			grunt.task.run("uglify:" + uglifyTask);
-			grunt.task.run("copy:plugins");
-		});
-	});
-
 	grunt.registerTask("build", function (target, env) {
 		if (!target) {
 			target = "dojo";
@@ -381,14 +245,6 @@ module.exports = function (grunt) {
 
 		var taskList;
 		switch (target) {
-		case "amd":
-			taskList = ["amdbuild:amdloader", "amdreportjson:amdbuild", "symlink:page"];
-
-			break;
-		case "requirejs":
-			taskList = ["amdbuild:amdloader:includeloader", "amdreportjson:amdbuild", "symlink:page"];
-
-			break;
 		case "dojo":
 			taskList = ["symlink:dojo", "dojo:" + env, "uglify:dojo", "copy:dojoreport", "copy:resources"];
 			if ("dev" === env) {
@@ -401,8 +257,6 @@ module.exports = function (grunt) {
 		default:
 			grunt.log.writeln("Please use one of the following tasks to build ARSnova Presenter:");
 			grunt.log.writeln("* build:dojo         This build includes the Dojo loader [default]");
-			grunt.log.writeln("* build:requirejs    This build includes the RequireJS loader");
-			grunt.log.writeln("* build:amd          This build includes no loader");
 
 			return;
 		}
@@ -447,7 +301,6 @@ module.exports = function (grunt) {
 		});
 	});
 
-	grunt.loadNpmTasks("grunt-amd-build");
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-contrib-connect");
 	grunt.loadNpmTasks("grunt-contrib-copy");
