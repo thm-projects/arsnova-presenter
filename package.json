@@ -1,0 +1,54 @@
+{
+	"name": "arsnova-presenter",
+	"version": "1.2.0-alpha",
+	"description": "Presenter is an ARSnova frontend for lecturers intended to be used for preparation and presentation of ARSnova sessions. It focuses on modern didactic concepts, especially Peer Instruction. But it can still be used for quick and simple surveys.",
+	"author": {
+		"name": "Daniel Gerhardt",
+		"email": "code@dgerhardt.net",
+		"url": "http://dgerhardt.net"
+	},
+	"license": "LGPL-3.0+",
+	"keywords": [
+		"arsnova",
+		"education",
+		"classroom",
+		"audience",
+		"response",
+		"system",
+		"feedback",
+		"voting",
+		"survey",
+		"poll",
+		"question",
+		"peer",
+		"instruction",
+		"rest",
+		"websocket"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/thm-projects/arsnova-presenter.git"
+	},
+	"directories": {
+		"lib": "src"
+	},
+	"devDependencies": {
+		"bower": "~1",
+		"dojo-util": "git://github.com/dojo/util.git#1.10.3",
+		"grunt": "~0.4.5",
+		"grunt-dojo": "~1.0",
+		"grunt-contrib-clean": "~0.6",
+		"grunt-contrib-connect": "~0.9",
+		"grunt-contrib-copy": "~0.7",
+		"grunt-contrib-cssmin": "~0.11",
+		"grunt-contrib-jshint": "~0.10",
+		"grunt-contrib-less": "~1.0",
+		"grunt-contrib-symlink": "~0.3",
+		"grunt-contrib-uglify": "~0.7",
+		"grunt-inline": "~0.3",
+		"grunt-shell": "~1.1",
+		"grunt-war": "~0.4.4",
+		"intern": "~2.2"
+	},
+	"dojoBuild": "src/presenter.profile.js"
+}

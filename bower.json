@@ -1,0 +1,42 @@
+{
+	"name": "arsnova-presenter",
+	"version": "1.2.0-alpha",
+	"description": "Presenter is an ARSnova frontend for lecturers intended to be used for preparation and presentation of ARSnova sessions. It focuses on modern didactic concepts, especially Peer Instruction. But it can still be used for quick and simple surveys.",
+	"authors": [
+		"Daniel Gerhardt <code@dgerhardt.net> (http://dgerhardt.net)"
+	],
+	"license": "LGPL-3.0+",
+	"keywords": [
+		"arsnova",
+		"education",
+		"classroom",
+		"audience",
+		"response",
+		"system",
+		"feedback",
+		"voting",
+		"survey",
+		"poll",
+		"question",
+		"peer",
+		"instruction",
+		"rest",
+		"websocket"
+	],
+	"ignore": [
+		"**/.*",
+		"CONTRIBUTING.md",
+		"pom.xml",
+		"tests"
+	],
+	"dependencies": {
+		"dgerhardt-dojo": "dgerhardt/dgerhardt-dojo#0ede87f07a3b3bc93b127d6c9df6040fdefe1780",
+		"dijit": "1.10",
+		"dojo": "1.10",
+		"dojox": "1.10",
+		"libarsnova-js": "59bc3d17ef5395d8363f853e5a512ad64ca7a93f",
+		"MathJax": "2.4",
+		"qrcode-generator": "kazuhikoarase/qrcode-generator#v20140808",
+		"socket.io-client": "Automattic/socket.io-client#v1.1.0"
+	}
+}
