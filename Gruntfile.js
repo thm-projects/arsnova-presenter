@@ -2,6 +2,8 @@
 "use strict";
 
 module.exports = function (grunt) {
+	require("time-grunt")(grunt);
+
 	var
 		/* The NPM package file is used for version info */
 		pkg = require("./package.json"),
@@ -18,7 +20,6 @@ module.exports = function (grunt) {
 
 		versionFilePath = tmpdir + "version/"
 	;
-
 
 	grunt.initConfig({
 		dojo: {

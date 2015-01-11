@@ -48,7 +48,8 @@
 		"grunt-inline": "~0.3",
 		"grunt-shell": "~1.1",
 		"grunt-war": "~0.4.4",
-		"intern": "~2.2"
+		"intern": "~2.2",
+		"time-grunt": "~1.0"
 	},
 	"dojoBuild": "src/presenter.profile.js"
 }
