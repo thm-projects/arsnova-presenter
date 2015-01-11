@@ -43,6 +43,14 @@ var profile = (function () {
 				location: depPath + "dstore"
 			},
 			{
+				name: "dmodel",
+				location: depPath + "dmodel"
+			},
+			{
+				name: "rql",
+				location: depPath + "rql"
+			},
+			{
 				name: "libarsnova",
 				location: depPath + "libarsnova-js/src"
 			},
