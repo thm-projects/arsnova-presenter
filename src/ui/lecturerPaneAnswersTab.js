@@ -506,7 +506,7 @@ define(
 							/* handle selected options for multiple choice questions */
 							var selectedOptions = answer.choices.split(",");
 							for (var j = 0; j < selectedOptions.length; j++) {
-								if ("mc" === question.questionType) {
+								if ("mc" === question.format) {
 									if (1 === parseInt(selectedOptions[j], 10)) {
 										values[j] += answer.count;
 									}
