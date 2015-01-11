@@ -27,7 +27,7 @@ var
 			organization: {
 				label: "A <span id='footerOrganizationName'>THM</span> product",
 				links: [
-					{label: "THM website", url: "http://www.thm.de"},
+					{label: "THM website", url: "http://www.thm.de"}
 				]
 			}
 		},
