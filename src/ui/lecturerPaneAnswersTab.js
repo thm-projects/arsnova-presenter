@@ -453,110 +453,111 @@ define(
 			},
 
 			updateAnswerStatistics: function (rounds) {
-				var question = model.get(appState.get("questionId"));
-				var answerCountPerRound = [];
-				var possibleAnswersCount = 0;
-				var valueSeries = {};
-				var values = [];
-				var labels = [];
-				var labelReverseMapping = {};
-				var correctIndexes = [];
-				var abstentionCount = 0;
+				model.get(appState.get("questionId")).then(function (question) {
+					var answerCountPerRound = [];
+					var possibleAnswersCount = 0;
+					var valueSeries = {};
+					var values = [];
+					var labels = [];
+					var labelReverseMapping = {};
+					var correctIndexes = [];
+					var abstentionCount = 0;
 
-				question.answerOptions.forEach(function (possibleAnswer, i) {
-					/* transform the label and answer count data into arrays usable by dojox/charting */
-					labelReverseMapping[possibleAnswer.text] = i;
-					labels.push({value: i + 1, text: possibleAnswer.text});
-					values[i] = 0;
-					if (showCorrectMenuItem.get("checked") && possibleAnswer.correct) {
-						correctIndexes.push(i);
-					}
-					possibleAnswersCount++;
-				});
-
-				if (question.allowAbstentions) {
-					labels.push({value: labels.length + 1, text: messages.abstentions});
-					values.push(0);
-					possibleAnswersCount++;
-				}
-
-				/* sorting is needed since the order of the object's properties is not determined */
-				var roundNames = [];
-				var round = null;
-				for (round in rounds) {
-					if (rounds.hasOwnProperty(round)) {
-						roundNames.push(round);
-					}
-				}
-				roundNames.sort();
-				var percentageValues = true; //roundNames.length > 1;
-
-				var handleAnswer = function (answer) {
-					answerCountPerRound[round] += answer.count;
-
-					if (!showAnswers) {
-						return;
-					}
-
-					if (!answer.choices) {
-						/* handle abstentions */
-						abstentionCount = answer.count;
-					} else {
-						if ("mc" === question.format || "grid" === question.format) {
-							/* handle selected options for multiple choice questions */
-							var selectedOptions = answer.choices.split(",");
-							for (var j = 0; j < selectedOptions.length; j++) {
-								if ("mc" === question.format) {
-									if (1 === parseInt(selectedOptions[j], 10)) {
-										values[j] += answer.count;
-									}
-								} else {
-									values[labelReverseMapping[selectedOptions[j]]] += 1;
-								}
-							}
-						} else {
-							/* handle single answer option */
-							values[labelReverseMapping[answer.choices]] = answer.count;
+					question.answerOptions.forEach(function (possibleAnswer, i) {
+						/* transform the label and answer count data into arrays usable by dojox/charting */
+						labelReverseMapping[possibleAnswer.text] = i;
+						labels.push({value: i + 1, text: possibleAnswer.text});
+						values[i] = 0;
+						if (showCorrectMenuItem.get("checked") && possibleAnswer.correct) {
+							correctIndexes.push(i);
 						}
-					}
-				};
-
-				domConstruct.empty(answerCountNode);
-				for (var i = 0; i < roundNames.length; i++) {
-					round = roundNames[i];
-					var answers = rounds[round];
-					values = [];
-					while (values.length < possibleAnswersCount) {
-						values.push(0);
-					}
-					answerCountPerRound[round] = 0;
-					answers.forEach(handleAnswer);
+						possibleAnswersCount++;
+					});
 
 					if (question.allowAbstentions) {
-						values[values.length - 1] = abstentionCount;
+						labels.push({value: labels.length + 1, text: messages.abstentions});
+						values.push(0);
+						possibleAnswersCount++;
 					}
 
-					if (percentageValues) {
-						for (var j = 0; j < values.length; j++) {
-							values[j] *= 100 / answerCountPerRound[round];
+					/* sorting is needed since the order of the object's properties is not determined */
+					var roundNames = [];
+					var round = null;
+					for (round in rounds) {
+						if (rounds.hasOwnProperty(round)) {
+							roundNames.push(round);
 						}
 					}
-					valueSeries[round] = values;
+					roundNames.sort();
+					var percentageValues = true; //roundNames.length > 1;
 
-					var countNode = null;
-					/* only display PI round label if PI has been started */
-					if (question.round > 1) {
-						var piRoundNode = domConstruct.create("span", {"class": "piRound"}, answerCountNode);
-						var roundString = "PI round 2" === round ? "2nd" : ("PI round 1" === round ? "1st" : "");
-						piRoundNode.appendChild(document.createTextNode(roundString));
-						countNode = domConstruct.create("span", {"class": "answerCount"}, piRoundNode);
-					} else {
-						countNode = domConstruct.create("span", {"class": "answerCount"}, answerCountNode);
+					var handleAnswer = function (answer) {
+						answerCountPerRound[round] += answer.count;
+
+						if (!showAnswers) {
+							return;
+						}
+
+						if (!answer.choices) {
+							/* handle abstentions */
+							abstentionCount = answer.count;
+						} else {
+							if ("mc" === question.format || "grid" === question.format) {
+								/* handle selected options for multiple choice questions */
+								var selectedOptions = answer.choices.split(",");
+								for (var j = 0; j < selectedOptions.length; j++) {
+									if ("mc" === question.format) {
+										if (1 === parseInt(selectedOptions[j], 10)) {
+											values[j] += answer.count;
+										}
+									} else {
+										values[labelReverseMapping[selectedOptions[j]]] += 1;
+									}
+								}
+							} else {
+								/* handle single answer option */
+								values[labelReverseMapping[answer.choices]] = answer.count;
+							}
+						}
+					};
+
+					domConstruct.empty(answerCountNode);
+					for (var i = 0; i < roundNames.length; i++) {
+						round = roundNames[i];
+						var answers = rounds[round];
+						values = [];
+						while (values.length < possibleAnswersCount) {
+							values.push(0);
+						}
+						answerCountPerRound[round] = 0;
+						answers.forEach(handleAnswer);
+
+						if (question.allowAbstentions) {
+							values[values.length - 1] = abstentionCount;
+						}
+
+						if (percentageValues) {
+							for (var j = 0; j < values.length; j++) {
+								values[j] *= 100 / answerCountPerRound[round];
+							}
+						}
+						valueSeries[round] = values;
+
+						var countNode = null;
+						/* only display PI round label if PI has been started */
+						if (question.round > 1) {
+							var piRoundNode = domConstruct.create("span", {"class": "piRound"}, answerCountNode);
+							var roundString = "PI round 2" === round ? "2nd" : ("PI round 1" === round ? "1st" : "");
+							piRoundNode.appendChild(document.createTextNode(roundString));
+							countNode = domConstruct.create("span", {"class": "answerCount"}, piRoundNode);
+						} else {
+							countNode = domConstruct.create("span", {"class": "answerCount"}, answerCountNode);
+						}
+						countNode.appendChild(document.createTextNode(answerCountPerRound[round]));
+						domStyle.set(answerCountNode, "visibility", "visible");
 					}
-					countNode.appendChild(document.createTextNode(answerCountPerRound[round]));
-					domStyle.set(answerCountNode, "visibility", "visible");
-				}
-				piAnswersChart.update(labels, correctIndexes, valueSeries, percentageValues, question.allowAbstentions);
+					piAnswersChart.update(labels, correctIndexes, valueSeries, percentageValues, question.allowAbstentions, question.allowAbstentions);
+				});
 			},
 
 			toggleFullScreenMode: function () {

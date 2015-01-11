@@ -21,6 +21,7 @@ var profile = (function () {
 				"dojo": "lib/dojo",
 				"dijit": "lib/dijit",
 				"dojox": "lib/dojox",
+				"dmodel": "lib/dmodel",
 				"dstore": "lib/dstore",
 				"dgerhardt": "lib/dgerhardt-dojo",
 				"libarsnova": "lib/libarsnova-js/src",
@@ -45,6 +46,14 @@ var profile = (function () {
 			{
 				name: "dstore",
 				location: depPath + "dstore"
+			},
+			{
+				name: "dmodel",
+				location: depPath + "dmodel"
+			},
+			{
+				name: "rql",
+				location: depPath + "rql"
 			},
 			{
 				name: "libarsnova",

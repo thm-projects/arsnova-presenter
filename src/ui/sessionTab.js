@@ -107,8 +107,10 @@ define(
 				pane.showModalMessage(messages.noSession, "disabled");
 				model.watchKey(function (name, oldValue, value) {
 					if (value) {
-						pane.hideModalMessage();
-						self.fillForm(model.getCurrent());
+						model.getCurrent().then(function (session) {
+							pane.hideModalMessage();
+							self.fillForm(session);
+						});
 					} else {
 						pane.showModalMessage(messages.noSession, "gray");
 						form.reset();
@@ -134,27 +136,28 @@ define(
 				var newSession = form.get("value");
 				pane.showModalMessage(messages.updatingSession + "...", "info");
 
-				var session = model.getCurrent();
-				for (var attr in newSession) {
-					if (newSession.hasOwnProperty(attr)) {
-						session[attr] = newSession[attr];
+				model.getCurrent().then(function (session) {
+					for (var attr in newSession) {
+						if (newSession.hasOwnProperty(attr)) {
+							session[attr] = newSession[attr];
+						}
 					}
-				}
-				session.active = session.suspend.length === 0;
-				delete session.suspend;
+					session.active = session.suspend.length === 0;
+					delete session.suspend;
 
-				model.update(session).then(function () {
-					pane.showModalMessage(messages.sessionSaved, "success");
-					setTimeout(function () {
-						pane.hideModalMessage();
-						topic.publish("arsnova/session/update");
-					}, 1500);
-				}, function (error) {
-					console.error("Could not save session");
-					pane.showModalMessage(messages.sessionNotSaved, "error");
-					setTimeout(function () {
-						pane.hideModalMessage();
-					}, 3000);
+					model.update(session).then(function () {
+						pane.showModalMessage(messages.sessionSaved, "success");
+						setTimeout(function () {
+							pane.hideModalMessage();
+							topic.publish("arsnova/session/update");
+						}, 1500);
+					}, function (error) {
+						console.error("Could not save session");
+						pane.showModalMessage(messages.sessionNotSaved, "error");
+						setTimeout(function () {
+							pane.hideModalMessage();
+						}, 3000);
+					});
 				});
 			},
 

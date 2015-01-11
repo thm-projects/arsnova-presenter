@@ -246,7 +246,9 @@ define(
 				}
 
 				if (this.questionId) {
-					this.fillForm(lecturerQuestion.get(this.questionId));
+					lecturerQuestion.get(this.questionId).then(lang.hitch(this, function (question) {
+						this.fillForm(question);
+					}));
 				}
 
 				this.form.watch("value", lang.hitch(this, function (name, oldValue, value) {
@@ -442,32 +444,33 @@ define(
 				var newQuestion = this.form.get("value");
 				this.showModalMessage(messages.updatingQuestion + "...", "info");
 
-				var question = lecturerQuestion.get(this.questionId);
-				for (var attr in newQuestion) {
-					if (newQuestion.hasOwnProperty(attr)) {
-						question[attr] = newQuestion[attr];
+				lecturerQuestion.get(this.questionId).then(lang.hitch(this, function (question) {
+					for (var attr in newQuestion) {
+						if (newQuestion.hasOwnProperty(attr)) {
+							question[attr] = newQuestion[attr];
+						}
 					}
-				}
-				question.allowAbstentions = question.allowAbstentions.length > 0;
-				question.active = question.active.length > 0;
-				question.publishResults = question.publishResults.length > 0;
-				question.publishCorrectAnswer = question.publishCorrectAnswer.length > 0;
+					question.allowAbstentions = question.allowAbstentions.length > 0;
+					question.active = question.active.length > 0;
+					question.publishResults = question.publishResults.length > 0;
+					question.publishCorrectAnswer = question.publishCorrectAnswer.length > 0;
 
-				var correctAnswerOptions = {};
-				this.optionsForm.getChildren().forEach(function (widget, i) {
-					if ("answerOptions" === widget.name && widget.value) {
-						question.answerOptions[i].correct = widget.checked;
-					}
-				});
+					var correctAnswerOptions = {};
+					this.optionsForm.getChildren().forEach(function (widget, i) {
+						if ("answerOptions" === widget.name && widget.value) {
+							question.answerOptions[i].correct = widget.checked;
+						}
+					});
 
-				lecturerQuestion.update(question).then(lang.hitch(this, function () {
-					this.showModalMessage(messages.questionSaved, "success");
-					setTimeout(lang.hitch(this, this.close), 1500);
-					topic.publish("arsnova/question/update");
-				}), lang.hitch(this, function (error) {
-					console.error("Could not update question");
-					this.showModalMessage(messages.questionNotSaved, "error");
-					setTimeout(lang.hitch(this, this.hideModalMessage), 3000);
+					lecturerQuestion.update(question).then(lang.hitch(this, function () {
+						this.showModalMessage(messages.questionSaved, "success");
+						setTimeout(lang.hitch(this, this.close), 1500);
+						topic.publish("arsnova/question/update");
+					}), lang.hitch(this, function (error) {
+						console.error("Could not update question");
+						this.showModalMessage(messages.questionNotSaved, "error");
+						setTimeout(lang.hitch(this, this.hideModalMessage), 3000);
+					}));
 				}));
 			},
 
