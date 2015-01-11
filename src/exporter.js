@@ -37,41 +37,41 @@ define(
 
 		self = {
 			exportSession: function () {
-				var
-					session = lang.clone(sessionModel.getCurrent()),
-					promises = []
-				;
+				sessionModel.getCurrent().then(function (session) {
+					var promises = [];
+					session = lang.clone(session);
 
-				delete session._hidden;
-				delete session._scenario;
-				session.questions = [];
-				lecturerQuestionModel.getAll().then(function (lecturerQuestions) {
-					lecturerQuestions.forEach(function (question) {
-						question = lang.clone(question);
-						delete question._hidden;
-						delete question._scenario;
-						session.questions.push(question);
-						question.answers = [];
-						if (!question.round || question.round < 1) {
-							question.round = 1;
-						}
-						var promise;
-						var promiseFunc = function (answers) {
-							answers.forEach(function (answer) {
-								answer = lang.clone(answer);
-								delete answer._hidden;
-								delete answer._scenario;
-								delete answer._id;
-								question.answers.push(answer);
-							});
-						};
-						for (var i = 1; i <= question.round; i++) {
-							promises.push(promise = lecturerQuestionModel.getAnswers(question.id, i));
-							when(promise).then(promiseFunc);
-						}
-					});
-					all(promises).then(function (answers) {
-						self.saveJson(session, session.id);
+					delete session._hidden;
+					delete session._scenario;
+					session.questions = [];
+					lecturerQuestionModel.getAll().then(function (lecturerQuestions) {
+						lecturerQuestions.forEach(function (question) {
+							question = lang.clone(question);
+							delete question._hidden;
+							delete question._scenario;
+							session.questions.push(question);
+							question.answers = [];
+							if (!question.round || question.round < 1) {
+								question.round = 1;
+							}
+							var promise;
+							var promiseFunc = function (answers) {
+								answers.forEach(function (answer) {
+									answer = lang.clone(answer);
+									delete answer._hidden;
+									delete answer._scenario;
+									delete answer._id;
+									question.answers.push(answer);
+								});
+							};
+							for (var i = 1; i <= question.round; i++) {
+								promises.push(promise = lecturerQuestionModel.getAnswers(question.id, i));
+								when(promise).then(promiseFunc);
+							}
+						});
+						all(promises).then(function (answers) {
+							self.saveJson(session, session.id);
+						});
 					});
 				});
 			},
