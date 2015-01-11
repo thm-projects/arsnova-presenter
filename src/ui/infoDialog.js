@@ -88,7 +88,7 @@ define(
 
 					var commitRowNode = domConstruct.create("tr", null, infoTableNode);
 					domConstruct.create("td", {innerHTML: messages.commit}, commitRowNode);
-					domConstruct.create("td", {innerHTML: version.commitId}, commitRowNode);
+					domConstruct.create("td", {innerHTML: version.commitId + (version.dirty ? "-dirty" : "")}, commitRowNode);
 
 					var buildTimeRowNode = domConstruct.create("tr", null, infoTableNode);
 					domConstruct.create("td", {innerHTML: messages.buildTime}, buildTimeRowNode);

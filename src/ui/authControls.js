@@ -54,7 +54,7 @@ define(
 				domConstruct.create("img", {id: "loginLogo", src: "resources/images/arsnova.png"}, document.body);
 				var versionString = version.version;
 				if (version.commitId) {
-					versionString += " [" + version.commitId + "]";
+					versionString += " [" + version.commitId + (version.dirty ? "-dirty" : "") + "]";
 				}
 				var footerNode = domConstruct.create("div", {id: "loginFooter"}, document.body);
 				footerNode.appendChild(document.createTextNode(commonMessages.arsnova + " " + commonMessages.productNameValue + " " + versionString));

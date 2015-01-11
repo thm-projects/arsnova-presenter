@@ -292,7 +292,7 @@ module.exports = function (grunt) {
 		}, function (error, result, code) {
 			var dirty = false;
 			result.stdout.split("\n").forEach(function (line) {
-				if (!/^\?\?/.test(line)) {
+				if (!/^$|^\?\?/.test(line)) {
 					dirty = true;
 
 					return;
