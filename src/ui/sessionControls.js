@@ -368,6 +368,7 @@ define(
 
 			getAbsoluteUrl: function (url) {
 				var tag = domConstruct.create("a", {href: url}, document.body);
+
 				return tag.href;
 			}
 		};
