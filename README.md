@@ -23,12 +23,12 @@ take a look at the [information for contributors](CONTRIBUTING.md).
 Presenter is provided packaged as a web archive file (.war) which can be
 deployed on a Java servlet container. You can download it from the
 [releases page](https://github.com/thm-projects/arsnova-presenter/releases) or
-[build it yourself](CONTRIBUTING.md) with Maven (`mvn clean package
--Denv=prod`). Usually it is enough to copy this file to the webapps directory of
-the container. Since Presenter does not contain any code that has to be run on
-the server side, it is also possible to use it with a standard web server. In
-this case extract the contents of the .war file with an archiving tool of your
-choice.
+[build it yourself](CONTRIBUTING.md) with [Grunt](http://gruntjs.com/)
+(`grunt build war`). Usually it is enough to copy this file to the webapps
+directory of the container. Since Presenter does not contain any code that has
+to be run on the server side, it is also possible to use it with a standard web
+server. In this case extract the contents of the .war file with an archiving
+tool of your choice.
 
 Presenter depends on the ARSnova API which is provided by
 [ARSnova Backend](https://github.com/thm-projects/arsnova-backend). Refer to its

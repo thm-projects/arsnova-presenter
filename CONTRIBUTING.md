@@ -4,7 +4,7 @@
 
 ### Requirements
 
-* Git
+* NodeJS and the grunt-cli and bower packages
 * Java JDK 7 or OpenJDK 7
 * Maven 3
 * an ARSnova API provider
@@ -24,7 +24,9 @@ Before you make changes to Presenter, run the following command to set up a
 development environment with a running Java servlet container and all
 dependencies:
 
-	$ mvn clean jetty:run -Denv=dev -Prun-server
+	$ npm install
+	$ grunt build:dojo:dev
+	$ mvn clean jetty:run -Pserver
 
 Afterwards, the application will be accessible at:
 
@@ -100,16 +102,11 @@ maintenance branch to apply the version change commit to master:
 
 ### Requirements
 
-* Java JDK 7 or OpenJDK 7 (or later)
-* Maven 3
-
-While ARSnova Presenter runs on any platform supported by Java servlet
-containers it can currently only be built in Unix-like environments (Linux,
-MacOS X).
+* NodeJS and the grunt-cli and bower packages
 
 ### Building & packaging
 
 To create a .war archive ready for deployment in a Java servlet container run
 the following command:
 
-	$ mvn clean package -Denv=prod
+	$ grunt build war
