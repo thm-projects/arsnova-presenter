@@ -52,5 +52,6 @@
 		"intern": "~2.2",
 		"time-grunt": "~1.0"
 	},
+	"private": true,
 	"dojoBuild": "src/presenter.profile.js"
 }

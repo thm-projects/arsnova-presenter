@@ -38,5 +38,6 @@
 		"MathJax": "2.4",
 		"qrcode-generator": "kazuhikoarase/qrcode-generator#v20140808",
 		"socket.io-client": "Automattic/socket.io-client#v1.2.1"
-	}
+	},
+	"private": true
 }
