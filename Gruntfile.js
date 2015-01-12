@@ -200,6 +200,17 @@ module.exports = function (grunt) {
 			}
 		},
 
+		jscs: {
+			src: [
+			"*.js",
+			"src/**/*.js",
+			"tests/**/*.js"
+			],
+			options: {
+				config: ".jscs.json"
+			}
+		},
+
 		shell: {
 			bowerdeps: {
 				command: [
@@ -261,7 +272,7 @@ module.exports = function (grunt) {
 
 			return;
 		}
-		grunt.task.run(["clean", "jshint", "shell:bowerdeps", "genversionfile", "uglify:lib", "symlink:lib"]);
+		grunt.task.run(["clean", "jshint", "jscs", "shell:bowerdeps", "genversionfile", "uglify:lib", "symlink:lib"]);
 		grunt.task.run(taskList);
 		grunt.task.run("less", "cssmin", "inline", "clean:tmp");
 	});
@@ -312,6 +323,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-dojo");
 	grunt.loadNpmTasks("grunt-inline");
+	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-shell");
 	grunt.loadNpmTasks("grunt-war");
 

@@ -269,8 +269,11 @@ define(
 				case "abcd":
 					domStyle.set(this.noCorrectOptionContainer, "display", "");
 					this.noCorrectOptionButton.set("checked", true);
+
 					break;
 				case "mc":
+					/* Nothing to do */
+
 					break;
 				case "yesno":
 					domStyle.set(this.addAnswerContainer, "display", "none");
@@ -278,14 +281,17 @@ define(
 					this.addAnswerOption(commonMessages.no, "sc");
 					domStyle.set(this.noCorrectOptionContainer, "display", "");
 					this.noCorrectOptionButton.set("checked", true);
+
 					break;
 				case "vote":
 					this.templateSelect.set("value", "");
 					domStyle.set(this.templateSelect.domNode, "display", "");
+
 					break;
 				case "freetext":
 					domStyle.set(this.addAnswerContainer, "display", "none");
 					domStyle.set(this.optionsForm.domNode, "display", "none");
+
 					break;
 				}
 			},
@@ -304,7 +310,10 @@ define(
 			},
 
 			getTemplateOptions: function (template) {
-				var options = [], templates, i;
+				var
+					i, templates,
+					options = []
+				;
 
 				templates = {
 					agreement: 5,
