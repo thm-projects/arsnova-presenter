@@ -18,7 +18,15 @@ module.exports = function (grunt) {
 		/* Client library dir */
 		depdir = "bower_components/",
 
-		versionFilePath = tmpdir + "version/"
+		versionFilePath = tmpdir + "version/",
+
+		/* Files matching the following patterns will be checked by JSHint and JSCS
+		 */
+		lintJs = [
+			"*.js",
+			"src/**/*.js",
+			"tests/**/*.js"
+		]
 	;
 
 	grunt.initConfig({
@@ -190,22 +198,14 @@ module.exports = function (grunt) {
 		},
 
 		jshint: {
-			src: [
-				"*.js",
-				"src/**/*.js",
-				"tests/**/*.js"
-			],
+			src: lintJs,
 			options: {
 				jshintrc: ".jshintrc"
 			}
 		},
 
 		jscs: {
-			src: [
-			"*.js",
-			"src/**/*.js",
-			"tests/**/*.js"
-			],
+			src: lintJs,
 			options: {
 				config: ".jscs.json"
 			}
@@ -241,8 +241,24 @@ module.exports = function (grunt) {
 				options: {
 					base: outdir,
 					port: 8081,
-					useAvailablePort: true
+					useAvailablePort: true,
+					open: true
 				}
+			}
+		},
+
+		watch: {
+			buildConfig: {
+				files: ["Gruntfile.js", "bower.json", "build.dev.profile.js"],
+				tasks: ["clean", "build:dojo:dev"]
+			},
+			js: {
+				files: [lintJs, ".jshintrc", ".jscs.json", "!*.js"],
+				tasks: ["newer:jshint", "newer:jscs"]
+			},
+			less: {
+				files: ["src/less/*"],
+				tasks: ["less", "cssmin", "inline"]
 			}
 		}
 	});
@@ -272,9 +288,9 @@ module.exports = function (grunt) {
 
 			return;
 		}
-		grunt.task.run(["clean", "jshint", "jscs", "shell:bowerdeps", "genversionfile", "uglify:lib", "symlink:lib"]);
+		grunt.task.run(["newer:jshint", "newer:jscs", "shell:bowerdeps", "genversionfile", "uglify:lib", "symlink:lib"]);
 		grunt.task.run(taskList);
-		grunt.task.run("less", "cssmin", "inline", "clean:tmp");
+		grunt.task.run("less", "cssmin", "inline");
 	});
 
 	grunt.registerTask("genversionfile", function () {
@@ -321,13 +337,24 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-less");
 	grunt.loadNpmTasks("grunt-contrib-symlink");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-contrib-watch");
 	grunt.loadNpmTasks("grunt-dojo");
 	grunt.loadNpmTasks("grunt-inline");
 	grunt.loadNpmTasks("grunt-jscs");
+	grunt.loadNpmTasks("grunt-newer");
 	grunt.loadNpmTasks("grunt-shell");
 	grunt.loadNpmTasks("grunt-war");
 
-	grunt.registerTask("default", ["build"]);
-	grunt.registerTask("dev", ["build:dojo:dev"]);
-	grunt.registerTask("run", ["connect:server:keepalive"]);
+	grunt.registerTask("default", [
+		"clean",
+		"build",
+		"clean:tmp"
+	]);
+	grunt.registerTask("run", [
+		"clean",
+		"build:dojo:dev",
+		"connect",
+		"watch",
+		"clean:tmp"
+	]);
 };
