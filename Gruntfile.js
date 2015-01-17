@@ -379,6 +379,10 @@ module.exports = function (grunt) {
 		"build",
 		"clean:tmp"
 	]);
+	grunt.registerTask("package", [
+		"default",
+		"war"
+	]);
 	grunt.registerTask("run", [
 		"clean",
 		"build:dojo:dev",

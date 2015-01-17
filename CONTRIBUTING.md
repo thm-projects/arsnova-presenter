@@ -114,4 +114,4 @@ maintenance branch to apply the version change commit to master:
 To create a .war archive ready for deployment in a Java servlet container run
 the following command:
 
-	$ grunt build war
+	$ grunt package
