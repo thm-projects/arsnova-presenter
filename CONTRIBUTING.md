@@ -12,6 +12,8 @@
 
 The backend dependency is automatically downloaded by Maven but you need to
 follow the steps for setting up CouchDB described in the backend documentation.
+Without a correctly set up CouchDB you will still be able to access the
+application and log in.
 
 ### Environment
 
@@ -24,17 +26,20 @@ Before you make changes to Presenter, run the following command to set up a
 development environment with a running Java servlet container and all
 dependencies:
 
-	$ npm install
-	$ grunt build:dojo:dev
+1. Start up ARSnova Backend:
 	$ mvn clean jetty:run -Pserver
+2. Install the JavaScript build time dependencies:
+	$ npm install
+3. Build and run ARSnova Presenter:
+	$ grunt run
 
-Afterwards, the application will be accessible at:
+Afterwards, the application will automatically open in a browser window:
 
-http://localhost:8080/presenter/
+	http://localhost:8081/presenter/
 
-Changes to the code base can be tested without restarting the servlet container.
-Without a correctly set up CouchDB you will still be able to access the
-application and log in.
+`grunt run` will check for code changes in the background and automatically
+rebuild components if necessary. Additionally, you will instantly be notified of
+code quality problems by JSHint and JSCS.
 
 ### Workflow
 
