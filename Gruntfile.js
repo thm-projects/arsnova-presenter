@@ -248,23 +248,27 @@ module.exports = function (grunt) {
 						var proxy = require("grunt-connect-proxy/lib/utils").proxyRequest;
 
 						return [
+							["/", function (req, res, next) {
+								if ("/" === req.url) {
+									res.writeHead(301, {Location: "/presenter"});
+									res.end();
+								} else {
+									/* Let the proxy middleware handle this request */
+									next();
+								}
+							}],
 							/* Serve static files */
-							connect.static(options.base[0]),
-							/* Make empty directories browsable */
-							connect.directory(options.base[0]),
-							/* Include the proxy first */
+							["/presenter", connect.static(options.base[0])],
+							/* Proxy for backend API */
 							proxy
 						];
 					}
 				},
 				proxies: [
 					{
-						context: ["/api", "/arsnova-config"],
+						context: ["/", "/api", "/arsnova-config"],
 						host: "localhost",
 						port: 8080,
-						rewrite: {
-							"^/api": ""
-						},
 						xforward: true
 					}
 				]
