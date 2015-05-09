@@ -31,13 +31,13 @@
 	],
 	"dependencies": {
 		"dgerhardt-dojo": "dgerhardt/dgerhardt-dojo#0ede87f07a3b3bc93b127d6c9df6040fdefe1780",
-		"dijit": "1.10",
-		"dojo": "1.10",
-		"dojox": "1.10",
+		"dijit": "~1.10",
+		"dojo": "~1.10",
+		"dojox": "~1.10",
 		"libarsnova-js": "1.0.0-alpha.1",
-		"MathJax": "2.4",
+		"MathJax": "~2.5",
 		"qrcode-generator": "kazuhikoarase/qrcode-generator#v20140808",
-		"socket.io-client": "Automattic/socket.io-client#v1.2.1"
+		"socket.io-client": "Automattic/socket.io-client#v1.3.5"
 	},
 	"private": true
 }
